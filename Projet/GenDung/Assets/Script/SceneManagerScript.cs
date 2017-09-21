@@ -8,4 +8,13 @@ public class SceneManagerScript : MonoBehaviour {
 	public void LoadMap () {
 		SceneManager.LoadScene ("Map");
 	}
+	public void LoadDungeon () {
+		SceneManager.LoadScene ("Dungeon");
+	}
+	public void LoadMarket () {
+		SceneManager.LoadScene ("Market");
+	}
+	public void LoadMainMenu () {
+		SceneManager.LoadScene ("MainMenu");
+	}
 }
