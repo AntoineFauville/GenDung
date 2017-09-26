@@ -22,6 +22,13 @@ public class DungeonController : MonoBehaviour {
 
         Dungeon = new Dungeon();
 
+        /* Creation d'un GO (GameObject) vide servant de parent */
+        GameObject parent = new GameObject();
+        parent.name = "Dungeon";
+        parent.transform.position = Vector3.zero;
+        /**/
+
+        /* Creation Tile par Tile de la grille représentant le Dungeon */
         for(int x = 0; x < Dungeon.Width; x++)
         {
             for (int y = 0; y < Dungeon.Height; y++)
@@ -34,9 +41,10 @@ public class DungeonController : MonoBehaviour {
 
                 tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
 
-                tile_go.transform.SetParent(this.transform, true); 
+                tile_go.transform.SetParent(parent.transform, true); 
             }
         }
+        /* */
 	}
 
     public Tile GetTileAtWorldCoord(Vector3 coord)

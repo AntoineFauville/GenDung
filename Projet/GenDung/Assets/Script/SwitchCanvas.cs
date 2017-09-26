@@ -57,7 +57,14 @@ public class SwitchCanvas : MonoBehaviour {
 						didIInstantiate = true;
 					}
 				}
-			}
+
+                /* Ajoute de manière dynamique mon DungeonController à l'objet (Pas de modification de scène nécessaire ;) )  */
+                if (SceneManager.GetActiveScene().name == "Dungeon")
+                {
+                    this.gameObject.AddComponent<DungeonController>();
+                }
+                /* */
+            }
 
 			if(activeScene == sceneNames [0]){
 				DestroyImmediate (GameObject.Find("DontDestroyOnLoad"));
@@ -65,7 +72,6 @@ public class SwitchCanvas : MonoBehaviour {
 
 			previousScene = activeScene;
 		}
-
 
 	}
 }
