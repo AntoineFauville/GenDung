@@ -6,6 +6,7 @@ public class DungeonController : MonoBehaviour {
 
     private static DungeonController instance;
     private Dungeon dungeon;
+    private Sprite floor = null;
 
     void CreateInstance()
     {
@@ -19,6 +20,8 @@ public class DungeonController : MonoBehaviour {
 	void Start ()
     {
         CreateInstance();
+
+        LoadSprites();
 
         Dungeon = new Dungeon();
 
@@ -34,18 +37,24 @@ public class DungeonController : MonoBehaviour {
             for (int y = 0; y < Dungeon.Height; y++)
             {
                 Tile tile_data = Dungeon.GetTileAt(x, y);
-
                 GameObject tile_go = new GameObject();
-
                 tile_go.name = "Tile_" + x + "_" + y;
-
                 tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
+                tile_go.transform.SetParent(parent.transform, true);
 
-                tile_go.transform.SetParent(parent.transform, true); 
+                /* Ajoute un SpriteRenderer à chaque Tile et lui assigne le sol par défaut */
+                SpriteRenderer tile_sr = tile_go.AddComponent<SpriteRenderer>();
+                tile_sr.sprite = floor;
+                /* */
             }
         }
         /* */
 	}
+
+    public void LoadSprites()
+    {
+        floor = Resources.Load<Sprite>("Sprites/Floor1");
+    }
 
     public Tile GetTileAtWorldCoord(Vector3 coord)
     {
