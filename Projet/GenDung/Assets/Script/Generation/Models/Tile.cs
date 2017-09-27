@@ -49,5 +49,17 @@ public class Tile {
         }
     }
 
+    public TileType Type
+    {
+        get
+        {
+            return type;
+        }
+        set
+        {
+            type = value;
+        }
+    }
+
     /* */
 }

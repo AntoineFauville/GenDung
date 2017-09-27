@@ -45,6 +45,7 @@ public class DungeonController : MonoBehaviour {
                 GameObject tile_go = new GameObject();
                 tile_go.name = "Tile_" + x + "_" + y;
                 tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
+                tile_go.transform.localScale = new Vector3(2, 2, 2);
                 tile_go.transform.SetParent(parent.transform, true);
 
                 /* Ajoute un SpriteRenderer à chaque Tile et lui assigne le sol par défaut */

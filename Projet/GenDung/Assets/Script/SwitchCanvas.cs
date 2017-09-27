@@ -62,6 +62,7 @@ public class SwitchCanvas : MonoBehaviour {
                 if (SceneManager.GetActiveScene().name == "Dungeon")
                 {
                     this.gameObject.AddComponent<DungeonController>();
+                    this.gameObject.AddComponent<MouseController>();
                 }
                 /* */
             }
