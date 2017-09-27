@@ -28,6 +28,13 @@ public class MouseController : MonoBehaviour {
         currentFramePosition.z = 0;
 
         UpdateCursor();	
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
+
+            Debug.Log("Tile position is (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
+        }
 	}
 
     public void UpdateCursor()
