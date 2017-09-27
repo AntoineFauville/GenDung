@@ -7,7 +7,7 @@ public class DungeonController : MonoBehaviour {
     private static DungeonController instance;
     private Dungeon dungeon;
     private Node[,] graph;
-    private Sprite floor = null;
+    private Sprite[] floor = null;
 
     void CreateInstance()
     {
@@ -50,7 +50,7 @@ public class DungeonController : MonoBehaviour {
 
                 /* Ajoute un SpriteRenderer à chaque Tile et lui assigne le sol par défaut */
                 SpriteRenderer tile_sr = tile_go.AddComponent<SpriteRenderer>();
-                tile_sr.sprite = floor;
+                tile_sr.sprite = floor[0];
                 /* */
             }
         }
@@ -113,7 +113,7 @@ public class DungeonController : MonoBehaviour {
 
     public void LoadSprites()
     {
-        floor = Resources.Load<Sprite>("Sprites/Floor1");
+        floor = Resources.LoadAll<Sprite>("Sprites/tileSet");
     }
 
     public Tile GetTileAtWorldCoord(Vector3 coord)

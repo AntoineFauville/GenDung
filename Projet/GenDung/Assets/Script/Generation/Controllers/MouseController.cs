@@ -17,6 +17,7 @@ public class MouseController : MonoBehaviour {
         highlight = Resources.Load<Sprite>("Sprites/HighLightGreen");
         SpriteRenderer cursor_sr = cursor_go.AddComponent<SpriteRenderer>();
         cursor_sr.sprite = highlight;
+        cursor_sr.sortingLayerName = "TileUI";
 
         cursorPrefab = cursor_go;
     }
