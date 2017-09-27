@@ -6,7 +6,20 @@ public class MouseController : MonoBehaviour {
 
     public GameObject cursorPrefab;
     Vector3 currentFramePosition;
+    Sprite highlight = null;
 
+    void Start()
+    {
+        GameObject cursor_go = new GameObject();
+        cursor_go.transform.position = Vector3.zero;
+        cursor_go.name = "Highlight";
+        cursor_go.transform.localScale = new Vector3(2, 2, 2);
+        highlight = Resources.Load<Sprite>("Sprites/HighLightGreen");
+        SpriteRenderer cursor_sr = cursor_go.AddComponent<SpriteRenderer>();
+        cursor_sr.sprite = highlight;
+
+        cursorPrefab = cursor_go;
+    }
 	
 	void Update ()
     {
