@@ -8,7 +8,7 @@ public class EditorDungeonManager : EditorWindow {
 	public DungeonList dungeonList;
 	private int viewIndex = 1;
 
-	[MenuItem("Window/Editor Dungeon List")]
+	[MenuItem("Window/Dungeon Manager Editor")]
 	public static void Init () {
 		GetWindow (typeof(EditorDungeonManager));
 	}
@@ -23,7 +23,7 @@ public class EditorDungeonManager : EditorWindow {
 
 	private void OnGUI () {
 		GUILayout.BeginHorizontal ();
-		GUILayout.Label ("Dungeon List Editor", EditorStyles.boldLabel);
+		GUILayout.Label ("Dungeon Manager Editor", EditorStyles.boldLabel);
 		GUILayout.EndHorizontal ();
 
 		GUILayout.Space(20);
@@ -45,7 +45,7 @@ public class EditorDungeonManager : EditorWindow {
 		if (dungeonList == null) {
 			GUILayout.BeginHorizontal ();
 			GUILayout.Space(10);
-			if (GUILayout.Button(" Open DungeonList List ", GUILayout.ExpandWidth(false))) 
+			if (GUILayout.Button(" Open Dungeon List ", GUILayout.ExpandWidth(false))) 
 			{
 				LoadList();
 			}
@@ -84,7 +84,7 @@ public class EditorDungeonManager : EditorWindow {
 				Debug.Log ("wtf");
 			if ( dungeonList.myDungeons.Count > 0) {
 				GUILayout.BeginHorizontal ();
-				viewIndex = Mathf.Clamp (EditorGUILayout.IntField ("Current Item", viewIndex, GUILayout.ExpandWidth (false)), 1, dungeonList.myDungeons.Count);
+				viewIndex = Mathf.Clamp (EditorGUILayout.IntField ("Current Dungeon", viewIndex, GUILayout.ExpandWidth (false)), 1, dungeonList.myDungeons.Count);
 
 				EditorGUILayout.LabelField ("of   " + dungeonList.myDungeons.Count.ToString () + "  Dungeons", "", GUILayout.ExpandWidth (false));
 				GUILayout.EndHorizontal ();
@@ -95,6 +95,10 @@ public class EditorDungeonManager : EditorWindow {
 
 			} else {
 				GUILayout.Label ("This World is Empty.");
+			}
+			if (GUI.changed) 
+			{
+				EditorUtility.SetDirty(dungeonList);
 			}
 		}
 	}
