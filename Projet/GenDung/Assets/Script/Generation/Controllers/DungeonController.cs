@@ -111,6 +111,16 @@ public class DungeonController : MonoBehaviour {
         Debug.Log("Node and neighbours has been defined");
     }
 
+    public float CostToEnterTile(int targetX, int targetY)
+    {
+        float cost = 0;
+
+        Tile target = GetTileAtWorldCoord(new Vector3(targetX, targetY, 0));
+        cost = target.movementCost;
+
+        return cost;
+    }
+
     public void LoadSprites()
     {
         floor = Resources.LoadAll<Sprite>("Sprites/tileSet");
@@ -122,6 +132,11 @@ public class DungeonController : MonoBehaviour {
         int y = (int)Mathf.Floor(coord.y);
 
         return dungeon.GetTileAt(x, y);
+    }
+
+    public Vector3 TileCoordToWorldCoord(int x, int y)
+    {
+        return new Vector3(x, y, 0);
     }
 
     /* Accessors Methods */

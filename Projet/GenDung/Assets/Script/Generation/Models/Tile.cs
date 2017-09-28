@@ -12,6 +12,7 @@ public class Tile {
     TileType type = TileType.Floor;
     int x;
     int y;
+    public float movementCost = 1;
     Dungeon dungeon;
 
     public Tile(Dungeon _dungeon, int _x, int _y)
