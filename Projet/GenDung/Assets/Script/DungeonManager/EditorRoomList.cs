@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class EditorRoomList : EditorWindow {
 
 	public RoomList roomList;
+	public RoomRepository roomRepository;
 	private int viewIndex = 1;
-
-	private bool hasEnemies;
 
 	[MenuItem("Window/Dungeon Editor")]
 	public static void Init () {
@@ -20,6 +20,10 @@ public class EditorRoomList : EditorWindow {
 		if (EditorPrefs.HasKey ("RoomListPath")) {
 			string objectPath = EditorPrefs.GetString ("RoomListPath");
 			roomList = AssetDatabase.LoadAssetAtPath (objectPath, typeof(RoomList)) as RoomList;
+		}
+		if (EditorPrefs.HasKey ("RoomRepositoryPath")) {
+			string objectPath2 = EditorPrefs.GetString ("RoomRepositoryPath");
+			roomRepository = AssetDatabase.LoadAssetAtPath (objectPath2, typeof(RoomRepository)) as RoomRepository;
 		}
 	}
 
@@ -39,8 +43,16 @@ public class EditorRoomList : EditorWindow {
 			if (GUILayout.Button (" Open Dungeon ", GUILayout.ExpandWidth (false))) {
 				LoadRoomList ();
 			}
-		}
 
+
+		}
+		GUILayout.EndHorizontal ();
+
+		GUILayout.BeginHorizontal ();
+		GUILayout.Label ("If you want to save or load room from repository : ");
+		if (GUILayout.Button (" Open Dungeon Repository ", GUILayout.ExpandWidth (false))) {
+			LoadRepository ();
+		}
 		GUILayout.EndHorizontal ();
 
 		if (roomList == null) {
@@ -91,7 +103,12 @@ public class EditorRoomList : EditorWindow {
 
 				//-----------------Name, Type, ID -------------//
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomName = EditorGUILayout.TextField ("Room Name", roomList.RoomOfTheDungeon [viewIndex - 1].roomName as string);
+				GUILayout.BeginHorizontal ();
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomID = EditorGUILayout.TextField ("Room ID", roomList.RoomOfTheDungeon [viewIndex - 1].roomID as string);
+				if (GUILayout.Button ("Add a Room", GUILayout.ExpandWidth (false))) {
+					SaveARoom ();
+				}
+				GUILayout.EndHorizontal ();
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomType = (Room.RoomType)EditorGUILayout.EnumPopup ("Room Type", roomList.RoomOfTheDungeon [viewIndex - 1].roomType);
 
 				GUILayout.Space (20);
@@ -124,6 +141,8 @@ public class EditorRoomList : EditorWindow {
 				for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].interactables; i++) {
 					roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList[i] = EditorGUILayout.ObjectField ("Interactable Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList[i] ,typeof(GameObject),true) as GameObject;
 				}
+
+				//roomList.RoomOfTheDungeon[viewIndex - 1].backgroundOfTheRoom[0].sprite = (Sprite)EditorGUILayout.ObjectField("Background", roomList.RoomOfTheDungeon[viewIndex - 1].backgroundOfTheRoom[0].sprite, typeof(Sprite), false);
 
 
 
@@ -232,5 +251,41 @@ public class EditorRoomList : EditorWindow {
 	void DeleteRoom (int index)
 	{
 		roomList.RoomOfTheDungeon.RemoveAt (index);
+	}
+
+	void LoadRepository () {
+		string absPath = EditorUtility.OpenFilePanel ("Select Dungeon Repository", "Assets/Script/DungeonManager", "");
+		if (absPath.StartsWith(Application.dataPath)) 
+		{
+			string relPath = absPath.Substring(Application.dataPath.Length - "Assets".Length);
+			roomRepository = AssetDatabase.LoadAssetAtPath (relPath, typeof(RoomRepository)) as RoomRepository;
+			if (roomRepository.RoomRepositoryList == null)
+				roomRepository.RoomRepositoryList = new List<Room>();
+			if (roomRepository) {
+				EditorPrefs.SetString("ObjectPath2", relPath);
+			}
+		}
+	}
+
+	void SaveARoom () {
+		Room newSaveRoom = new Room ();
+		/*if (roomRepository.RoomRepositoryList.Contains (newSaveRoom.roomID.Equals (roomList.RoomOfTheDungeon [viewIndex - 1].roomID))) {
+			Debug.Log ("Room Allready Exist");	
+		} else {*/
+			roomRepository.RoomRepositoryList.Add (newSaveRoom);
+			newSaveRoom.roomName = roomList.RoomOfTheDungeon [viewIndex - 1].roomName;
+			newSaveRoom.roomID = roomList.RoomOfTheDungeon [viewIndex - 1].roomID;
+			newSaveRoom.roomType = roomList.RoomOfTheDungeon [viewIndex - 1].roomType;
+			newSaveRoom.backgroundOfTheRoom = roomList.RoomOfTheDungeon [viewIndex - 1].backgroundOfTheRoom;
+			newSaveRoom.chests = roomList.RoomOfTheDungeon [viewIndex - 1].chests;
+			newSaveRoom.door = roomList.RoomOfTheDungeon [viewIndex - 1].door;
+			newSaveRoom.bossID = roomList.RoomOfTheDungeon [viewIndex - 1].bossID;
+			newSaveRoom.interactables = roomList.RoomOfTheDungeon [viewIndex - 1].interactables;
+			newSaveRoom.enemies = roomList.RoomOfTheDungeon [viewIndex - 1].enemies;
+		//}
+	}
+
+	void LoadRoom () {
+		//roomRepository.RoomRepositoryList[0].
 	}
 }

@@ -28,5 +28,5 @@ public class Room {
 	public int interactables = 0;
 	public GameObject[] interactablesList;
 
-	public Sprite backgroundOfTheRoom;
+	public Sprite[] backgroundOfTheRoom;
 }
