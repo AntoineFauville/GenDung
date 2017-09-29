@@ -28,7 +28,9 @@ public class DungeonLoader : MonoBehaviour {
 	didICheckDoors,
 	loadOnce,
 	loadOnce2,
-	loadOnce3;
+	loadOnce3,
+	loadOnce4,
+	loadOnce5;
 
 	void Update () {
 		//check activate scene
@@ -37,13 +39,13 @@ public class DungeonLoader : MonoBehaviour {
 
 		//-----------Map gestion scene-------------//
 		if (activeScene == map){ 
+			loadOnce5 = false;
 			//get the buttons witch are dungeons entry
-			if (!didICheckedButtons) {
-				dungeonOnTheMap = GameObject.FindGameObjectsWithTag ("DungeonButtonMap");
-				didICheckedButtons = true;
-			}
+			dungeonOnTheMap = GameObject.FindGameObjectsWithTag ("DungeonButtonMap");
+
 			//asign to the buttons the loading scene onClick
 			dungeonOnTheMap [0].GetComponent<Button> ().onClick.AddListener(LoadSceneA);
+			dungeonOnTheMap [1].GetComponent<Button> ().onClick.AddListener(LoadSceneA);
 		}
 
 
@@ -75,9 +77,28 @@ public class DungeonLoader : MonoBehaviour {
 			loadOnce = true;
 		}
 	}
+	void LoadSceneB () {
+		if (!loadOnce4) {
+			Debug.Log ("you have clicked once");
+			SceneManager.LoadScene ("Dungeon");
+			loadOnce4 = true;
+		}
+	}
 	void LoadSceneMap () {
-		didICheckedButtons = false;
-		SceneManager.LoadScene ("Map");
+		if (!loadOnce5) {
+			
+			loadOnce5 = true;
+
+			SceneManager.LoadScene ("Map");
+
+			didICheckedButtons = false;
+			loadOnce = false;
+			loadOnce2 = false;
+			loadOnce3 = false;
+			loadOnce4 = false;
+			didICheckDoors = false;
+			didIInstantiateRoom = false;
+		}
 	}
 
 	//load first time room function
