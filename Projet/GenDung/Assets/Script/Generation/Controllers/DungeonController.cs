@@ -8,6 +8,7 @@ public class DungeonController : MonoBehaviour {
     private Dungeon dungeon;
     private Node[,] graph;
     private Sprite[] floor = null;
+    private UnitController unit;
 
     void CreateInstance()
     {
@@ -24,6 +25,11 @@ public class DungeonController : MonoBehaviour {
         LoadSprites();
         GenerateMapData();
         GeneratePathfindingGraph();
+
+        GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
+        unit_go.transform.position = Vector3.zero;
+
+        unit = unit_go.GetComponent<UnitController>();
 	}
 
     public void GenerateMapData()
@@ -119,6 +125,86 @@ public class DungeonController : MonoBehaviour {
         cost = target.movementCost;
 
         return cost;
+    }
+
+    public void GeneratePathTo(int x, int y)
+    {
+        unit.CurrentPath = null;
+
+        Dictionary<Node, float> dist = new Dictionary<Node, float>();
+        Dictionary<Node, Node> prev = new Dictionary<Node, Node>();
+
+        List<Node> unvisited = new List<Node>();
+
+        Node source = graph[unit.TileX, unit.TileY];
+
+        Node target = graph[x, y];
+
+        dist[source] = 0;
+        prev[source] = null;
+
+        foreach(Node v in graph)
+        {
+            if (v != source)
+            {
+                dist[v] = Mathf.Infinity;
+                prev[v] = null;
+            }
+
+            unvisited.Add(v);
+        }
+
+        while(unvisited.Count > 0)
+        {
+            Node u = null;
+
+            foreach(Node possibleU in unvisited)
+            {
+                if (u == null || dist[possibleU] < dist[u])
+                {
+                    u = possibleU;
+                }
+            }
+
+            if (u == target)
+            {
+                break;
+            }
+            unvisited.Remove(u);
+
+            foreach (Node v in u.neighbours)
+            {
+                float alt = dist[u] + CostToEnterTile(v.x, v.y);
+                if (alt < dist[v])
+                {
+                    dist[v] = alt;
+                    prev[v] = u;
+                }
+            }
+        }
+
+        if (prev[target] == null)
+        {
+            return;
+        }
+
+        List<Node> currentPath = new List<Node>();
+
+        Node curr = target;
+
+        while(curr != null)
+        {
+            currentPath.Add(curr);
+            curr = prev[curr];
+        }
+
+        currentPath.Reverse();
+
+        unit.CurrentPath = currentPath;
+
+        Debug.Log("Path has been calculated");
+
+        unit.MoveNextTile();
     }
 
     public void LoadSprites()

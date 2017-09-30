@@ -64,7 +64,7 @@ public class SwitchCanvas : MonoBehaviour {
                     this.gameObject.AddComponent<DungeonController>();
                     this.gameObject.AddComponent<MouseController>();
                 }
-                /* */
+                */
             }
 
 			if(activeScene == sceneNames [0]){

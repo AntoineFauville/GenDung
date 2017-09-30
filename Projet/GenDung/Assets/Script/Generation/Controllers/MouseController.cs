@@ -34,6 +34,8 @@ public class MouseController : MonoBehaviour {
             Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
 
             Debug.Log("Tile position is (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
+
+            DungeonController.Instance.GeneratePathTo(tileUnderMouse.X, tileUnderMouse.Y);
         }
 	}
 
