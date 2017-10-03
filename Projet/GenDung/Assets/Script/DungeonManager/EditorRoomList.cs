@@ -117,15 +117,15 @@ public class EditorRoomList : EditorWindow {
 
 				//----------------- General Attribute of a room -------------//
 				//door module//
-				roomList.RoomOfTheDungeon [viewIndex - 1].door = EditorGUILayout.IntField ("Amount of door", roomList.RoomOfTheDungeon [viewIndex - 1].door);
+				/*roomList.RoomOfTheDungeon [viewIndex - 1].doorList = EditorGUILayout.IntField ("Amount of door", roomList.RoomOfTheDungeon [viewIndex - 1].door);
 
 				if (roomList.RoomOfTheDungeon [viewIndex - 1].doorList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].door) {
-					roomList.RoomOfTheDungeon [viewIndex - 1].doorList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].door];
+					roomList.RoomOfTheDungeon [viewIndex - 1].doorList = new Door[roomList.RoomOfTheDungeon [viewIndex - 1].door];
 				}
 
 				for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].door; i++) {
-					roomList.RoomOfTheDungeon [viewIndex - 1].doorList[i] = EditorGUILayout.ObjectField ("Door Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].doorList[i] ,typeof(GameObject),true) as GameObject;
-				}
+					roomList.RoomOfTheDungeon [viewIndex - 1].doorList[i] = EditorGUILayout.ObjectField ("Door Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].doorList[i] ,typeof(Door),true) as Door;
+				}*/
 
 				//roomList.RoomOfTheDungeon [viewIndex - 1].doorList[0] = EditorGUILayout.ObjectField ("Door",roomList.RoomOfTheDungeon [viewIndex - 1].doorList[0] ,typeof(GameObject),true) as GameObject;
 
