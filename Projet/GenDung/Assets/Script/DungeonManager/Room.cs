@@ -17,7 +17,7 @@ public class Room {
 	public GameObject[] enemiesList;
 
 	public int door = 0;
-	public GameObject[] doorList;
+	public Door[] doorList;
 
 	public int chests = 0;
 	public GameObject[] chestsList;
@@ -29,4 +29,5 @@ public class Room {
 	public GameObject[] interactablesList;
 
 	public Sprite[] backgroundOfTheRoom;
+	public Sprite back;
 }
