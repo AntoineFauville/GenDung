@@ -10,6 +10,7 @@ public class UnitController : MonoBehaviour {
     private List<Node> currentPath = null;
 
     int moveSpeed = 2;
+    float remainingMovement = 2;
 
 	void Update ()
     {
@@ -27,32 +28,52 @@ public class UnitController : MonoBehaviour {
                 Debug.Log("Line has been Drawn");
                 currNode++;
             }
-        }	
+        }
+        
+        if (Vector3.Distance(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX,tileY)) < 0.1f)
+        {
+            AdvancePathing();
+            transform.position = Vector3.Lerp(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY), 5f * Time.deltaTime);
+        }
 	}
 
-    public void MoveNextTile()
+    public void AdvancePathing()
     {
-        float remainingMovement = moveSpeed;
-
-        while(remainingMovement > 0)
+       if (currentPath == null)
         {
-            if (currentPath == null)
-                return;
-
-            remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[1].x, currentPath[1].y);
-
-            tileX = currentPath[1].x;
-            tileY = currentPath[1].y;
-
-            transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
-
-            currentPath.RemoveAt(0);
-
-            if (currentPath.Count == 1)
-            {
-                currentPath = null;
-            }
+            return;
         }
+
+       if (remainingMovement <= 0)
+        {
+            return;
+        }
+
+        transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
+
+        remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
+
+        tileX = currentPath[1].x;
+        tileY = currentPath[1].y;
+
+        transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
+
+        currentPath.RemoveAt(0);
+
+        if (currentPath.Count == 1)
+        {
+            currentPath = null;
+        }
+    }
+
+    public void NextTurn()
+    {
+        while(currentPath!= null && remainingMovement > 0)
+        {
+            AdvancePathing();
+        }
+
+        remainingMovement = moveSpeed;
     }
 
     /* Accessors Methods*/

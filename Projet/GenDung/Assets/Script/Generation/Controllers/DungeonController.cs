@@ -32,6 +32,14 @@ public class DungeonController : MonoBehaviour {
         unit = unit_go.GetComponent<UnitController>();
 	}
 
+    void Update ()
+    {
+        if (Input.GetButtonUp("Jump"))
+        {
+            unit.NextTurn();
+        }
+    }
+
     public void GenerateMapData()
     {
         Dungeon = new Dungeon();
@@ -117,12 +125,17 @@ public class DungeonController : MonoBehaviour {
         Debug.Log("Node and neighbours has been defined");
     }
 
-    public float CostToEnterTile(int targetX, int targetY)
+    public float CostToEnterTile(int sourceX, int sourceY, int targetX, int targetY)
     {
         float cost = 0;
 
         Tile target = GetTileAtWorldCoord(new Vector3(targetX, targetY, 0));
         cost = target.movementCost;
+
+        if (sourceX!=targetX && sourceY!=targetY)
+        {
+            cost += 0.001f;
+        }
 
         return cost;
     }
@@ -174,7 +187,7 @@ public class DungeonController : MonoBehaviour {
 
             foreach (Node v in u.neighbours)
             {
-                float alt = dist[u] + CostToEnterTile(v.x, v.y);
+                float alt = dist[u] + CostToEnterTile(u.x, u.y, v.x, v.y);
                 if (alt < dist[v])
                 {
                     dist[v] = alt;
@@ -203,8 +216,6 @@ public class DungeonController : MonoBehaviour {
         unit.CurrentPath = currentPath;
 
         Debug.Log("Path has been calculated");
-
-        unit.MoveNextTile();
     }
 
     public void LoadSprites()
