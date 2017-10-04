@@ -9,7 +9,11 @@ public class DungeonLoader : MonoBehaviour {
 
 	string activeScene; // just a checker to see what room is the actual room that we are using.
 
-	public GameObject roomPrefab,doorPrefab,Nextdoor,Previousdoor; 
+	public GameObject 
+	roomPrefab,
+	doorPrefab,
+	Nextdoor,
+	Previousdoor; 
 
 	GameObject BG;
 
@@ -19,86 +23,73 @@ public class DungeonLoader : MonoBehaviour {
 
 	public string[] sceneDungeonDependingOnList;
 
-	int index;
-
-	public string map,dungeon;
+	int 
+	index,
+	dungeonIndex;
 
 	public bool
 	didIInstantiateRoom,
 	didICheckedButtons,
 	didICheckDoors,
-	loadOnce,
+	loadOnceScene,
 	loadOnce3,
 	loadOnce2,
-	loadOnce5;
+	loadOnceMapScene;
 
 	void FixedUpdate () {
 		//check activate scene
 		activeScene = SceneManager.GetActiveScene ().name;
 
-
 		//-----------Map gestion scene-------------//
-		if (activeScene == map){ 
-			loadOnce5 = false;
+		if (activeScene == "Map"){ 
+			loadOnceMapScene = false;
 			//get the buttons witch are dungeons entry
 			dungeonOnTheMap = GameObject.FindGameObjectsWithTag ("DungeonButtonMap");
 
 			//asign to the buttons the loading scene onClick
 			if (dungeonOnTheMap != null) {
 				for (int i = 0; i < dungeonOnTheMap.Length; i++) {
-					dungeonOnTheMap [i].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeonDependingOnTheRoom);
+					dungeonOnTheMap [i].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
 				}
-				//dungeonOnTheMap [1].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeonDependingOnTheRoom);
 			} else {
 				Debug.Log ("I'm Null");
 			}
 		}
 
 
-		//-----------Map gestion scene-------------//
-		if (activeScene == dungeon){
+		//-----------Dungeon gestion scene-------------//
+		if (activeScene == "Dungeon"){
 			//check if we did instanciate once the door
 			BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
+			GameObject.FindGameObjectWithTag ("informationPanel").GetComponent<Text> ().text = roomListDungeon [0].RoomOfTheDungeon [index].doorList [0].doorName;
 			if(!didIInstantiateRoom) {
-				//asign background
 				LoadRoom ();
-
 			}
-			//check if we assigned the door
-		/*	if (!didICheckDoors) {
-				Nextdoor = GameObject.FindGameObjectWithTag ("NextRoomDoor");
-				Previousdoor = GameObject.FindGameObjectWithTag ("PreviousRoomDoor");
-				didICheckDoors = true;
-			}
-			//asign the buttons to load next room
-		//	Nextdoor.GetComponent<Button> ().onClick.AddListener(GoDeeperInTheDungeon);
-*/
 		}		
 	}
 
 	//load the dungeon scene
-	void LoadSceneDungeonDependingOnTheRoom () {
+	void LoadSceneDungeon () {
 		for (int i = 0; i < 1; i++) {
-			if (!loadOnce) {
-				Debug.Log ("you have clicked once");
+			if (!loadOnceScene) {
+				Debug.Log ("you have clicked once on LoadSceneDungeon Button");
 				SceneManager.LoadScene (sceneDungeonDependingOnList[i]);
-				loadOnce = true;
+				loadOnceScene = true;
 			}
 		}
 	}
 
 	void LoadSceneMap () {
-		if (!loadOnce5) {
+		if (!loadOnceMapScene) {
 			
-			loadOnce5 = true;
+			loadOnceMapScene = true;
 
 			SceneManager.LoadScene ("Map");
 
 			didICheckedButtons = false;
-			loadOnce = false;
+			loadOnceScene = false;
 			loadOnce3 = false;
 			loadOnce2 = false;
-			//didICheckDoors = false;
 			didIInstantiateRoom = false;
 		}
 	}
@@ -107,10 +98,11 @@ public class DungeonLoader : MonoBehaviour {
 	void LoadRoom () {
 		if (!loadOnce2) {
 			loadOnce2 = true;
-			Debug.Log ("you have loadRoomOnce");
+			Debug.Log ("you have load the Room Once");
 			Instantiate (roomPrefab);
 			//index to say witch room are we using now
 			index = 0;
+
 			BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
 			/*foreach (Sprite backgroundOfTheRoom in roomListDungeon[0].RoomOfTheDungeon[index].backgroundOfTheRoom) {
 				BG.transform.GetComponent<Image> ().sprite = roomListDungeon [0].RoomOfTheDungeon [index].backgroundOfTheRoom [0];
@@ -120,7 +112,6 @@ public class DungeonLoader : MonoBehaviour {
 			//instantiate the door
 			loadDoor();
 
-			didIInstantiateRoom = true;
 		}
 	}
 		
