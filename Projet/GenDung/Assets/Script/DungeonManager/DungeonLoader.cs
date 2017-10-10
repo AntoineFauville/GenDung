@@ -7,7 +7,7 @@ using UnityEditor;
 
 public class DungeonLoader : MonoBehaviour {
 
-	string activeScene; // just a checker to see what room is the actual room that we are using.
+	string activeScene, previousScene; // just a checker to see what room is the actual room that we are using.
 
 	public GameObject 
 	roomPrefab,
@@ -52,7 +52,7 @@ public class DungeonLoader : MonoBehaviour {
 					dungeonOnTheMap [i].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
 				}
 			} else {
-				Debug.Log ("I'm Null");
+				Debug.Log ("dungeonOnTheMap is Null");
 			}
 		}
 
@@ -61,8 +61,15 @@ public class DungeonLoader : MonoBehaviour {
 		if (activeScene == "Dungeon"){
 			//check if we did instanciate once the door
 			BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
-			GameObject.FindGameObjectWithTag ("informationPanel").GetComponent<Text> ().text = roomListDungeon [0].RoomOfTheDungeon [index].doorList [0].doorName;
-			if(!didIInstantiateRoom) {
+
+			GameObject InformationPanel;
+			InformationPanel = GameObject.FindGameObjectWithTag ("informationPanel");
+
+			if (InformationPanel != null) {
+				
+				InformationPanel.GetComponent<Text> ().text = roomListDungeon [0].RoomOfTheDungeon [index].doorList [0].doorName;
+			}
+			if(previousScene != activeScene) {
 				LoadRoom ();
 			}
 		}		
@@ -96,6 +103,7 @@ public class DungeonLoader : MonoBehaviour {
 
 	//load first time room function
 	void LoadRoom () {
+		previousScene = activeScene;
 		if (!loadOnce2) {
 			loadOnce2 = true;
 			Debug.Log ("you have load the Room Once");
