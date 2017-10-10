@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EditorRoomList : EditorWindow {
 
 	public RoomList roomList;
-	public RoomRepository roomRepository;
+//	public RoomRepository roomRepository;
 	private int viewIndex = 1;
 
 	[MenuItem("Window/Dungeon Editor")]
@@ -21,10 +21,10 @@ public class EditorRoomList : EditorWindow {
 			string objectPath = EditorPrefs.GetString ("RoomListPath");
 			roomList = AssetDatabase.LoadAssetAtPath (objectPath, typeof(RoomList)) as RoomList;
 		}
-		if (EditorPrefs.HasKey ("RoomRepositoryPath")) {
-			string objectPath2 = EditorPrefs.GetString ("RoomRepositoryPath");
-			roomRepository = AssetDatabase.LoadAssetAtPath (objectPath2, typeof(RoomRepository)) as RoomRepository;
-		}
+		//if (EditorPrefs.HasKey ("RoomRepositoryPath")) {
+		//	string objectPath2 = EditorPrefs.GetString ("RoomRepositoryPath");
+		//	roomRepository = AssetDatabase.LoadAssetAtPath (objectPath2, typeof(RoomRepository)) as RoomRepository;
+		//}
 	}
 
 	private void OnGUI () {
@@ -49,10 +49,10 @@ public class EditorRoomList : EditorWindow {
 		GUILayout.EndHorizontal ();
 
 		GUILayout.BeginHorizontal ();
-		GUILayout.Label ("If you want to save or load room from repository : ");
-		if (GUILayout.Button (" Open Dungeon Repository ", GUILayout.ExpandWidth (false))) {
-			LoadRepository ();
-		}
+		//GUILayout.Label ("If you want to save or load room from repository : ");
+		//if (GUILayout.Button (" Open Dungeon Repository ", GUILayout.ExpandWidth (false))) {
+		//	LoadRepository ();
+		//}
 		GUILayout.EndHorizontal ();
 
 		if (roomList == null) {
@@ -105,9 +105,9 @@ public class EditorRoomList : EditorWindow {
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomName = EditorGUILayout.TextField ("Room Name", roomList.RoomOfTheDungeon [viewIndex - 1].roomName as string);
 				GUILayout.BeginHorizontal ();
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomID = EditorGUILayout.TextField ("Room ID", roomList.RoomOfTheDungeon [viewIndex - 1].roomID as string);
-				if (GUILayout.Button ("Add a Room", GUILayout.ExpandWidth (false))) {
+				/*if (GUILayout.Button ("Add a Room", GUILayout.ExpandWidth (false))) {
 					SaveARoom ();
-				}
+				}*/
 				GUILayout.EndHorizontal ();
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomType = (Room.RoomType)EditorGUILayout.EnumPopup ("Room Type", roomList.RoomOfTheDungeon [viewIndex - 1].roomType);
 
@@ -253,7 +253,7 @@ public class EditorRoomList : EditorWindow {
 		roomList.RoomOfTheDungeon.RemoveAt (index);
 	}
 
-	void LoadRepository () {
+	/*void LoadRepository () {
 		string absPath = EditorUtility.OpenFilePanel ("Select Dungeon Repository", "Assets/Script/DungeonManager", "");
 		if (absPath.StartsWith(Application.dataPath)) 
 		{
@@ -265,13 +265,13 @@ public class EditorRoomList : EditorWindow {
 				EditorPrefs.SetString("ObjectPath2", relPath);
 			}
 		}
-	}
+	}*/
 
-	void SaveARoom () {
+	/*void SaveARoom () {
 		Room newSaveRoom = new Room ();
 		/*if (roomRepository.RoomRepositoryList.Contains (newSaveRoom.roomID.Equals (roomList.RoomOfTheDungeon [viewIndex - 1].roomID))) {
 			Debug.Log ("Room Allready Exist");	
-		} else {*/
+		} else {
 			roomRepository.RoomRepositoryList.Add (newSaveRoom);
 			newSaveRoom.roomName = roomList.RoomOfTheDungeon [viewIndex - 1].roomName;
 			newSaveRoom.roomID = roomList.RoomOfTheDungeon [viewIndex - 1].roomID;
@@ -283,9 +283,9 @@ public class EditorRoomList : EditorWindow {
 			newSaveRoom.interactables = roomList.RoomOfTheDungeon [viewIndex - 1].interactables;
 			newSaveRoom.enemies = roomList.RoomOfTheDungeon [viewIndex - 1].enemies;
 		//}
-	}
+	}*/
 
-	void LoadRoom () {
+	/*void LoadRoom () {
 		//roomRepository.RoomRepositoryList[0].
-	}
+	}*/
 }
