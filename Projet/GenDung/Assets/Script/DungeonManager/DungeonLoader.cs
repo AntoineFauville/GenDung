@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
+using System.Linq;
 
 public class DungeonLoader : MonoBehaviour {
 
@@ -62,34 +63,33 @@ public class DungeonLoader : MonoBehaviour {
 		}		
 
 		//-----------Map gestion scene-------------//
-		if (activeScene == "Map"){ 
+		if (activeScene == "Map") { 
 			loadOnceMapScene = false;
-
 			previousScene = null;
 
 			//get the buttons witch are dungeons entry
 			dungeonOnTheMap = GameObject.FindGameObjectsWithTag ("DungeonButtonMap");
 
 			//asign to the buttons the loading scene onClick
-			if (dungeonOnTheMap != null) {
-				for (int i = 0; i < dungeonOnTheMap.Length; i++) {
-					dungeonOnTheMap [i].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
+			if (dungeonOnTheMap != null && !loadOnceScene) {
+				for (int i = 1; i < roomListDungeon.Length; i++) {
+					dungeonIndex = i-1;
+					dungeonOnTheMap [dungeonIndex].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
+					Debug.Log (dungeonIndex);
 				}
 			} else {
 				Debug.Log ("dungeonOnTheMap is Null");
 			}
 		}
-
-
-
 	}
+
 
 	//load the dungeon scene
 	void LoadSceneDungeon () {
 		for (int i = 0; i < 1; i++) {
 			if (!loadOnceScene) {
 				Debug.Log ("you have clicked once on LoadSceneDungeon Button");
-				SceneManager.LoadScene (sceneDungeonDependingOnList[i]);
+				SceneManager.LoadScene (sceneDungeonDependingOnList[dungeonIndex]);
 				previousScene = "DebugMap";
 				loadOnceScene = true;
 			}
@@ -124,7 +124,7 @@ public class DungeonLoader : MonoBehaviour {
 			index = 0;
 
 			BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
-			BG.transform.GetComponent<Image> ().sprite = roomListDungeon [0].RoomOfTheDungeon [index].back;
+			BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].back;
 
 			//instantiate the door
 			loadDoor();
@@ -137,7 +137,7 @@ public class DungeonLoader : MonoBehaviour {
 			loadOnce3 = true;
 
 			//look throught all the stats and asign them to object in the scene depending on the tags
-			BG.transform.GetComponent<Image> ().sprite = roomListDungeon [0].RoomOfTheDungeon [index].back;
+			BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].back;
 
 			loadDoor();
 
@@ -169,7 +169,12 @@ public class DungeonLoader : MonoBehaviour {
 		GameObject doorinstantiated = Instantiate (doorPrefab, new Vector3(0,0,0), Quaternion.identity) as GameObject;
 
 		doorinstantiated.transform.SetParent (GameObject.FindGameObjectWithTag("Canvas").transform, false);
-		doorinstantiated.transform.localPosition = new Vector3 (roomListDungeon [0].RoomOfTheDungeon [index].doorList [0].coordinate.x, roomListDungeon [0].RoomOfTheDungeon [index].doorList [0].coordinate.y,0);
+
+		doorinstantiated.transform.localPosition 
+			= new Vector3 (
+				roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.x, 
+				roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.y,
+				0);
 
 		index = roomListDungeon [0].RoomOfTheDungeon [index].doorList [0].connectingTo;
 		doorinstantiated.GetComponent<Button> ().onClick.AddListener(GoDeeperInTheDungeon);
