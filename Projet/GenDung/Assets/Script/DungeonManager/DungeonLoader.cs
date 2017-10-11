@@ -13,7 +13,9 @@ public class DungeonLoader : MonoBehaviour {
 	public GameObject 
 	roomPrefab,
 	doorPrefab,
-	chestRoomUIPrefab;
+	chestRoomUIPrefab,
+	fightRoomUIPrefab,
+	bossRoomUIPrefab;
 
 	GameObject 
 	BG, 
@@ -30,7 +32,7 @@ public class DungeonLoader : MonoBehaviour {
 
 	int 
 	index,
-	dungeonIndex;
+	dungeonIndex = 0;
 
 	public bool
 	loadOnceScene,
@@ -40,7 +42,7 @@ public class DungeonLoader : MonoBehaviour {
 	loadOnceDoor,
 	areWeWaitingToComeBack,
 	roomIsLocked,
-	ischestUIinstantiated;
+	isUIinstantiated;
 
 	void FixedUpdate () {
 		//check activate scene
@@ -55,8 +57,9 @@ public class DungeonLoader : MonoBehaviour {
 			InformationPanel = GameObject.FindGameObjectWithTag ("informationPanel");
 
 			if (InformationPanel != null && !roomIsLocked) {
-				if (index < roomListDungeon [0].RoomOfTheDungeon.Count)
-				InformationPanel.GetComponent<Text> ().text = roomListDungeon [0].RoomOfTheDungeon [index].doorList [0].doorName;
+				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].roomID < roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count()){
+					InformationPanel.GetComponent<Text> ().text = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index-1].doorList [0].doorName;
+				}
 			}
 			if(previousScene != activeScene && !areWeWaitingToComeBack) {
 				LoadRoom ();
@@ -88,7 +91,7 @@ public class DungeonLoader : MonoBehaviour {
 	void LoadSceneDungeon () {
 		for (int i = 0; i < 1; i++) {
 			if (!loadOnceScene) {
-				Debug.Log ("you have clicked once on LoadSceneDungeon Button");
+				//Debug.Log ("you have clicked once on LoadSceneDungeon Button");
 				SceneManager.LoadScene (sceneDungeonDependingOnList[0]);
 				previousScene = "DebugMap";
 				loadOnceScene = true;
@@ -135,15 +138,16 @@ public class DungeonLoader : MonoBehaviour {
 		
 	void GoDeeperInTheDungeon () {
 		if (!loadOnce3) {
-			print ("GoDeeper index : " + index);
+			//print ("GoDeeper index : " + index);
 			if (!roomIsLocked) {
 				loadOnce3 = true;
 
 				//reset for ui
-				ischestUIinstantiated = false;
+				isUIinstantiated = false;
 
 				//look throught all the stats and asign them to object in the scene depending on the tags
-				if (index < roomListDungeon [0].RoomOfTheDungeon.Count)
+				//Debug.Log ("Im Index Bug B");
+				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].roomID <= roomListDungeon [0].RoomOfTheDungeon.Count)
 					BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].back;
 			
 				loadDoor ();
@@ -165,16 +169,39 @@ public class DungeonLoader : MonoBehaviour {
 
 	void GetRoomType()
 	{
-		if (index < roomListDungeon [0].RoomOfTheDungeon.Count)
+		//Debug.Log ("Im Index Bug C");
+		if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index-1].roomID <= roomListDungeon [0].RoomOfTheDungeon.Count)
 			roomType = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index-1].roomType.ToString(); 
 
 		if (roomType == "chest") {
 			roomIsLocked = true;
 			GameObject.FindGameObjectWithTag("door").GetComponent<Button> ().onClick.AddListener (ChangeInformationPanel);
 
-			if (!ischestUIinstantiated) {
-				ischestUIinstantiated = true;
+			if (!isUIinstantiated) {
+				isUIinstantiated = true;
 				Instantiate (chestRoomUIPrefab);
+			}
+			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
+		}
+
+		if (roomType == "fight") {
+			roomIsLocked = true;
+			GameObject.FindGameObjectWithTag("door").GetComponent<Button> ().onClick.AddListener (ChangeInformationPanel);
+
+			if (!isUIinstantiated) {
+				isUIinstantiated = true;
+				Instantiate (fightRoomUIPrefab);
+			}
+			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
+		}
+
+		if (roomType == "boss") {
+			roomIsLocked = true;
+			GameObject.FindGameObjectWithTag("door").GetComponent<Button> ().onClick.AddListener (ChangeInformationPanel);
+
+			if (!isUIinstantiated) {
+				isUIinstantiated = true;
+				Instantiate (bossRoomUIPrefab);
 			}
 			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
 		}
@@ -182,8 +209,16 @@ public class DungeonLoader : MonoBehaviour {
 
 	void ChangeInformationPanel(){
 		if (roomType == "chest") {
-			Debug.Log ("Door is locked");
-			InformationPanel.GetComponent<Text> ().text = "Door is locked";
+			//Debug.Log ("Door is locked");
+			InformationPanel.GetComponent<Text> ().text = "Door is locked, find the chest first";
+		}
+		if (roomType == "fight") {
+			//Debug.Log ("Door is locked");
+			InformationPanel.GetComponent<Text> ().text = "Door is locked, you have to fight";
+		}
+		if (roomType == "boss") {
+			//Debug.Log ("Door is locked");
+			InformationPanel.GetComponent<Text> ().text = "Door is locked, you have to fight the boss";
 		}
 	}
 
@@ -210,13 +245,19 @@ public class DungeonLoader : MonoBehaviour {
 					roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.x, 
 					roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.y,
 					0);
-			
-			if (index < roomListDungeon [0].RoomOfTheDungeon.Count-1) {	
+
+			//Debug.Log ("Im Index Bug D");
+			if (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].roomID <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count) {	
+				
 				index = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].connectingTo - 1;
 				print ("Actual Index : " + index);
-				doorinstantiated.GetComponent<Button> ().onClick.AddListener (GoDeeperInTheDungeon);
-			} else {
-				doorinstantiated.GetComponent<Button> ().onClick.AddListener (IndexAddingLoadMap);
+
+				//Debug.Log ("Im Index Bug E");
+				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index-1].roomID < roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count) {
+					doorinstantiated.GetComponent<Button> ().onClick.AddListener (GoDeeperInTheDungeon);
+				} else {
+					doorinstantiated.GetComponent<Button> ().onClick.AddListener (IndexAddingLoadMap);
+				}	
 			}
 			StartCoroutine ("loadWaitRoom");
 		}
@@ -233,9 +274,9 @@ public class DungeonLoader : MonoBehaviour {
 
 	public void UnlockRoom () {
 		roomIsLocked = false;
-		//GameObject.FindGameObjectWithTag("door").GetComponent<Button> ().onClick.AddListener (GoDeeperInTheDungeon);
+
 		GameObject.FindGameObjectWithTag ("canvasInDungeon").SetActive (false);
-		print ("Unlock index : " + index);
+		//print ("Unlock index : " + index);
 	}
 
 }

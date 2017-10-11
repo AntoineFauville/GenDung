@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class Room {
 
 	public string 
-	roomName = "New Room",
-	roomID = "Input Number";
+		roomName = "New Room";
+	//roomID = "Input Number";
+
+	public int roomID;
 
 	public enum RoomType {empty,chest,fight,boss};
 	public RoomType roomType;

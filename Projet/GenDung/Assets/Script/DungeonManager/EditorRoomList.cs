@@ -104,7 +104,7 @@ public class EditorRoomList : EditorWindow {
 				//-----------------Name, Type, ID -------------//
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomName = EditorGUILayout.TextField ("Room Name", roomList.RoomOfTheDungeon [viewIndex - 1].roomName as string);
 				GUILayout.BeginHorizontal ();
-				roomList.RoomOfTheDungeon [viewIndex - 1].roomID = EditorGUILayout.TextField ("Room ID", roomList.RoomOfTheDungeon [viewIndex - 1].roomID as string);
+				roomList.RoomOfTheDungeon [viewIndex - 1].roomID = EditorGUILayout.IntField ("Room ID", roomList.RoomOfTheDungeon [viewIndex - 1].roomID);
 				/*if (GUILayout.Button ("Add a Room", GUILayout.ExpandWidth (false))) {
 					SaveARoom ();
 				}*/
