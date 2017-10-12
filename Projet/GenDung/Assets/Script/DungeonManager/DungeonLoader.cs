@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class DungeonLoader : MonoBehaviour {
 
@@ -28,11 +29,8 @@ public class DungeonLoader : MonoBehaviour {
 
 	public GameObject[] dungeonOnTheMap;
 
-	public string[] sceneDungeonDependingOnList;
-
-	int 
-	index,
-	dungeonIndex = 0;
+	int index;
+	public int dungeonIndex;
 
 	public bool
 	loadOnceScene,
@@ -43,6 +41,7 @@ public class DungeonLoader : MonoBehaviour {
 	areWeWaitingToComeBack,
 	roomIsLocked,
 	isUIinstantiated;
+
 
 	void FixedUpdate () {
 		//check activate scene
@@ -71,32 +70,27 @@ public class DungeonLoader : MonoBehaviour {
 			loadOnceMapScene = false;
 			previousScene = null;
 
-			//get the buttons witch are dungeons entry
-			dungeonOnTheMap = GameObject.FindGameObjectsWithTag ("DungeonButtonMap");
-			dungeonIndex = 0;
-			//asign to the buttons the loading scene onClick
-			if (dungeonOnTheMap != null && !loadOnceScene) {
-				for (int i = 0; i < dungeonOnTheMap.Length; i++) {
-					
-					dungeonOnTheMap [i].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
-				}
-			} else {
-				Debug.Log ("dungeonOnTheMap is Null");
+			LoadDungeonReference ();
+			dungeonIndex = GameObject.FindGameObjectWithTag ("DungeonButtonMap").GetComponent<DungeonListOnMap> ().indexLocal;
+
+			if (!loadOnceScene) {
+				dungeonOnTheMap [dungeonIndex].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
 			}
+
 		}
 	}
 
+	void LoadDungeonReference () {
+		dungeonOnTheMap = GameObject.FindGameObjectWithTag ("DungeonButtonMap").GetComponent<DungeonListOnMap> ().dungeonOnTheMapList;
+	}
 
 	//load the dungeon scene
 	void LoadSceneDungeon () {
-		for (int i = 0; i < 1; i++) {
 			if (!loadOnceScene) {
-				//Debug.Log ("you have clicked once on LoadSceneDungeon Button");
-				SceneManager.LoadScene (sceneDungeonDependingOnList[0]);
+				SceneManager.LoadScene ("Dungeon");
 				previousScene = "DebugMap";
 				loadOnceScene = true;
 			}
-		}
 	}
 
 	void LoadSceneMap () {
@@ -147,7 +141,7 @@ public class DungeonLoader : MonoBehaviour {
 
 				//look throught all the stats and asign them to object in the scene depending on the tags
 				//Debug.Log ("Im Index Bug B");
-				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].roomID <= roomListDungeon [0].RoomOfTheDungeon.Count)
+				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].roomID <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
 					BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].back;
 			
 				loadDoor ();
@@ -170,7 +164,7 @@ public class DungeonLoader : MonoBehaviour {
 	void GetRoomType()
 	{
 		//Debug.Log ("Im Index Bug C");
-		if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index-1].roomID <= roomListDungeon [0].RoomOfTheDungeon.Count)
+		if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index-1].roomID <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
 			roomType = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index-1].roomType.ToString(); 
 
 		if (roomType == "chest") {
