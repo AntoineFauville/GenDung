@@ -23,7 +23,7 @@ public class SwitchCanvas : MonoBehaviour {
 
 		previousScene = activeScene;
 
-		print (activeScene);
+		//print (activeScene);
 		print (SceneManager.GetActiveScene ().name);
 
 		if (!didIInstantiate) {
