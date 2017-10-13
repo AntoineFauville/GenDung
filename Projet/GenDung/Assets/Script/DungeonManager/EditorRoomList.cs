@@ -94,7 +94,7 @@ public class EditorRoomList : EditorWindow {
 			GUILayout.EndHorizontal ();
 			if (roomList.RoomOfTheDungeon == null)
 				Debug.Log ("wtf");
-			if (roomList.RoomOfTheDungeon.Count > 0) {
+			/*if (roomList.RoomOfTheDungeon.Count > 0) {
 				GUILayout.BeginHorizontal ();
 				viewIndex = Mathf.Clamp (EditorGUILayout.IntField ("Current Room", viewIndex, GUILayout.ExpandWidth (false)), 1, roomList.RoomOfTheDungeon.Count);
 
@@ -108,7 +108,7 @@ public class EditorRoomList : EditorWindow {
 				/*if (GUILayout.Button ("Add a Room", GUILayout.ExpandWidth (false))) {
 					SaveARoom ();
 				}*/
-				GUILayout.EndHorizontal ();
+				/*GUILayout.EndHorizontal ();
 				roomList.RoomOfTheDungeon [viewIndex - 1].roomType = (Room.RoomType)EditorGUILayout.EnumPopup ("Room Type", roomList.RoomOfTheDungeon [viewIndex - 1].roomType);
 
 				GUILayout.Space (20);
@@ -132,25 +132,25 @@ public class EditorRoomList : EditorWindow {
 				GUILayout.Space (10);
 
 				//interactables module//
-				roomList.RoomOfTheDungeon [viewIndex - 1].interactables = EditorGUILayout.IntField ("Amount of interactables", roomList.RoomOfTheDungeon [viewIndex - 1].interactables);
+				//roomList.RoomOfTheDungeon [viewIndex - 1].interactables = EditorGUILayout.IntField ("Amount of interactables", roomList.RoomOfTheDungeon [viewIndex - 1].interactables);
 
-				if (roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].interactables) {
-					roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].interactables];
-				}
+				//if (roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].interactables) {
+				//	roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].interactables];
+				//}
 
-				for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].interactables; i++) {
-					roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList[i] = EditorGUILayout.ObjectField ("Interactable Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList[i] ,typeof(GameObject),true) as GameObject;
-				}
+				//for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].interactables; i++) {
+				//	roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList[i] = EditorGUILayout.ObjectField ("Interactable Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].interactablesList[i] ,typeof(GameObject),true) as GameObject;
+				//}
 
 				//roomList.RoomOfTheDungeon[viewIndex - 1].backgroundOfTheRoom[0].sprite = (Sprite)EditorGUILayout.ObjectField("Background", roomList.RoomOfTheDungeon[viewIndex - 1].backgroundOfTheRoom[0].sprite, typeof(Sprite), false);
 
 
 
 				//----------------- Chest Room -------------//
-				if (roomList.RoomOfTheDungeon [viewIndex - 1].roomType == Room.RoomType.chest) 
-				{
-					GUILayout.Space (10);
-					roomList.RoomOfTheDungeon [viewIndex - 1].chests = EditorGUILayout.IntField ("Amount of chests", roomList.RoomOfTheDungeon [viewIndex - 1].chests);
+				//if (roomList.RoomOfTheDungeon [viewIndex - 1].roomType == Room.RoomType.chest) 
+				//{
+				//	GUILayout.Space (10);
+				/*	roomList.RoomOfTheDungeon [viewIndex - 1].chests = EditorGUILayout.IntField ("Amount of chests", roomList.RoomOfTheDungeon [viewIndex - 1].chests);
 
 					if (roomList.RoomOfTheDungeon [viewIndex - 1].chestsList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].chests) {
 						roomList.RoomOfTheDungeon [viewIndex - 1].chestsList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].chests];
@@ -159,12 +159,12 @@ public class EditorRoomList : EditorWindow {
 					for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].chests; i++) {
 						roomList.RoomOfTheDungeon [viewIndex - 1].chestsList[i] = EditorGUILayout.ObjectField ("Chest Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].chestsList[i] ,typeof(GameObject),true) as GameObject;
 					}
-				} 
+				} */
 
 
 
 				//----------------- Fight Room -------------//
-				if (roomList.RoomOfTheDungeon [viewIndex - 1].roomType == Room.RoomType.fight) 
+				/*if (roomList.RoomOfTheDungeon [viewIndex - 1].roomType == Room.RoomType.fight) 
 				{
 					GUILayout.Space (10);
 					roomList.RoomOfTheDungeon [viewIndex - 1].chests = EditorGUILayout.IntField ("Amount of chests", roomList.RoomOfTheDungeon [viewIndex - 1].chests);
@@ -176,20 +176,20 @@ public class EditorRoomList : EditorWindow {
 						roomList.RoomOfTheDungeon [viewIndex - 1].chestsList[i] = EditorGUILayout.ObjectField ("Chest Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].chestsList[i] ,typeof(GameObject),true) as GameObject;
 					}
 					GUILayout.Space (10);
-					roomList.RoomOfTheDungeon [viewIndex - 1].enemies = EditorGUILayout.IntField ("Amount of enemies", roomList.RoomOfTheDungeon [viewIndex - 1].enemies);
-					if (roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].enemies) {
-						roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].enemies];
-					}
+				//	roomList.RoomOfTheDungeon [viewIndex - 1].enemies = EditorGUILayout.IntField ("Amount of enemies", roomList.RoomOfTheDungeon [viewIndex - 1].enemies);
+				//	if (roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].enemies) {
+				//		roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].enemies];
+				//	}
 
-					for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].enemies; i++) {
-						roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] = EditorGUILayout.ObjectField ("Enemy Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] ,typeof(GameObject),true) as GameObject;
-					}
-				}
+				//	for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].enemies; i++) {
+				//		roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] = EditorGUILayout.ObjectField ("Enemy Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] ,typeof(GameObject),true) as GameObject;
+				//	}
+				}*/
 
 
 
 				//----------------- Boss Room -------------//
-				if (roomList.RoomOfTheDungeon [viewIndex - 1].roomType == Room.RoomType.boss) 
+				/*if (roomList.RoomOfTheDungeon [viewIndex - 1].roomType == Room.RoomType.boss) 
 				{
 					GUILayout.Space (10);
 					roomList.RoomOfTheDungeon [viewIndex - 1].chests = EditorGUILayout.IntField ("Amount of chests", roomList.RoomOfTheDungeon [viewIndex - 1].chests);
@@ -201,30 +201,30 @@ public class EditorRoomList : EditorWindow {
 						roomList.RoomOfTheDungeon [viewIndex - 1].chestsList[i] = EditorGUILayout.ObjectField ("Chest Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].chestsList[i] ,typeof(GameObject),true) as GameObject;
 					}
 					GUILayout.Space (10);
-					roomList.RoomOfTheDungeon [viewIndex - 1].enemies = EditorGUILayout.IntField ("Amount of enemies", roomList.RoomOfTheDungeon [viewIndex - 1].enemies);
-					if (roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].enemies) {
-						roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].enemies];
-					}
+					//roomList.RoomOfTheDungeon [viewIndex - 1].enemies = EditorGUILayout.IntField ("Amount of enemies", roomList.RoomOfTheDungeon [viewIndex - 1].enemies);
+					//if (roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList.Length != roomList.RoomOfTheDungeon [viewIndex - 1].enemies) {
+					//	roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList = new GameObject[roomList.RoomOfTheDungeon [viewIndex - 1].enemies];
+					//}
 
-					for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].enemies; i++) {
-						roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] = EditorGUILayout.ObjectField ("Enemy Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] ,typeof(GameObject),true) as GameObject;
-					}
+					//for (int i = 0; i < roomList.RoomOfTheDungeon [viewIndex - 1].enemies; i++) {
+					//	roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] = EditorGUILayout.ObjectField ("Enemy Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].enemiesList[i] ,typeof(GameObject),true) as GameObject;
+					//}
 					GUILayout.Space (10);
-					roomList.RoomOfTheDungeon [viewIndex - 1].bossID = EditorGUILayout.TextField ("Boss ID", roomList.RoomOfTheDungeon [viewIndex - 1].bossID as string);
+					//roomList.RoomOfTheDungeon [viewIndex - 1].bossID = EditorGUILayout.TextField ("Boss ID", roomList.RoomOfTheDungeon [viewIndex - 1].bossID as string);
 
-					if (roomList.RoomOfTheDungeon [viewIndex - 1].bossList.Length != 1) {
-						roomList.RoomOfTheDungeon [viewIndex - 1].bossList = new GameObject[1];
-					}
+					//if (roomList.RoomOfTheDungeon [viewIndex - 1].bossList.Length != 1) {
+					//	roomList.RoomOfTheDungeon [viewIndex - 1].bossList = new GameObject[1];
+					//}
 						
-					roomList.RoomOfTheDungeon [viewIndex - 1].bossList[0] = EditorGUILayout.ObjectField ("Boss Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].bossList[0] ,typeof(GameObject),true) as GameObject;
-				}
+					//roomList.RoomOfTheDungeon [viewIndex - 1].bossList[0] = EditorGUILayout.ObjectField ("Boss Prefab",roomList.RoomOfTheDungeon [viewIndex - 1].bossList[0] ,typeof(GameObject),true) as GameObject;
+				}*/
 
-			} else {
+			/*} else {
 				GUILayout.Label ("This Dungeon is Empty.");
 			}
 			if (GUI.changed) {
 				EditorUtility.SetDirty (roomList);
-			}
+			}*/
 		}
 	}
 

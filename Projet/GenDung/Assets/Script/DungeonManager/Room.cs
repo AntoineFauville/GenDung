@@ -16,7 +16,7 @@ public class Room {
 	public RoomType roomType;
 
 	public int enemies = 0;
-	public GameObject[] enemiesList;
+	public Enemy[] enemiesList;
 
 	public int door = 0;
 	public Door[] doorList;
@@ -24,12 +24,10 @@ public class Room {
 	public int chests = 0;
 	public GameObject[] chestsList;
 
-	public string bossID = "0 Boss";
-	public GameObject[] bossList;
+	public Boss[] bossList;
 
 	public int interactables = 0;
 	public GameObject[] interactablesList;
 
-	public Sprite[] backgroundOfTheRoom;
 	public Sprite back;
 }
