@@ -22,6 +22,7 @@ public class Dungeon {
                 tiles[x, y] = new Tile(this, x, y);
             }
         }
+
         Debug.Log("Map has been created with " + (Width * Height) + " tiles.");
     }
 
@@ -60,6 +61,17 @@ public class Dungeon {
         set
         {
             height = value;
+        }
+    }
+    public Tile[,] Tiles
+    {
+        get
+        {
+            return tiles;
+        }
+        set
+        {
+            tiles = value;
         }
     }
 

@@ -12,6 +12,7 @@ public class Tile {
     TileType type = TileType.Floor;
     int x;
     int y;
+    public bool isWalkable = true;
     public float movementCost = 1;
     Dungeon dungeon;
 
@@ -61,6 +62,5 @@ public class Tile {
             type = value;
         }
     }
-
     /* */
 }

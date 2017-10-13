@@ -68,6 +68,9 @@ public class DungeonController : MonoBehaviour {
                 /* */
             }
         }
+
+        Dungeon.Tiles[0, 2].isWalkable = false;
+
         /* */
     }
 
@@ -131,6 +134,12 @@ public class DungeonController : MonoBehaviour {
 
         Tile target = GetTileAtWorldCoord(new Vector3(targetX, targetY, 0));
         cost = target.movementCost;
+
+        if (UnitCanEnterTile(targetX,targetY) == false)
+        {
+            Debug.Log("Can't walk on this shit man");
+            return Mathf.Infinity;
+        }
 
         if (sourceX!=targetX && sourceY!=targetY)
         {
@@ -216,6 +225,11 @@ public class DungeonController : MonoBehaviour {
         unit.CurrentPath = currentPath;
 
         Debug.Log("Path has been calculated");
+    }
+
+    public bool UnitCanEnterTile(int x, int y)
+    {
+        return Dungeon.Tiles[x,y].isWalkable;
     }
 
     public void LoadSprites()
