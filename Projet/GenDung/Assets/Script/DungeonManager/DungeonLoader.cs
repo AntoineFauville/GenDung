@@ -16,7 +16,9 @@ public class DungeonLoader : MonoBehaviour {
 	doorPrefab,
 	chestRoomUIPrefab,
 	fightRoomUIPrefab,
-	bossRoomUIPrefab;
+	bossRoomUIPrefab,
+	enemyPrefabUIICON,
+	bossPrefabUIICON;
 
 	GameObject 
 	BG, 
@@ -48,10 +50,7 @@ public class DungeonLoader : MonoBehaviour {
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode){
-		//Debug.Log ("OnSceneLoaded : " + scene.name);
 		sceneLoaded = true;
-		//check activate scene
-		//
 	}
 
 
@@ -141,7 +140,6 @@ public class DungeonLoader : MonoBehaviour {
 				//reset for ui
 				isUIinstantiated = false;
 
-
 				//look throught all the stats and asign them to object in the scene depending on the tags
 				//Debug.Log ("Im Index Bug B");
 				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].roomID <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
@@ -191,6 +189,18 @@ public class DungeonLoader : MonoBehaviour {
 				Instantiate (fightRoomUIPrefab);
 			}
 			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
+
+			for (int i = 0; i < roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemies; i++) {
+
+				GameObject enemyUI;
+
+				enemyUI = Instantiate (enemyPrefabUIICON);
+
+				enemyUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
+
+				enemyUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemiesList [i].enemyIcon;
+			}
+
 		}
 
 		if (roomType == "boss") {
@@ -202,6 +212,23 @@ public class DungeonLoader : MonoBehaviour {
 				Instantiate (bossRoomUIPrefab);
 			}
 			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
+
+			GameObject bossUI;
+
+			bossUI = Instantiate (bossPrefabUIICON);
+			bossUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
+
+			bossUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].bossList [0].bossIcon;
+
+			for (int i = 0; i < roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemies; i++) {
+
+				GameObject enemyBossUI;
+
+				enemyBossUI = Instantiate (enemyPrefabUIICON);
+				enemyBossUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
+
+				enemyBossUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemiesList [i].enemyIcon;
+			}
 		}
 	}
 
