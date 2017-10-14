@@ -7,10 +7,21 @@ public class UnitController : MonoBehaviour {
     private int tileX;
     private int tileY;
 
-    private List<Node> currentPath = null;
+    private int tileAttackX;
+    private int tileAttackY;
 
-    int moveSpeed = 2;
-    float remainingMovement = 2;
+    private List<Node> currentPath = null;
+    private bool attacking = false;
+
+    int moveSpeed = 2; // Valeur de base de déplacement de l'unité.
+    int actionCount = 3; // Valeur de base d'action de l'unité.
+
+    float remainingMovement = 2; //Points de mouvement restant de l'unité pour ce tour.
+    float remainingAction = 3; //Points d'actions restant de l'unité pour ce tour.
+
+    int attackCost = 1; // Coût d'une attaque de l'unité.
+    int rangeMax = 2; // Portée maximale de l'unité
+    int rangeMin = 1; // Portée minimale de l'unité (dans le cas ou une attaque ne peut se faire à une case du personnage)
 
 	void Update ()
     {
@@ -29,6 +40,12 @@ public class UnitController : MonoBehaviour {
                 currNode++;
             }
         }
+
+        if (attacking)
+        {
+            Debug.Log("Launching Attack, Please Wait");
+            Attack();
+        }
         
         if (Vector3.Distance(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX,tileY)) < 0.1f)
         {
@@ -46,6 +63,7 @@ public class UnitController : MonoBehaviour {
 
        if (remainingMovement <= 0)
         {
+            Debug.Log("Not enough movement point left, wait for the next turn");
             return;
         }
 
@@ -66,6 +84,43 @@ public class UnitController : MonoBehaviour {
         }
     }
 
+    public void Attack()
+    {
+        attacking = false;
+
+        if (remainingAction <= 0)
+        {
+            Debug.Log("No action points left, no action done");
+            return;
+        }
+
+        if (remainingAction >= attackCost)
+        {
+            CheckRange();
+
+            Debug.Log("Attack !!!");
+            remainingAction -= attackCost;
+            Debug.Log("Action points left : " + remainingAction);
+        }
+    }
+
+    public void CheckRange()
+    {
+        Debug.Log("Unit position: "+ tileX + "," + tileY);
+        Debug.Log("Tile for Attack position: " + tileAttackX + "," + tileAttackY); // les valeurs sont égales à zéro, pourquoi ? Ok, si int en public mais pas en private (getter et setter fautif)
+
+        // vérifier si la tile pour l'attaque est comprise entre unitPosX + rangeMin et unitPosX + rangeMax mais aussi si celle-ci est comprise entre unitPosY + rangeMin et unitPosY + rangeMax
+        if (tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) && tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax))
+        {
+            Debug.Log("Range is Ok, we can attack");
+        }
+        else
+        {
+            Debug.Log("Not in Range, abort Attack");
+        }
+        
+    }
+
     public void NextTurn()
     {
         while(currentPath!= null && remainingMovement > 0)
@@ -74,6 +129,9 @@ public class UnitController : MonoBehaviour {
         }
 
         remainingMovement = moveSpeed;
+        remainingAction = actionCount;
+
+        Debug.Log("New Turn has begun !!!");
     }
 
     /* Accessors Methods*/
@@ -102,6 +160,26 @@ public class UnitController : MonoBehaviour {
         }
     }
 
+    public int getTileAttackX()
+    {
+        return tileAttackX;
+    }
+
+    public void setTileAttackX(int _x)
+    {
+        tileAttackX = _x;
+    }
+
+    public int getTileAttackY()
+    {
+        return tileAttackY;
+    }
+
+    public void setTileAttackY(int _y)
+    {
+        tileAttackY = _y;
+    }
+
     public List<Node> CurrentPath
     {
         get
@@ -111,6 +189,18 @@ public class UnitController : MonoBehaviour {
         set
         {
             currentPath = value;
+        }
+    }
+
+    public bool Attacking
+    {
+        get
+        {
+            return attacking;
+        }
+        set
+        {
+            attacking = value;
         }
     }
 

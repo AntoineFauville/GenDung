@@ -227,6 +227,14 @@ public class DungeonController : MonoBehaviour {
         Debug.Log("Path has been calculated");
     }
 
+    public void LaunchUnitAttack(int _x,int _y)
+    {
+        unit.Attacking = true;
+        Debug.Log("LaunchUnitAttack(" + _x + "," + _y + ")");
+        unit.setTileAttackX(_x);
+        unit.setTileAttackY(_y);
+    }
+
     public bool UnitCanEnterTile(int x, int y)
     {
         return Dungeon.Tiles[x,y].isWalkable;
