@@ -377,13 +377,13 @@ public class DungeonLoader : MonoBehaviour {
 
 	//attend que la salle soit bien chargée
 	IEnumerator loadWaitRoom(){
-		yield return new WaitForSeconds (0.1f);
+		yield return new WaitForSeconds (0.03f);
 		loadOnceDoor = false;
 	}
 
 	//attend que la scene soit bien chargée
 	IEnumerator WaitLoading(){
-		yield return new WaitForSeconds (0.05f);
+		yield return new WaitForSeconds (0.03f);
 
 		//reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
 		if (activeScene == "Dungeon") {
@@ -411,7 +411,7 @@ public class DungeonLoader : MonoBehaviour {
 
 	//coroutine qui attend pour ne pas spammer le bouton de porte
 	IEnumerator waitLagForClicking () {
-		yield return new WaitForSeconds (0.1f);
+		yield return new WaitForSeconds (0.03f);
 		loadOnce3 = false;
 	}
 }
