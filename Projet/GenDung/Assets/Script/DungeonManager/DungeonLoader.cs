@@ -18,7 +18,8 @@ public class DungeonLoader : MonoBehaviour {
 	fightRoomUIPrefab,
 	bossRoomUIPrefab,
 	enemyPrefabUIICON,
-	bossPrefabUIICON;
+	bossPrefabUIICON,
+	DebugPrefab;
 
 	GameObject 
 	BG, 
@@ -32,7 +33,7 @@ public class DungeonLoader : MonoBehaviour {
 	public GameObject[] dungeonOnTheMap;
 
 	int index;
-	public int dungeonIndex;
+	public int dungeonIndex, dungeonUnlockedIndex;
 
 	public bool
 	loadOnce3,
@@ -47,6 +48,13 @@ public class DungeonLoader : MonoBehaviour {
 
 	void Start () {
 		SceneManager.sceneLoaded += OnSceneLoaded;
+		//editor stuff
+		#if UNITY_EDITOR
+			Instantiate(DebugPrefab);
+			GameObject.Find("IncreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (UnlockNextDungeon);
+			GameObject.Find("DecreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (DecreaseUnlockDungeonIndex);
+			GameObject.Find("ResetUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (ResetUnlockDungeonIndex);
+		#endif
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode){
@@ -65,11 +73,6 @@ public class DungeonLoader : MonoBehaviour {
 				//check if we did instanciate once the door
 				BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
 
-				/*if (InformationPanel != null && !roomIsLocked) {
-					if (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].roomID < roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count ()) {
-						InformationPanel.GetComponent<Text> ().text = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].doorName;
-					}
-				}*/
 				if (previousScene != activeScene) {
 					LoadRoom ();
 				}
@@ -78,12 +81,34 @@ public class DungeonLoader : MonoBehaviour {
 			//-----------Map gestion scene-------------//
 			if (activeScene == "Map") { 
 
+
+
 				dungeonIndex = GameObject.FindGameObjectWithTag ("DungeonButtonMap").GetComponent<DungeonListOnMap> ().indexLocal;
-				dungeonOnTheMap [dungeonIndex].GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
+				dungeonOnTheMap [dungeonIndex].transform.Find("DungeonButton").GetComponent<Button> ().onClick.AddListener (LoadSceneDungeon);
 
 				roomIsLocked = false;
 				previousScene = null;
 
+				print (dungeonOnTheMap.Length);
+				if (dungeonUnlockedIndex <= dungeonOnTheMap.Length) {
+					//----------Dungeon Unlocking Feature ------------//
+					for (int i = 0; i < dungeonOnTheMap.Length; i++) {
+						//---- Met faux tous les donjons non débloqué---//
+						dungeonOnTheMap [i].SetActive (false);
+					}
+					for (int i = 0; i < dungeonUnlockedIndex; i++) {
+						dungeonOnTheMap [i].SetActive (true);
+						dungeonOnTheMap [i].transform.Find ("DungeonButton").GetComponent<Button> ().interactable = true;
+						dungeonOnTheMap [i].transform.Find ("DungeonButton").GetComponent<Button> ().image.color = Color.white;
+
+						//---- Grisé le donjon suivant------//
+						if(i +1 < dungeonOnTheMap.Length){
+							dungeonOnTheMap [i+1].SetActive (true);
+							dungeonOnTheMap [i+1].transform.Find ("DungeonButton").GetComponent<Button> ().interactable = false;
+							dungeonOnTheMap [i+1].transform.Find ("DungeonButton").GetComponent<Button> ().image.color = Color.red;
+						}
+					}
+				}
 			}
 		} else {
 			if (!doOnceCoroutine) {
@@ -274,6 +299,7 @@ public class DungeonLoader : MonoBehaviour {
 			if (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].doorType.ToString () == "LastDoor") {
 				Debug.Log ("hey im last door");
 				doorinstantiated.GetComponent<Button> ().onClick.AddListener (IndexAddingLoadMap);
+				doorinstantiated.GetComponent<Button> ().onClick.AddListener (UnlockNextDungeon);
 			} else {
 				doorinstantiated.GetComponent<Button> ().onClick.AddListener (GoDeeperInTheDungeon);
 			}
@@ -316,5 +342,21 @@ public class DungeonLoader : MonoBehaviour {
 		roomIsLocked = false;
 		GameObject.FindGameObjectWithTag ("canvasInDungeon").SetActive (false);
 		//print ("Unlock index : " + index);
+	}
+
+	public void UnlockNextDungeon(){
+		if (dungeonUnlockedIndex < dungeonOnTheMap.Length) {
+			dungeonUnlockedIndex++;
+		}
+	}
+
+	public void DecreaseUnlockDungeonIndex(){
+		if (dungeonUnlockedIndex > 1) {
+			dungeonUnlockedIndex--;
+		}
+	}
+
+	public void ResetUnlockDungeonIndex(){
+		dungeonUnlockedIndex = 1;
 	}
 }
