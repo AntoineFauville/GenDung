@@ -8,7 +8,7 @@ public class Dungeon {
     int width;
     int height;
 
-    public Dungeon(int _width = 10, int _height = 10)
+    public Dungeon(int _width = 20, int _height = 14)
     {
         this.Width = _width;
         this.Height = _height;

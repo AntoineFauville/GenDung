@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DungeonController : MonoBehaviour {
 
@@ -45,27 +46,40 @@ public class DungeonController : MonoBehaviour {
         Dungeon = new Dungeon();
 
         /* Creation d'un GO (GameObject) vide servant de parent */
-        GameObject parent = new GameObject();
+        /*GameObject parent = new GameObject();
         parent.name = "Dungeon";
-        parent.transform.position = Vector3.zero;
+        parent.transform.position = Vector3.zero;*/
         /**/
 
+        /*Creation du GridCanvas*/
+        GameObject PrefabGrid = Resources.Load("UI Interface/GridCanvas") as GameObject;
+        GameObject c = GameObject.Instantiate(PrefabGrid);
+        /**/
+
+        GameObject tileUIPrefab = Resources.Load("UI Interface/Tile") as GameObject;
+
         /* Creation Tile par Tile de la grille représentant le Dungeon */
+        // Position première tile : -284,-209 (32 par 32) // 
         for (int x = 0; x < Dungeon.Width; x++)
         {
             for (int y = 0; y < Dungeon.Height; y++)
             {
-                Tile tile_data = Dungeon.GetTileAt(x, y);
+                /*Tile tile_data = Dungeon.GetTileAt(x, y);
                 GameObject tile_go = new GameObject();
                 tile_go.name = "Tile_" + x + "_" + y;
-                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
-                tile_go.transform.localScale = new Vector3(2, 2, 2);
-                tile_go.transform.SetParent(parent.transform, true);
+                tile_go.transform.position = new Vector3(tile_data.X*64, tile_data.Y*64, 0);
+                tile_go.transform.localScale = new Vector3(128, 128, 128);
+                tile_go.transform.SetParent(parent.transform, true);*/
 
                 /* Ajoute un SpriteRenderer à chaque Tile et lui assigne le sol par défaut */
-                SpriteRenderer tile_sr = tile_go.AddComponent<SpriteRenderer>();
-                tile_sr.sprite = floor[0];
+                /*SpriteRenderer tile_sr = tile_go.AddComponent<SpriteRenderer>();
+                tile_sr.sprite = floor[0];*/
                 /* */
+
+                GameObject tile_canvas = GameObject.Instantiate(tileUIPrefab);
+                tile_canvas.name = "Tile_" + x + "_" + y;
+                tile_canvas.transform.position = new Vector2((32 + x * 64), (32 + y * 64));
+                tile_canvas.transform.SetParent(c.transform.Find("PanelGrid"),true);
             }
         }
 
@@ -93,7 +107,7 @@ public class DungeonController : MonoBehaviour {
         // Now that all the nodes exist, calculate their neighbours
         for (int x = 0; x < Dungeon.Width; x++)
         {
-            for (int y = 0; y < Dungeon.Width; y++)
+            for (int y = 0; y < Dungeon.Height; y++)
             {
                 // This is the 8-way connection version (allows diagonal movement)
                 // Try left

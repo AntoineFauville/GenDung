@@ -67,7 +67,7 @@ public class UnitController : MonoBehaviour {
             return;
         }
 
-        transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
+        transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX*64, tileY*64);
 
         remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
 
