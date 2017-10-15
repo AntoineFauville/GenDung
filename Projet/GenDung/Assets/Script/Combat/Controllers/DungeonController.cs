@@ -52,11 +52,11 @@ public class DungeonController : MonoBehaviour {
         /**/
 
         /*Creation du GridCanvas*/
-        GameObject PrefabGrid = Resources.Load("UI Interface/GridCanvas") as GameObject;
+        GameObject PrefabGrid = Resources.Load("UI_Interface/GridCanvas") as GameObject;
         GameObject c = GameObject.Instantiate(PrefabGrid);
         /**/
 
-        GameObject tileUIPrefab = Resources.Load("UI Interface/Tile") as GameObject;
+		GameObject tileUIPrefab = Resources.Load("UI_Interface/Tile") as GameObject;
 
         /* Creation Tile par Tile de la grille représentant le Dungeon */
         // Position première tile : -284,-209 (32 par 32) // 

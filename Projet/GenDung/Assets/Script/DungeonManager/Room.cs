@@ -6,10 +6,9 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Room {
 
-	public RoomObject room;
+	public string roomName = "New Room";
 
-	//public string roomName = "New Room";
-	//roomID = "Input Number";
+	public RoomObject room;
 
 	public int number; // number of the room in the dungeon
 
@@ -29,6 +28,4 @@ public class Room {
 
 	public int interactables = 0;
 	public GameObject[] interactablesList;
-
-	public Sprite back;
 }

@@ -14,17 +14,6 @@ public class DungeonLoader : MonoBehaviour {
 	previousScene, //previous scene
 	roomType; // just a checker to see what room is the actual room that we are using.
 
-	public GameObject 
-	roomPrefab,	//prefab de la room générale
-	doorPrefab,	//prefab de la porte
-	chestRoomUIPrefab,	//prefab de l'UI des salles chest
-	fightRoomUIPrefab,	//prefab de l'UI des salles fight
-	bossRoomUIPrefab,	//prefab de l'UI des salles boss
-	enemyPrefabUIICON,	//prefab de l'UI pour l'icone d'un enemi
-	bossPrefabUIICON,	//prefab de l'UI pour l'icone de boss
-	DebugPrefab,		//prefab de l'UI pour le debug ( surtout le changement de salle de donjon sur la map)
-	EndDungeonUIPrefab;	//prefab de l'UI pour l'ecran de victoire apres un donjon
-
 	GameObject 
 	BG, //background de la salle
 	doorinstantiated; //la porte instantiée
@@ -39,10 +28,9 @@ public class DungeonLoader : MonoBehaviour {
 	dungeonOnTheMap;	//list des boutons des donjons sur la carte
 
 	int 
-	index; //index pour les salles du donjon
-	public int 
+	index, //index pour les salles du donjon
 	dungeonIndex, //index pour le donjon
-	dungeonUnlockedIndex;	//index pour le donjon unlocked
+	dungeonUnlockedIndex = 1;	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
 
 	public bool
 	loadOnce3, //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
@@ -63,7 +51,7 @@ public class DungeonLoader : MonoBehaviour {
 
 		//seulement d'en l'éditor pour charger les modules de debug
 		#if UNITY_EDITOR
-			Instantiate(DebugPrefab);
+			Instantiate(Resources.Load("UI_Interface/DebugCanvas"));
 			GameObject.Find("IncreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (UnlockNextDungeon);
 			GameObject.Find("DecreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (DecreaseUnlockDungeonIndex);
 			GameObject.Find("ResetUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (ResetUnlockDungeonIndex);
@@ -104,7 +92,7 @@ public class DungeonLoader : MonoBehaviour {
 
 					//instantie l'écran de fin
 					InstrantiateOnceEndDungeon = true;
-					Instantiate(EndDungeonUIPrefab);
+					Instantiate(Resources.Load("UI_Interface/EndDungeonUI"));
 
 					//verifie dans toutes les salles
 					for (int i = 0; i < roomListDungeon[dungeonIndex].RoomOfTheDungeon.Count(); i++) {
@@ -116,7 +104,7 @@ public class DungeonLoader : MonoBehaviour {
 							for (int l = 0; l < roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].enemies; l++) {
 
 								GameObject enemyUI;
-								enemyUI = Instantiate (enemyPrefabUIICON);
+								enemyUI = Instantiate (Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
 								enemyUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
 								enemyUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].enemiesList [l].enemyIcon;
 							}
@@ -129,14 +117,14 @@ public class DungeonLoader : MonoBehaviour {
 							for (int l = 0; l < roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].enemies; l++) {
 
 								GameObject enemyUI;
-								enemyUI = Instantiate (enemyPrefabUIICON);
+								enemyUI = Instantiate (Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
 								enemyUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
 								enemyUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].enemiesList [l].enemyIcon;
 							}
 
 							//vu que c'est un type boss il y a aussi le boss a instancier
 							GameObject bossUI;
-							bossUI = Instantiate (bossPrefabUIICON);
+							bossUI = Instantiate (Resources.Load("UI_Interface/BossPanelUI")) as GameObject;
 							bossUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
 							bossUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].bossList [0].bossIcon;
 						}
@@ -209,7 +197,7 @@ public class DungeonLoader : MonoBehaviour {
 	void LoadRoom () {
 		if (!loadOnce2) {
 			loadOnce2 = true;
-			Instantiate (roomPrefab);
+			Instantiate (Resources.Load("UI_Interface/Room1"));
 
 			//reset l'index du donjon
 			index = 0;
@@ -270,7 +258,7 @@ public class DungeonLoader : MonoBehaviour {
 
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
-				Instantiate (chestRoomUIPrefab);
+				Instantiate (Resources.Load("UI_Interface/ChestRoomUI"));
 			}
 			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
 		}
@@ -281,14 +269,14 @@ public class DungeonLoader : MonoBehaviour {
 
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
-				Instantiate (fightRoomUIPrefab);
+				Instantiate (Resources.Load("UI_Interface/FightRoomUI"));
 			}
 			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
 
 			//instantie pour chaque enemi dans la liste une icone
 			for (int i = 0; i < roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemies; i++) {
 				GameObject enemyUI;
-				enemyUI = Instantiate (enemyPrefabUIICON);
+				enemyUI = Instantiate (Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
 				enemyUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
 				enemyUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemiesList [i].enemyIcon;
 			}
@@ -301,13 +289,13 @@ public class DungeonLoader : MonoBehaviour {
 
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
-				Instantiate (bossRoomUIPrefab);
+				Instantiate (Resources.Load("UI_Interface/BossRoomUI"));
 			}
 			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
 
 			//instantie l'icone de boss
 			GameObject bossUI;
-			bossUI = Instantiate (bossPrefabUIICON);
+			bossUI = Instantiate (Resources.Load("UI_Interface/BossPanelUI")) as GameObject;
 			bossUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
 			bossUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].bossList [0].bossIcon;
 
@@ -315,7 +303,7 @@ public class DungeonLoader : MonoBehaviour {
 			for (int i = 0; i < roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemies; i++) {
 
 				GameObject enemyBossUI;
-				enemyBossUI = Instantiate (enemyPrefabUIICON);
+				enemyBossUI = Instantiate (Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
 				enemyBossUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
 				enemyBossUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemiesList [i].enemyIcon;
 			}
@@ -339,7 +327,7 @@ public class DungeonLoader : MonoBehaviour {
 			}
 
 			//assigne la porte a ses coordonnées
-			doorinstantiated = Instantiate (doorPrefab, new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			doorinstantiated = Instantiate (Resources.Load("UI_Interface/door"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 			doorinstantiated.transform.SetParent (GameObject.FindGameObjectWithTag ("Canvas").transform, false);
 			doorinstantiated.transform.localPosition = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.x, roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.y,0);
 

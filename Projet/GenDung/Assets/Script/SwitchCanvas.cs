@@ -57,14 +57,6 @@ public class SwitchCanvas : MonoBehaviour {
 						didIInstantiate = true;
 					}
 				}
-
-                /* Ajoute de manière dynamique mon DungeonController à l'objet (Pas de modification de scène nécessaire ;) )  */
-                /**/if (SceneManager.GetActiveScene().name == "Dungeon")
-                {
-                    this.gameObject.AddComponent<DungeonController>();
-                    this.gameObject.AddComponent<MouseController>();
-                } /**/
-                
             }
 
 			if(activeScene == sceneNames [0]){
