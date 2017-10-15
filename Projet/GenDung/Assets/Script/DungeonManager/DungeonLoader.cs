@@ -29,6 +29,9 @@ public class DungeonLoader : MonoBehaviour {
 	BG, //background de la salle
 	doorinstantiated; //la porte instantiée
 
+	RoomObject
+	roomObject;
+
 	public RoomList[] 
 	roomListDungeon; // this are the dungeons, 
 
@@ -74,6 +77,7 @@ public class DungeonLoader : MonoBehaviour {
 
 
 	void FixedUpdate () {
+
 		//permet de savoir quel nom de scene
 		activeScene = SceneManager.GetActiveScene ().name;
 
@@ -212,7 +216,7 @@ public class DungeonLoader : MonoBehaviour {
 
 			//attribue le background de la salle
 			BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
-			BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].back;
+			BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.back;
 
 			//instantiate the door
 			loadDoor();
@@ -235,8 +239,8 @@ public class DungeonLoader : MonoBehaviour {
 
 				//look throught all the stats and asign them to object in the scene depending on the tags
 				//Change le background en fonction de la salle
-				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].roomID <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
-					BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].back;
+				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].number <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
+					BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.back;
 
 				//charge la porte
 				loadDoor ();
@@ -257,7 +261,7 @@ public class DungeonLoader : MonoBehaviour {
 	void GetRoomType()
 	{
 		//cherche pour la salle précise et store son room type
-		if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].roomID <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
+		if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].number <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
 			roomType = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].roomType.ToString(); 
 
 		//--------CHEST---------//

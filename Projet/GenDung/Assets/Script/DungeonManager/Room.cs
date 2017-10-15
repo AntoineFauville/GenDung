@@ -6,11 +6,12 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Room {
 
-	public string 
-		roomName = "New Room";
+	public RoomObject room;
+
+	//public string roomName = "New Room";
 	//roomID = "Input Number";
 
-	public int roomID;
+	public int number; // number of the room in the dungeon
 
 	public enum RoomType {empty,chest,fight,boss};
 	public RoomType roomType;
