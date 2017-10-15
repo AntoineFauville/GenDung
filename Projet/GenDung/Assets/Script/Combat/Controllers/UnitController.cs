@@ -94,17 +94,14 @@ public class UnitController : MonoBehaviour {
             return;
         }
 
-        if (remainingAction >= attackCost)
+        if (remainingAction >= attackCost && CheckRange() == true)
         {
-            CheckRange();
-
-            Debug.Log("Attack !!!");
             remainingAction -= attackCost;
             Debug.Log("Action points left : " + remainingAction);
         }
     }
 
-    public void CheckRange()
+    public bool CheckRange()
     {
         Debug.Log("Unit position: "+ tileX + "," + tileY);
         Debug.Log("Tile for Attack position: " + tileAttackX + "," + tileAttackY); // les valeurs sont égales à zéro, pourquoi ? Ok, si int en public mais pas en private (getter et setter fautif)
@@ -113,10 +110,12 @@ public class UnitController : MonoBehaviour {
         if (tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) && tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax))
         {
             Debug.Log("Range is Ok, we can attack");
+            return true;
         }
         else
         {
             Debug.Log("Not in Range, abort Attack");
+            return false;
         }
         
     }
