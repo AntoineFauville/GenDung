@@ -76,13 +76,14 @@ public class DungeonController : MonoBehaviour {
                 tile_sr.sprite = floor[0];*/
                 /* */
 
-                GameObject tile_canvas = GameObject.Instantiate(tileUIPrefab);
+				GameObject tile_canvas = GameObject.Instantiate(tileUIPrefab,c.transform.Find("PanelGrid"));
                 tile_canvas.name = "Tile_" + x + "_" + y;
-                tile_canvas.transform.position = new Vector2((32 + x * 64), (32 + y * 64));
-                tile_canvas.transform.SetParent(c.transform.Find("PanelGrid"),true);
+                tile_canvas.transform.position = new Vector2((26 + x * 50), (26 + y * 50));
+
+               // tile_canvas.transform.SetParent(c.transform.Find("PanelGrid"),true);
             }
         }
-
+		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.975f,1.03f,0f);
         Dungeon.Tiles[0, 2].isWalkable = false;
 
         /* */
