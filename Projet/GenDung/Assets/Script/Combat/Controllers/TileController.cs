@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TileController : MonoBehaviour {
 
@@ -19,6 +20,12 @@ public class TileController : MonoBehaviour {
         {
             DungeonController.Instance.LaunchUnitAttack(x, y);
         }
+    }
+
+    public void TileEnter()
+    {
+        //this.GetComponent<Image>().sprite
+        Debug.Log("Pointer is entering a tile: " + x + "," + y);
     }
 
     /* Accessors Methods */
