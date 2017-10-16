@@ -29,7 +29,6 @@ public class DungeonController : MonoBehaviour {
 
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
         unit_go.transform.position = Vector3.zero;
-
         unit = unit_go.GetComponent<UnitController>();
 	}
 
