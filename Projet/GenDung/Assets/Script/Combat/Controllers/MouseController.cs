@@ -44,7 +44,7 @@ public class MouseController : MonoBehaviour {
         {
             Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
 
-            Debug.Log("Attack to this tile position (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
+            //Debug.Log("Attack to this tile position (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
 
             //DungeonController.Instance.LaunchUnitAttack(tileUnderMouse.X,tileUnderMouse.Y);
         }
