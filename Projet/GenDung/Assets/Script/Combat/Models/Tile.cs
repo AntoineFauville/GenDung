@@ -10,8 +10,8 @@ public class Tile {
     }
 
     TileType type = TileType.Floor;
-    int x;
-    int y;
+    public int x;
+    public int y;
     public bool isWalkable = true;
     public float movementCost = 1;
     Dungeon dungeon;
@@ -19,8 +19,8 @@ public class Tile {
     public Tile(Dungeon _dungeon, int _x, int _y)
     {
         this.dungeon = _dungeon;
-        this.X = _x;
-        this.Y = _y;
+        this.x = _x;
+        this.y = _y;
     }
 
     /* Accessors Methods */
