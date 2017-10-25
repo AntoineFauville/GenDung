@@ -28,6 +28,8 @@ public class Dungeon {
 
     public Tile GetTileAt(int _x, int _y)
     {
+        //Debug.Log("GetTileAt( " + _x + "," + _y + ")");
+
         if (_x > Width || _x < 0 || _y > Height || _y < 0)
         {
             Debug.LogWarning("Tile (" + _x + "," + _y + ") is out of range.");
@@ -74,6 +76,5 @@ public class Dungeon {
             tiles = value;
         }
     }
-
     /* */
 }

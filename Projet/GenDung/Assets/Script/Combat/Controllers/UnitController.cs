@@ -27,7 +27,7 @@ public class UnitController : MonoBehaviour {
     {
 	    if(currentPath != null)
         {
-            Debug.Log("Path not null, Drawing line");
+            //Debug.Log("Path not null, Drawing line");
             int currNode = 0;
 
             while (currNode < currentPath.Count-1)
@@ -36,7 +36,7 @@ public class UnitController : MonoBehaviour {
                 Vector3 end = DungeonController.Instance.TileCoordToWorldCoord(currentPath[currNode + 1].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
 
                 Debug.DrawLine(start, end, Color.red);
-                Debug.Log("Line has been Drawn");
+                //Debug.Log("Line has been Drawn");
                 currNode++;
             }
         }
@@ -107,8 +107,27 @@ public class UnitController : MonoBehaviour {
         Debug.Log("Tile for Attack position: " + tileAttackX + "," + tileAttackY); // les valeurs sont égales à zéro, pourquoi ? Ok, si int en public mais pas en private (getter et setter fautif)
 
         // vérifier si la tile pour l'attaque est comprise entre unitPosX + rangeMin et unitPosX + rangeMax mais aussi si celle-ci est comprise entre unitPosY + rangeMin et unitPosY + rangeMax
-        if (tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) && tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax))
+        if (tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) && tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax) || tileAttackX <= (tileX - rangeMin) && tileAttackX >= (tileX - rangeMax) && tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax))
         {
+            // Attaque coin supérieur droit ou coin supérieur gauche.
+            Debug.Log("Range is Ok, we can attack");
+            return true;
+        }
+        else if (tileAttackX <= (tileX - rangeMin) && tileAttackX >= (tileX - rangeMax) && tileAttackY <= (tileY - rangeMin) && tileAttackY >= (tileY - rangeMax) || tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) && tileAttackY <= (tileY - rangeMin) && tileAttackY >= (tileY - rangeMax))
+        {
+            // Attaque coin inférieur gauche ou coin inférieur droit.
+            Debug.Log("Range is Ok, we can attack");
+            return true;
+        }
+        else if (tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) || tileAttackX <= (tileX - rangeMin) && tileAttackX >= (tileX - rangeMax))
+        {
+            // Attaque Horizontale.
+            Debug.Log("Range is Ok, we can attack");
+            return true;
+        }
+        else if(tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax) || tileAttackY <= (tileY - rangeMin) && tileAttackY >= (tileY - rangeMax))
+        {
+            // Attaque Verticale.
             Debug.Log("Range is Ok, we can attack");
             return true;
         }

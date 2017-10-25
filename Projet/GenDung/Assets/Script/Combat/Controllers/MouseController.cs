@@ -8,6 +8,8 @@ public class MouseController : MonoBehaviour {
     Vector3 currentFramePosition;
     Sprite highlight = null;
 
+    Tile testTile;
+
     void Start()
     {
         GameObject cursor_go = new GameObject();
@@ -33,18 +35,18 @@ public class MouseController : MonoBehaviour {
         {
             Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
 
-            Debug.Log("Tile position is (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
+            //Debug.Log("Tile position is (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
 
-            DungeonController.Instance.GeneratePathTo(tileUnderMouse.X, tileUnderMouse.Y);
+            //DungeonController.Instance.GeneratePathTo(tileUnderMouse.X, tileUnderMouse.Y);
         }
 
         if (Input.GetMouseButtonUp(1))
         {
             Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
 
-            Debug.Log("Attack to this tile position (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
+            //Debug.Log("Attack to this tile position (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
 
-            DungeonController.Instance.LaunchUnitAttack(tileUnderMouse.X,tileUnderMouse.Y);
+            //DungeonController.Instance.LaunchUnitAttack(tileUnderMouse.X,tileUnderMouse.Y);
         }
 	}
 

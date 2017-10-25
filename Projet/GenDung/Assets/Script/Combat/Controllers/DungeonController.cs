@@ -29,7 +29,6 @@ public class DungeonController : MonoBehaviour {
 
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
         unit_go.transform.position = Vector3.zero;
-
         unit = unit_go.GetComponent<UnitController>();
 	}
 
@@ -79,12 +78,15 @@ public class DungeonController : MonoBehaviour {
 				GameObject tile_canvas = GameObject.Instantiate(tileUIPrefab,c.transform.Find("PanelGrid"));
                 tile_canvas.name = "Tile_" + x + "_" + y;
                 tile_canvas.transform.position = new Vector2((26 + x * 50), (26 + y * 50));
+                tile_canvas.GetComponent<TileController>().X = x;
+                tile_canvas.GetComponent<TileController>().Y = y;
 
-               // tile_canvas.transform.SetParent(c.transform.Find("PanelGrid"),true);
+                // tile_canvas.transform.SetParent(c.transform.Find("PanelGrid"),true);
             }
         }
 		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.975f,1.03f,0f);
-        Dungeon.Tiles[0, 2].isWalkable = false;
+
+        //Dungeon.Tiles[0, 2].isWalkable = false;
 
         /* */
     }
@@ -262,8 +264,8 @@ public class DungeonController : MonoBehaviour {
 
     public Tile GetTileAtWorldCoord(Vector3 coord)
     {
-        int x = (int)Mathf.Floor(coord.x);
-        int y = (int)Mathf.Floor(coord.y);
+        int x = (int)Mathf.Floor(coord.x) + 9;
+        int y = (int)Mathf.Floor(coord.y) + 5;
 
         return dungeon.GetTileAt(x, y);
     }
