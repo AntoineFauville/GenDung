@@ -5,9 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerScript : MonoBehaviour {
 
-	public void LoadMap () {
+	public GameData gameData;
+
+	public void ContinueGameLoadMap () {
 		SceneManager.LoadScene ("Map");
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().dungeonUnlockedIndex = gameData.DungeonIndexData;
 	}
+
+	public void NewGameLoadMap () {
+		SceneManager.LoadScene ("CharacterCreation");
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().dungeonUnlockedIndex = 1;
+	}
+
 	public void LoadDungeon () {
 		SceneManager.LoadScene ("Dungeon");
 	}

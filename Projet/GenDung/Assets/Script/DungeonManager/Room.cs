@@ -15,11 +15,12 @@ public class Room {
 	public enum RoomType {empty,chest,fight,boss};
 	public RoomType roomType;
 
+	public enum DoorType {regularDoor,LastDoor};
+	public DoorType doorType;
+	public int connectingTo = 0;
+
 	public int enemies = 0;
 	public Enemy[] enemiesList;
-
-	public int door = 0;
-	public Door[] doorList;
 
 	public int chests = 0;
 	public GameObject[] chestsList;

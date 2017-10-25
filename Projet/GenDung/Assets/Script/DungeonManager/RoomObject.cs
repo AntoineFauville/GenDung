@@ -10,7 +10,12 @@ public class RoomObject : ScriptableObject {
 
 	public int roomID;
 
+	public int doorAmount;
+	public Door[] doorList;
+
 	public Sprite back;
+
+	public Vector2[] playerPositions;
 
 	public ExceptionGrid[] exceptionGrid;
 }

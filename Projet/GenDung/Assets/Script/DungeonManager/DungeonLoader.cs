@@ -14,12 +14,22 @@ public class DungeonLoader : MonoBehaviour {
 	previousScene, //previous scene
 	roomType; // just a checker to see what room is the actual room that we are using.
 
+	Animator
+	FadeInAnimator;
+
 	GameObject 
 	BG, //background de la salle
-	doorinstantiated; //la porte instantiée
+	doorinstantiated, //la porte instantiée
+	characterUI; //instaniated character
 
 	RoomObject
 	roomObject;
+
+	Door
+	door;
+
+	Character
+	carachter;
 
 	public RoomList[] 
 	roomListDungeon; // this are the dungeons, 
@@ -29,7 +39,8 @@ public class DungeonLoader : MonoBehaviour {
 
 	int 
 	index, //index pour les salles du donjon
-	dungeonIndex, //index pour le donjon
+	dungeonIndex;//index pour le donjon
+	public int
 	dungeonUnlockedIndex = 1;	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
 
 	public bool
@@ -48,14 +59,7 @@ public class DungeonLoader : MonoBehaviour {
 	void Start () {
 		//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
 		SceneManager.sceneLoaded += OnSceneLoaded;
-
-		//seulement d'en l'éditor pour charger les modules de debug
-		#if UNITY_EDITOR
-			Instantiate(Resources.Load("UI_Interface/DebugCanvas"));
-			GameObject.Find("IncreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (UnlockNextDungeon);
-			GameObject.Find("DecreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (DecreaseUnlockDungeonIndex);
-			GameObject.Find("ResetUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (ResetUnlockDungeonIndex);
-		#endif
+		FadeInAnimator = GameObject.Find("CanvasFadeInOut").transform.GetChild(0).GetComponent<Animator>();
 	}
 
 	//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
@@ -74,6 +78,8 @@ public class DungeonLoader : MonoBehaviour {
 			
 			//-----------Dungeon gestion scene-------------//
 			if (activeScene == "Dungeon") {
+
+				//print ("index " + index);
 
 				//initialise la référence au background de la salle
 				BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
@@ -179,6 +185,9 @@ public class DungeonLoader : MonoBehaviour {
 	void LoadSceneDungeon () {
 		if (!loadbutton) {
 			loadbutton = true;
+
+			FadeInOutAnim();
+
 			InstrantiateOnceEndDungeon = false;
 			SceneManager.LoadScene ("Dungeon");
 		}
@@ -188,6 +197,9 @@ public class DungeonLoader : MonoBehaviour {
 	void LoadSceneMap () {
 		if (!loadbutton2) {
 			loadbutton2 = true;
+
+			FadeInOutAnim();
+
 			SceneManager.LoadScene ("Map");
 			EndDungeon = true;
 		}
@@ -197,20 +209,14 @@ public class DungeonLoader : MonoBehaviour {
 	void LoadRoom () {
 		if (!loadOnce2) {
 			loadOnce2 = true;
+
+			FadeInOutAnim();
+
 			Instantiate (Resources.Load("UI_Interface/Room1"));
 
-			//reset l'index du donjon
-			index = 0;
 
-			//attribue le background de la salle
-			BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
-			BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.back;
+			StartCoroutine("waitForRoomToBeInstantiated");
 
-			//instantiate the door
-			loadDoor();
-
-			//permet de vérifier le type de salle
-			GetRoomType ();
 		}
 	}
 
@@ -222,6 +228,8 @@ public class DungeonLoader : MonoBehaviour {
 			if (!roomIsLocked) {
 				loadOnce3 = true;
 
+				FadeInOutAnim ();
+
 				//reset for ui
 				isUIinstantiated = false;
 
@@ -230,6 +238,21 @@ public class DungeonLoader : MonoBehaviour {
 				if (roomListDungeon [dungeonIndex].RoomOfTheDungeon[index].number <= roomListDungeon [dungeonIndex].RoomOfTheDungeon.Count)
 					BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.back;
 
+				//retire les anciens characters sur la carte de maniere dynamique
+				for (int i = 0; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam; i++) {
+					GameObject.FindGameObjectWithTag ("Character").SetActive (false);
+				}
+
+
+				//montre en fonction de l'équipe que l'on a précédemment choisi les joueurs dans la salle.
+				for(int i = 0 ; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam ; i++){
+					//add new
+					characterUI = Instantiate (Resources.Load("UI_Interface/Character")) as GameObject;
+					characterUI.transform.SetParent (GameObject.Find ("PlayerPositions").transform, false);
+					characterUI.transform.Find("CharacterBG").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+					characterUI.transform.localPosition = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].x,roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].y,0);
+				}
+
 				//charge la porte
 				loadDoor ();
 
@@ -237,7 +260,9 @@ public class DungeonLoader : MonoBehaviour {
 				GetRoomType ();
 
 				//change l'index pour naviger dans le donjon
-				index = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].connectingTo - 1;
+				//print ("index2 " + index);
+				index = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].connectingTo;
+				//print ("index3 " + index);
 
 				//attend pour ne pas spammer le bouton de porte
 				StartCoroutine ("waitLagForClicking");
@@ -259,8 +284,9 @@ public class DungeonLoader : MonoBehaviour {
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
 				Instantiate (Resources.Load("UI_Interface/ChestRoomUI"));
+				GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
+				GameObject.Find ("PanelBackground").SetActive (false);
 			}
-			GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
 		}
 
 		//--------FIGHT---------//
@@ -329,10 +355,10 @@ public class DungeonLoader : MonoBehaviour {
 			//assigne la porte a ses coordonnées
 			doorinstantiated = Instantiate (Resources.Load("UI_Interface/door"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 			doorinstantiated.transform.SetParent (GameObject.FindGameObjectWithTag ("Canvas").transform, false);
-			doorinstantiated.transform.localPosition = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.x, roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].coordinate.y,0);
+			doorinstantiated.transform.localPosition = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.doorList  [0].coordinate.x, roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.doorList  [0].coordinate.y,0);
 
 			//assigne les scripts que la porte a lorsqu'on clique dessus en fonction de son emplacement dans le donjon
-			if (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorList [0].doorType.ToString () == "LastDoor") {
+			if (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].doorType.ToString () == "LastDoor") {
 				Debug.Log ("hey im last door");
 				doorinstantiated.GetComponent<Button> ().onClick.AddListener (LoadSceneMap);
 				doorinstantiated.GetComponent<Button> ().onClick.AddListener (UnlockNextDungeon);
@@ -363,6 +389,11 @@ public class DungeonLoader : MonoBehaviour {
 		
 	public void ResetUnlockDungeonIndex(){
 		dungeonUnlockedIndex = 1;
+	}
+
+	public void FadeInOutAnim(){
+		FadeInAnimator.SetBool ("Fade",true);
+		StartCoroutine ("FadeInOutCoroutine");
 	}
 
 	//----------------------------IENUMERATOR---------------------------------//
@@ -401,9 +432,40 @@ public class DungeonLoader : MonoBehaviour {
 		doOnceCoroutine = false;
 	}
 
+	IEnumerator waitForRoomToBeInstantiated(){
+		yield return new WaitForSeconds (0.03f);
+
+		//reset l'index du donjon
+		index = 0;
+
+		//attribue le background de la salle
+		BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
+		BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.back;
+
+		//montre en fonction de l'équipe que l'on a précédemment choisi les joueurs dans la salle.
+		for(int i=0 ; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam ; i++){
+			
+			characterUI = Instantiate (Resources.Load("UI_Interface/Character")) as GameObject;
+			characterUI.transform.SetParent (GameObject.Find ("PlayerPositions").transform, false);
+			characterUI.transform.Find("CharacterBG").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+			characterUI.transform.position = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].x,roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].y,0);
+		}
+
+		//instantiate the door
+		loadDoor();
+
+		//permet de vérifier le type de salle
+		GetRoomType ();
+	}
+
 	//coroutine qui attend pour ne pas spammer le bouton de porte
 	IEnumerator waitLagForClicking () {
 		yield return new WaitForSeconds (0.03f);
 		loadOnce3 = false;
+	}
+
+	IEnumerator FadeInOutCoroutine(){
+		yield return new WaitForSeconds (0.3f);
+		FadeInAnimator.SetBool ("Fade",false);
 	}
 }

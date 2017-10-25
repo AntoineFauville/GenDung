@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class SwitchCanvas : MonoBehaviour {
@@ -24,14 +25,15 @@ public class SwitchCanvas : MonoBehaviour {
 		previousScene = activeScene;
 
 		//print (activeScene);
-		print (SceneManager.GetActiveScene ().name);
+		//print (SceneManager.GetActiveScene ().name);
 
 		if (!didIInstantiate) {
 
 			for (int i = 0; i < 4; i++) {
 
 				if (activeScene == sceneNames [i]) {
-					Instantiate (canvas [i]);
+					GameObject Can = canvas [i];
+					Instantiate (Can);
 					didIInstantiate = true;
 				}
 			}
@@ -61,7 +63,20 @@ public class SwitchCanvas : MonoBehaviour {
 
 			if(activeScene == sceneNames [0]){
 				DestroyImmediate (GameObject.Find("DontDestroyOnLoad"));
+
+				#if UNITY_EDITOR
+				DestroyImmediate (GameObject.FindGameObjectWithTag("DebugCanvas"));
+
+				Instantiate(Resources.Load("UI_Interface/DebugCanvas"));
+
+				GameObject.Find("IncreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().UnlockNextDungeon);
+				GameObject.Find("DecreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().DecreaseUnlockDungeonIndex);
+				GameObject.Find("ResetUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().ResetUnlockDungeonIndex);
+
+				#endif
+
 			}
+
 
 			previousScene = activeScene;
 		}
