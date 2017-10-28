@@ -6,4 +6,7 @@ using UnityEngine;
 public class RoomList : ScriptableObject {
 
 	public List<Room> RoomOfTheDungeon;
+
+    public int dungeonGold = 1;
+    
 }

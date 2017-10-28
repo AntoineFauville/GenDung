@@ -23,7 +23,7 @@ public class Room {
 	public Enemy[] enemiesList;
 
 	public int chests = 0;
-	public GameObject[] chestsList;
+	public chest[] chestsList;
 
 	public Boss[] bossList;
 

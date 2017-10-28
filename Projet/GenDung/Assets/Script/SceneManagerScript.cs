@@ -15,7 +15,9 @@ public class SceneManagerScript : MonoBehaviour {
 	public void NewGameLoadMap () {
 		SceneManager.LoadScene ("CharacterCreation");
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().dungeonUnlockedIndex = 1;
-	}
+        GameObject.Find("DontDestroyOnLoad").GetComponent<CurrencyGestion>().restartResetGame();
+
+    }
 
 	public void LoadDungeon () {
 		SceneManager.LoadScene ("Dungeon");

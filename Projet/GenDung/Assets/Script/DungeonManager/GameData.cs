@@ -10,4 +10,6 @@ public class GameData : ScriptableObject {
 	public Character[] SavedCharacterList;
 	public int SavedSizeOfTheTeam = 1;
 
+    public int PlayerMoney = 0;
+
 }

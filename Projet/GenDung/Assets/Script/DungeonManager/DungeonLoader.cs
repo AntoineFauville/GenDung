@@ -91,10 +91,14 @@ public class DungeonLoader : MonoBehaviour {
 			}		
 
 			//-----------Map gestion scene-------------//
-			if (activeScene == "Map") { 
+			if (activeScene == "Map") {
 
-				//----------ecran de fin de donjon-----------//
-				if(EndDungeon && !InstrantiateOnceEndDungeon){
+                //show on the map current money
+                GameObject.Find("GoldUIDispatcherText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
+
+
+                //----------ecran de fin de donjon-----------//
+                if (EndDungeon && !InstrantiateOnceEndDungeon){
 
 					//instantie l'écran de fin
 					InstrantiateOnceEndDungeon = true;
@@ -135,7 +139,13 @@ public class DungeonLoader : MonoBehaviour {
 							bossUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].bossList [0].bossIcon;
 						}
 					}
-				}
+
+                    //ajoute un montant d or au joueur
+                    this.transform.GetComponent<CurrencyGestion>().IncreaseMoney(roomListDungeon[dungeonIndex].dungeonGold);
+
+                    //save all the player money
+                    this.transform.GetComponent<CurrencyGestion>().SaveMoney();
+                }
 
 				//va rechercher dans la liste de donjon dans le prefab de carte l'index qui permet de savoir en passant la souris dans quel donjon on va entrer
 				dungeonIndex = GameObject.FindGameObjectWithTag ("DungeonButtonMap").GetComponent<DungeonListOnMap> ().indexLocal;
@@ -284,9 +294,11 @@ public class DungeonLoader : MonoBehaviour {
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
 				Instantiate (Resources.Load("UI_Interface/ChestRoomUI"));
-				GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
-				GameObject.Find ("PanelBackground").SetActive (false);
-			}
+                GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(AddRewards);
+                GameObject.FindGameObjectWithTag ("unlockRoomButton").GetComponent<Button> ().onClick.AddListener (UnlockRoom);
+                GameObject.Find("GoldUIDispatcherChest").GetComponent<Text>().text = roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].chestsList[0].GoldInTheChest.ToString();
+                GameObject.Find ("PanelBackground").SetActive (false);
+            }
 		}
 
 		//--------FIGHT---------//
@@ -375,7 +387,17 @@ public class DungeonLoader : MonoBehaviour {
 		GameObject.FindGameObjectWithTag ("canvasInDungeon").SetActive (false);
 	}
 
-	public void UnlockNextDungeon(){
+    public void AddRewards ()
+    {
+        //ajoute un montant d or au joueur
+        this.transform.GetComponent<CurrencyGestion>().IncreaseMoney(roomListDungeon[dungeonIndex].RoomOfTheDungeon[index-1].chestsList[0].GoldInTheChest);
+
+        //save all the player money
+        this.transform.GetComponent<CurrencyGestion>().SaveMoney();
+    }
+
+
+    public void UnlockNextDungeon(){
 		if (dungeonUnlockedIndex < dungeonOnTheMap.Length) {
 			dungeonUnlockedIndex++;
 		}
