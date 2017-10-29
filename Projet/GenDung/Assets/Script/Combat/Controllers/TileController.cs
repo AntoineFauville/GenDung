@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class TileController : MonoBehaviour {
 
-    public int x;
-    public int y;
+    private int x;
+    private int y;
+
+    Sprite defSprite;
 
     public void TileCkicked()
     {
@@ -22,10 +24,20 @@ public class TileController : MonoBehaviour {
         }
     }
 
+    public void start()
+    {
+        defSprite = this.GetComponent<Image>().sprite;
+    }
+
     public void TileEnter()
     {
-        //this.GetComponent<Image>().sprite
-        Debug.Log("Pointer is entering a tile: " + x + "," + y);
+        this.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/HighLightGreen");
+        //Debug.Log("Pointer is entering a tile: " + x + "," + y);
+    }
+
+    public void TileExit()
+    {
+        this.GetComponent<Image>().sprite = defSprite;
     }
 
     /* Accessors Methods */
