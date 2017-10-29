@@ -8,7 +8,6 @@ public class DungeonController : MonoBehaviour {
     private static DungeonController instance;
     private Dungeon dungeon;
     private Node[,] graph;
-    private Sprite[] floor = null;
     private UnitController unit;
 
     void CreateInstance()
@@ -23,7 +22,6 @@ public class DungeonController : MonoBehaviour {
 	void Start ()
     {
         CreateInstance();
-        LoadSprites();
         GenerateMapData();
         GeneratePathfindingGraph();
 
@@ -255,11 +253,6 @@ public class DungeonController : MonoBehaviour {
     public bool UnitCanEnterTile(int x, int y)
     {
         return Dungeon.Tiles[x,y].isWalkable;
-    }
-
-    public void LoadSprites()
-    {
-        floor = Resources.LoadAll<Sprite>("Sprites/tileSet");
     }
 
     public Tile GetTileAtWorldCoord(Vector3 coord)
