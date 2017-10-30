@@ -8,19 +8,21 @@ public class TileController : MonoBehaviour {
 
     private int x;
     private int y;
+    private Sprite defSprite;
 
-    Sprite defSprite;
-
-    public void TileCkicked()
+    public void TileClicked()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && CombatController.Instance.placementDone == true )
         {
             DungeonController.Instance.GeneratePathTo(x, y);
         }
-        
-        if (Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1) && CombatController.Instance.placementDone == true)
         {
             DungeonController.Instance.LaunchUnitAttack(x, y);
+        }
+        else
+        {
+            Debug.Log("You didn't place your character ? TOO BAD, you can't fight");
         }
     }
 
