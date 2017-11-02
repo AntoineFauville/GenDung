@@ -6,26 +6,40 @@ using UnityEngine.UI;
 
 public class TileController : MonoBehaviour {
 
-    public int x;
-    public int y;
+    private int x;
+    private int y;
+    private Sprite defSprite;
 
-    public void TileCkicked()
+    public void TileClicked()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && CombatController.Instance.placementDone == true )
         {
             DungeonController.Instance.GeneratePathTo(x, y);
         }
-        
-        if (Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1) && CombatController.Instance.placementDone == true)
         {
             DungeonController.Instance.LaunchUnitAttack(x, y);
         }
+        else
+        {
+            Debug.Log("You didn't place your character ? TOO BAD, you can't fight");
+        }
+    }
+
+    public void start()
+    {
+        defSprite = this.GetComponent<Image>().sprite;
     }
 
     public void TileEnter()
     {
-        //this.GetComponent<Image>().sprite
-        Debug.Log("Pointer is entering a tile: " + x + "," + y);
+        this.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/HighLightGreen");
+        //Debug.Log("Pointer is entering a tile: " + x + "," + y);
+    }
+
+    public void TileExit()
+    {
+        this.GetComponent<Image>().sprite = defSprite;
     }
 
     /* Accessors Methods */

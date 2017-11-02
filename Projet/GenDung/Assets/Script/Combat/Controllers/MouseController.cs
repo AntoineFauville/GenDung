@@ -33,20 +33,12 @@ public class MouseController : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0))
         {
-            Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
-
-            //Debug.Log("Tile position is (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
-
-            //DungeonController.Instance.GeneratePathTo(tileUnderMouse.X, tileUnderMouse.Y);
+            DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
         }
 
         if (Input.GetMouseButtonUp(1))
         {
-            Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
-
-            //Debug.Log("Attack to this tile position (" + tileUnderMouse.X + "," + tileUnderMouse.Y + ").");
-
-            //DungeonController.Instance.LaunchUnitAttack(tileUnderMouse.X,tileUnderMouse.Y);
+            DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
         }
 	}
 

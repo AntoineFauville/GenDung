@@ -13,6 +13,7 @@ public class Tile {
     public int x;
     public int y;
     public bool isWalkable = true;
+    public bool isStarterTile = false;
     public float movementCost = 1;
     Dungeon dungeon;
 
