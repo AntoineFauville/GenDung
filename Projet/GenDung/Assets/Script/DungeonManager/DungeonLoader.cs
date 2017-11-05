@@ -104,8 +104,11 @@ public class DungeonLoader : MonoBehaviour {
 					InstrantiateOnceEndDungeon = true;
 					Instantiate(Resources.Load("UI_Interface/EndDungeonUI"));
 
-					//verifie dans toutes les salles
-					for (int i = 0; i < roomListDungeon[dungeonIndex].RoomOfTheDungeon.Count(); i++) {
+                    //montre le montant de gold que le donjon a donné
+                    GameObject.Find("GoldDispatchEndUI").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[dungeonIndex].dungeonGold.ToString();
+
+                    //verifie dans toutes les salles
+                    for (int i = 0; i < roomListDungeon[dungeonIndex].RoomOfTheDungeon.Count(); i++) {
 
 						//si la salle est de type fight
 						if (roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].roomType.ToString() == "fight") {
