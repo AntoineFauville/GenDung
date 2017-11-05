@@ -54,7 +54,8 @@ public class DungeonLoader : MonoBehaviour {
 	doOnceCoroutine,	//lance la coroutine qu'une fois
 	sceneLoaded,	//attendre que la scene est bien chargé
 	InstrantiateOnceEndDungeon,	//instancier une fois l'écran de fin de donjon
-	EndDungeon;	//verifier si le donjon est fini ou pas
+	EndDungeon,	//verifier si le donjon est fini ou pas
+    DoOnceAllRelatedToUpgradeTavernPanel;
 
 	void Start () {
 		//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
@@ -92,6 +93,9 @@ public class DungeonLoader : MonoBehaviour {
 
 			//-----------Map gestion scene-------------//
 			if (activeScene == "Map") {
+
+                //reset la taverne
+                DoOnceAllRelatedToUpgradeTavernPanel = false;
 
                 //show on the map current money
                 GameObject.Find("GoldUIDispatcherText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
@@ -188,6 +192,35 @@ public class DungeonLoader : MonoBehaviour {
             //--------Taverne--------//
             if (activeScene == "Tavern")
             {
+                //montre le nombre de gold que possede le joueur pour l'achat de upgrade
+                GameObject.Find("GoldTotalPlayerUp").GetComponent<Text>().text = "Your Gold : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
+
+                //a faire ajouter l'index par rapport a la liste des personnages qu'on a selectionner
+                //affiche l'image dans le panel en fonction du personnage selectionner avec le bouton
+                GameObject.Find("CharDisImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].TempSprite;
+                GameObject.Find("HistoryText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].story;
+
+                GameObject.Find("HealthText").GetComponent<Text>().text = "Character Health : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV.ToString();
+                GameObject.Find("ActionText").GetComponent<Text>().text = "Character Action Points : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].ActionPoints_PA.ToString();
+                GameObject.Find("AttackText").GetComponent<Text>().text = "Character Close Battle Attack : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].CloseAttaqueValue.ToString();
+                GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].DistanceAttaqueValue.ToString();
+
+                if (!DoOnceAllRelatedToUpgradeTavernPanel)
+                {
+                    DoOnceAllRelatedToUpgradeTavernPanel = true;
+                    GameObject.Find("CanvasUpgradePanel").GetComponent<Canvas>().enabled = false;
+                    //pour chaque membre de l'équipe ajoute un nouveau bouton au menu pour passer d'un membre a un autre dans le panel upgrade
+                    for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
+                    {
+                        //ajoute un nouveau bouton en haut qui permet de naviguer entre les personnages
+                        characterUI = Instantiate(Resources.Load("UI_Interface/TeamMemberUp")) as GameObject;
+                        characterUI.transform.SetParent(GameObject.Find("TeamUpPanel").transform, false);
+                        characterUI.transform.Find("TeamSpriteImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+                    }
+
+                    
+                }
+
 
             }
         } else {
