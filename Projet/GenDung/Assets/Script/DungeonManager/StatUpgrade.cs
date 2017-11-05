@@ -28,11 +28,15 @@ public class StatUpgrade : MonoBehaviour {
             Debug.Log("what are you trying to do bro");
         }
 
-        if (GoldCostUp < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney)
+        if (GoldCostUp <= GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney)
         {
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney -= GoldCostUp;
 
             GoldCostUp = 0;
+            HealthCost = 0;
+            PACost = 0;
+            CACCost = 0;
+            DistCost = 0;
 
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().healthTemp;
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].ActionPoints_PA = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().ActionTemp;
