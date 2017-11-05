@@ -56,13 +56,17 @@ public class DungeonController : MonoBehaviour {
             {
 				GameObject tile_canvas = GameObject.Instantiate(tileUIPrefab,c.transform.Find("PanelGrid"));
                 tile_canvas.name = "Tile_" + x + "_" + y;
-                tile_canvas.transform.position = new Vector2((26 + x * 50), (26 + y * 50));
+                tile_canvas.transform.localPosition = 
+                    new Vector2(
+                         (Screen.currentResolution.width / 14 + x * Screen.currentResolution.width / 60), 
+                         (Screen.currentResolution.height / 20 + y * Screen.currentResolution.height / 33.5f)
+                    );
                 tile_canvas.GetComponent<TileController>().X = x;
                 tile_canvas.GetComponent<TileController>().Y = y;
             }
         }
-		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.975f,1.03f,0f);
-
+		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.95f,1,1f);
+        c.transform.Find("PanelGrid").transform.localPosition = new Vector3(-Screen.currentResolution.width / 3.732f, -Screen.currentResolution.width / 7.3f, 0);
         //Dungeon.Tiles[0, 2].isWalkable = false;
 
         /* */
