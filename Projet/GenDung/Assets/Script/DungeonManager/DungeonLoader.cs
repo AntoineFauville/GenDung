@@ -184,7 +184,13 @@ public class DungeonLoader : MonoBehaviour {
 					}
 				}
 			}
-		} else {
+
+            //--------Taverne--------//
+            if (activeScene == "Tavern")
+            {
+
+            }
+        } else {
 			//systeme de vérification pour voir si la scene a bien charger
 			//au sinon lance une coroutine qui attend peu et reinitialise les données
 			if (!doOnceCoroutine) {
