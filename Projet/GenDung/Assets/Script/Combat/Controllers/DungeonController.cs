@@ -63,7 +63,8 @@ public class DungeonController : MonoBehaviour {
         }
 		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.975f,1.03f,0f);
 
-        //Dungeon.Tiles[0, 2].isWalkable = false;
+        Dungeon.Tiles[0, 2].isWalkable = false;
+        Dungeon.Tiles[10, 7].isStarterTile = true;
 
         /* */
     }

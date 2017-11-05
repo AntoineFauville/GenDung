@@ -24,7 +24,10 @@ public class CombatController : MonoBehaviour {
 
     /* Code de gestion du placement des personnages Pré-Combat*/
 
+    public void PlaceCharacter()
+    {
 
+    }
 
     /* Code de gestion de l'Initiative des personnages */
 
