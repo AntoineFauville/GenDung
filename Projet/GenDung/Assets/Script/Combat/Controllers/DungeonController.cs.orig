@@ -65,10 +65,16 @@ public class DungeonController : MonoBehaviour {
                 tile_canvas.GetComponent<TileController>().Y = y;
             }
         }
+<<<<<<< HEAD
 		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.95f,1,1f);
         c.transform.Find("PanelGrid").transform.localPosition = new Vector3(-Screen.currentResolution.width / 3.732f, -Screen.currentResolution.width / 7.3f, 0);
+        //Dungeon.Tiles[0, 2].isWalkable = false;
+=======
+		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.975f,1.03f,0f);
+
         Dungeon.Tiles[0, 2].isWalkable = false;
         Dungeon.Tiles[10, 7].isStarterTile = true;
+>>>>>>> dee433000ec29868650070669137df199e4c5b70
 
         /* */
     }

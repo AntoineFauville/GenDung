@@ -33,13 +33,21 @@ public class TileController : MonoBehaviour {
 
     public void TileEnter()
     {
-        this.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/HighLightGreen");
-        //Debug.Log("Pointer is entering a tile: " + x + "," + y);
+        if (DungeonController.Instance.Dungeon.Tiles[x,y].isWalkable == true)
+        {
+            this.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/HighLightGreen");
+            Debug.Log("Pointer is entering a tile: " + x + "," + y);
+            Debug.Log("Spatial position of this tile: " + this.transform.position);
+            Debug.Log("Spatial LocalPosition of this tile: " + this.transform.localPosition);
+        }
     }
 
     public void TileExit()
     {
-        this.GetComponent<Image>().sprite = defSprite;
+        if (DungeonController.Instance.Dungeon.Tiles[x, y].isWalkable == true)
+        {
+            this.GetComponent<Image>().sprite = defSprite;
+        }
     }
 
     /* Accessors Methods */
