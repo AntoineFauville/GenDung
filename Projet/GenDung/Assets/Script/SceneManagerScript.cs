@@ -23,7 +23,7 @@ public class SceneManagerScript : MonoBehaviour {
 		SceneManager.LoadScene ("Dungeon");
 	}
 	public void LoadMarket () {
-		SceneManager.LoadScene ("Market");
+		SceneManager.LoadScene ("Tavern");
 	}
 	public void LoadMainMenu () {
 		SceneManager.LoadScene ("MainMenu");
