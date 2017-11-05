@@ -19,6 +19,9 @@ public class Character : ScriptableObject {
 	CloseAttaqueValue,
 	DistanceAttaqueValue;
 
+    public bool
+    AvailableAtCharacterCreation;
+
 	public string
 	story = "this is a story of a random player, we still need to implement this yes...";
 }

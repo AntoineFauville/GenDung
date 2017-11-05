@@ -40,6 +40,14 @@ public class DungeonLoader : MonoBehaviour {
 	int 
 	index, //index pour les salles du donjon
 	dungeonIndex;//index pour le donjon
+
+    //all int for upgrade temp
+    public int
+    healthTemp,
+    ActionTemp,
+    CACTemp,
+    DistTemp;
+
 	public int
 	dungeonUnlockedIndex = 1;	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
 
@@ -200,13 +208,15 @@ public class DungeonLoader : MonoBehaviour {
                 GameObject.Find("CharDisImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].TempSprite;
                 GameObject.Find("HistoryText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].story;
 
-                GameObject.Find("HealthText").GetComponent<Text>().text = "Character Health : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV.ToString();
-                GameObject.Find("ActionText").GetComponent<Text>().text = "Character Action Points : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].ActionPoints_PA.ToString();
-                GameObject.Find("AttackText").GetComponent<Text>().text = "Character Close Battle Attack : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].CloseAttaqueValue.ToString();
-                GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].DistanceAttaqueValue.ToString();
-
+              
                 if (!DoOnceAllRelatedToUpgradeTavernPanel)
                 {
+                    //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement
+                    healthTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV;
+                    ActionTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].ActionPoints_PA;
+                    CACTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].CloseAttaqueValue;
+                    DistTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].DistanceAttaqueValue;
+
                     DoOnceAllRelatedToUpgradeTavernPanel = true;
                     GameObject.Find("CanvasUpgradePanel").GetComponent<Canvas>().enabled = false;
                     //pour chaque membre de l'équipe ajoute un nouveau bouton au menu pour passer d'un membre a un autre dans le panel upgrade
@@ -220,6 +230,19 @@ public class DungeonLoader : MonoBehaviour {
 
                     
                 }
+
+                //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement
+                //PV
+                GameObject.Find("HealthText").GetComponent<Text>().text = "Character Health : " + healthTemp.ToString();
+
+                //PA
+                GameObject.Find("ActionText").GetComponent<Text>().text = "Character Action Points : " + ActionTemp.ToString();
+
+                //CAC
+                GameObject.Find("AttackText").GetComponent<Text>().text = "Character Close Battle Attack : " + CACTemp.ToString();
+
+                //Dist
+                GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + DistTemp.ToString();
 
 
             }
