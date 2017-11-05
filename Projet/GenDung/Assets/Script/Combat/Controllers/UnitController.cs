@@ -13,11 +13,11 @@ public class UnitController : MonoBehaviour {
     private List<Node> currentPath = null;
     private bool attacking = false;
 
-    int moveSpeed = 2; // Valeur de base de déplacement de l'unité.
-    int actionCount = 3; // Valeur de base d'action de l'unité.
+    int moveSpeed = 99; // Valeur de base de déplacement de l'unité.
+    int actionCount = 99; // Valeur de base d'action de l'unité.
 
-    float remainingMovement = 2; //Points de mouvement restant de l'unité pour ce tour.
-    float remainingAction = 3; //Points d'actions restant de l'unité pour ce tour.
+    float remainingMovement = 99; //Points de mouvement restant de l'unité pour ce tour.
+    float remainingAction = 99; //Points d'actions restant de l'unité pour ce tour.
 
     int attackCost = 1; // Coût d'une attaque de l'unité.
     int rangeMax = 2; // Portée maximale de l'unité
@@ -27,7 +27,7 @@ public class UnitController : MonoBehaviour {
     {
 	    if(currentPath != null)
         {
-            //Debug.Log("Path not null, Drawing line");
+            Debug.Log("Path not null, Drawing line");
             int currNode = 0;
 
             while (currNode < currentPath.Count-1)
@@ -47,10 +47,10 @@ public class UnitController : MonoBehaviour {
             Attack();
         }
         
-        if (Vector3.Distance(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX,tileY)) < 0.1f)
+        if (/*Vector3.Distance(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX,tileY)) < 0.1f*/ true)
         {
             AdvancePathing();
-            transform.position = Vector3.Lerp(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY), 5f * Time.deltaTime);
+            //transform.position = Vector3.Lerp(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY), 5f * Time.deltaTime);
         }
 	}
 
@@ -67,14 +67,16 @@ public class UnitController : MonoBehaviour {
             return;
         }
 
-        transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX*64, tileY*64);
+        Debug.Log("Beginning Movement");
+
+        //transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
 
         remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
 
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
 
-        transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
+        transform.position = DungeonController.Instance.TileCoordFromClick(tileX,tileY);
 
         currentPath.RemoveAt(0);
 

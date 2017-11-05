@@ -10,6 +10,8 @@ public class DungeonController : MonoBehaviour {
     private Node[,] graph;
     private UnitController unit;
 
+    private Vector3 worldPosTemp;
+
     void CreateInstance()
     {
         if (instance != null)
@@ -27,7 +29,7 @@ public class DungeonController : MonoBehaviour {
 
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
         unit_go.transform.position = Vector3.zero;
-        unit = unit_go.GetComponent<UnitController>();
+        unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
 	}
 
     void Update ()
@@ -63,12 +65,15 @@ public class DungeonController : MonoBehaviour {
                     );
                 tile_canvas.GetComponent<TileController>().X = x;
                 tile_canvas.GetComponent<TileController>().Y = y;
+
+                Dungeon.Tiles[x, y].isWalkable = true;
+
             }
         }
 		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.95f,1,1f);
         c.transform.Find("PanelGrid").transform.localPosition = new Vector3(-Screen.currentResolution.width / 3.732f, -Screen.currentResolution.width / 7.3f, 0);
-        Dungeon.Tiles[0, 2].isWalkable = false;
-        Dungeon.Tiles[10, 7].isStarterTile = true;
+        //Dungeon.Tiles[0, 2].isWalkable = false;
+        //Dungeon.Tiles[10, 7].isStarterTile = true;
 
         /* */
     }
@@ -241,15 +246,21 @@ public class DungeonController : MonoBehaviour {
 
     public Tile GetTileAtWorldCoord(Vector3 coord)
     {
-        int x = (int)Mathf.Floor(coord.x) + 9;
-        int y = (int)Mathf.Floor(coord.y) + 5;
+        int x = (int)Mathf.Floor(coord.x) ;
+        int y = (int)Mathf.Floor(coord.y) ;
 
         return dungeon.GetTileAt(x, y);
     }
 
     public Vector3 TileCoordToWorldCoord(int x, int y)
     {
-        return new Vector3(x, y, 0);
+        return new Vector3(Screen.currentResolution.width / 14 + x * Screen.currentResolution.width / 60, Screen.currentResolution.height / 20 + y * Screen.currentResolution.height / 33.5f, 0);
+    }
+
+    public Vector3 TileCoordFromClick(int x, int y)
+    {
+        Debug.Log(worldPosTemp);
+        return worldPosTemp;
     }
 
     /* Accessors Methods */
@@ -277,6 +288,19 @@ public class DungeonController : MonoBehaviour {
         set
         {
             dungeon = value;
+        }
+    }
+
+    public Vector3 WorldPosTemp
+    {
+        get
+        {
+            return worldPosTemp;
+        }
+
+        set
+        {
+            worldPosTemp = value;
         }
     }
 

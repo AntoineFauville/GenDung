@@ -5,7 +5,7 @@ using UnityEngine;
 public class CombatController : MonoBehaviour {
 
     private static CombatController instance;
-    public bool placementDone = false;
+    public bool placementDone = true;
 
     void CreateInstance()
     {
@@ -19,6 +19,7 @@ public class CombatController : MonoBehaviour {
     public void Start()
     {
         CreateInstance();
+        placementDone = true;
         Debug.Log("Combat will begin soon (if i want it to work soon) ");
     }
 
