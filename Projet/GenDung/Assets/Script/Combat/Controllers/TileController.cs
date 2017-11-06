@@ -10,12 +10,14 @@ public class TileController : MonoBehaviour {
     private int y;
     private Sprite defSprite;
 
+    private bool clicked = false;
+
     public void TileClicked()
     {
-        if (Input.GetMouseButtonUp(0) && CombatController.Instance.placementDone == true )
+        if (Input.GetMouseButtonUp(0) && CombatController.Instance.placementDone == true && clicked == false )
         {
+            StartCoroutine(WaitAfterClick());
             DungeonController.Instance.WorldPosTemp = this.transform.position;
-            Debug.Log("World Position: " + this.transform.position);
             DungeonController.Instance.GeneratePathTo(x, y);
         }
         else if (Input.GetMouseButtonUp(1) && CombatController.Instance.placementDone == true)
@@ -38,9 +40,6 @@ public class TileController : MonoBehaviour {
         if (DungeonController.Instance.Dungeon.Tiles[x,y].isWalkable == true)
         {
             this.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/HighLightGreen");
-            //Debug.Log("Pointer is entering a tile: " + x + "," + y);
-            Debug.Log("Spatial position of this tile: " + this.transform.position);
-            //Debug.Log("Spatial LocalPosition of this tile: " + this.transform.localPosition);
         }
     }
 
@@ -50,6 +49,14 @@ public class TileController : MonoBehaviour {
         {
             this.GetComponent<Image>().sprite = defSprite;
         }
+    }
+
+
+    public IEnumerator WaitAfterClick()
+    {
+        clicked = true;
+        yield return new WaitForSeconds(0.1f);
+        clicked = false;
     }
 
     /* Accessors Methods */
