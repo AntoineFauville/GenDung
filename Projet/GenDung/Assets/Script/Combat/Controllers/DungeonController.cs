@@ -259,7 +259,6 @@ public class DungeonController : MonoBehaviour {
 
     public Vector3 TileCoordFromClick(int x, int y)
     {
-        Debug.Log(worldPosTemp);
         return worldPosTemp;
     }
 
