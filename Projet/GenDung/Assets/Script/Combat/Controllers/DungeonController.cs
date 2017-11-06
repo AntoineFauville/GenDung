@@ -29,6 +29,15 @@ public class DungeonController : MonoBehaviour {
 
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
         unit_go.transform.position = Vector3.zero;
+
+        /*unit_go.transform.position = new Vector3 (
+
+            //oui c'est un peu long
+
+            GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.SpawningPoints[0].Tile.x, 
+            GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.SpawningPoints[0].Tile.y, 
+            0);
+            */
         unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
 	}
 

@@ -17,5 +17,9 @@ public class RoomObject : ScriptableObject {
 
 	public Vector2[] playerPositions;
 
-	public ExceptionGrid[] exceptionGrid;
+	public ExceptionGrid[] Walls;
+
+    public ExceptionGrid[] SpawningPoints;
+
+    public ExceptionGrid[] MonsterSpawningPoints;
 }

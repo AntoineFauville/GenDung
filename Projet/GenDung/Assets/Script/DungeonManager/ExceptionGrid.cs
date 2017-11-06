@@ -5,5 +5,5 @@ using UnityEngine;
 [System.Serializable]
 public class ExceptionGrid {
 
-	public Vector2 ExceptionTile;
+	public Vector2 Tile;
 }

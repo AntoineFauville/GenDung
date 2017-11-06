@@ -37,7 +37,7 @@ public class DungeonLoader : MonoBehaviour {
 	public GameObject[] 
 	dungeonOnTheMap;	//list des boutons des donjons sur la carte
 
-	int 
+	public int 
 	index, //index pour les salles du donjon
 	dungeonIndex;//index pour le donjon
 
