@@ -52,7 +52,9 @@ public class UnitController : MonoBehaviour {
             AdvancePathing();
             //transform.position = Vector3.Lerp(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY), 5f * Time.deltaTime);
         }
-	}
+
+        Debug.Log("Actual Position of the Unit: " + this.transform.position);
+    }
 
     public void AdvancePathing()
     {
@@ -152,6 +154,11 @@ public class UnitController : MonoBehaviour {
         remainingAction = actionCount;
 
         Debug.Log("New Turn has begun !!!");
+    }
+
+    public void SetDefaultSpawn(Vector3 pos)
+    {
+        this.transform.position = pos;
     }
 
     /* Accessors Methods*/
