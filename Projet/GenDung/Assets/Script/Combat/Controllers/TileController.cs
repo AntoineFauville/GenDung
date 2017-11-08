@@ -13,6 +13,8 @@ public class TileController : MonoBehaviour {
 
     private bool clicked = false;
 
+    public RoomObject room;
+
     public void TileClicked()
     {
         if (SceneManager.GetActiveScene().name != "Editor")
@@ -35,10 +37,12 @@ public class TileController : MonoBehaviour {
         else
         {
             if (Input.GetMouseButtonUp(0))
-            Debug.Log("this is tile: (" + x +","+y+")");
+                EditorController.Instance.AddWall(x, y);
             /*
             Insert Code here for linking to ScriptableObject.
             */
+            //GameObject.FindGameObjectWithTag("backgroundOfRoom").transform.GetComponent<Image>().sprite = room.back;
+
         }
     }
 
