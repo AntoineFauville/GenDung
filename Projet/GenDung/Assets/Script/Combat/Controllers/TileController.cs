@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -14,19 +15,30 @@ public class TileController : MonoBehaviour {
 
     public void TileClicked()
     {
-        if (Input.GetMouseButtonUp(0) && CombatController.Instance.placementDone == true && clicked == false )
+        if (SceneManager.GetActiveScene().name != "Editor")
         {
-            StartCoroutine(WaitAfterClick());
-            DungeonController.Instance.WorldPosTemp = this.transform.position;
-            DungeonController.Instance.GeneratePathTo(x, y);
-        }
-        else if (Input.GetMouseButtonUp(1) && CombatController.Instance.placementDone == true)
-        {
-            DungeonController.Instance.LaunchUnitAttack(x, y);
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.placementDone == true && clicked == false)
+            {
+                StartCoroutine(WaitAfterClick());
+                DungeonController.Instance.WorldPosTemp = this.transform.position;
+                DungeonController.Instance.GeneratePathTo(x, y);
+            }
+            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.placementDone == true)
+            {
+                DungeonController.Instance.LaunchUnitAttack(x, y);
+            }
+            else
+            {
+                Debug.Log("You didn't place your character ? TOO BAD, you can't fight");
+            }
         }
         else
         {
-            Debug.Log("You didn't place your character ? TOO BAD, you can't fight");
+            if (Input.GetMouseButtonUp(0))
+            Debug.Log("this is tile: (" + x +","+y+")");
+            /*
+            Insert Code here for linking to ScriptableObject.
+            */
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DungeonController : MonoBehaviour {
 
@@ -29,12 +30,15 @@ public class DungeonController : MonoBehaviour {
 
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
 
-        float startX = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.SpawningPoints[0].Tile.x;
-        float startY = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.SpawningPoints[0].Tile.y;
-        Vector3 startPos = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + startX + "_" + startY).transform.position;
+        if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
+        {
+            float startX = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.SpawningPoints[0].Tile.x;
+            float startY = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.SpawningPoints[0].Tile.y;
+            Vector3 startPos = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + startX + "_" + startY).transform.position;
 
-        unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
-        unit.SetDefaultSpawn(startPos);
+            unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
+            unit.SetDefaultSpawn(startPos);
+        }
 	}
 
     void Update ()
