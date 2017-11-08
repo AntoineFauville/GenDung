@@ -9,11 +9,8 @@ public class TileController : MonoBehaviour {
 
     private int x;
     private int y;
-    private Sprite defSprite;
 
     private bool clicked = false;
-
-    public RoomObject room;
 
     public void TileClicked()
     {
@@ -37,36 +34,40 @@ public class TileController : MonoBehaviour {
         else
         {
             if (Input.GetMouseButtonUp(0))
+            {
                 EditorController.Instance.AddWall(x, y);
+                this.GetComponent<Image>().color = Color.red;
+            }
             else if (Input.GetMouseButtonUp(1))
+            {
                 EditorController.Instance.RemoveWall(x, y);
-            /*
-            Insert Code here for linking to ScriptableObject.
-            */
-            //GameObject.FindGameObjectWithTag("backgroundOfRoom").transform.GetComponent<Image>().sprite = room.back;
+                this.GetComponent<Image>().color = new Color(255,255,255,0.1f); 
+            }
 
         }
     }
 
-    public void start()
+    public void Start()
     {
-        defSprite = this.GetComponent<Image>().sprite;
+        TileExit();
     }
 
     public void TileEnter()
     {
-        if (DungeonController.Instance.Dungeon.Tiles[x,y].isWalkable == true)
-        {
-            this.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/HighLightGreen");
-        }
-    }
+        if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x,y))
+            this.GetComponent<Image>().color = Color.green;
+        else
+            this.GetComponent<Image>().color = Color.green;
+    }       
 
     public void TileExit()
     {
-        if (DungeonController.Instance.Dungeon.Tiles[x, y].isWalkable == true)
-        {
-            this.GetComponent<Image>().sprite = defSprite;
-        }
+        if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x, y))
+            this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
+        else if (SceneManager.GetActiveScene().name == "Editor")
+            this.GetComponent<Image>().color = Color.red;
+        else
+            this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
     }
 
 

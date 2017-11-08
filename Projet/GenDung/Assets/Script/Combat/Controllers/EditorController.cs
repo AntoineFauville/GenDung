@@ -8,6 +8,7 @@ public class EditorController : MonoBehaviour {
     private static EditorController instance;
 
     public RoomObject room;
+    public Vector2 wall;
 
     public void Start()
     {
@@ -27,7 +28,7 @@ public class EditorController : MonoBehaviour {
     public void AddWall(int x, int y)
     {
         Debug.Log("this is tile: (" + x + "," + y + ")");
-        Vector2 wall = new Vector2(x, y);
+        wall = new Vector2(x, y);
 
         if (!room.Walls.Contains(wall))
         {
@@ -40,7 +41,7 @@ public class EditorController : MonoBehaviour {
 
     public void RemoveWall(int x, int y)
     {
-        Vector2 wall = new Vector2(x, y);
+         wall = new Vector2(x, y);
 
         if (room.Walls.Contains(wall))
         {
@@ -49,6 +50,12 @@ public class EditorController : MonoBehaviour {
         }
         else
             Debug.Log("Wall not in database");
+    }
+
+    public bool CheckWall(int x, int y)
+    {
+        Vector2 test = new Vector2(x, y);
+        return room.Walls.Contains(test);
     }
 
     /* Accessors Methods */
