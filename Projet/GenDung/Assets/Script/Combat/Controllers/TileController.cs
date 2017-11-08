@@ -57,7 +57,7 @@ public class TileController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x,y))
             this.GetComponent<Image>().color = Color.green;
         else
-            this.GetComponent<Image>().color = Color.green;
+            this.GetComponent<Image>().color = new Color(255,255,0, 0.6f);
     }       
 
     public void TileExit()

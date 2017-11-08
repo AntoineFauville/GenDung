@@ -27,16 +27,15 @@ public class EditorController : MonoBehaviour {
 
     public void AddWall(int x, int y)
     {
-        Debug.Log("this is tile: (" + x + "," + y + ")");
         wall = new Vector2(x, y);
 
         if (!room.Walls.Contains(wall))
         {
             room.Walls.Add(wall);
-            Debug.Log("Wall has been added");
+            Debug.Log("Wall has been added : (" + x + "," + y + ")");
         }
         else
-            Debug.Log("Fuck your wall");
+            Debug.Log("Non non non, Ce ne sont pas la loutre (" + x + "," + y + ") que vous recherchez ... ");
     }
 
     public void RemoveWall(int x, int y)
@@ -46,10 +45,10 @@ public class EditorController : MonoBehaviour {
         if (room.Walls.Contains(wall))
         {
             room.Walls.Remove(wall);
-            Debug.Log("Wall has been removed");
+            Debug.Log("Wall has been removed : (" + x + "," + y + ")");
         }
         else
-            Debug.Log("Wall not in database");
+            Debug.Log("Cette loutre (" + x + "," + y + ") n'as pas la Force en elle ... ");
     }
 
     public bool CheckWall(int x, int y)
