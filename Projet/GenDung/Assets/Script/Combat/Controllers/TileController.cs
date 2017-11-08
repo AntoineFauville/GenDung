@@ -38,6 +38,8 @@ public class TileController : MonoBehaviour {
         {
             if (Input.GetMouseButtonUp(0))
                 EditorController.Instance.AddWall(x, y);
+            else if (Input.GetMouseButtonUp(1))
+                EditorController.Instance.RemoveWall(x, y);
             /*
             Insert Code here for linking to ScriptableObject.
             */

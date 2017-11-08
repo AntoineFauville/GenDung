@@ -27,6 +27,28 @@ public class EditorController : MonoBehaviour {
     public void AddWall(int x, int y)
     {
         Debug.Log("this is tile: (" + x + "," + y + ")");
+        Vector2 wall = new Vector2(x, y);
+
+        if (!room.Walls.Contains(wall))
+        {
+            room.Walls.Add(wall);
+            Debug.Log("Wall has been added");
+        }
+        else
+            Debug.Log("Fuck your wall");
+    }
+
+    public void RemoveWall(int x, int y)
+    {
+        Vector2 wall = new Vector2(x, y);
+
+        if (room.Walls.Contains(wall))
+        {
+            room.Walls.Remove(wall);
+            Debug.Log("Wall has been removed");
+        }
+        else
+            Debug.Log("Wall not in database");
     }
 
     /* Accessors Methods */
