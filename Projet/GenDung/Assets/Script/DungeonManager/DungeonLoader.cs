@@ -525,8 +525,8 @@ public class DungeonLoader : MonoBehaviour {
 		//reset l'index du donjon
 		index = 0;
 
-		//attribue le background de la salle
-		BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
+        //attribue le background de la salle
+        BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
 		BG.transform.GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.back;
 
 		//montre en fonction de l'équipe que l'on a précédemment choisi les joueurs dans la salle.
@@ -535,15 +535,17 @@ public class DungeonLoader : MonoBehaviour {
 			characterUI = Instantiate (Resources.Load("UI_Interface/Character")) as GameObject;
 			characterUI.transform.SetParent (GameObject.Find ("PlayerPositions").transform, false);
 			characterUI.transform.Find("CharacterBG").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
-			characterUI.transform.position = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].x,roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].y,0);
-		}
+            characterUI.transform.localPosition = new Vector3(roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].room.playerPositions[i].x, roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].room.playerPositions[i].y, 0);
+        }
 
-		//instantiate the door
-		loadDoor();
+        //instantiate the door
+        loadDoor();
 
 		//permet de vérifier le type de salle
 		GetRoomType ();
-	}
+
+        index = roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].connectingTo;
+    }
 
 	//coroutine qui attend pour ne pas spammer le bouton de porte
 	IEnumerator waitLagForClicking () {
