@@ -38,8 +38,9 @@ public class DungeonLoader : MonoBehaviour {
 	dungeonOnTheMap;	//list des boutons des donjons sur la carte
 
 	public int 
-	index, //index pour les salles du donjon
-	dungeonIndex;//index pour le donjon
+	index, //index de la salle connecté à actualIndex.
+    actualIndex, // index de la salle actuelle.
+	dungeonIndex;//index pour le donjon.
 
     //all int for upgrade temp
     public int
@@ -305,6 +306,8 @@ public class DungeonLoader : MonoBehaviour {
 
 				FadeInOutAnim ();
 
+                actualIndex = roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].number;
+
 				//reset for ui
 				isUIinstantiated = false;
 
@@ -524,6 +527,7 @@ public class DungeonLoader : MonoBehaviour {
 
 		//reset l'index du donjon
 		index = 0;
+        actualIndex = roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].number;
 
         //attribue le background de la salle
         BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");

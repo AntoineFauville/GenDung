@@ -32,19 +32,18 @@ public class DungeonController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
         {
-            float startX = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index-1].room.SpawningPoints[0].Tile.x;
-            float startY = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index-1].room.SpawningPoints[0].Tile.y;
+            float startX = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[0].Tile.x;
+            float startY = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[0].Tile.y;
             Vector3 startPos = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + startX + "_" + startY).transform.position;
 
             unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
             unit.SetDefaultSpawn(startPos);
 
-            int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index-1].room.Walls.Count;
-            // Il semblerait que le code ne récupére que les murs de la salle 1; le souci vient-il du lien dans le code ou alors la salle affiché ne correspond pas à la salle logique ? A voir avec Antoine.
+            int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls.Count;
             Debug.Log("Number of walls in this Room: " + wallsNumber);
             for (int x = 0; x < wallsNumber; x++)
             {
-                Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index-1].room.Walls[x];
+                Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls[x];
                 Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
             }
 
@@ -52,7 +51,7 @@ public class DungeonController : MonoBehaviour {
             {
                 for (int y = 0; y < Dungeon.Height; y++)
                 {
-                    Debug.Log("tile (" + z + "," + y + ") walkable bool is: " + Dungeon.Tiles[z, y].isWalkable);
+                    //Debug.Log("tile (" + z + "," + y + ") walkable bool is: " + Dungeon.Tiles[z, y].isWalkable);
                 }
             }
         }
@@ -167,7 +166,7 @@ public class DungeonController : MonoBehaviour {
 
         if (UnitCanEnterTile(targetX,targetY) == false)
         {
-            Debug.Log("Can't walk on this shit man");
+            //Debug.Log("Can't walk on this shit man");
             return Mathf.Infinity;
         }
 
