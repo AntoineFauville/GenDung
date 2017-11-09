@@ -40,10 +40,10 @@ public class DungeonController : MonoBehaviour {
             unit.SetDefaultSpawn(startPos);
 
             int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.Walls.Count;
+            // Il semblerait que le code ne récupére que les murs de la salle 1; le souci vient-il du lien dans le code ou alors la salle affiché ne correspond pas à la salle logique ? A voir avec Antoine.
             Debug.Log("Number of walls in this Room: " + wallsNumber);
             for (int x = 0; x < wallsNumber; x++)
             {
-                Debug.Log("Test Recupération first wall in Room: " + GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.Walls[x]);
                 Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.Walls[x];
                 Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
             }
