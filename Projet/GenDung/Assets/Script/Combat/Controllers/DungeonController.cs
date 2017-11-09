@@ -38,6 +38,23 @@ public class DungeonController : MonoBehaviour {
 
             unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
             unit.SetDefaultSpawn(startPos);
+
+            int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.Walls.Count;
+            Debug.Log("Number of walls in this Room: " + wallsNumber);
+            for (int x = 0; x < wallsNumber; x++)
+            {
+                Debug.Log("Test Recupération first wall in Room: " + GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.Walls[x]);
+                Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().index].room.Walls[x];
+                Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
+            }
+
+            for (int z = 0; z < Dungeon.Width; z++)
+            {
+                for (int y = 0; y < Dungeon.Height; y++)
+                {
+                    Debug.Log("tile (" + z + "," + y + ") walkable bool is: " + Dungeon.Tiles[z, y].isWalkable);
+                }
+            }
         }
 	}
 

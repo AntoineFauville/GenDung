@@ -36,7 +36,10 @@ public class CombatController : MonoBehaviour {
 
     /* Code de gestion du début de combat */
 
+    public void CombatBeginning()
+    {
 
+    }
 
     /* Code de gestion de fin de combat */
 
