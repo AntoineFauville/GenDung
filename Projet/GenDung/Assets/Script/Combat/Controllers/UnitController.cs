@@ -13,11 +13,11 @@ public class UnitController : MonoBehaviour {
     private List<Node> currentPath = null;
     private bool attacking = false;
 
-    int moveSpeed = 99; // Valeur de base de déplacement de l'unité.
-    int actionCount = 99; // Valeur de base d'action de l'unité.
+    int moveSpeed = 2; // Valeur de base de déplacement de l'unité.
+    int actionCount = 5; // Valeur de base d'action de l'unité.
 
-    float remainingMovement = 99; //Points de mouvement restant de l'unité pour ce tour.
-    float remainingAction = 99; //Points d'actions restant de l'unité pour ce tour.
+    float remainingMovement = 99; //Points de mouvement restant de l'unité pour ce tour; 99 points pour le placement.
+    float remainingAction = 5; //Points d'actions restant de l'unité pour ce tour.
 
     int attackCost = 1; // Coût d'une attaque de l'unité.
     int rangeMax = 2; // Portée maximale de l'unité
@@ -73,7 +73,7 @@ public class UnitController : MonoBehaviour {
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
 
-        transform.position = DungeonController.Instance.TileCoordFromClick(tileX,tileY);
+        transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position;  //DungeonController.Instance.TileCoordFromClick(tileX,tileY);
 
         currentPath.RemoveAt(0);
 
@@ -145,10 +145,20 @@ public class UnitController : MonoBehaviour {
             AdvancePathing();
         }
 
-        remainingMovement = moveSpeed;
-        remainingAction = actionCount;
+        ResetMove();
+        ResetAction();
 
         Debug.Log("New Turn has begun !!!");
+    }
+
+    public void ResetMove()
+    {
+        remainingMovement = moveSpeed;
+    }
+
+    public void ResetAction()
+    {
+        remainingAction = actionCount;
     }
 
     public void SetDefaultSpawn(Vector3 pos)

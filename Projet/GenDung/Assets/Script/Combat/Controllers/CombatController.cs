@@ -50,10 +50,12 @@ public class CombatController : MonoBehaviour {
     {
         placementDone = true;
 
-        if (placementDone == true)
+        if (placementDone && !combatStarted)
         {
             combatStarted = true;
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().TileExit();
+            DungeonController.Instance.Unit.ResetMove();
+            DungeonController.Instance.Unit.ResetAction();
         }
     }
 

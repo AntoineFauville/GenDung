@@ -320,5 +320,17 @@ public class DungeonController : MonoBehaviour {
         }
     }
 
+    public UnitController Unit
+    {
+        get
+        {
+            return unit;
+        }
+        set
+        {
+            unit = value;
+        }
+    }
+
     /* */
 }
