@@ -35,13 +35,43 @@ public class TileController : MonoBehaviour {
         {
             if (Input.GetMouseButtonUp(0))
             {
-                EditorController.Instance.AddWall(x, y);
-                this.GetComponent<Image>().color = Color.red;
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    Debug.Log("Ctrl is hold and Mouse 0 click detected");
+                    EditorController.Instance.AddSpawn(x,y);
+                    this.GetComponent<Image>().color = Color.cyan;
+                }
+                else if (Input.GetKey(KeyCode.LeftAlt))
+                {
+                    Debug.Log("Alt is hold and Mouse 0 click detected");
+                    EditorController.Instance.AddMonsterSpawn(x, y);
+                    this.GetComponent<Image>().color = Color.magenta;
+                }
+                else
+                {
+                    EditorController.Instance.AddWall(x, y);
+                    this.GetComponent<Image>().color = Color.red;
+                }
             }
             else if (Input.GetMouseButtonUp(1))
             {
-                EditorController.Instance.RemoveWall(x, y);
-                this.GetComponent<Image>().color = new Color(255,255,255,0.1f); 
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    Debug.Log("Ctrl is hold and Mouse 1 click detected");
+                    EditorController.Instance.RemoveSpawn(x, y);
+                    this.GetComponent<Image>().color = new Color(255, 255, 255, 0.1f);
+                }
+                else if (Input.GetKey(KeyCode.LeftAlt))
+                {
+                    Debug.Log("Alt is hold and Mouse 1 click detected");
+                    EditorController.Instance.RemoveMonsterSpawn(x, y);
+                    this.GetComponent<Image>().color = new Color(255, 255, 255, 0.1f);
+                }
+                else
+                {
+                    EditorController.Instance.RemoveWall(x, y);
+                    this.GetComponent<Image>().color = new Color(255, 255, 255, 0.1f);
+                }
             }
 
         }
@@ -62,10 +92,12 @@ public class TileController : MonoBehaviour {
 
     public void TileExit()
     {
-        if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x, y))
-            this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
-        else if (SceneManager.GetActiveScene().name == "Editor")
+        if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckWall(x,y))
             this.GetComponent<Image>().color = Color.red;
+        else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckSpawn(x, y))
+            this.GetComponent<Image>().color = Color.cyan;
+        else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckMonsterSpawn(x, y))
+            this.GetComponent<Image>().color = Color.magenta;
         else
             this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
     }

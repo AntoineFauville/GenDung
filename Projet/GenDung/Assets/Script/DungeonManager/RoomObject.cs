@@ -17,11 +17,15 @@ public class RoomObject : ScriptableObject {
 
 	public Vector2[] playerPositions;
 
-    //public ExceptionGrid[] Walls;
+    //public ExceptionGrid[] Walls; OLD Data
 
     public List<Vector2> Walls;
 
-    public ExceptionGrid[] SpawningPoints;
+    //public ExceptionGrid[] SpawningPoints; OLD Data
 
-    public ExceptionGrid[] MonsterSpawningPoints;
+    public List<Vector2> SpawningPoints;
+
+    //public ExceptionGrid[] MonsterSpawningPoints; OLD Data
+
+    public List<Vector2> MonsterSpawningPoints;
 }
