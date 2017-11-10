@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CombatController : MonoBehaviour {
 
@@ -24,28 +25,35 @@ public class CombatController : MonoBehaviour {
     public void Start()
     {
         CreateInstance();
-        btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Panel/Panel/Button_Start_Game").GetComponent<Button>();
-        btnStartGame.onClick.AddListener(StartCombatMode);
+        if (SceneManager.GetActiveScene().name != "Editor")
+        {
+            btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Panel/Panel/Button_Start_Game").GetComponent<Button>();
+            btnStartGame.onClick.AddListener(StartCombatMode);
+        }
     }
 
     /* Code de gestion du placement des personnages Pré-Combat*/
 
     public void ConfirmCharaPosition(int x,int y)
     {
-        if (DungeonController.Instance.Dungeon.Tiles[x,y].isStarterTile == true)
+        if (DungeonController.Instance.Dungeon.Tiles[x, y].isStarterTile == true)
         {
             tileX = x;
             tileY = y;
-            placementDone = true;
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MoveTo();
         }
+        else
+            Debug.Log("Not a Starter Tile, forget about it");
     }
 
     public void StartCombatMode()
     {
+        placementDone = true;
+
         if (placementDone == true)
         {
             combatStarted = true;
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MoveTo();
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().TileExit();
         }
     }
 

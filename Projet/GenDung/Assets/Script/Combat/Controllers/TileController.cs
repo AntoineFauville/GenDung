@@ -29,7 +29,6 @@ public class TileController : MonoBehaviour {
             {
                 if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
                 {
-                    //MoveTo();// Déplace le personnage sur la case de type Spawn Point (réutilisation du code de déplacement basique).
                     onSpawn = true;
                     CombatController.Instance.ConfirmCharaPosition(x, y);
                 }
@@ -98,6 +97,8 @@ public class TileController : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x,y))
             this.GetComponent<Image>().color = Color.green;
+        else if (CheckSpawnType() && !CombatController.Instance.CombatStarted)
+            this.GetComponent<Image>().color = Color.cyan;
         else
             this.GetComponent<Image>().color = new Color(255,255,0, 0.6f);
     }       
@@ -107,6 +108,8 @@ public class TileController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckWall(x,y))
             this.GetComponent<Image>().color = Color.red;
         else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckSpawn(x, y))
+            this.GetComponent<Image>().color = Color.cyan;
+        else if (CheckSpawnType() && !CombatController.Instance.CombatStarted)
             this.GetComponent<Image>().color = Color.cyan;
         else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckMonsterSpawn(x, y))
             this.GetComponent<Image>().color = Color.magenta;
