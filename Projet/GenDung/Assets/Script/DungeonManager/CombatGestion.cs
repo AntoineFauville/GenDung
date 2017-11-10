@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class CombatGestion : MonoBehaviour {
@@ -30,7 +31,13 @@ public class CombatGestion : MonoBehaviour {
 			combat_grid.SetActive (true);
 			instantiateCombatGrid = true;
 
-			canvasTemp.GetComponent<Canvas> ().enabled = false;
+            for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
+            {
+                GameObject.Find("CharacterBG").GetComponent<Image>().enabled = false;
+                GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = false;
+            }
+
+            canvasTemp.GetComponent<Canvas> ().enabled = false;
 		} /**/
 	}
 
@@ -41,5 +48,10 @@ public class CombatGestion : MonoBehaviour {
 		GameObject.FindGameObjectWithTag ("Unit").SetActive (false);
 		GameObject.FindGameObjectWithTag ("GridCanvas").SetActive (false);
 
-	}
+        for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
+        {
+            GameObject.Find("CharacterBG").GetComponent<Image>().enabled = true;
+            GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = true;
+        }
+    }
 }
