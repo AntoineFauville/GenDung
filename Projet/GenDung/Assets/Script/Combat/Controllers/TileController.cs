@@ -11,24 +11,32 @@ public class TileController : MonoBehaviour {
     private int y;
 
     private bool clicked = false;
+    private bool confirmed = false;
 
     public void TileClicked()
     {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.placementDone == true && clicked == false)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone == true && clicked == false)
             {
-                StartCoroutine(WaitAfterClick());
-                DungeonController.Instance.WorldPosTemp = this.transform.position;
-                DungeonController.Instance.GeneratePathTo(x, y);
+                MoveTo();
             }
-            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.placementDone == true)
+            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone == true)
             {
                 DungeonController.Instance.LaunchUnitAttack(x, y);
             }
-            else
+            else if (!CombatController.Instance.PlacementDone) // Check si le placement du personnage est deja fait.
             {
-                Debug.Log("You didn't place your character ? TOO BAD, you can't fight");
+                if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
+                {
+                    MoveTo();// Déplace le personnage sur la case de type Spawn Point (réutilisation du code de déplacement basique).
+                    if (confirmed)
+                        CombatController.Instance.PlaceCharacter();
+                    else
+                        Debug.Log("Button_Start_game hasn't been pushed, Player Not Ready");
+                }
+                else
+                    Debug.Log("This Tile is not a spawning Point, Please Select a Spawning Point(There color is cyan)");
             }
         }
         else
@@ -81,7 +89,7 @@ public class TileController : MonoBehaviour {
     {
         TileExit();
 
-        if (DungeonController.Instance.Dungeon.Tiles[x, y].isStarterTile)
+        if(CheckSpawnType())
             this.GetComponent<Image>().color = Color.cyan;
     }
 
@@ -105,6 +113,21 @@ public class TileController : MonoBehaviour {
             this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
     }
 
+    public void MoveTo()
+    {
+        StartCoroutine(WaitAfterClick());
+        DungeonController.Instance.WorldPosTemp = this.transform.position;
+        DungeonController.Instance.GeneratePathTo(x, y);
+    }
+
+    public bool CheckSpawnType()
+    {
+        if (DungeonController.Instance.Dungeon.Tiles[x, y].isStarterTile && CombatController.Instance.PlacementDone == false)
+            return true;
+        else
+            return false;
+            
+    }
 
     public IEnumerator WaitAfterClick()
     {

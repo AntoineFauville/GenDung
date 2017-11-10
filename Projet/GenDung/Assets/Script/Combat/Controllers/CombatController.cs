@@ -5,7 +5,7 @@ using UnityEngine;
 public class CombatController : MonoBehaviour {
 
     private static CombatController instance;
-    public bool placementDone = true;
+    private bool placementDone = false;
 
     void CreateInstance()
     {
@@ -19,15 +19,13 @@ public class CombatController : MonoBehaviour {
     public void Start()
     {
         CreateInstance();
-        placementDone = true;
-        Debug.Log("Combat will begin soon (if i want it to work soon) ");
     }
 
     /* Code de gestion du placement des personnages Pré-Combat*/
 
     public void PlaceCharacter()
     {
-
+        placementDone = true;
     }
 
     /* Code de gestion de l'Initiative des personnages */

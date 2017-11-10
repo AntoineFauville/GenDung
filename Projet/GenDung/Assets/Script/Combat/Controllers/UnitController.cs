@@ -27,7 +27,6 @@ public class UnitController : MonoBehaviour {
     {
 	    if(currentPath != null)
         {
-            Debug.Log("Path not null, Drawing line");
             int currNode = 0;
 
             while (currNode < currentPath.Count-1)
@@ -66,8 +65,6 @@ public class UnitController : MonoBehaviour {
             Debug.Log("Not enough movement point left, wait for the next turn");
             return;
         }
-
-        Debug.Log("Beginning Movement");
 
         //transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
 

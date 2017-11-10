@@ -34,10 +34,10 @@ public class DungeonController : MonoBehaviour {
         {
             Vector2 pos = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[0];
             Vector3 startPos = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).transform.position;
-            // ^^^ Ces lignes récupérent la première position dans la liste des SpawnPoints pour placer par défaut le personnage du joueur sur celle-ci.
+            // Ces lignes récupérent la première position dans la liste des SpawnPoints pour placer par défaut le personnage du joueur sur celle-ci.
 
             unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
-            unit.SetDefaultSpawn(startPos);
+            unit.SetDefaultSpawn(Vector3.zero/*startPos*/); // Positionne le personnage au Vector3 (0,0,0).
 
             int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls.Count;
             Debug.Log("Number of walls in this Room: " + wallsNumber);
@@ -150,8 +150,6 @@ public class DungeonController : MonoBehaviour {
 
             }
         }
-
-        Debug.Log("Node and neighbours has been defined");
     }
 
     public float CostToEnterTile(int sourceX, int sourceY, int targetX, int targetY)
@@ -163,7 +161,6 @@ public class DungeonController : MonoBehaviour {
 
         if (UnitCanEnterTile(targetX,targetY) == false)
         {
-            //Debug.Log("Can't walk on this shit man");
             return Mathf.Infinity;
         }
 
@@ -249,8 +246,6 @@ public class DungeonController : MonoBehaviour {
         currentPath.Reverse();
 
         unit.CurrentPath = currentPath;
-
-        Debug.Log("Path has been calculated");
     }
 
     public void LaunchUnitAttack(int _x,int _y)
