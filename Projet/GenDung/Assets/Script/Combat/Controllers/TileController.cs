@@ -11,17 +11,17 @@ public class TileController : MonoBehaviour {
     private int y;
 
     private bool clicked = false;
-    private bool confirmed = false;
+    private bool onSpawn = false;
 
     public void TileClicked()
     {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone == true && clicked == false)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone == true && CombatController.Instance.CombatStarted == true && clicked == false)
             {
                 MoveTo();
             }
-            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone == true)
+            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone == true && CombatController.Instance.CombatStarted == true)
             {
                 DungeonController.Instance.LaunchUnitAttack(x, y);
             }
@@ -29,14 +29,15 @@ public class TileController : MonoBehaviour {
             {
                 if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
                 {
-                    MoveTo();// Déplace le personnage sur la case de type Spawn Point (réutilisation du code de déplacement basique).
-                    if (confirmed)
-                        CombatController.Instance.PlaceCharacter();
-                    else
-                        Debug.Log("Button_Start_game hasn't been pushed, Player Not Ready");
+                    //MoveTo();// Déplace le personnage sur la case de type Spawn Point (réutilisation du code de déplacement basique).
+                    onSpawn = true;
+                    CombatController.Instance.ConfirmCharaPosition(x, y);
                 }
                 else
-                    Debug.Log("This Tile is not a spawning Point, Please Select a Spawning Point(There color is cyan)");
+                {
+                    Debug.Log("This Tile is not a spawning Point, Please Select a Spawning Point(cyan)");
+                    onSpawn = false;
+                }
             }
         }
         else
