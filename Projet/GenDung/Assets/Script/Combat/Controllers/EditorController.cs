@@ -9,6 +9,8 @@ public class EditorController : MonoBehaviour {
 
     public RoomObject room;
     public Vector2 wall;
+    public Vector2 spawn;
+    public Vector2 monsterSpawn;
 
     public void Start()
     {
@@ -25,6 +27,7 @@ public class EditorController : MonoBehaviour {
         instance = this;
     }
 
+    /* Walls Related Methods */
     public void AddWall(int x, int y)
     {
         wall = new Vector2(x, y);
@@ -56,6 +59,75 @@ public class EditorController : MonoBehaviour {
         Vector2 test = new Vector2(x, y);
         return room.Walls.Contains(test);
     }
+    /* */
+
+    /* Spawning Points Related Methods */
+    public void AddSpawn(int x, int y)
+    {
+        spawn = new Vector2(x, y);
+
+        if (!room.SpawningPoints.Contains(spawn))
+        {
+            room.SpawningPoints.Add(spawn);
+            Debug.Log("Spawn has been added : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Non non non, Ce ne sont pas le Spawn loutre (" + x + "," + y + ") que vous recherchez ... ");
+    }
+
+    public void RemoveSpawn(int x, int y)
+    {
+        spawn = new Vector2(x, y);
+
+        if (room.SpawningPoints.Contains(spawn))
+        {
+            room.SpawningPoints.Remove(spawn);
+            Debug.Log("Spawn has been removed : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Ce Spawn de loutre (" + x + "," + y + ") n'as pas la Force en lui ... ");
+    }
+
+    public bool CheckSpawn(int x, int y)
+    {
+        Vector2 test = new Vector2(x, y);
+        return room.SpawningPoints.Contains(test);
+    }
+    /* */
+
+    /* Ennemies Spawning Points Related Methods */
+    public void AddMonsterSpawn(int x, int y)
+    {
+        monsterSpawn = new Vector2(x, y);
+
+        if (!room.MonsterSpawningPoints.Contains(monsterSpawn))
+        {
+            room.MonsterSpawningPoints.Add(monsterSpawn);
+            Debug.Log("Monster Spawn has been added : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Non non non, Ce ne sont pas le Spawn de Castor (" + x + "," + y + ") que vous recherchez ... ");
+    }
+
+    public void RemoveMonsterSpawn(int x, int y)
+    {
+        monsterSpawn = new Vector2(x, y);
+
+        if (room.MonsterSpawningPoints.Contains(monsterSpawn))
+        {
+            room.MonsterSpawningPoints.Remove(monsterSpawn);
+            Debug.Log("Monster Spawn has been removed : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Ce Spawn de Castor (" + x + "," + y + ") n'as pas la Force en lui ... ");
+    }
+
+    public bool CheckMonsterSpawn(int x, int y)
+    {
+        Vector2 test = new Vector2(x, y);
+        return room.MonsterSpawningPoints.Contains(test);
+    }
+    /* */
 
     /* Accessors Methods */
     public static EditorController Instance

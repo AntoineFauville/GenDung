@@ -32,12 +32,12 @@ public class DungeonController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
         {
-            float startX = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[0].Tile.x;
-            float startY = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[0].Tile.y;
-            Vector3 startPos = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + startX + "_" + startY).transform.position;
+            Vector2 pos = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[0];
+            Vector3 startPos = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).transform.position;
+            // Ces lignes récupérent la première position dans la liste des SpawnPoints pour placer par défaut le personnage du joueur sur celle-ci.
 
             unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
-            unit.SetDefaultSpawn(startPos);
+            unit.SetDefaultSpawn(Vector3.zero/*startPos*/); // Positionne le personnage au Vector3 (0,0,0).
 
             int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls.Count;
             Debug.Log("Number of walls in this Room: " + wallsNumber);
@@ -47,12 +47,11 @@ public class DungeonController : MonoBehaviour {
                 Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
             }
 
-            for (int z = 0; z < Dungeon.Width; z++)
+            int spawnNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints.Count;
+            for(int y=0; y < spawnNumber; y++)
             {
-                for (int y = 0; y < Dungeon.Height; y++)
-                {
-                    //Debug.Log("tile (" + z + "," + y + ") walkable bool is: " + Dungeon.Tiles[z, y].isWalkable);
-                }
+                Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[y];
+                Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
             }
         }
 	}
@@ -97,8 +96,6 @@ public class DungeonController : MonoBehaviour {
         }
 		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.95f,1,1f);
         c.transform.Find("PanelGrid").transform.localPosition = new Vector3(-Screen.currentResolution.width / 3.732f, -Screen.currentResolution.width / 7.3f, 0);
-        //Dungeon.Tiles[0, 2].isWalkable = false;
-        //Dungeon.Tiles[10, 7].isStarterTile = true;
 
         /* */
     }
@@ -153,8 +150,6 @@ public class DungeonController : MonoBehaviour {
 
             }
         }
-
-        Debug.Log("Node and neighbours has been defined");
     }
 
     public float CostToEnterTile(int sourceX, int sourceY, int targetX, int targetY)
@@ -166,7 +161,6 @@ public class DungeonController : MonoBehaviour {
 
         if (UnitCanEnterTile(targetX,targetY) == false)
         {
-            //Debug.Log("Can't walk on this shit man");
             return Mathf.Infinity;
         }
 
@@ -252,8 +246,6 @@ public class DungeonController : MonoBehaviour {
         currentPath.Reverse();
 
         unit.CurrentPath = currentPath;
-
-        Debug.Log("Path has been calculated");
     }
 
     public void LaunchUnitAttack(int _x,int _y)
