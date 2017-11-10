@@ -80,6 +80,9 @@ public class TileController : MonoBehaviour {
     public void Start()
     {
         TileExit();
+
+        if (DungeonController.Instance.Dungeon.Tiles[x, y].isStarterTile)
+            this.GetComponent<Image>().color = Color.cyan;
     }
 
     public void TileEnter()
