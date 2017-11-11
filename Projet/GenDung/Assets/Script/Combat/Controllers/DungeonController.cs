@@ -32,15 +32,12 @@ public class DungeonController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
         {
-            Vector2 pos = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[0];
-            Vector3 startPos = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).transform.position;
-            // Ces lignes récupérent la première position dans la liste des SpawnPoints pour placer par défaut le personnage du joueur sur celle-ci.
             unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
             for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
             {
                 unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
             }
-            unit.SetDefaultSpawn(Vector3.zero/*startPos*/); // Positionne le personnage au Vector3 (0,0,0).
+            unit.SetDefaultSpawn(Vector3.zero); // Positionne le personnage au Vector3 (0,0,0).
 
             SetWallTiles();
             SetSpawnTiles();

@@ -12,6 +12,9 @@ public class CombatController : MonoBehaviour {
     private int tileX;
     private int tileY;
     private Button btnStartGame;
+    private FoeController foe;
+
+    GameObject monster_go;
 
     void CreateInstance()
     {
@@ -73,20 +76,22 @@ public class CombatController : MonoBehaviour {
 
     public void SpawnMonster()
     {
-        GameObject monster_go = Instantiate(Resources.Load("Prefab/Foe")) as GameObject;
+        monster_go = Instantiate(Resources.Load("Prefab/Foe")) as GameObject;
         int nmbMonster = 0;
         monster_go.name = "Foe_" + nmbMonster;
 
-        int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
-        int rndNmb = Random.Range(0, spawnMonsterNumber);
+        foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
 
+        int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
+        Debug.Log("Number of Monster Spawn is: " + spawnMonsterNumber);
+        int rndNmb = Random.Range(0, spawnMonsterNumber);
         if (rndNmb == spawnMonsterNumber)
             rndNmb = rndNmb-1;
 
-        StartCoroutine(Wait());
+        Debug.Log("Random Number is: " + rndNmb);
 
         Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
-        monster_go.transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position;
+        foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
     }
 
     /* Code de gestion de fin de combat */
