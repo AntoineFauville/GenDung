@@ -36,6 +36,7 @@ public class DungeonController : MonoBehaviour {
             for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
             {
                 unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+                unit_go.name = "Character_" + i;
             }
             unit.SetDefaultSpawn(Vector3.zero); // Positionne le personnage au Vector3 (0,0,0).
 

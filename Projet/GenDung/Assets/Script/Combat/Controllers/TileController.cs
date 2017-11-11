@@ -129,16 +129,22 @@ public class TileController : MonoBehaviour {
         if (DungeonController.Instance.Dungeon.Tiles[x, y].isStarterTile && CombatController.Instance.PlacementDone == false)
             return true;
         else
-            return false;
-            
+            return false;        
     }
 
+    public void SetCaCRange()
+    {
+        this.GetComponent<Image>().color = Color.red;
+    }
+
+    /* IEnumerator Methods */
     public IEnumerator WaitAfterClick()
     {
         clicked = true;
         yield return new WaitForSeconds(0.1f);
         clicked = false;
     }
+    /* */
 
     /* Accessors Methods */
     public int X

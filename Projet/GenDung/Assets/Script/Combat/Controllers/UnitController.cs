@@ -68,14 +68,11 @@ public class UnitController : MonoBehaviour {
             return;
         }
 
-        //transform.position = DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY);
-
         remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
 
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
 
-        // Make a wait for 0.5f seconds for testing a movement more natural.
         StartCoroutine(WaitBeforeNextMovement());
 
         currentPath.RemoveAt(0);

@@ -17,6 +17,8 @@ public class CombatController : MonoBehaviour {
     private Button btnDistanceMode;
     private FoeController foe;
 
+    private UnitController targetUnit;
+
     GameObject monster_go;
     GameObject monsterPrefab;
 
@@ -85,6 +87,17 @@ public class CombatController : MonoBehaviour {
         attackMode = true;
         // Afficher la portée sur la grille (en Rouge).
         // CAC : donc portée de 1 autour de la cible (par facilité)
+
+        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
+
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
     }
 
     public void SwitchToDistanceAttack()
@@ -93,6 +106,21 @@ public class CombatController : MonoBehaviour {
         attackMode = true;
         // Afficher la portée sur la grille (en Rouge).
         // Distance : donc portée de 2 maximale autour de la cible (Test)
+
+        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
+
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 2)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 2)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
     }
 
     /* Code de gestion du début de combat */
