@@ -17,11 +17,11 @@ public class TileController : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone == true && CombatController.Instance.CombatStarted == true && clicked == false)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked)
             {
                 MoveTo();
             }
-            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone == true && CombatController.Instance.CombatStarted == true)
+            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode)
             {
                 DungeonController.Instance.LaunchUnitAttack(x, y);
             }
@@ -129,16 +129,22 @@ public class TileController : MonoBehaviour {
         if (DungeonController.Instance.Dungeon.Tiles[x, y].isStarterTile && CombatController.Instance.PlacementDone == false)
             return true;
         else
-            return false;
-            
+            return false;        
     }
 
+    public void SetCaCRange()
+    {
+        this.GetComponent<Image>().color = Color.red;
+    }
+
+    /* IEnumerator Methods */
     public IEnumerator WaitAfterClick()
     {
         clicked = true;
         yield return new WaitForSeconds(0.1f);
         clicked = false;
     }
+    /* */
 
     /* Accessors Methods */
     public int X
