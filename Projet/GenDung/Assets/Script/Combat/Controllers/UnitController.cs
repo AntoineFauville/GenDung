@@ -23,6 +23,8 @@ public class UnitController : MonoBehaviour {
     int rangeMax = 2; // Portée maximale de l'unité
     int rangeMin = 1; // Portée minimale de l'unité (dans le cas ou une attaque ne peut se faire à une case du personnage)
 
+    int turnCount = 0;
+
 	void Update ()
     {
 	    if(currentPath != null)
@@ -49,7 +51,7 @@ public class UnitController : MonoBehaviour {
         if (/*Vector3.Distance(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX,tileY)) < 0.1f*/ true)
         {
             AdvancePathing();
-            //transform.position = Vector3.Lerp(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX, tileY), 5f * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
     }
 
@@ -62,7 +64,7 @@ public class UnitController : MonoBehaviour {
 
        if (remainingMovement <= 0)
         {
-            Debug.Log("Not enough movement point left, wait for the next turn");
+            //Debug.Log("Not enough movement point left, wait for the next turn");
             return;
         }
 
@@ -73,7 +75,8 @@ public class UnitController : MonoBehaviour {
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
 
-        transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position;  //DungeonController.Instance.TileCoordFromClick(tileX,tileY);
+        // Make a wait for 0.5f seconds for testing a movement more natural.
+        StartCoroutine(WaitBeforeNextMovement());
 
         currentPath.RemoveAt(0);
 
@@ -148,7 +151,10 @@ public class UnitController : MonoBehaviour {
         ResetMove();
         ResetAction();
 
-        Debug.Log("New Turn has begun !!!");
+        Debug.Log("End of Turn: " + turnCount);
+
+        // Wait a time for simulationg Foe Action Here.
+        StartCoroutine(WaitForFoeEndTurn());
     }
 
     public void ResetMove()
@@ -166,8 +172,25 @@ public class UnitController : MonoBehaviour {
         this.transform.position = pos;
     }
 
+    /* IEnumerator Methods*/
+    public IEnumerator WaitForFoeEndTurn()
+    {
+        Debug.Log("Simulating Foe Turn");
+        yield return new WaitForSeconds(3f);
+        turnCount++;
+        Debug.Log("Begin Turn: " + turnCount);
+    }
+
+    public IEnumerator WaitBeforeNextMovement()
+    {
+        yield return new WaitForSeconds(0.5f);
+        transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position;  //DungeonController.Instance.TileCoordFromClick(tileX,tileY);
+
+    }
+    /* */
+
     /* Accessors Methods*/
-    
+
     public int TileX
     {
         get
