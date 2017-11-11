@@ -15,6 +15,7 @@ public class CombatController : MonoBehaviour {
     private FoeController foe;
 
     GameObject monster_go;
+    GameObject monsterPrefab;
 
     void CreateInstance()
     {
@@ -76,22 +77,22 @@ public class CombatController : MonoBehaviour {
 
     public void SpawnMonster()
     {
-        monster_go = Instantiate(Resources.Load("Prefab/Foe")) as GameObject;
-        int nmbMonster = 0;
-        monster_go.name = "Foe_" + nmbMonster;
+        monsterPrefab = Resources.Load("Prefab/Foe") as GameObject;
 
-        foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
+        for (int x = 0; x < GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].enemies; x++)
+        {
+            monster_go = Instantiate(monsterPrefab);
+            monster_go.name = "Foe_" + x;
+            foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
 
-        int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
-        Debug.Log("Number of Monster Spawn is: " + spawnMonsterNumber);
-        int rndNmb = Random.Range(0, spawnMonsterNumber);
-        if (rndNmb == spawnMonsterNumber)
-            rndNmb = rndNmb-1;
+            int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
+            int rndNmb = Random.Range(0, spawnMonsterNumber);
+            if (rndNmb == spawnMonsterNumber)
+                rndNmb = rndNmb - 1;
 
-        Debug.Log("Random Number is: " + rndNmb);
-
-        Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
-        foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
+            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
+            foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
+        }
     }
 
     /* Code de gestion de fin de combat */
