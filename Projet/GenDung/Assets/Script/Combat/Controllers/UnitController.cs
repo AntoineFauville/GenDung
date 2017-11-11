@@ -96,10 +96,11 @@ public class UnitController : MonoBehaviour {
             return;
         }
 
-        if (remainingAction >= attackCost && CheckRange() == true)
+        if (remainingAction >= attackCost && CheckRange())
         {
             remainingAction -= attackCost;
             Debug.Log("Action points left : " + remainingAction);
+            StartCoroutine(WaitForAttackCompletion());
         }
     }
 
@@ -183,9 +184,15 @@ public class UnitController : MonoBehaviour {
 
     public IEnumerator WaitBeforeNextMovement()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSecondsRealtime(1f);
         transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position;  //DungeonController.Instance.TileCoordFromClick(tileX,tileY);
+    }
 
+    public IEnumerator WaitForAttackCompletion()
+    {
+        yield return new WaitForSeconds(3.5f);
+        Debug.Log("Switching Back to Movement Mode");
+        CombatController.Instance.AttackMode = false;
     }
     /* */
 
