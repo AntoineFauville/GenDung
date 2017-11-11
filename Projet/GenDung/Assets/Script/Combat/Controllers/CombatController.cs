@@ -9,9 +9,12 @@ public class CombatController : MonoBehaviour {
     private static CombatController instance;
     private bool placementDone = false;
     private bool combatStarted = false;
+    private bool attackMode = false;
     private int tileX;
     private int tileY;
     private Button btnStartGame;
+    private Button btnCACMode;
+    private Button btnDistanceMode;
     private FoeController foe;
 
     GameObject monster_go;
@@ -33,6 +36,12 @@ public class CombatController : MonoBehaviour {
         {
             btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Panel/Panel/Button_Start_Game").GetComponent<Button>();
             btnStartGame.onClick.AddListener(StartCombatMode);
+
+            btnCACMode = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_CAC").GetComponent<Button>();
+            btnCACMode.onClick.AddListener(SwitchToCACAttack);
+
+            btnDistanceMode = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Distance").GetComponent<Button>();
+            btnDistanceMode.onClick.AddListener(SwitchToDistanceAttack);
         }
     }
 
@@ -68,6 +77,24 @@ public class CombatController : MonoBehaviour {
 
 
 
+    /* Code de gestion du Mode Attaque ou Mode Déplacement */
+
+    public void SwitchToCACAttack()
+    {
+        Debug.Log("CAC Attack Mode has been selected");
+        attackMode = true;
+        // Afficher la portée sur la grille (en Rouge).
+        // CAC : donc portée de 1 autour de la cible (par facilité)
+    }
+
+    public void SwitchToDistanceAttack()
+    {
+        Debug.Log("Distance Attack Mode has been selected");
+        attackMode = true;
+        // Afficher la portée sur la grille (en Rouge).
+        // Distance : donc portée de 2 maximale autour de la cible (Test)
+    }
+
     /* Code de gestion du début de combat */
 
     public void CombatBeginning()
@@ -96,6 +123,8 @@ public class CombatController : MonoBehaviour {
     }
 
     /* Code de gestion de fin de combat */
+
+
 
     /*IEnumerator Methods*/
 
@@ -140,6 +169,18 @@ public class CombatController : MonoBehaviour {
         set
         {
             combatStarted = value;
+        }
+    }
+    public bool AttackMode
+    {
+        get
+        {
+            return attackMode;
+        }
+
+        set
+        {
+            attackMode = value;
         }
     }
     /**/

@@ -17,11 +17,11 @@ public class TileController : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone == true && CombatController.Instance.CombatStarted == true && clicked == false)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked)
             {
                 MoveTo();
             }
-            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone == true && CombatController.Instance.CombatStarted == true)
+            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode)
             {
                 DungeonController.Instance.LaunchUnitAttack(x, y);
             }
