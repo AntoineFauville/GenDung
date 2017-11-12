@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UnitController : MonoBehaviour {
 
@@ -23,7 +24,7 @@ public class UnitController : MonoBehaviour {
     int rangeMax = 2; // Portée maximale de l'unité
     int rangeMin = 1; // Portée minimale de l'unité (dans le cas ou une attaque ne peut se faire à une case du personnage)
 
-    int turnCount = 0;
+    int turnCount = -1;
 
 	void Update ()
     {
@@ -48,16 +49,27 @@ public class UnitController : MonoBehaviour {
             Attack();
         }
         
-        if (/*Vector3.Distance(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX,tileY)) < 0.1f*/ true)
+        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted)
         {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
+        }
+        else if (SceneManager.GetActiveScene().name != "Editor" && !CombatController.Instance.CombatStarted)
+        {
+            SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position);
+            AdvancePathing();
         }
     }
 
     public void AdvancePathing()
     {
-       if (currentPath == null)
+        if (!CombatController.Instance.CombatStarted)
+        {
+            //transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position;
+            transform.position = DungeonController.Instance.WorldPosTemp;
+        }
+
+        if (currentPath == null)
         {
             return;
         }
@@ -72,7 +84,7 @@ public class UnitController : MonoBehaviour {
 
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
-
+        
         StartCoroutine(WaitBeforeNextMovement());
 
         currentPath.RemoveAt(0);
@@ -182,7 +194,7 @@ public class UnitController : MonoBehaviour {
     public IEnumerator WaitBeforeNextMovement()
     {
         yield return new WaitForSecondsRealtime(1f);
-        transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position;  //DungeonController.Instance.TileCoordFromClick(tileX,tileY);
+        transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
     }
 
     public IEnumerator WaitForAttackCompletion()

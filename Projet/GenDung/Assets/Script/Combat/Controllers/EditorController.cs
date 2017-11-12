@@ -8,14 +8,21 @@ public class EditorController : MonoBehaviour {
     private static EditorController instance;
 
     public RoomObject room;
-    public Vector2 wall;
-    public Vector2 spawn;
-    public Vector2 monsterSpawn;
+    public SpellObject spell;
+    private Transform testTile;
+    private Vector2 wall;
+    private Vector2 spawn;
+    private Vector2 monsterSpawn;
+    private Vector2 spellRange;
+    private UnitController unit;
 
     public void Start()
     {
         CreateInstance();
         GameObject.FindGameObjectWithTag("backgroundOfRoom").transform.GetComponent<Image>().sprite = room.back;
+        unit = GameObject.Find("Unit(Clone)").transform.Find("Unit").GetComponent<UnitController>();
+        testTile = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_7_6").transform;
+        unit.SetDefaultSpawn(testTile.position);
     }
 
     void CreateInstance()
@@ -126,6 +133,40 @@ public class EditorController : MonoBehaviour {
     {
         Vector2 test = new Vector2(x, y);
         return room.MonsterSpawningPoints.Contains(test);
+    }
+    /* */
+
+    /* Spells Related Methods */
+    public void AddSpellRange(int x, int y)
+    {
+        spellRange = new Vector2((x - unit.TileX), (y - unit.TileY));
+
+        if (!spell.range.spellRange.Contains(spellRange))
+        {
+            spell.range.spellRange.Add(spellRange);
+            Debug.Log("Spell Range has been added : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Non non non, Cette Tile (" + x + "," + y + ") fait deja partie de la Range ... ");
+    }
+
+    public void RemoveSpellRange(int x, int y)
+    {
+        spellRange = new Vector2((x - unit.TileX), (y - unit.TileY));
+
+        if (spell.range.spellRange.Contains(spellRange))
+        {
+            spell.range.spellRange.Remove(spellRange);
+            Debug.Log("Spell Range has been removed : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Cette Tile (" + x + "," + y + ") ne fait pas partie de la Range du sort ... ");
+    }
+
+    public bool CheckSpellRange(int x, int y)
+    {
+        Vector2 test = new Vector2((x - unit.TileX), (y - unit.TileY));
+        return spell.range.spellRange.Contains(test);
     }
     /* */
 

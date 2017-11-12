@@ -29,6 +29,6 @@ public class SavingSystem : MonoBehaviour {
 		yield return new WaitForSeconds (2f);
 		SaveGame ();
 		waitToSaveAgain = false;
-		Debug.Log ("GameSaved");
+		//Debug.Log ("GameSaved");
 	}
 }
