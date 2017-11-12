@@ -142,14 +142,14 @@ public class DungeonLoader : MonoBehaviour {
 								GameObject enemyUI;
 								enemyUI = Instantiate (Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
 								enemyUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
-								enemyUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].enemiesList [l].enemyIcon;
+								enemyUI.transform.Find("Icon").GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].enemiesList [l].enemyIcon;
 							}
 
 							//vu que c'est un type boss il y a aussi le boss a instancier
 							GameObject bossUI;
 							bossUI = Instantiate (Resources.Load("UI_Interface/BossPanelUI")) as GameObject;
 							bossUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
-							bossUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].bossList [0].bossIcon;
+							bossUI.transform.Find("Icon").GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [i].bossList [0].bossIcon;
 						}
 					}
 
