@@ -9,7 +9,7 @@ public class EditorController : MonoBehaviour {
 
     public RoomObject room;
     public SpellObject spell;
-    public Transform testTile;
+    private Transform testTile;
     private Vector2 wall;
     private Vector2 spawn;
     private Vector2 monsterSpawn;
