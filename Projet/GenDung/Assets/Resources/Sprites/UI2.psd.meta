@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a6a204a0aa3c1cb4f8ecaba3b97d6236
-timeCreated: 1510434928
+timeCreated: 1510494156
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,7 @@ TextureImporter:
     21300008: UI2_4
     21300010: UI2_5
     21300012: UI2_6
+    21300014: UI2_7
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -104,10 +105,10 @@ TextureImporter:
       name: UI2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
-        width: 64
-        height: 64
+        x: 20
+        y: 82
+        width: 35
+        height: 43
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -186,6 +187,19 @@ TextureImporter:
         y: 46
         width: 54
         height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI2_7
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 83
+        width: 9
+        height: 41
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
