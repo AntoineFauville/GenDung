@@ -5,26 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class UnitController : MonoBehaviour {
 
-    private int tileX;
-    private int tileY;
-
-    private int tileAttackX;
-    private int tileAttackY;
-
-    private List<Node> currentPath = null;
-    private bool attacking = false;
-
-    int moveSpeed = 2; // Valeur de base de déplacement de l'unité.
-    int actionCount = 5; // Valeur de base d'action de l'unité.
-
-    float remainingMovement = 99; //Points de mouvement restant de l'unité pour ce tour; 99 points pour le placement.
-    float remainingAction = 5; //Points d'actions restant de l'unité pour ce tour.
-
-    int attackCost = 1; // Coût d'une attaque de l'unité.
-    int rangeMax = 2; // Portée maximale de l'unité
-    int rangeMin = 1; // Portée minimale de l'unité (dans le cas ou une attaque ne peut se faire à une case du personnage)
-
-    int turnCount = -1;
+    private int tileX, tileY, tileAttackX, tileAttackY; // Position du Joueur en X, en Y ainsi que Position en X , en Y de la tile pour l'attaque.
+    private List<Node> currentPath = null; // Liste des noeuds pour le PathFinding.
+    private bool attacking = false; // Booléen vérifiant si l'on attaque ou pas.
+    private int health, pm = 2, pa, attackCost = 1, rangeMax = 2, rangeMin = 1, turnCount = -1; // PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
+    private float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
 
 	void Update ()
     {
@@ -169,12 +154,12 @@ public class UnitController : MonoBehaviour {
 
     public void ResetMove()
     {
-        remainingMovement = moveSpeed;
+        remainingMovement = pm;
     }
 
     public void ResetAction()
     {
-        remainingAction = actionCount;
+        remainingAction = pa;
     }
 
     public void SetDefaultSpawn(Vector3 pos)
@@ -228,6 +213,42 @@ public class UnitController : MonoBehaviour {
         set
         {
             tileY = value;
+        }
+    }
+
+    public int Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            health = value;
+        }
+    }
+
+    public int PM
+    {
+        get
+        {
+            return pm;
+        }
+        set
+        {
+            pm = value;
+        }
+    }
+
+    public int PA
+    {
+        get
+        {
+            return pa;
+        }
+        set
+        {
+            pa = value;
         }
     }
 

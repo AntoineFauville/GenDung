@@ -10,7 +10,7 @@ public class DungeonController : MonoBehaviour {
     private Dungeon dungeon;
     private Node[,] graph;
     private UnitController unit;
-
+    private GameData playerData;
     private Vector3 worldPosTemp;
 
     void CreateInstance()
@@ -28,6 +28,8 @@ public class DungeonController : MonoBehaviour {
         GenerateMapData();
         GeneratePathfindingGraph();
 
+        playerData = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData;
+
         /* Charge le prefab du Joueur */
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
         /* */
@@ -35,13 +37,20 @@ public class DungeonController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
         {
             unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
-            for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
+            for (int i = 0; i < playerData.SavedSizeOfTheTeam; i++)
             {
-                unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+                unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = playerData.SavedCharacterList[i].TempSprite;
                 unit_go.name = "Character_" + i;
+
+                unit.Health = playerData.SavedCharacterList[i].Health_PV;
+                unit.PA = playerData.SavedCharacterList[i].ActionPoints_PA;
+
             }
-            unit.SetDefaultSpawn(new Vector3(-1000,-1000,0)); // Positionne le personnage au Vector3 (0,0,0).
+
+            /* Assure le positionnement hors écran durant la phase de placement */
+            unit.SetDefaultSpawn(new Vector3(-1000,-1000,0));
             worldPosTemp = new Vector3(-1000, -1000, 0);
+            /* */
 
             SetWallTiles();
             SetSpawnTiles();
@@ -271,6 +280,7 @@ public class DungeonController : MonoBehaviour {
         return worldPosTemp;
     }
 
+    /* Indique aux Tiles concernées qu'elles sont des murs */
     public void SetWallTiles()
     {
         int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls.Count;
@@ -280,7 +290,9 @@ public class DungeonController : MonoBehaviour {
             Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
         }
     }
+    /* */
 
+    /* Indique aux Tiles concernées qu'elles sont des zones possibles de placement pré-Combat */
     public void SetSpawnTiles()
     {
         int spawnNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints.Count;
@@ -290,7 +302,9 @@ public class DungeonController : MonoBehaviour {
             Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
         }
     }
+    /* */ 
 
+    /* Indique aux Tiles concernées qu'elles sont des zones de spawn possibles de monstres */
     public void SetMonsterSpawnTiles()
     {
         int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
@@ -300,6 +314,7 @@ public class DungeonController : MonoBehaviour {
             Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isMonsterTile = true;
         }
     }
+    /* */
 
     /* Accessors Methods */
 
