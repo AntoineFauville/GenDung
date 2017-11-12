@@ -22,6 +22,8 @@ public class CombatController : MonoBehaviour {
 
     GameObject monster_go;
     GameObject monsterPrefab;
+    GameObject UIMonsterDisplayPrefab;
+    GameObject UIMonsterDisplay;
 
     void CreateInstance()
     {
@@ -136,12 +138,15 @@ public class CombatController : MonoBehaviour {
     public void SpawnMonster()
     {
         monsterPrefab = Resources.Load("Prefab/Foe") as GameObject;
+        UIMonsterDisplayPrefab = Resources.Load("UI_Interface/UIBattleOrderDisplay") as GameObject;
 
         for (int x = 0; x < foeData.enemies; x++)
         {
+            /* Instantiate this foe */
             monster_go = Instantiate(monsterPrefab);
             monster_go.name = "Foe_" + x;
             foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
+            /* */
 
             /* Give Foe intels for this foe */
             foe.FoeName = foeData.enemiesList[x].enemyName;
@@ -149,6 +154,12 @@ public class CombatController : MonoBehaviour {
             foe.FoePA = foeData.enemiesList[x].pa;
             foe.FoePM = foeData.enemiesList[x].pm;
             foe.FoeAtk = foeData.enemiesList[x].atk;
+            /* */
+
+            /* Instantiate the UI Display for this foe */
+            UIMonsterDisplay = Instantiate(UIMonsterDisplayPrefab);
+            UIMonsterDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
+            UIMonsterDisplay.name = "UIDisplayMonster_" + x;
             /* */
 
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
