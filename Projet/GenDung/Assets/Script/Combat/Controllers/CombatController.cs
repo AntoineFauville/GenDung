@@ -149,8 +149,10 @@ public class CombatController : MonoBehaviour {
             /* */
 
             /* Give Foe intels for this foe */
+            foe.FoeID = x;
             foe.FoeName = foeData.enemiesList[x].enemyName;
             foe.FoeHealth = foeData.enemiesList[x].health;
+            foe.FoeMaxHealth = foeData.enemiesList[x].health;
             foe.FoePA = foeData.enemiesList[x].pa;
             foe.FoePM = foeData.enemiesList[x].pm;
             foe.FoeAtk = foeData.enemiesList[x].atk;
@@ -160,6 +162,7 @@ public class CombatController : MonoBehaviour {
             UIMonsterDisplay = Instantiate(UIMonsterDisplayPrefab);
             UIMonsterDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
             UIMonsterDisplay.name = "UIDisplayMonster_" + x;
+            UIMonsterDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (foe.FoeHealth / foe.FoeMaxHealth);
             /* */
 
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
@@ -172,6 +175,15 @@ public class CombatController : MonoBehaviour {
             /* */
         }
     }
+
+    /* Code de gestion du Combat */
+
+    public void UpdateUI(int id)
+    {
+        GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_"+id).transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("Foe_"+id).transform.Find("Unit").GetComponent<FoeController>().FoeHealth / (float)GameObject.Find("Foe_" + id).transform.Find("Unit").GetComponent<FoeController>().FoeMaxHealth);
+    }
+
+    /**/
 
     /* Code de gestion de fin de combat */
 

@@ -44,7 +44,7 @@ public class DungeonController : MonoBehaviour {
 
                 unit.Health = playerData.SavedCharacterList[i].Health_PV;
                 unit.PA = playerData.SavedCharacterList[i].ActionPoints_PA;
-
+                unit.PM = playerData.SavedCharacterList[i].MovementPoints_PM;
             }
 
             /* Assure le positionnement hors écran durant la phase de placement */

@@ -5,7 +5,7 @@ using UnityEngine;
 public class FoeController : MonoBehaviour {
 
     private string foeName;
-    public int foeHealth,foePA,foePM,foeAtk;
+    private int foeID,foeHealth,foePA,foePM,foeAtk,foeMaxHealth;
 
 	public void SetDefaultSpawn(Vector3 pos)
     {
@@ -15,10 +15,25 @@ public class FoeController : MonoBehaviour {
     public void FoeClicked()
     {
         if (Input.GetMouseButtonUp(0))
+        {
             Debug.Log("Hello my name is : " +foeName+ ". I have got: " + foeHealth+ " PV, " + foePA + " PA, " + foePM + " PM, " + foeAtk + " ATK.");
+            foeHealth--;
+            CombatController.Instance.UpdateUI(foeID);
+        }
     }
 
     /* Accessors Methods */
+    public int FoeID
+    {
+        get
+        {
+            return foeID;
+        }
+        set
+        {
+            foeID = value;
+        }
+    }
     public string FoeName
     {
         get
@@ -72,6 +87,17 @@ public class FoeController : MonoBehaviour {
         set
         {
             foeAtk = value;
+        }
+    }
+    public int FoeMaxHealth
+    {
+        get
+        {
+            return foeMaxHealth;
+        }
+        set
+        {
+            foeMaxHealth = value;
         }
     }
     /*  */
