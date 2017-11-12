@@ -16,6 +16,7 @@ public class Character : ScriptableObject {
 	public int 
 	Health_PV,
 	ActionPoints_PA,
+    MovementPoints_PM,
 	CloseAttaqueValue,
 	DistanceAttaqueValue;
 
