@@ -8,4 +8,10 @@ public class FoeController : MonoBehaviour {
     {
         this.transform.position = pos;
     }
+
+    public void FoeClicked()
+    {
+        if (Input.GetMouseButtonUp(0))
+            Debug.Log("I have been Clicked on ! Bitch stay away from me !!");
+    }
 }
