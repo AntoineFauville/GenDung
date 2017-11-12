@@ -8,7 +8,7 @@ public class UnitController : MonoBehaviour {
     private int tileX, tileY, tileAttackX, tileAttackY; // Position du Joueur en X, en Y ainsi que Position en X , en Y de la tile pour l'attaque.
     private List<Node> currentPath = null; // Liste des noeuds pour le PathFinding.
     private bool attacking = false; // Booléen vérifiant si l'on attaque ou pas.
-    private int health, pm, pa, attackCost = 1, rangeMax = 2, rangeMin = 1, turnCount = -1; // PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
+    private int characterID, health, maxHealth, pm, pa, attackCost = 1, rangeMax = 2, rangeMin = 1, turnCount = -1; // ID, PV, Max PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
     private float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
 
 	void Update ()
@@ -192,6 +192,18 @@ public class UnitController : MonoBehaviour {
 
     /* Accessors Methods*/
 
+    public int ID
+    {
+        get
+        {
+            return characterID;
+        }
+        set
+        {
+            characterID = value;
+        }
+    }
+
     public int TileX
     {
         get
@@ -225,6 +237,18 @@ public class UnitController : MonoBehaviour {
         set
         {
             health = value;
+        }
+    }
+
+    public int MaxHealth
+    {
+        get
+        {
+            return maxHealth;
+        }
+        set
+        {
+            maxHealth = value;
         }
     }
 

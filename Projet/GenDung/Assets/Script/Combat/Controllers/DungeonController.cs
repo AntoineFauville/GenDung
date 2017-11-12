@@ -42,7 +42,9 @@ public class DungeonController : MonoBehaviour {
                 unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = playerData.SavedCharacterList[i].TempSprite;
                 unit_go.name = "Character_" + i;
 
+                unit.ID = i;
                 unit.Health = playerData.SavedCharacterList[i].Health_PV;
+                unit.MaxHealth = playerData.SavedCharacterList[i].Health_PV;
                 unit.PA = playerData.SavedCharacterList[i].ActionPoints_PA;
                 unit.PM = playerData.SavedCharacterList[i].MovementPoints_PM;
             }

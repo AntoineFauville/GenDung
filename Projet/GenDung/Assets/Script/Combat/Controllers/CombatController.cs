@@ -10,15 +10,12 @@ public class CombatController : MonoBehaviour {
     private bool placementDone = false;
     private bool combatStarted = false;
     private bool attackMode = false;
-    private int tileX;
-    private int tileY;
-    private Button btnStartGame;
-    private Button btnCACMode;
-    private Button btnDistanceMode;
+    private int tileX,tileY;
+    private Button btnStartGame,btnCACMode,btnDistanceMode;
     private FoeController foe;
     private Room foeData;
-
     private UnitController targetUnit;
+    private int monsterNmb;
 
     GameObject monster_go;
     GameObject monsterPrefab;
@@ -51,6 +48,7 @@ public class CombatController : MonoBehaviour {
         }
 
         foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
+        monsterNmb = foeData.enemies;
     }
 
     /* Code de gestion du placement des personnages Pré-Combat*/
@@ -147,7 +145,7 @@ public class CombatController : MonoBehaviour {
             UIPlayerDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
             UIPlayerDisplay.transform.localScale = new Vector3(1, 1, 1);
             UIPlayerDisplay.name = "UIDisplayPlayer_" + i;
-            UIPlayerDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV  / GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV);
+            UIPlayerDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV  / (float)GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV);
 
             UIPlayerDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
 
@@ -208,11 +206,21 @@ public class CombatController : MonoBehaviour {
         GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_"+id).transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("Foe_"+id).transform.Find("Unit").GetComponent<FoeController>().FoeHealth / (float)GameObject.Find("Foe_" + id).transform.Find("Unit").GetComponent<FoeController>().FoeMaxHealth);
     }
 
+    public void CheckBattleDeath()
+    {
+        if (monsterNmb <= 0)
+            EndBattle();
+    }
+
     /**/
 
     /* Code de gestion de fin de combat */
 
-
+    public void EndBattle()
+    {
+        Debug.Log("Monsters have been exterminated, Back into Exploration Mode");
+        GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
+    }
 
     /*IEnumerator Methods*/
 
@@ -269,6 +277,17 @@ public class CombatController : MonoBehaviour {
         set
         {
             attackMode = value;
+        }
+    }
+    public int MonsterNmb
+    {
+        get
+        {
+            return monsterNmb;
+        }
+        set
+        {
+            monsterNmb = value;
         }
     }
     /**/

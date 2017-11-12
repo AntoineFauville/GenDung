@@ -1,11 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FoeController : MonoBehaviour {
 
     private string foeName;
     private int foeID,foeHealth,foePA,foePM,foeAtk,foeMaxHealth;
+
+    private bool dead = false;
+    private Image spriteMonster;
+
+    public void Start()
+    {
+        spriteMonster = this.transform.Find("Cube/Image").GetComponent<Image>();
+    }
 
 	public void SetDefaultSpawn(Vector3 pos)
     {
@@ -21,6 +30,14 @@ public class FoeController : MonoBehaviour {
                 Debug.Log("Ouch, I lost 1 HP");
                 foeHealth--;
                 CombatController.Instance.UpdateUI(foeID);
+                if(foeHealth == 0)
+                {
+                    dead = true;
+                    CombatController.Instance.MonsterNmb--;
+                    Debug.Log("This Monster Lost all is HP, Decreasing Monster Count in room");
+                    spriteMonster.enabled = false;
+                    CombatController.Instance.CheckBattleDeath();
+                }
             }
             else if (foeHealth == 0)
             {
