@@ -141,9 +141,9 @@ public class EditorController : MonoBehaviour {
     {
         spellRange = new Vector2((x - unit.TileX), (y - unit.TileY));
 
-        if (!spell.spellRange.Contains(spellRange))
+        if (!spell.range.spellRange.Contains(spellRange))
         {
-            spell.spellRange.Add(spellRange);
+            spell.range.spellRange.Add(spellRange);
             Debug.Log("Spell Range has been added : (" + x + "," + y + ")");
         }
         else
@@ -154,9 +154,9 @@ public class EditorController : MonoBehaviour {
     {
         spellRange = new Vector2((x - unit.TileX), (y - unit.TileY));
 
-        if (spell.spellRange.Contains(spellRange))
+        if (spell.range.spellRange.Contains(spellRange))
         {
-            spell.spellRange.Remove(spellRange);
+            spell.range.spellRange.Remove(spellRange);
             Debug.Log("Spell Range has been removed : (" + x + "," + y + ")");
         }
         else
@@ -166,7 +166,7 @@ public class EditorController : MonoBehaviour {
     public bool CheckSpellRange(int x, int y)
     {
         Vector2 test = new Vector2((x - unit.TileX), (y - unit.TileY));
-        return spell.spellRange.Contains(test);
+        return spell.range.spellRange.Contains(test);
     }
     /* */
 
