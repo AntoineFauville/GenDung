@@ -14,11 +14,19 @@ public class FoeController : MonoBehaviour {
 
     public void FoeClicked()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && CombatController.Instance.AttackMode)
         {
-            Debug.Log("Hello my name is : " +foeName+ ". I have got: " + foeHealth+ " PV, " + foePA + " PA, " + foePM + " PM, " + foeAtk + " ATK.");
-            foeHealth--;
-            CombatController.Instance.UpdateUI(foeID);
+            if (foeHealth > 0)
+            {
+                Debug.Log("Ouch, I lost 1 HP");
+                foeHealth--;
+                CombatController.Instance.UpdateUI(foeID);
+            }
+            else if (foeHealth == 0)
+            {
+                Debug.Log("I'm Dead Man, Stop Clicking on me. That's Rude Man.");
+            }
+
         }
     }
 
