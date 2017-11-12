@@ -9,6 +9,7 @@ public class EditorController : MonoBehaviour {
 
     public RoomObject room;
     public SpellObject spell;
+    public Transform testTile;
     private Vector2 wall;
     private Vector2 spawn;
     private Vector2 monsterSpawn;
@@ -19,7 +20,9 @@ public class EditorController : MonoBehaviour {
     {
         CreateInstance();
         GameObject.FindGameObjectWithTag("backgroundOfRoom").transform.GetComponent<Image>().sprite = room.back;
-        GameObject.Find("Unit(Clone)").transform.Find("Unit").GetComponent<UnitController>();
+        unit = GameObject.Find("Unit(Clone)").transform.Find("Unit").GetComponent<UnitController>();
+        testTile = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_7_6").transform;
+        unit.SetDefaultSpawn(testTile.position);
     }
 
     void CreateInstance()

@@ -55,6 +55,11 @@ public class TileController : MonoBehaviour {
                     EditorController.Instance.AddMonsterSpawn(x, y);
                     this.GetComponent<Image>().color = Color.magenta;
                 }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    Debug.Log("Shift is hold and Mouse 0 click detected");
+                    EditorController.Instance.AddSpellRange(x,y);
+                }
                 else
                 {
                     EditorController.Instance.AddWall(x, y);
@@ -74,6 +79,11 @@ public class TileController : MonoBehaviour {
                     Debug.Log("Alt is hold and Mouse 1 click detected");
                     EditorController.Instance.RemoveMonsterSpawn(x, y);
                     this.GetComponent<Image>().color = new Color(255, 255, 255, 0.1f);
+                }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    Debug.Log("Shift is hold and Mouse 1 click detected");
+                    EditorController.Instance.RemoveSpellRange(x, y);
                 }
                 else
                 {

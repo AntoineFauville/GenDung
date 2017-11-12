@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UnitController : MonoBehaviour {
 
@@ -48,7 +49,7 @@ public class UnitController : MonoBehaviour {
             Attack();
         }
         
-        if (/*Vector3.Distance(transform.position, DungeonController.Instance.TileCoordToWorldCoord(tileX,tileY)) < 0.1f*/ true)
+        if (SceneManager.GetActiveScene().name != "Editor")
         {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
