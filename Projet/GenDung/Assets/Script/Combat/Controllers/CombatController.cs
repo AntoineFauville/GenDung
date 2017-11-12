@@ -24,6 +24,7 @@ public class CombatController : MonoBehaviour {
     GameObject monsterPrefab;
     GameObject UIMonsterDisplayPrefab;
     GameObject UIMonsterDisplay;
+    GameObject UIPlayerDisplay;
 
     void CreateInstance()
     {
@@ -140,6 +141,22 @@ public class CombatController : MonoBehaviour {
         monsterPrefab = Resources.Load("Prefab/Foe") as GameObject;
         UIMonsterDisplayPrefab = Resources.Load("UI_Interface/UIBattleOrderDisplay") as GameObject;
 
+        for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
+        {
+            UIPlayerDisplay = Instantiate(UIMonsterDisplayPrefab);
+            UIPlayerDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
+            UIPlayerDisplay.transform.localScale = new Vector3(1, 1, 1);
+            UIPlayerDisplay.name = "UIDisplayPlayer_" + i;
+            UIPlayerDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV  / GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV);
+
+            UIPlayerDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+
+            UIPlayerDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Name.ToString();
+            UIPlayerDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV.ToString();
+            UIPlayerDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].ActionPoints_PA.ToString();
+            UIPlayerDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].MovementPoints_PM.ToString();
+        }
+
         for (int x = 0; x < foeData.enemies; x++)
         {
             /* Instantiate this foe */
@@ -161,8 +178,16 @@ public class CombatController : MonoBehaviour {
             /* Instantiate the UI Display for this foe */
             UIMonsterDisplay = Instantiate(UIMonsterDisplayPrefab);
             UIMonsterDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
+            UIMonsterDisplay.transform.localScale = new Vector3(1, 1, 1);
             UIMonsterDisplay.name = "UIDisplayMonster_" + x;
             UIMonsterDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (foe.FoeHealth / foe.FoeMaxHealth);
+
+            UIMonsterDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = foeData.enemiesList[x].enemyIcon;
+
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = foe.FoeName.ToString();
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "PV : " + foe.FoeHealth.ToString();
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "PA : " + foe.FoePA.ToString();
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPM").GetComponent<Text>().text = "PM : " + foe.FoePM.ToString();
             /* */
 
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
