@@ -16,6 +16,7 @@ public class CombatController : MonoBehaviour {
     private Button btnCACMode;
     private Button btnDistanceMode;
     private FoeController foe;
+    private Room foeData;
 
     private UnitController targetUnit;
 
@@ -45,6 +46,8 @@ public class CombatController : MonoBehaviour {
             btnDistanceMode = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Distance").GetComponent<Button>();
             btnDistanceMode.onClick.AddListener(SwitchToDistanceAttack);
         }
+
+        foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
     }
 
     /* Code de gestion du placement des personnages Pré-Combat*/
@@ -90,14 +93,14 @@ public class CombatController : MonoBehaviour {
 
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
 
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
     }
 
     public void SwitchToDistanceAttack()
@@ -109,18 +112,18 @@ public class CombatController : MonoBehaviour {
 
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
 
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 2)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 2)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetCaCRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetCaCRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 2)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 2)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
     }
 
     /* Code de gestion du début de combat */
@@ -134,19 +137,28 @@ public class CombatController : MonoBehaviour {
     {
         monsterPrefab = Resources.Load("Prefab/Foe") as GameObject;
 
-        for (int x = 0; x < GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].enemies; x++)
+        for (int x = 0; x < foeData.enemies; x++)
         {
             monster_go = Instantiate(monsterPrefab);
             monster_go.name = "Foe_" + x;
             foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
 
+            /* Give Foe intels for this foe */
+            foe.FoeName = foeData.enemiesList[x].enemyName;
+            foe.FoeHealth = foeData.enemiesList[x].health;
+            foe.FoePA = foeData.enemiesList[x].pa;
+            foe.FoePM = foeData.enemiesList[x].pm;
+            foe.FoeAtk = foeData.enemiesList[x].atk;
+            /* */
+
+            /* Get some random number to choose a random position in the List and place the spawn monster at this position */
             int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
             int rndNmb = Random.Range(0, spawnMonsterNumber);
             if (rndNmb == spawnMonsterNumber)
                 rndNmb = rndNmb - 1;
-
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
             foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
+            /* */
         }
     }
 

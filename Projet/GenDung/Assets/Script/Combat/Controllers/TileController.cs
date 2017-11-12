@@ -142,7 +142,7 @@ public class TileController : MonoBehaviour {
             return false;        
     }
 
-    public void SetCaCRange()
+    public void SetRange()
     {
         this.GetComponent<Image>().color = Color.red;
     }
