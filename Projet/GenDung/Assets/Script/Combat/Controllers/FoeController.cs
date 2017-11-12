@@ -27,23 +27,18 @@ public class FoeController : MonoBehaviour {
         {
             if (foeHealth > 0)
             {
-                Debug.Log("Ouch, I lost 1 HP");
                 foeHealth--;
                 CombatController.Instance.UpdateUI(foeID);
                 if(foeHealth == 0)
                 {
                     dead = true;
                     CombatController.Instance.MonsterNmb--;
-                    Debug.Log("This Monster Lost all is HP, Decreasing Monster Count in room");
                     spriteMonster.enabled = false;
+                    // Désactiver le DisplayUI lié à ce monstre.
+                    GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject.SetActive(false);
                     CombatController.Instance.CheckBattleDeath();
                 }
             }
-            else if (foeHealth == 0)
-            {
-                Debug.Log("I'm Dead Man, Stop Clicking on me. That's Rude Man.");
-            }
-
         }
     }
 

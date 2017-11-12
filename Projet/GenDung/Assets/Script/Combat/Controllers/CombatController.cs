@@ -218,7 +218,6 @@ public class CombatController : MonoBehaviour {
 
     public void EndBattle()
     {
-        Debug.Log("Monsters have been exterminated, Back into Exploration Mode");
         GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
     }
 
