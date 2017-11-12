@@ -28,7 +28,9 @@ public class DungeonController : MonoBehaviour {
         GenerateMapData();
         GeneratePathfindingGraph();
 
+        /* Charge le prefab du Joueur */
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
+        /* */
 
         if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
         {
@@ -38,7 +40,8 @@ public class DungeonController : MonoBehaviour {
                 unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
                 unit_go.name = "Character_" + i;
             }
-            unit.SetDefaultSpawn(Vector3.zero); // Positionne le personnage au Vector3 (0,0,0).
+            unit.SetDefaultSpawn(new Vector3(-1000,-1000,0)); // Positionne le personnage au Vector3 (0,0,0).
+            worldPosTemp = new Vector3(-1000, -1000, 0);
 
             SetWallTiles();
             SetSpawnTiles();
@@ -58,10 +61,10 @@ public class DungeonController : MonoBehaviour {
     {
         Dungeon = new Dungeon();
 
-        /*Creation du GridCanvas*/
+        /* Creation du GridCanvas */
         GameObject PrefabGrid = Resources.Load("UI_Interface/GridCanvas") as GameObject;
         GameObject c = GameObject.Instantiate(PrefabGrid);
-        /**/
+        /* */
 
 		GameObject tileUIPrefab = Resources.Load("UI_Interface/Tile") as GameObject;
 
@@ -86,13 +89,12 @@ public class DungeonController : MonoBehaviour {
         }
 		c.transform.Find ("PanelGrid").transform.localScale = new Vector3 (0.95f,1,1f);
         c.transform.Find("PanelGrid").transform.localPosition = new Vector3(-Screen.currentResolution.width / 3.732f, -Screen.currentResolution.width / 7.3f, 0);
-
         /* */
     }
 
     void GeneratePathfindingGraph()
     {
-        // Initialize the array
+        // Initialisation du Array
         graph = new Node[Dungeon.Width, Dungeon.Height];
 
         // Initialize a Node for each spot in the array
