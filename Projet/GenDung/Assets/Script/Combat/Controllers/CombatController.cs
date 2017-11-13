@@ -15,7 +15,8 @@ public class CombatController : MonoBehaviour {
     private FoeController foe;
     private Room foeData;
     private UnitController targetUnit;
-    private int monsterNmb;
+    private int monsterNmb, rndNmb;
+    private List<int> monsterPos;
 
     GameObject monster_go;
     GameObject monsterPrefab;
@@ -49,6 +50,7 @@ public class CombatController : MonoBehaviour {
 
         foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
         monsterNmb = foeData.enemies;
+        monsterPos = new List<int>();
     }
 
     /* Code de gestion du placement des personnages Pré-Combat*/
@@ -94,14 +96,6 @@ public class CombatController : MonoBehaviour {
 
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
 
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
     }
 
     public void SwitchToDistanceAttack()
@@ -112,19 +106,6 @@ public class CombatController : MonoBehaviour {
         // Distance : donc portée de 2 maximale autour de la cible (Test)
 
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
-
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 2)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX + 0) + "_" + (targetUnit.TileY - 2)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 1) + "_" + (targetUnit.TileY - 1)).GetComponent<TileController>().SetRange();
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.TileX - 2) + "_" + (targetUnit.TileY + 0)).GetComponent<TileController>().SetRange();
     }
 
     /* Code de gestion du début de combat */
@@ -190,11 +171,17 @@ public class CombatController : MonoBehaviour {
 
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
             int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
-            int rndNmb = Random.Range(0, spawnMonsterNumber);
-            if (rndNmb == spawnMonsterNumber)
-                rndNmb = rndNmb - 1;
+            rndNmb = Random.Range(0, spawnMonsterNumber);
+            while (monsterPos.Contains(rndNmb))
+            {
+                rndNmb = Random.Range(0, spawnMonsterNumber);
+                if (rndNmb == spawnMonsterNumber)
+                    rndNmb = rndNmb - 1;
+            }
+
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
             foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
+            monsterPos.Add(rndNmb);
             /* */
         }
     }
