@@ -18,11 +18,14 @@ public class Character : ScriptableObject {
 	ActionPoints_PA,
     MovementPoints_PM,
 	CloseAttaqueValue,
-	DistanceAttaqueValue;
+	DistanceAttaqueValue,
+    Initiative;
 
     public bool
     AvailableAtCharacterCreation;
 
 	public string
 	story = "this is a story of a random player, we still need to implement this yes...";
+
+    public SpellObject[] SpellList;
 }
