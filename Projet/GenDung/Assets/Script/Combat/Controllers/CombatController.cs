@@ -83,7 +83,8 @@ public class CombatController : MonoBehaviour {
 
     /* Code de gestion de l'Initiative des personnages */
 
-
+        // Commencer à réfléchir au système d'initiative: Ne serait ce que pour un PJ et les PNJ.
+        // Ce qui est fait n'est plus à faire !!!
 
     /* Code de gestion du Mode Attaque ou Mode Déplacement */
 

@@ -7,17 +7,16 @@ using UnityEngine.UI;
 
 public class TileController : MonoBehaviour {
 
-    private int x;
-    private int y;
+    private int x, y;
 
-    private bool clicked = false;
-    private bool onSpawn = false;
+    private bool clicked = false; // vérifie si on vient de cliquer sur la tile.
+    private bool occupied = false; // Vérifie la présence d'un personnage sur la case.
 
     public void TileClicked()
     {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && !occupied)
             {
                 MoveTo();
             }
@@ -25,17 +24,11 @@ public class TileController : MonoBehaviour {
             {
                 DungeonController.Instance.LaunchUnitAttack(x, y);
             }
-            else if (!CombatController.Instance.PlacementDone) // Check si le placement du personnage est deja fait.
+            else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
             {
                 if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
                 {
-                    onSpawn = true;
                     CombatController.Instance.ConfirmCharaPosition(x, y);
-                }
-                else
-                {
-                    Debug.Log("This Tile is not a spawning Point, Please Select a Spawning Point(cyan)");
-                    onSpawn = false;
                 }
             }
         }

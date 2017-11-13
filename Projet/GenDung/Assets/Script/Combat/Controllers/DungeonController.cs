@@ -124,6 +124,17 @@ public class DungeonController : MonoBehaviour {
         {
             for (int y = 0; y < Dungeon.Height; y++)
             {
+                // This is the 4-way connection version:
+    			if(x > 0)
+					graph[x,y].neighbours.Add( graph[x-1, y] );
+				if(x < Dungeon.Width-1)
+					graph[x,y].neighbours.Add( graph[x+1, y] );
+				if(y > 0)
+					graph[x,y].neighbours.Add( graph[x, y-1] );
+				if(y < Dungeon.Height-1)
+					graph[x,y].neighbours.Add( graph[x, y+1] );
+
+                /*
                 // This is the 8-way connection version (allows diagonal movement)
                 // Try left
                 if (x > 0)
@@ -150,7 +161,7 @@ public class DungeonController : MonoBehaviour {
                     graph[x, y].neighbours.Add(graph[x, y - 1]);
                 if (y < Dungeon.Height - 1)
                     graph[x, y].neighbours.Add(graph[x, y + 1]);
-
+                */
             }
         }
     }
