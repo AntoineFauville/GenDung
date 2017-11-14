@@ -11,7 +11,14 @@ public class UnitController : MonoBehaviour {
     private int characterID, health, maxHealth, pm, pa, attackCost = 1, rangeMax = 2, rangeMin = 1, turnCount = -1; // ID, PV, Max PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
     private float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
 
-	void Update ()
+    public SpellObject[] playerSpells;
+
+    public void Start()
+    {
+        //playerSpells = new SpellObject[2];
+    }
+
+    void Update ()
     {
 	    if(currentPath != null)
         {
@@ -273,6 +280,18 @@ public class UnitController : MonoBehaviour {
         set
         {
             pa = value;
+        }
+    }
+
+    public SpellObject[] PlayerSpells
+    {
+        get
+        {
+            return playerSpells;
+        }
+        set
+        {
+            playerSpells = value;
         }
     }
 

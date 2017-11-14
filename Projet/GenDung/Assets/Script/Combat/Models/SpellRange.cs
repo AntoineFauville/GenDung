@@ -7,6 +7,6 @@ public class SpellRange {
 
     public string spellRangeName = "New Spell Range";
 
-    public SpellRangeObject spellRange;
+    //public SpellRangeObject spellRange;
 
 }

@@ -28,7 +28,6 @@ public class DungeonController : MonoBehaviour {
         GenerateMapData();
         GeneratePathfindingGraph();
 
-        playerData = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData;
 
         /* Charge le prefab du Joueur */
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
@@ -36,6 +35,8 @@ public class DungeonController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
         {
+            playerData = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData;
+
             unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
             for (int i = 0; i < playerData.SavedSizeOfTheTeam; i++)
             {
@@ -47,6 +48,7 @@ public class DungeonController : MonoBehaviour {
                 unit.MaxHealth = playerData.SavedCharacterList[i].Health_PV;
                 unit.PA = playerData.SavedCharacterList[i].ActionPoints_PA;
                 unit.PM = playerData.SavedCharacterList[i].MovementPoints_PM;
+                unit.PlayerSpells = playerData.SavedCharacterList[i].SpellList;
             }
 
             /* Assure le positionnement hors écran durant la phase de placement */

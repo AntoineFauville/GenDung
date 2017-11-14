@@ -42,15 +42,15 @@ public class CombatController : MonoBehaviour {
             btnStartGame.onClick.AddListener(StartCombatMode);
 
             btnCACMode = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_CAC").GetComponent<Button>();
-            btnCACMode.onClick.AddListener(SwitchToCACAttack);
+            btnCACMode.onClick.AddListener(SwitchAttackModeFirst);
 
             btnDistanceMode = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Distance").GetComponent<Button>();
-            btnDistanceMode.onClick.AddListener(SwitchToDistanceAttack);
-        }
+            btnDistanceMode.onClick.AddListener(SwitchAttackModeSecond);
 
-        foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
-        monsterNmb = foeData.enemies;
-        monsterPos = new List<int>();
+            foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
+            monsterNmb = foeData.enemies;
+            monsterPos = new List<int>();
+        }
     }
 
     /* Code de gestion du placement des personnages Pré-Combat*/
@@ -88,25 +88,39 @@ public class CombatController : MonoBehaviour {
 
     /* Code de gestion du Mode Attaque ou Mode Déplacement */
 
-    public void SwitchToCACAttack()
+    public void SwitchAttackModeFirst()
     {
-        Debug.Log("CAC Attack Mode has been selected");
+        Debug.Log("Attack Mode has been selected, Spell N°1 ");
         attackMode = true;
         // Afficher la portée sur la grille (en Rouge).
-        // CAC : donc portée de 1 autour de la cible (par facilité)
 
-        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
+        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+        // Lié la ligne du dessus avec le code du système d'Initiative.
 
+        for (int i = 0; i < targetUnit.PlayerSpells[0].range.spellRange.Count; i++)
+        {
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().SetRange();
+        }
     }
 
-    public void SwitchToDistanceAttack()
+    public void SwitchAttackModeSecond()
     {
-        Debug.Log("Distance Attack Mode has been selected");
+        Debug.Log("Attack Mode has been selected, Spell N°2");
         attackMode = true;
         // Afficher la portée sur la grille (en Rouge).
-        // Distance : donc portée de 2 maximale autour de la cible (Test)
 
-        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
+        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+        // Lié la ligne du dessus avec le code du système d'Initiative. 
+    }
+
+    public void SwitchAttackModeThird()
+    {
+        Debug.Log("Attack Mode has been selected, Spell N°3");
+        attackMode = true;
+        // Afficher la portée sur la grille (en Rouge).
+
+        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+        // Lié la ligne du dessus avec le code du système d'Initiative. 
     }
 
     /* Code de gestion du début de combat */
