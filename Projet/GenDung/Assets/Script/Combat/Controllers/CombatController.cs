@@ -12,18 +12,13 @@ public class CombatController : MonoBehaviour {
     private bool attackMode = false;
     private bool spell1 = false, spell2 = false, spell3 = false;
     private int tileX,tileY;
-    private Button btnStartGame,btnSpell1,btnSpell2;
+    private Button btnStartGame,btnSpell1,btnSpell2,btnSpell3;
     private FoeController foe;
     private Room foeData;
     private UnitController targetUnit;
     private int monsterNmb, rndNmb;
     private List<int> monsterPos;
-
-    GameObject monster_go;
-    GameObject monsterPrefab;
-    GameObject UIMonsterDisplayPrefab;
-    GameObject UIMonsterDisplay;
-    GameObject UIPlayerDisplay;
+    private GameObject monster_go, monsterPrefab, UIMonsterDisplayPrefab, UIMonsterDisplay, UIPlayerDisplay;
 
     void CreateInstance()
     {
@@ -47,6 +42,12 @@ public class CombatController : MonoBehaviour {
 
             btnSpell2 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Distance").GetComponent<Button>();
             btnSpell2.onClick.AddListener(SwitchAttackModeSecond);
+
+            /* 
+            //A activer lors du rajout du troisième bouton de sort.//
+            btnSpell2 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Name").GetComponent<Button>();
+            btnSpell2.onClick.AddListener(SwitchAttackModeThird);
+            */
 
             foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
             monsterNmb = foeData.enemies;

@@ -8,15 +8,9 @@ public class UnitController : MonoBehaviour {
     private int tileX, tileY, tileAttackX, tileAttackY; // Position du Joueur en X, en Y ainsi que Position en X , en Y de la tile pour l'attaque.
     private List<Node> currentPath = null; // Liste des noeuds pour le PathFinding.
     private bool attacking = false; // Booléen vérifiant si l'on attaque ou pas.
-    private int characterID, health, maxHealth, pm, pa, attackCost = 1, rangeMax = 2, rangeMin = 1, turnCount = -1; // ID, PV, Max PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
+    private int characterID, health, maxHealth, pm, pa, attackCost = 1, rangeMax = 2, rangeMin = 1, turnCount; // ID, PV, Max PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
     private float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
-
-    public SpellObject[] playerSpells;
-
-    public void Start()
-    {
-        //playerSpells = new SpellObject[2];
-    }
+    private SpellObject[] playerSpells; // liste des sorts du personnage.
 
     void Update ()
     {
@@ -29,67 +23,59 @@ public class UnitController : MonoBehaviour {
                 Vector3 start = DungeonController.Instance.TileCoordToWorldCoord(currentPath[currNode].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
                 Vector3 end = DungeonController.Instance.TileCoordToWorldCoord(currentPath[currNode + 1].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
 
-                Debug.DrawLine(start, end, Color.red);
-                //Debug.Log("Line has been Drawn");
+                //Debug.DrawLine(start, end, Color.red);
                 currNode++;
             }
         }
-
-        /*if (attacking)
-        {
-            Debug.Log("Launching Attack, Please Wait");
-            Attack();
-        }*/
         
-        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted)
+        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
         {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
-        else if (SceneManager.GetActiveScene().name != "Editor" && !CombatController.Instance.CombatStarted)
+        else if (SceneManager.GetActiveScene().name != "Editor" && !CombatController.Instance.CombatStarted) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat n'as pas été réalisé.
         {
             SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position);
             AdvancePathing();
         }
     }
 
-    public void AdvancePathing()
+    public void AdvancePathing() // Méthode de déplacement du personnage.
     {
-        if (!CombatController.Instance.CombatStarted)
+        if (!CombatController.Instance.CombatStarted) // On vérifie si le placement pré-combat a été fait ou pas (ainsi, on téléporte le joueur sur la case cliquée pour le placement pré-combat). 
         {
-            //transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position;
             transform.position = DungeonController.Instance.WorldPosTemp;
         }
 
-        if (currentPath == null)
+        if (currentPath == null) // Cas où le chemin est null, on arrete l'éxécution de la méthode.
         {
             return;
         }
 
-       if (remainingMovement <= 0)
+       if (remainingMovement <= 0) // on vérifie si le personnage a encore des PM.
         {
             //Debug.Log("Not enough movement point left, wait for the next turn");
             return;
         }
 
-        remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
+        remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y); // on retire le coût du déplacement par la case.
 
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
         
-        StartCoroutine(WaitBeforeNextMovement());
+        StartCoroutine(WaitBeforeNextMovement()); // Coroutine pour faire patienter le joueur et donné une meilleure impression de déplacement.
 
-        currentPath.RemoveAt(0);
+        currentPath.RemoveAt(0); // on retire la case précedente de la liste.
 
-        if (currentPath.Count == 1)
+        if (currentPath.Count == 1) // on vérifie si il ne reste pas que la case de destination.
         {
             currentPath = null;
         }
     }
 
-    public void Attack()
+    public void Attack() // méthode d'attaque du personnage.
     {
-        attacking = false;
+        //attacking = false;
 
         if (remainingAction <= 0)
         {
@@ -149,7 +135,7 @@ public class UnitController : MonoBehaviour {
 
     public IEnumerator WaitBeforeNextMovement()
     {
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(3f);
         transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
     }
 

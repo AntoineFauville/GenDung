@@ -110,7 +110,7 @@ public class TileController : MonoBehaviour {
 
     public void TileExit()
     {
-        if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckWall(x,y))
+        if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckWall(x, y))
             this.GetComponent<Image>().color = Color.red;
         else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckSpawn(x, y))
             this.GetComponent<Image>().color = Color.cyan;
@@ -118,6 +118,8 @@ public class TileController : MonoBehaviour {
             this.GetComponent<Image>().color = Color.cyan;
         else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckMonsterSpawn(x, y))
             this.GetComponent<Image>().color = Color.magenta;
+        else if (isInRange)
+            this.GetComponent<Image>().color = Color.red;
         else
             this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
     }
