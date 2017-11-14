@@ -45,8 +45,8 @@ public class CombatController : MonoBehaviour {
 
             /* 
             //A activer lors du rajout du troisième bouton de sort.//
-            btnSpell2 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Name").GetComponent<Button>();
-            btnSpell2.onClick.AddListener(SwitchAttackModeThird);
+            btnSpell3 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Name").GetComponent<Button>();
+            btnSpell3.onClick.AddListener(SwitchAttackModeThird);
             */
 
             foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
@@ -285,6 +285,7 @@ public class CombatController : MonoBehaviour {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
             foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
             foe.Pos = tile;
+            foe.SetTileAsOccupied();
             monsterPos.Add(rndNmb);
             /* */
         }

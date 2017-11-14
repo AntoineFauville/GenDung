@@ -126,9 +126,14 @@ public class TileController : MonoBehaviour {
 
     public void MoveTo()
     {
-        StartCoroutine(WaitAfterClick());
-        DungeonController.Instance.WorldPosTemp = this.transform.position;
-        DungeonController.Instance.GeneratePathTo(x, y);
+        if (!occupied)
+        {
+            StartCoroutine(WaitAfterClick());
+            DungeonController.Instance.WorldPosTemp = this.transform.position;
+            DungeonController.Instance.GeneratePathTo(x, y);
+        }
+        else if (occupied)
+            Debug.Log("This tile has already someone on it, this isn't Tetris man!");
     }
 
     public bool CheckSpawnType()
