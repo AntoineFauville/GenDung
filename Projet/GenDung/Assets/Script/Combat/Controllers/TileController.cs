@@ -26,6 +26,10 @@ public class TileController : MonoBehaviour {
                 CombatController.Instance.CleanRangeAfterAttack(s);
                 CombatController.Instance.TargetUnit.Attack();
             }
+            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && !isInRange)
+            {
+                CombatController.Instance.CleanRangeAfterAttack(s);
+            }
             else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
             {
                 if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
