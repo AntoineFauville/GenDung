@@ -175,7 +175,7 @@ public class DungeonController : MonoBehaviour {
         Tile target = GetTileAtWorldCoord(new Vector3(targetX, targetY, 0));
         cost = target.movementCost;
 
-        if (UnitCanEnterTile(targetX,targetY) == false)
+        if (CombatController.Instance.CombatStarted && UnitCanEnterTile(targetX,targetY) == false)
         {
             return Mathf.Infinity;
         }

@@ -92,7 +92,7 @@ public class CombatController : MonoBehaviour {
 
     public void SwitchAttackModeFirst()
     {
-        if (!attackMode && !spell1 || attackMode && spell2 || attackMode && spell3) // Active le spell 0 
+        if (!attackMode && !spell1 || attackMode && !spell1 || attackMode && spell2 || attackMode && spell3) // Active le spell 0 
         {
             Debug.Log("Attack Mode has been selected, Spell N°1");
             attackMode = true;
@@ -127,7 +127,7 @@ public class CombatController : MonoBehaviour {
 
     public void SwitchAttackModeSecond()
     {
-        if (!attackMode && !spell2 || attackMode && spell1 || attackMode && spell3) // Active le spell 1
+        if (!attackMode && !spell2 || attackMode && !spell2 || attackMode && spell1 || attackMode && spell3) // Active le spell 1
         {
             Debug.Log("Attack Mode has been selected, Spell N°2");
             attackMode = true;
@@ -149,7 +149,7 @@ public class CombatController : MonoBehaviour {
         else if (attackMode && spell2) // Désactive le spell 1 et clean la Range. 
         {
             attackMode = false;
-            spell1 = false;
+            spell2 = false;
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
@@ -162,7 +162,7 @@ public class CombatController : MonoBehaviour {
 
     public void SwitchAttackModeThird()
     {
-        if (!attackMode && !spell3 || attackMode && spell1 || attackMode && spell2) // Active le spell 2
+        if (!attackMode && !spell3 || attackMode && !spell3 || attackMode && spell1 || attackMode && spell2) // Active le spell 2
         {
             Debug.Log("Attack Mode has been selected, Spell N°2");
             attackMode = true;
@@ -198,6 +198,8 @@ public class CombatController : MonoBehaviour {
     public void CleanRangeAfterAttack(int s)
     {
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+
+        // si on clique sur une case en dehors de la Range, voir pour faire correspondre le S avec le bon bouton.
 
         for (int i = 0; i < targetUnit.PlayerSpells[s].range.spellRange.Count; i++)
         {
