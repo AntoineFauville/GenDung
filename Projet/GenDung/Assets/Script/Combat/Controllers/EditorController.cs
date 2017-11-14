@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EditorController : MonoBehaviour {
 
@@ -22,9 +23,12 @@ public class EditorController : MonoBehaviour {
         GameObject.FindGameObjectWithTag("backgroundOfRoom").transform.GetComponent<Image>().sprite = room.back;
         unit = GameObject.Find("Unit(Clone)").transform.Find("Unit").GetComponent<UnitController>();
         testTile = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_7_6").transform;
-        unit.TileX = 7;
-        unit.TileY = 6;
-        unit.SetDefaultSpawn(testTile.position);
+        if(SceneManager.GetActiveScene().name == "Editor")
+        {
+            unit.TileX = 7;
+            unit.TileY = 6;
+            unit.SetDefaultSpawn(testTile.position);
+        }
     }
 
     void CreateInstance()

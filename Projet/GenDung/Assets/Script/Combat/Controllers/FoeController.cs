@@ -20,6 +20,8 @@ public class FoeController : MonoBehaviour {
 	public void SetDefaultSpawn(Vector3 pos)
     {
         this.transform.position = pos;
+        // Indique la tile sur laquelle l'ennemi se trouve est occupé; (Penser à changer cette info quand les ennemis se déplaceront).
+        
     }
 
     public void FoeClicked()
@@ -34,7 +36,7 @@ public class FoeController : MonoBehaviour {
                 CombatController.Instance.TargetUnit.Attack();
                 foeHealth--;
                 CombatController.Instance.UpdateUI(foeID);
-                if(foeHealth == 0)
+                if (foeHealth == 0)
                 {
                     dead = true;
                     CombatController.Instance.MonsterNmb--;
@@ -45,15 +47,16 @@ public class FoeController : MonoBehaviour {
                 }
             }
         }
-        else if (!CombatController.Instance.AttackMode)
-        {
-            Debug.Log("Did you try to walk on this monster because I'm not sure it will kill without the attack mode");
-        }
         else if (!tileInRange)
         {
             Debug.Log("Monster not in Range, forget about attacking him");
             Debug.Log("Monster is on the Tile: " + pos.x + "," + pos.y);
         }
+    }
+
+    public void SetTileAsOccupied()
+    {
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = true;
     }
 
     /* Accessors Methods */

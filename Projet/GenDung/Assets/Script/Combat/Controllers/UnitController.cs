@@ -62,7 +62,10 @@ public class UnitController : MonoBehaviour {
 
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
-        
+
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
+
         StartCoroutine(WaitBeforeNextMovement()); // Coroutine pour faire patienter le joueur et donné une meilleure impression de déplacement.
 
         currentPath.RemoveAt(0); // on retire la case précedente de la liste.
@@ -135,7 +138,7 @@ public class UnitController : MonoBehaviour {
 
     public IEnumerator WaitBeforeNextMovement()
     {
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(1f);
         transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
     }
 
