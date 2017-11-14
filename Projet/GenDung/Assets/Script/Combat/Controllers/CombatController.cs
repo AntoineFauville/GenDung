@@ -10,8 +10,9 @@ public class CombatController : MonoBehaviour {
     private bool placementDone = false;
     private bool combatStarted = false;
     private bool attackMode = false;
+    private bool spell1 = false, spell2 = false, spell3 = false;
     private int tileX,tileY;
-    private Button btnStartGame,btnCACMode,btnDistanceMode;
+    private Button btnStartGame,btnSpell1,btnSpell2;
     private FoeController foe;
     private Room foeData;
     private UnitController targetUnit;
@@ -41,11 +42,11 @@ public class CombatController : MonoBehaviour {
             btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Panel/Panel/Button_Start_Game").GetComponent<Button>();
             btnStartGame.onClick.AddListener(StartCombatMode);
 
-            btnCACMode = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_CAC").GetComponent<Button>();
-            btnCACMode.onClick.AddListener(SwitchAttackModeFirst);
+            btnSpell1 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_CAC").GetComponent<Button>();
+            btnSpell1.onClick.AddListener(SwitchAttackModeFirst);
 
-            btnDistanceMode = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Distance").GetComponent<Button>();
-            btnDistanceMode.onClick.AddListener(SwitchAttackModeSecond);
+            btnSpell2 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Distance").GetComponent<Button>();
+            btnSpell2.onClick.AddListener(SwitchAttackModeSecond);
 
             foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
             monsterNmb = foeData.enemies;
@@ -90,37 +91,118 @@ public class CombatController : MonoBehaviour {
 
     public void SwitchAttackModeFirst()
     {
-        Debug.Log("Attack Mode has been selected, Spell N°1 ");
-        attackMode = true;
-        // Afficher la portée sur la grille (en Rouge).
-
-        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
-        // Lié la ligne du dessus avec le code du système d'Initiative.
-
-        for (int i = 0; i < targetUnit.PlayerSpells[0].range.spellRange.Count; i++)
+        if (!attackMode && !spell1 || attackMode && spell2 || attackMode && spell3) // Active le spell 0 
         {
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().SetRange();
+            Debug.Log("Attack Mode has been selected, Spell N°1");
+            attackMode = true;
+            spell1 = true;
+            spell2 = false;
+            spell3 = false;
+            // Afficher la portée sur la grille (en Rouge).
+
+            targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // Lié la ligne du dessus avec le code du système d'Initiative. 
+
+            for (int i = 0; i < targetUnit.PlayerSpells[0].range.spellRange.Count; i++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().SetRange();
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = true;
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 0;
+            }
+        }
+        else if (attackMode && spell1) // Désactive le spell 0 et clean la Range. 
+        {
+            attackMode = false;
+            spell1 = false;
+            targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // Lié la ligne du dessus avec le code du système d'Initiative. 
+
+            for (int i = 0; i < targetUnit.PlayerSpells[0].range.spellRange.Count; i++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
+            }
         }
     }
 
     public void SwitchAttackModeSecond()
     {
-        Debug.Log("Attack Mode has been selected, Spell N°2");
-        attackMode = true;
-        // Afficher la portée sur la grille (en Rouge).
+        if (!attackMode && !spell2 || attackMode && spell1 || attackMode && spell3) // Active le spell 1
+        {
+            Debug.Log("Attack Mode has been selected, Spell N°2");
+            attackMode = true;
+            spell1 = false;
+            spell2 = true;
+            spell3 = false;
+            // Afficher la portée sur la grille (en Rouge).
 
-        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
-        // Lié la ligne du dessus avec le code du système d'Initiative. 
+            targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // Lié la ligne du dessus avec le code du système d'Initiative. 
+
+            for (int i = 0; i < targetUnit.PlayerSpells[1].range.spellRange.Count; i++) 
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[1].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[1].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().SetRange();
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[1].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[1].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = true;
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[1].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[1].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 1;
+            }
+        }
+        else if (attackMode && spell2) // Désactive le spell 1 et clean la Range. 
+        {
+            attackMode = false;
+            spell1 = false;
+            targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // Lié la ligne du dessus avec le code du système d'Initiative. 
+
+            for (int i = 0; i < targetUnit.PlayerSpells[1].range.spellRange.Count; i++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[1].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[1].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
+            }
+        }
     }
 
     public void SwitchAttackModeThird()
     {
-        Debug.Log("Attack Mode has been selected, Spell N°3");
-        attackMode = true;
-        // Afficher la portée sur la grille (en Rouge).
+        if (!attackMode && !spell3 || attackMode && spell1 || attackMode && spell2) // Active le spell 2
+        {
+            Debug.Log("Attack Mode has been selected, Spell N°2");
+            attackMode = true;
+            spell1 = false;
+            spell2 = false;
+            spell3 = true;
+            // Afficher la portée sur la grille (en Rouge).
 
+            targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // Lié la ligne du dessus avec le code du système d'Initiative. 
+
+            for (int i = 0; i < targetUnit.PlayerSpells[2].range.spellRange.Count; i++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[2].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[2].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().SetRange();
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[2].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[2].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = true;
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[2].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[2].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 2;
+            }
+        }
+        else if (attackMode && spell3) // Désactive le spell 2 et clean la Range. 
+        {
+            attackMode = false;
+            spell3 = false;
+            targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // Lié la ligne du dessus avec le code du système d'Initiative. 
+
+            for (int i = 0; i < targetUnit.PlayerSpells[2].range.spellRange.Count; i++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[2].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[2].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
+            }
+        }
+    }
+
+    public void CleanRangeAfterAttack(int s)
+    {
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
-        // Lié la ligne du dessus avec le code du système d'Initiative. 
+
+        for (int i = 0; i < targetUnit.PlayerSpells[s].range.spellRange.Count; i++)
+        {
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
+        }
     }
 
     /* Code de gestion du début de combat */

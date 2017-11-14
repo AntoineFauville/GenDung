@@ -7,10 +7,11 @@ using UnityEngine.UI;
 
 public class TileController : MonoBehaviour {
 
-    private int x, y;
+    private int x, y, s = 99; // x et y pour la position de la tile; s pour le numéro du sort.
 
     private bool clicked = false; // vérifie si on vient de cliquer sur la tile.
     private bool occupied = false; // Vérifie la présence d'un personnage sur la case.
+    private bool isInRange = false; // vérifie si la case est à portée d'attaque;
 
     public void TileClicked()
     {
@@ -20,8 +21,9 @@ public class TileController : MonoBehaviour {
             {
                 MoveTo();
             }
-            else if (Input.GetMouseButtonUp(1) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode)
+            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange)
             {
+                CombatController.Instance.CleanRangeAfterAttack(s);
                 DungeonController.Instance.LaunchUnitAttack(x, y);
             }
             else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
@@ -137,7 +139,13 @@ public class TileController : MonoBehaviour {
 
     public void SetRange()
     {
+        RemoveRange();
         this.GetComponent<Image>().color = Color.red;
+    }
+
+    public void RemoveRange()
+    {
+        this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
     }
 
     /* IEnumerator Methods */
@@ -173,6 +181,39 @@ public class TileController : MonoBehaviour {
         set
         {
             y = value;
+        }
+    }
+    public int S
+    {
+        get
+        {
+            return s;
+        }
+        set
+        {
+            s = value;
+        }
+    }
+    public bool Occupied
+    {
+        get
+        {
+            return occupied;
+        }
+        set
+        {
+            occupied = value;
+        }
+    }
+    public bool IsInRange
+    {
+        get
+        {
+            return isInRange;
+        }
+        set
+        {
+            isInRange = value;
         }
     }
     /**/
