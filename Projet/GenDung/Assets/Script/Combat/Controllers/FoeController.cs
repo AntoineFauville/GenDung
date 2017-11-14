@@ -7,9 +7,10 @@ public class FoeController : MonoBehaviour {
 
     private string foeName;
     private int foeID,foeHealth,foePA,foePM,foeAtk,foeMaxHealth;
-
+    private Vector2 pos; // Actual tile position where the monster stand.
     private bool dead = false;
     private Image spriteMonster;
+    private bool tileInRange;
 
     public void Start()
     {
@@ -23,10 +24,14 @@ public class FoeController : MonoBehaviour {
 
     public void FoeClicked()
     {
-        if (Input.GetMouseButtonUp(0) && CombatController.Instance.AttackMode)
+        tileInRange = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().IsInRange;
+
+        if (Input.GetMouseButtonUp(0) && CombatController.Instance.AttackMode && tileInRange)
         {
             if (foeHealth > 0)
             {
+                CombatController.Instance.CleanRangeAfterAttack(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().S);
+                CombatController.Instance.TargetUnit.Attack();
                 foeHealth--;
                 CombatController.Instance.UpdateUI(foeID);
                 if(foeHealth == 0)
@@ -40,6 +45,15 @@ public class FoeController : MonoBehaviour {
                 }
             }
         }
+        else if (!CombatController.Instance.AttackMode)
+        {
+            Debug.Log("Did you try to walk on this monster because I'm not sure it will kill without the attack mode");
+        }
+        else if (!tileInRange)
+        {
+            Debug.Log("Monster not in Range, forget about attacking him");
+            Debug.Log("Monster is on the Tile: " + pos.x + "," + pos.y);
+        }
     }
 
     /* Accessors Methods */
@@ -52,6 +66,17 @@ public class FoeController : MonoBehaviour {
         set
         {
             foeID = value;
+        }
+    }
+    public Vector2 Pos
+    {
+        get
+        {
+            return pos;
+        }
+        set
+        {
+            pos = value;
         }
     }
     public string FoeName

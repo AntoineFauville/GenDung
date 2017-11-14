@@ -202,7 +202,12 @@ public class CombatController : MonoBehaviour {
         {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
         }
+
+        spell1 = false;
+        spell2 = false;
+        spell3 = false;
     }
 
     /* Code de gestion du début de combat */
@@ -278,6 +283,7 @@ public class CombatController : MonoBehaviour {
 
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
             foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
+            foe.Pos = tile;
             monsterPos.Add(rndNmb);
             /* */
         }
@@ -371,6 +377,17 @@ public class CombatController : MonoBehaviour {
         set
         {
             monsterNmb = value;
+        }
+    }
+    public UnitController TargetUnit
+    {
+        get
+        {
+            return targetUnit;
+        }
+        set
+        {
+            targetUnit = value;
         }
     }
     /**/

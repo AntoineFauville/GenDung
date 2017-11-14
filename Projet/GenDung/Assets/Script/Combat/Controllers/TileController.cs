@@ -24,7 +24,7 @@ public class TileController : MonoBehaviour {
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange)
             {
                 CombatController.Instance.CleanRangeAfterAttack(s);
-                DungeonController.Instance.LaunchUnitAttack(x, y);
+                CombatController.Instance.TargetUnit.Attack();
             }
             else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
             {

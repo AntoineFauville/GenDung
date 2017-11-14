@@ -35,11 +35,11 @@ public class UnitController : MonoBehaviour {
             }
         }
 
-        if (attacking)
+        /*if (attacking)
         {
             Debug.Log("Launching Attack, Please Wait");
             Attack();
-        }
+        }*/
         
         if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted)
         {
@@ -94,10 +94,12 @@ public class UnitController : MonoBehaviour {
         if (remainingAction <= 0)
         {
             Debug.Log("No action points left, no action done");
+            CombatController.Instance.AttackMode = false;
+            Debug.Log("Switching Back to Movement Mode");
             return;
         }
 
-        if (remainingAction >= attackCost && CheckRange())
+        if (remainingAction >= attackCost)
         {
             remainingAction -= attackCost;
             Debug.Log("Action points left : " + remainingAction);
@@ -105,45 +107,7 @@ public class UnitController : MonoBehaviour {
         }
     }
 
-    public bool CheckRange()
-    {
-        Debug.Log("Unit position: "+ tileX + "," + tileY);
-        Debug.Log("Tile for Attack position: " + tileAttackX + "," + tileAttackY); // les valeurs sont égales à zéro, pourquoi ? Ok, si int en public mais pas en private (getter et setter fautif)
-
-        // vérifier si la tile pour l'attaque est comprise entre unitPosX + rangeMin et unitPosX + rangeMax mais aussi si celle-ci est comprise entre unitPosY + rangeMin et unitPosY + rangeMax
-        if (tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) && tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax) || tileAttackX <= (tileX - rangeMin) && tileAttackX >= (tileX - rangeMax) && tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax))
-        {
-            // Attaque coin supérieur droit ou coin supérieur gauche.
-            Debug.Log("Range is Ok, we can attack");
-            return true;
-        }
-        else if (tileAttackX <= (tileX - rangeMin) && tileAttackX >= (tileX - rangeMax) && tileAttackY <= (tileY - rangeMin) && tileAttackY >= (tileY - rangeMax) || tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) && tileAttackY <= (tileY - rangeMin) && tileAttackY >= (tileY - rangeMax))
-        {
-            // Attaque coin inférieur gauche ou coin inférieur droit.
-            Debug.Log("Range is Ok, we can attack");
-            return true;
-        }
-        else if (tileAttackX >= (tileX + rangeMin) && tileAttackX <= (tileX + rangeMax) || tileAttackX <= (tileX - rangeMin) && tileAttackX >= (tileX - rangeMax))
-        {
-            // Attaque Horizontale.
-            Debug.Log("Range is Ok, we can attack");
-            return true;
-        }
-        else if(tileAttackY >= (tileY + rangeMin) && tileAttackY <= (tileY + rangeMax) || tileAttackY <= (tileY - rangeMin) && tileAttackY >= (tileY - rangeMax))
-        {
-            // Attaque Verticale.
-            Debug.Log("Range is Ok, we can attack");
-            return true;
-        }
-        else
-        {
-            Debug.Log("Not in Range, abort Attack");
-            return false;
-        }
-        
-    }
-
-    public void NextTurn()
+    public void NextTurn() // Penser à déplacer cette méthode dans le CombatController
     {
         while(currentPath!= null && remainingMovement > 0)
         {
