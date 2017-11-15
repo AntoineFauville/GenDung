@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class FoeController : MonoBehaviour {
 
     private string foeName;
-    private int foeID,foeHealth,foePA,foePM,foeAtk,foeMaxHealth;
+    private int foeID,foeHealth,foePA,foePM,foeAtk,foeMaxHealth, foeInitiative;
     private Vector2 pos; // Actual tile position where the monster stand.
     private bool dead = false;
     private Image spriteMonster;
@@ -146,6 +146,17 @@ public class FoeController : MonoBehaviour {
         set
         {
             foeMaxHealth = value;
+        }
+    }
+    public int FoeInitiative
+    {
+        get
+        {
+            return foeInitiative;
+        }
+        set
+        {
+            foeInitiative = value;
         }
     }
     /*  */

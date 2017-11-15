@@ -14,5 +14,6 @@ public class EnemyObject : ScriptableObject {
         health,
         pa,
         pm,
-        atk;
+        atk,
+        initiative;
 }
