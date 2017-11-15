@@ -232,12 +232,20 @@ public class CombatController : MonoBehaviour {
         {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
         }
 
         spell1 = false;
         spell2 = false;
         spell3 = false;
+    }
+
+    public void SetTileSpellIndicator()
+    {
+        for (int i = 0; i < targetUnit.PlayerSpells[actualSpell].range.spellRange.Count; i++)
+        {
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
+        }
+
     }
 
     /* Code de gestion du début de combat */
@@ -420,6 +428,17 @@ public class CombatController : MonoBehaviour {
         set
         {
             targetUnit = value;
+        }
+    }
+    public int ActualSpell
+    {
+        get
+        {
+            return actualSpell;
+        }
+        set
+        {
+            actualSpell = value;
         }
     }
     /**/

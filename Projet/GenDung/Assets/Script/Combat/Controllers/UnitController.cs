@@ -12,6 +12,14 @@ public class UnitController : MonoBehaviour {
     private float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
     private SpellObject[] playerSpells; // liste des sorts du personnage.
 
+    private GameObject spellCanvasPrefab;
+    private GameObject spellCanvas;
+
+    void Start()
+    {
+        spellCanvasPrefab = Resources.Load("Prefab/SpellCanvas") as GameObject;
+    }
+
     void Update ()
     {
 	    if(currentPath != null)
@@ -76,7 +84,7 @@ public class UnitController : MonoBehaviour {
         }
     }
 
-    public void Attack() // méthode d'attaque du personnage.
+    public void Attack(int s, int xPos, int yPos) // méthode d'attaque du personnage.
     {
         //attacking = false;
 
@@ -92,7 +100,10 @@ public class UnitController : MonoBehaviour {
         {
             remainingAction -= attackCost;
             Debug.Log("Action points left : " + remainingAction);
-            StartCoroutine(WaitForAttackCompletion());
+            // instancier prefab "SpellCanvas"
+            spellCanvas = Instantiate(spellCanvasPrefab);
+            spellCanvas.transform.Find("Unit").transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + xPos + "_" + yPos).transform.position;
+            StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime));
         }
     }
 
@@ -142,10 +153,11 @@ public class UnitController : MonoBehaviour {
         transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
     }
 
-    public IEnumerator WaitForAttackCompletion()
+    public IEnumerator WaitForAttackCompletion(float t)
     {
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(t);
         Debug.Log("Switching Back to Movement Mode");
+        spellCanvas.SetActive(false);
         CombatController.Instance.AttackMode = false;
     }
     /* */

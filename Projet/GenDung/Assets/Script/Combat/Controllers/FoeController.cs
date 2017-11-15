@@ -33,7 +33,8 @@ public class FoeController : MonoBehaviour {
             if (foeHealth > 0)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
-                CombatController.Instance.TargetUnit.Attack();
+                CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x),Mathf.RoundToInt(pos.y));
+                CombatController.Instance.SetTileSpellIndicator();
                 foeHealth--;
                 CombatController.Instance.UpdateUI(foeID);
                 if (foeHealth == 0)
