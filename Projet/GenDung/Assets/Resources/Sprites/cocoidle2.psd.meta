@@ -1,0 +1,369 @@
+fileFormatVersion: 2
+guid: da6e8df370b1daf48909cce683a8770c
+timeCreated: 1510774308
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: cocoidle2_0
+    21300002: cocoidle2_1
+    21300004: cocoidle2_2
+    21300006: cocoidle2_3
+    21300008: cocoidle2_4
+    21300010: cocoidle2_5
+    21300012: cocoidle2_6
+    21300014: cocoidle2_7
+    21300016: cocoidle2_8
+    21300018: cocoidle2_9
+    21300020: cocoidle2_10
+    21300022: cocoidle2_11
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 64
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: cocoidle2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 767
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 703
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 639
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 575
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 511
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 447
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 383
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 319
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 255
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 191
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 127
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cocoidle2_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 63
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline:
+    - - {x: 11, y: -367.5}
+      - {x: 5, y: -364.5}
+      - {x: -4, y: -364.5}
+      - {x: -12, y: -378.5}
+      - {x: -12, y: -395.5}
+      - {x: -9, y: -404.5}
+      - {x: 9, y: -404.5}
+      - {x: 10, y: -401.5}
+      - {x: 12, y: -392.5}
+      - {x: 12, y: -371.5}
+    - - {x: 5, y: -300.5}
+      - {x: -4, y: -300.5}
+      - {x: -13, y: -315.5}
+      - {x: -13, y: -323.5}
+      - {x: -9, y: -340.5}
+      - {x: 8, y: -340.5}
+      - {x: 12, y: -333.5}
+      - {x: 12, y: -305.5}
+      - {x: 11, y: -303.5}
+    - - {x: 5, y: -236.5}
+      - {x: 0, y: -236.5}
+      - {x: -7, y: -239.5}
+      - {x: -13, y: -250.5}
+      - {x: -13, y: -263.5}
+      - {x: -9, y: -276.5}
+      - {x: 2, y: -276.5}
+      - {x: 11, y: -274.5}
+      - {x: 12, y: -263.5}
+      - {x: 12, y: -250.5}
+      - {x: 10, y: -240.5}
+    - - {x: -1, y: -172.5}
+      - {x: -6, y: -176.5}
+      - {x: -13, y: -186.5}
+      - {x: -13, y: -199.5}
+      - {x: -8, y: -212.5}
+      - {x: 0, y: -212.5}
+      - {x: 11, y: -210.5}
+      - {x: 11, y: -179.5}
+      - {x: 7, y: -172.5}
+    - - {x: 4, y: -108.5}
+      - {x: -5, y: -108.5}
+      - {x: -13, y: -120.5}
+      - {x: -13, y: -139.5}
+      - {x: -9, y: -148.5}
+      - {x: 9, y: -148.5}
+      - {x: 11, y: -141.5}
+      - {x: 11, y: -113.5}
+    - - {x: -4, y: -44.5}
+      - {x: -13, y: -54.5}
+      - {x: -13, y: -70.5}
+      - {x: -8, y: -84.5}
+      - {x: 9, y: -84.5}
+      - {x: 12, y: -75.5}
+      - {x: 12, y: -51.5}
+      - {x: 6, y: -44.5}
+    - - {x: -3, y: 20.5}
+      - {x: -13, y: 9.5}
+      - {x: -13, y: -10.5}
+      - {x: -10, y: -20.5}
+      - {x: 12, y: -20.5}
+      - {x: 12, y: 20.5}
+    - - {x: 4, y: 84.5}
+      - {x: -3, y: 84.5}
+      - {x: -13, y: 70.5}
+      - {x: -13, y: 62.5}
+      - {x: -9, y: 58.5}
+      - {x: -9, y: 43.5}
+      - {x: 10, y: 43.5}
+      - {x: 12, y: 53.5}
+      - {x: 12, y: 73.5}
+      - {x: 10, y: 81.5}
+    - - {x: -13, y: 138.5}
+      - {x: -13, y: 107.5}
+      - {x: 12, y: 107.5}
+      - {x: 12, y: 136.5}
+      - {x: 10, y: 145.5}
+      - {x: 6, y: 148.5}
+      - {x: -1, y: 148.5}
+      - {x: -8, y: 144.5}
+    - - {x: -10, y: 212.5}
+      - {x: -12, y: 211.5}
+      - {x: -13, y: 205.5}
+      - {x: -13, y: 171.5}
+      - {x: 13, y: 171.5}
+      - {x: 13, y: 204.5}
+      - {x: 7, y: 212.5}
+    - - {x: 9, y: 235.5}
+      - {x: 14, y: 252.5}
+      - {x: 14, y: 267.5}
+      - {x: 10, y: 274.5}
+      - {x: 7, y: 275.5}
+      - {x: -4, y: 275.5}
+      - {x: -13, y: 263.5}
+      - {x: -13, y: 249.5}
+      - {x: -8, y: 235.5}
+      - {x: -3, y: 235.5}
+      - {x: -1, y: 239.5}
+      - {x: 3, y: 236.5}
+      - {x: 5, y: 235.5}
+    - - {x: 9, y: 299.5}
+      - {x: 14, y: 312.5}
+      - {x: 14, y: 328.5}
+      - {x: 6, y: 339.5}
+      - {x: -3, y: 339.5}
+      - {x: -13, y: 330.5}
+      - {x: -13, y: 313.5}
+      - {x: -10, y: 300.5}
+      - {x: -6, y: 299.5}
+      - {x: -3, y: 299.5}
+      - {x: -1, y: 303.5}
+      - {x: 3, y: 300.5}
+      - {x: 5, y: 299.5}
+    - - {x: 9, y: 363.5}
+      - {x: 14, y: 377.5}
+      - {x: 14, y: 398.5}
+      - {x: 12, y: 402.5}
+      - {x: 7, y: 403.5}
+      - {x: -3, y: 403.5}
+      - {x: -13, y: 390.5}
+      - {x: -13, y: 377.5}
+      - {x: -8, y: 363.5}
+      - {x: -3, y: 363.5}
+      - {x: -1, y: 367.5}
+      - {x: 3, y: 364.5}
+      - {x: 5, y: 363.5}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
