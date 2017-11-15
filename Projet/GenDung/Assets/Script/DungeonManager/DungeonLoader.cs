@@ -17,7 +17,11 @@ public class DungeonLoader : MonoBehaviour {
 	Animator
 	FadeInAnimator;
 
+    GameObject[]
+    FadeInOBjTemp;
+
 	GameObject 
+    a,
 	BG, //background de la salle
 	doorinstantiated, //la porte instantiée
 	characterUI; //instaniated character
@@ -61,13 +65,15 @@ public class DungeonLoader : MonoBehaviour {
 	sceneLoaded,	//attendre que la scene est bien chargé
 	InstrantiateOnceEndDungeon,	//instancier une fois l'écran de fin de donjon
 	EndDungeon,	//verifier si le donjon est fini ou pas
-    DoOnceAllRelatedToUpgradeTavernPanel;
+    DoOnceAllRelatedToUpgradeTavernPanel,
+    InstantiateFade;
 
 	void Start () {
 		//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
 		SceneManager.sceneLoaded += OnSceneLoaded;
-		FadeInAnimator = GameObject.Find("CanvasFadeInOut").transform.GetChild(0).GetComponent<Animator>();
-	}
+        FadeInOutAnim();
+
+    }
 
 	//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode){
@@ -282,7 +288,9 @@ public class DungeonLoader : MonoBehaviour {
 
 			FadeInOutAnim();
 
-			InstrantiateOnceEndDungeon = false;
+          
+
+            InstrantiateOnceEndDungeon = false;
 			SceneManager.LoadScene ("Dungeon");
 		}
 	}
@@ -306,7 +314,9 @@ public class DungeonLoader : MonoBehaviour {
 
 			FadeInOutAnim();
 
-			Instantiate (Resources.Load("UI_Interface/Room1"));
+            Instantiate(Resources.Load("UI_Interface/CanvasStoryGetIntoDungeon"));
+
+            Instantiate (Resources.Load("UI_Interface/Room1"));
 
 
 			StartCoroutine("waitForRoomToBeInstantiated");
@@ -500,8 +510,28 @@ public class DungeonLoader : MonoBehaviour {
 	}
 
 	public void FadeInOutAnim(){
-		FadeInAnimator.SetBool ("Fade",true);
-		StartCoroutine ("FadeInOutCoroutine");
+        if (!InstantiateFade)
+        {
+            InstantiateFade = true;
+
+            if (a == null) {
+                a = Instantiate(Resources.Load("UI_Interface/CanvasFadeInOut")) as GameObject;
+
+            }
+
+            FadeInOBjTemp = GameObject.FindGameObjectsWithTag("FadeInFadeOut");
+            for (int i = 0; i < FadeInOBjTemp.Length; i++)
+            {
+                FadeInOBjTemp[i].SetActive(false);
+            }
+
+            Instantiate(Resources.Load("UI_Interface/CanvasFadeInOut"));
+
+            FadeInAnimator = GameObject.FindGameObjectWithTag("FadeInFadeOut").transform.GetChild(0).GetComponent<Animator>();
+
+            FadeInAnimator.SetBool("Fade", true);
+            StartCoroutine("FadeInOutCoroutine");
+        }
 	}
 
 	//----------------------------IENUMERATOR---------------------------------//
@@ -578,7 +608,9 @@ public class DungeonLoader : MonoBehaviour {
 	}
 
 	IEnumerator FadeInOutCoroutine(){
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.4f);
 		FadeInAnimator.SetBool ("Fade",false);
-	}
+        InstantiateFade = false;
+
+    }
 }
