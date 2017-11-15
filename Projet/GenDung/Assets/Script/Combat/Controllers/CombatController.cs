@@ -11,7 +11,7 @@ public class CombatController : MonoBehaviour {
     private bool combatStarted = false;
     private bool attackMode = false;
     private bool spell1 = false, spell2 = false, spell3 = false;
-    private int tileX,tileY;
+    private int tileX,tileY , actualSpell = 99;
     private Button btnStartGame,btnSpell1,btnSpell2,btnSpell3;
     private FoeController foe;
     private Room foeData;
@@ -99,6 +99,7 @@ public class CombatController : MonoBehaviour {
             spell1 = true;
             spell2 = false;
             spell3 = false;
+            actualSpell = 0;
             // Afficher la portée sur la grille (en Rouge).
 
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
@@ -115,6 +116,7 @@ public class CombatController : MonoBehaviour {
         {
             attackMode = false;
             spell1 = false;
+            actualSpell = 99;
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
@@ -134,6 +136,7 @@ public class CombatController : MonoBehaviour {
             spell1 = false;
             spell2 = true;
             spell3 = false;
+            actualSpell = 1;
             // Afficher la portée sur la grille (en Rouge).
 
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
@@ -150,6 +153,7 @@ public class CombatController : MonoBehaviour {
         {
             attackMode = false;
             spell2 = false;
+            actualSpell = 99;
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
@@ -169,6 +173,7 @@ public class CombatController : MonoBehaviour {
             spell1 = false;
             spell2 = false;
             spell3 = true;
+            actualSpell = 2;
             // Afficher la portée sur la grille (en Rouge).
 
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
@@ -185,6 +190,7 @@ public class CombatController : MonoBehaviour {
         {
             attackMode = false;
             spell3 = false;
+            actualSpell = 99;
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
@@ -195,17 +201,17 @@ public class CombatController : MonoBehaviour {
         }
     }
 
-    public void CleanRangeAfterAttack(int s)
+    public void CleanRangeAfterAttack()
     {
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
 
         // si on clique sur une case en dehors de la Range, voir pour faire correspondre le S avec le bon bouton.
 
-        for (int i = 0; i < targetUnit.PlayerSpells[s].range.spellRange.Count; i++)
+        for (int i = 0; i < targetUnit.PlayerSpells[actualSpell].range.spellRange.Count; i++)
         {
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[s].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[s].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
         }
 
         spell1 = false;

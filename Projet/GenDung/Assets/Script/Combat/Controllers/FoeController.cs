@@ -32,7 +32,7 @@ public class FoeController : MonoBehaviour {
         {
             if (foeHealth > 0)
             {
-                CombatController.Instance.CleanRangeAfterAttack(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().S);
+                CombatController.Instance.CleanRangeAfterAttack();
                 CombatController.Instance.TargetUnit.Attack();
                 foeHealth--;
                 CombatController.Instance.UpdateUI(foeID);
