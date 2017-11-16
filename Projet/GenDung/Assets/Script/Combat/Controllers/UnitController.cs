@@ -9,7 +9,7 @@ public class UnitController : MonoBehaviour {
     private List<Node> currentPath = null; // Liste des noeuds pour le PathFinding.
     private bool attacking = false; // Booléen vérifiant si l'on attaque ou pas.
     private int characterID, health, maxHealth, pm, pa, attackCost = 1, initiative, turnCount; // ID, PV, Max PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
-    private float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
+    public float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
     private SpellObject[] playerSpells; // liste des sorts du personnage.
 
     private GameObject spellCanvasPrefab;

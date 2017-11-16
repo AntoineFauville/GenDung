@@ -54,20 +54,21 @@ public class DungeonLoader : MonoBehaviour {
     dungeonUnlockedIndex = 1,	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
     actualPlayer = 0;
 
-	public bool
-	loadOnce3, //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
-	loadOnce2,	//lié au loadRoom vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
-	loadbutton,	//pour ne charger qu'une fois la scene donjon
-	loadbutton2,	//pour ne charger qu'une fois la scene map
-	loadOnceDoor,	//pour ne charger qu'une fois la porte
-	roomIsLocked,	//permet de verouiller une porte
-	isUIinstantiated,	//verifier dans le donjon si l'interface a bien été instanciée
-	doOnceCoroutine,	//lance la coroutine qu'une fois
-	sceneLoaded,	//attendre que la scene est bien chargé
-	InstrantiateOnceEndDungeon,	//instancier une fois l'écran de fin de donjon
-	EndDungeon,	//verifier si le donjon est fini ou pas
+    public bool
+    loadOnce3, //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
+    loadOnce2,  //lié au loadRoom vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
+    loadbutton, //pour ne charger qu'une fois la scene donjon
+    loadbutton2,    //pour ne charger qu'une fois la scene map
+    loadOnceDoor,   //pour ne charger qu'une fois la porte
+    roomIsLocked,   //permet de verouiller une porte
+    isUIinstantiated,   //verifier dans le donjon si l'interface a bien été instanciée
+    doOnceCoroutine,    //lance la coroutine qu'une fois
+    sceneLoaded,    //attendre que la scene est bien chargé
+    InstrantiateOnceEndDungeon, //instancier une fois l'écran de fin de donjon
+    EndDungeon,	//verifier si le donjon est fini ou pas
     DoOnceAllRelatedToUpgradeTavernPanel,
-    InstantiateFade;
+    InstantiateFade,
+    InstantiatedCombatModule;
 
 	void Start () {
 		//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
@@ -89,20 +90,36 @@ public class DungeonLoader : MonoBehaviour {
 
 		//attendre que la scene soit chargée
 		if (!sceneLoaded) {
-			
-			//-----------Dungeon gestion scene-------------//
-			if (activeScene == "Dungeon") {
 
-				//print ("index " + index);
+            //-----------Dungeon gestion scene-------------//
+            if (activeScene == "Dungeon") {
 
-				//initialise la référence au background de la salle
-				BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
+                //print ("index " + index);
+
+                //initialise la référence au background de la salle
+                BG = GameObject.FindGameObjectWithTag("backgroundOfRoom");
 
                 //met les infos a jour sur le coté en fonction du joueur actif
-                GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
-                GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
-                GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
+                GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
+                // GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
+                // GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
+                // GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
 
+                if (InstantiatedCombatModule)
+                {
+                    if (GameObject.Find("CombatGridPrefab(Clone)").GetComponent<CombatController>().CombatStarted)
+                    {
+                        //GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingAction.ToString();
+                        GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingAction.ToString();
+                        GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingMovement.ToString();
+                    }
+                }
+                else
+                {
+                    GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
+                    GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
+                    GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
+                }
                 //permet de charger la salle room si on vient de changer de scene
                 if (previousScene != activeScene) {
 					LoadRoom ();
