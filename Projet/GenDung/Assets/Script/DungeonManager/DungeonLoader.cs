@@ -50,8 +50,9 @@ public class DungeonLoader : MonoBehaviour {
     CACTemp,
     DistTemp;
 
-	public int
-	dungeonUnlockedIndex = 1;	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
+    public int
+    dungeonUnlockedIndex = 1,	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
+    actualPlayer = 0;
 
 	public bool
 	loadOnce3, //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
@@ -97,8 +98,13 @@ public class DungeonLoader : MonoBehaviour {
 				//initialise la référence au background de la salle
 				BG = GameObject.FindGameObjectWithTag ("backgroundOfRoom");
 
-				//permet de charger la salle room si on vient de changer de scene
-				if (previousScene != activeScene) {
+                //met les infos a jour sur le coté en fonction du joueur actif
+                GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
+                GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
+                GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
+
+                //permet de charger la salle room si on vient de changer de scene
+                if (previousScene != activeScene) {
 					LoadRoom ();
 				}
 			}		

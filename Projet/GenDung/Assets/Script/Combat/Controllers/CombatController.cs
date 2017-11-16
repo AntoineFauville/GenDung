@@ -36,13 +36,13 @@ public class CombatController : MonoBehaviour {
         CreateInstance();
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Panel/Panel/Button_Start_Game").GetComponent<Button>();
+            btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
             btnStartGame.onClick.AddListener(StartCombatMode);
 
-            btnSpell1 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_CAC").GetComponent<Button>();
+            btnSpell1 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_1").GetComponent<Button>();
             btnSpell1.onClick.AddListener(SwitchAttackModeFirst);
 
-            btnSpell2 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Distance").GetComponent<Button>();
+            btnSpell2 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_2").GetComponent<Button>();
             btnSpell2.onClick.AddListener(SwitchAttackModeSecond);
 
             /* 
