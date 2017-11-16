@@ -11,6 +11,9 @@ public class Character : ScriptableObject {
 	TempSprite,
 	ICON;
 
+    public bool hasAnimations;
+    public RuntimeAnimatorController persoAnimator;
+
 	public GameObject PrefabCharacter; // ce qui contient l animators et les animations et autres, sur lequels il y a les scripts
 
 	public int 
