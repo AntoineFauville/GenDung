@@ -233,7 +233,7 @@ public class CombatController : MonoBehaviour {
         for (int i = 0; i < targetUnit.PlayerSpells[actualSpell].range.spellRange.Count; i++)
         {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
+            StartCoroutine(WaitForAttackToEnd(i));
         }
 
         spell1 = false;
@@ -355,9 +355,13 @@ public class CombatController : MonoBehaviour {
 
     /*IEnumerator Methods*/
 
-    public IEnumerator Wait()
+    public IEnumerator WaitForAttackToEnd(int i)
     {
-        yield return new WaitForSeconds(0.3f);
+        //Debug.Log("Launch Wait Before inRange Get back to False");
+        yield return new WaitForSeconds(5f);
+        //Debug.Log("inRange will now be set to False");
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
+
     }
 
     /* Accessors Methods */

@@ -100,7 +100,9 @@ public class UnitController : MonoBehaviour {
         {
             remainingAction -= attackCost;
             Debug.Log("Action points left : " + remainingAction);
-            // instancier prefab "SpellCanvas"
+
+            // Check si la case est occupé par un ennemi
+
             spellCanvas = Instantiate(spellCanvasPrefab);
             spellCanvas.transform.Find("Unit").transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + xPos + "_" + yPos).transform.position;
             StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime));

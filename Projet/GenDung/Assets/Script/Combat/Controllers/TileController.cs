@@ -13,6 +13,9 @@ public class TileController : MonoBehaviour {
     private bool occupied = false; // Vérifie la présence d'un personnage sur la case.
     private bool isInRange = false; // vérifie si la case est à portée d'attaque;
 
+    private FoeController monsterOnTile;
+    private UnitController playerOnTile;
+
     public void TileClicked()
     {
         if (SceneManager.GetActiveScene().name != "Editor")
@@ -25,6 +28,8 @@ public class TileController : MonoBehaviour {
             {
                 CombatController.Instance.CleanRangeAfterAttack();
                 CombatController.Instance.TargetUnit.Attack(s,x,y);
+                if (monsterOnTile != null && occupied)
+                    monsterOnTile.FoeClicked();
                 CombatController.Instance.SetTileSpellIndicator();
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && !isInRange)
@@ -227,6 +232,28 @@ public class TileController : MonoBehaviour {
         set
         {
             isInRange = value;
+        }
+    }
+    public FoeController MonsterOnTile
+    {
+        get
+        {
+            return monsterOnTile;
+        }
+        set
+        {
+            monsterOnTile = value;
+        }
+    }
+    public UnitController PlayerOnTile
+    {
+        get
+        {
+            return playerOnTile;
+        }
+        set
+        {
+            playerOnTile = value;
         }
     }
     /**/

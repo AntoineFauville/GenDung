@@ -28,7 +28,7 @@ public class FoeController : MonoBehaviour {
     {
         tileInRange = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().IsInRange;
 
-        if (Input.GetMouseButtonUp(0) && CombatController.Instance.AttackMode && tileInRange)
+        if (Input.GetMouseButtonUp(0) && CombatController.Instance.AttackMode /*&& tileInRange*/)
         {
             if (foeHealth > 0)
             {
@@ -58,6 +58,7 @@ public class FoeController : MonoBehaviour {
     public void SetTileAsOccupied()
     {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = true;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
     }
 
     /* Accessors Methods */
