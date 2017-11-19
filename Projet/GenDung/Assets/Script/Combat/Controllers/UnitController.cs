@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class UnitController : MonoBehaviour {
@@ -159,7 +160,7 @@ public class UnitController : MonoBehaviour {
     {
         yield return new WaitForSeconds(t);
         Debug.Log("Switching Back to Movement Mode");
-        spellCanvas.SetActive(false);
+        spellCanvas.transform.Find("Unit").gameObject.SetActive(false);
         CombatController.Instance.AttackMode = false;
     }
     /* */

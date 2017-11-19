@@ -350,6 +350,23 @@ public class CombatController : MonoBehaviour {
 
     public void EndBattle()
     {
+        // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
+        for (int m = 0; m < foeData.enemies; m++)
+        {
+            Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m).gameObject);
+        }
+
+        for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)
+        {
+            Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayPlayer_" + j).gameObject);
+        }
+        // Clean 'SpellCanvas(Clone)' from Hierarchy
+
+        /*while(GameObject.Find("SpellCanvas(Clone)") != null)
+        {
+            Destroy(GameObject.Find("SpellCanvas(Clone)").gameobject);
+        }*/
+
         GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
     }
 
