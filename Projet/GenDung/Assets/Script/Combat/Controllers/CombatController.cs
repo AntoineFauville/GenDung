@@ -20,6 +20,8 @@ public class CombatController : MonoBehaviour {
     private List<int> monsterPos;
     private GameObject monster_go, monsterPrefab, UIMonsterDisplayPrefab, UIMonsterDisplay, UIPlayerDisplay;
 
+    private List<GameObject> spellCanvasInstantiated = new List<GameObject>();
+
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
 
     void CreateInstance()
@@ -362,10 +364,10 @@ public class CombatController : MonoBehaviour {
         }
         // Clean 'SpellCanvas(Clone)' from Hierarchy
 
-        /*while(GameObject.Find("SpellCanvas(Clone)") != null)
+        for (int s = 0; s < spellCanvasInstantiated.Count; s++)
         {
-            Destroy(GameObject.Find("SpellCanvas(Clone)").gameobject);
-        }*/
+            Destroy(spellCanvasInstantiated[s]);
+        }
 
         GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
     }
@@ -462,6 +464,17 @@ public class CombatController : MonoBehaviour {
         set
         {
             actualSpell = value;
+        }
+    }
+    public List<GameObject> SpellCanvasInstantiated
+    {
+        get
+        {
+            return spellCanvasInstantiated;
+        }
+        set
+        {
+            spellCanvasInstantiated = value;
         }
     }
     /**/

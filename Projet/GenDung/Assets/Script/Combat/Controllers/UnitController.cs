@@ -106,6 +106,7 @@ public class UnitController : MonoBehaviour {
 
             spellCanvas = Instantiate(spellCanvasPrefab);
             spellCanvas.transform.Find("Unit").transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + xPos + "_" + yPos).transform.position;
+            CombatController.Instance.SpellCanvasInstantiated.Add(spellCanvas);
             StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime));
         }
     }
