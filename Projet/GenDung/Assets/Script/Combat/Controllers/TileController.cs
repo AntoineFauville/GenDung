@@ -27,9 +27,10 @@ public class TileController : MonoBehaviour {
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
-                CombatController.Instance.TargetUnit.Attack(s,x,y);
                 if (monsterOnTile != null && occupied)
                     monsterOnTile.FoeClicked();
+                else
+                    CombatController.Instance.TargetUnit.Attack(s, x, y);
                 CombatController.Instance.SetTileSpellIndicator();
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && !isInRange)
