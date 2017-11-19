@@ -34,4 +34,10 @@ public class SceneManagerScript : MonoBehaviour {
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
         SceneManager.LoadScene ("MainMenu");
 	}
+
+    public void CloseGame ()
+    {
+        Debug.Log("yep we are in editor, doesnt work...");
+        Application.Quit();
+    }
 }

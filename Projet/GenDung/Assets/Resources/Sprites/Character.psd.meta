@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 0b226388256a0ba4688a26cb40dc2e85
-timeCreated: 1508532344
+timeCreated: 1511109627
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -22,6 +22,7 @@ TextureImporter:
     21300030: Character_15
     21300032: Character_16
     21300034: Character_17
+    21300036: Character_18
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -328,7 +329,7 @@ TextureImporter:
         width: 32
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -340,6 +341,19 @@ TextureImporter:
         y: 0
         width: 32
         height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Character_18
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 147
+        width: 14
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
