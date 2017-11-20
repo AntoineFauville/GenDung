@@ -107,7 +107,7 @@ public class UnitController : MonoBehaviour {
             spellCanvas = Instantiate(spellCanvasPrefab);
             spellCanvas.transform.Find("Unit").transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + xPos + "_" + yPos).transform.position;
             CombatController.Instance.SpellCanvasInstantiated.Add(spellCanvas);
-            StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime));
+            StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime, xPos, yPos));
         }
     }
 
@@ -157,12 +157,13 @@ public class UnitController : MonoBehaviour {
         transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
     }
 
-    public IEnumerator WaitForAttackCompletion(float t)
+    public IEnumerator WaitForAttackCompletion(float t, int _x, int _y)
     {
         yield return new WaitForSeconds(t);
         Debug.Log("Switching Back to Movement Mode");
         spellCanvas.transform.Find("Unit").gameObject.SetActive(false);
         CombatController.Instance.AttackMode = false;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().UpdateTileUI();
     }
     /* */
 
