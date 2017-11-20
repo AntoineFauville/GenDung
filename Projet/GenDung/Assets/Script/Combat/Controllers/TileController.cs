@@ -167,7 +167,7 @@ public class TileController : MonoBehaviour {
     public void SetRange()
     {
         RemoveRange();
-        this.GetComponent<Image>().color = Color.red;
+        this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
     }
 
     public void RemoveRange()

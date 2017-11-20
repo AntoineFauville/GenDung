@@ -377,10 +377,9 @@ public class CombatController : MonoBehaviour {
     public IEnumerator WaitForAttackToEnd(int i)
     {
         //Debug.Log("Launch Wait Before inRange Get back to False");
-        yield return new WaitForSeconds(5f);
-        //Debug.Log("inRange will now be set to False");
+        yield return new WaitForSeconds(3f);
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
-
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().UpdateTileUI();
     }
 
     /* Accessors Methods */
