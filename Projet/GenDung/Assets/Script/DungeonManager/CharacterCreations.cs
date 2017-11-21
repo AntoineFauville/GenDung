@@ -25,7 +25,11 @@ public class CharacterCreations : MonoBehaviour {
 	void Start () {
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim ();
 
-		SizeOfTheTeam = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam;
+        SetRightIndex(0);
+        SetLeftIndex(11);
+
+
+        SizeOfTheTeam = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam;
 
         //rempli la liste temporaire et du fichier de sauvegarde de theo et reinitialise ainsi le jeu 
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList.Length; i++) {
@@ -175,8 +179,12 @@ public class CharacterCreations : MonoBehaviour {
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam = SizeOfTheTeam;
 
         //dispatch les infos sur l'écran
-		GameObject.Find ("InfoCharaDispatch").GetComponent<Image> ().sprite = charac [indexMouseOverLeftPanel].TempSprite;
-		GameObject.Find ("PV").GetComponent<Text> ().text = 	"Health :          " + charac [indexMouseOverLeftPanel].Health_PV.ToString();
+		//GameObject.Find ("InfoCharaDispatch").GetComponent<Image> ().sprite = charac [indexMouseOverLeftPanel].TempSprite;
+        //if (charac[indexMouseOverLeftPanel].hasAnimations == true)
+        //{
+        //    GameObject.Find("InfoCharaDispatch").GetComponent<Animator>().runtimeAnimatorController = charac[indexMouseOverLeftPanel].persoAnimator;
+        //}
+        GameObject.Find ("PV").GetComponent<Text> ().text = 	"Health :          " + charac [indexMouseOverLeftPanel].Health_PV.ToString();
 		GameObject.Find ("PA").GetComponent<Text> ().text = 	"Action Points :   " + charac [indexMouseOverLeftPanel].ActionPoints_PA.ToString();
 		GameObject.Find ("CAC").GetComponent<Text> ().text = 	"Close Attack :    " + charac [indexMouseOverLeftPanel].CloseAttaqueValue.ToString();
 		GameObject.Find ("DIST").GetComponent<Text> ().text = 	"Distance Attack : " + charac [indexMouseOverLeftPanel].DistanceAttaqueValue.ToString ();
@@ -194,9 +202,14 @@ public class CharacterCreations : MonoBehaviour {
         tempCharac[indexMouseOverRightPanel] = charac[indexMouseOverLeftPanel];
 
         RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Image> ().sprite = tempCharac [indexMouseOverRightPanel].TempSprite;
-	}
 
-	public void GetBiggerTeam () {
+        if (charac[indexMouseOverLeftPanel].hasAnimations == true)
+        {
+            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
+        }
+    }
+
+    public void GetBiggerTeam () {
 		SizeOfTheTeam++;
 	}
 

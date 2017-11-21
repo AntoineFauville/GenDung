@@ -101,6 +101,7 @@ public class DungeonLoader : MonoBehaviour {
 
                 //met les infos a jour sur le coté en fonction du joueur actif
                 GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
+                //GameObject.Find("ActualPlayerImage").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].persoAnimator;
                 // GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
                 // GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
                 // GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
@@ -379,7 +380,14 @@ public class DungeonLoader : MonoBehaviour {
 					characterUI = Instantiate (Resources.Load("UI_Interface/Character")) as GameObject;
 					characterUI.transform.SetParent (GameObject.Find ("PlayerPositions").transform, false);
 					characterUI.transform.Find("CharacterBG").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
-					characterUI.transform.localPosition = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].x,roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].y,0);
+
+                    //setup the animator for the idle animation
+                    if (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].hasAnimations)
+                    {
+                        characterUI.transform.Find("CharacterBG").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
+                    }
+
+                    characterUI.transform.localPosition = new Vector3 (roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].x,roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].room.playerPositions[i].y,0);
 				}
 
 				//charge la porte
@@ -612,6 +620,14 @@ public class DungeonLoader : MonoBehaviour {
 			characterUI = Instantiate (Resources.Load("UI_Interface/Character")) as GameObject;
 			characterUI.transform.SetParent (GameObject.Find ("PlayerPositions").transform, false);
 			characterUI.transform.Find("CharacterBG").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+
+            //setup the animator for the idle animation
+            if (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].hasAnimations)
+            {
+                characterUI.transform.Find("CharacterBG").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
+            }
+
+
             characterUI.transform.localPosition = new Vector3(roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].room.playerPositions[i].x, roomListDungeon[dungeonIndex].RoomOfTheDungeon[index].room.playerPositions[i].y, 0);
         }
 
