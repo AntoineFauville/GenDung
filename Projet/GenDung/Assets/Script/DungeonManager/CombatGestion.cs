@@ -44,9 +44,11 @@ public class CombatGestion : MonoBehaviour {
 	public void FinishedCombat () {
 		instantiateCombatGrid = false;
 		canvasTemp.GetComponent<Canvas> ().enabled = true;
-		combat_grid.SetActive (false);
+		//combat_grid.SetActive (false);
 		GameObject.FindGameObjectWithTag ("Unit").SetActive (false);
 		GameObject.FindGameObjectWithTag ("GridCanvas").SetActive (false);
+
+        GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = false;
 
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
         {
