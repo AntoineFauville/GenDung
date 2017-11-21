@@ -12,6 +12,7 @@ public class DungeonController : MonoBehaviour {
     private UnitController unit;
     private GameData playerData;
     private Vector3 worldPosTemp;
+    private List<Vector2> spawnTilesList = new List<Vector2>();
 
     void CreateInstance()
     {
@@ -316,6 +317,7 @@ public class DungeonController : MonoBehaviour {
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[y];
             Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
+            spawnTilesList.Add(tile);
         }
     }
     /* */ 
@@ -385,5 +387,16 @@ public class DungeonController : MonoBehaviour {
         }
     }
 
+    public List<Vector2> SpawnTilesList
+    {
+        get
+        {
+            return spawnTilesList;
+        }
+        set
+        {
+            spawnTilesList = value;
+        }
+    }
     /* */
 }

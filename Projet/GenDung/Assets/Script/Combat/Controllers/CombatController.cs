@@ -85,6 +85,12 @@ public class CombatController : MonoBehaviour {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().TileExit();
             DungeonController.Instance.Unit.ResetMove();
             DungeonController.Instance.Unit.ResetAction();
+
+            for (int i = 0; i < DungeonController.Instance.SpawnTilesList.Count; i++) // Update de l'UI des Tiles servant de Zones de placement pré-combat.
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + DungeonController.Instance.SpawnTilesList[i].x + "_" + DungeonController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
+            }
+
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
         }
     }
@@ -377,10 +383,9 @@ public class CombatController : MonoBehaviour {
     public IEnumerator WaitForAttackToEnd(int i)
     {
         //Debug.Log("Launch Wait Before inRange Get back to False");
-        yield return new WaitForSeconds(5f);
-        //Debug.Log("inRange will now be set to False");
+        yield return new WaitForSeconds(3f);
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
-
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().UpdateTileUI();
     }
 
     /* Accessors Methods */

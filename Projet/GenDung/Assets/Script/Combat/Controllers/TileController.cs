@@ -31,18 +31,21 @@ public class TileController : MonoBehaviour {
                     monsterOnTile.FoeClicked();
                 else
                     CombatController.Instance.TargetUnit.Attack(s, x, y);
+                UpdateTileUI();
                 CombatController.Instance.SetTileSpellIndicator();
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && !isInRange)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
                 CombatController.Instance.AttackMode = false;
+                UpdateTileUI();
             }
             else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
             {
                 if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
                 {
                     CombatController.Instance.ConfirmCharaPosition(x, y);
+                    UpdateTileUI();
                 }
             }
         }
@@ -107,33 +110,38 @@ public class TileController : MonoBehaviour {
         TileExit();
 
         if(CheckSpawnType())
-            this.GetComponent<Image>().color = Color.cyan;
+            this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f);
     }
 
     public void TileEnter()
     {
         if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x,y))
-            this.GetComponent<Image>().color = Color.green;
+            this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
         else if (CheckSpawnType() && !CombatController.Instance.CombatStarted)
-            this.GetComponent<Image>().color = Color.cyan;
+            this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f); // cyan
         else
             this.GetComponent<Image>().color = new Color(255,255,0, 0.6f);
     }       
 
     public void TileExit()
     {
+        UpdateTileUI();
+    }
+
+    public void UpdateTileUI()
+    {
         if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckWall(x, y))
-            this.GetComponent<Image>().color = Color.red;
+            this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
         else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckSpawn(x, y))
-            this.GetComponent<Image>().color = Color.cyan;
+            this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f);// cyan
         else if (CheckSpawnType() && !CombatController.Instance.CombatStarted)
-            this.GetComponent<Image>().color = Color.cyan;
+            this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f);// cyan
         else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckMonsterSpawn(x, y))
-            this.GetComponent<Image>().color = Color.magenta;
-        else if (isInRange)
-            this.GetComponent<Image>().color = Color.red;
+            this.GetComponent<Image>().color = new Color(255, 0, 255, 0.4f); // magenta
+        else if (isInRange && CombatController.Instance.AttackMode)
+            this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
         else
-            this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
     }
 
     public void MoveTo()
@@ -159,7 +167,7 @@ public class TileController : MonoBehaviour {
     public void SetRange()
     {
         RemoveRange();
-        this.GetComponent<Image>().color = Color.red;
+        this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
     }
 
     public void RemoveRange()
