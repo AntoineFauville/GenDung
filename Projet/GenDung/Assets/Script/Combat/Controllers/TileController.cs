@@ -27,7 +27,7 @@ public class TileController : MonoBehaviour {
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
-                if (monsterOnTile != null && occupied)
+                if (monsterOnTile != null && occupied && CombatController.Instance.TargetUnit.CheckPA())
                     monsterOnTile.FoeClicked();
                 else
                     CombatController.Instance.TargetUnit.Attack(s, x, y);

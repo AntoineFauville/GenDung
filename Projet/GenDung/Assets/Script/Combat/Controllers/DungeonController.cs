@@ -42,6 +42,13 @@ public class DungeonController : MonoBehaviour {
             for (int i = 0; i < playerData.SavedSizeOfTheTeam; i++)
             {
                 unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = playerData.SavedCharacterList[i].TempSprite;
+
+                //setup the animator for the idle animation
+                if (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].hasAnimations)
+                {
+                    unit.transform.Find("Cube/Image").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
+                }
+
                 unit_go.name = "Character_" + i;
 
                 unit.ID = i;

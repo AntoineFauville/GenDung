@@ -32,16 +32,10 @@ public class FoeController : MonoBehaviour {
         {
             if (foeHealth > 0)
             {
-                CombatController.Instance.CleanRangeAfterAttack();
-                CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x),Mathf.RoundToInt(pos.y));
-                CombatController.Instance.SetTileSpellIndicator();
-                foeHealth--;
-                CombatController.Instance.UpdateUI(foeID);
-
-                if (foeHealth == 0)
-                {
-                    FoeDying();
-                }
+                if (CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].spellType == SpellObject.SpellType.CaC)
+                    StartCoroutine(WaitForCaCAnimationEnd());
+                else
+                    StartCoroutine(WaitForAnimationEnd());
             }
         }
         else if (!tileInRange)
@@ -60,7 +54,6 @@ public class FoeController : MonoBehaviour {
         //GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject.SetActive(false)
         Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject);
         Destroy(GameObject.Find("Foe_" + foeID));
-        Debug.Log("Suppression du personnage: OK");
         CombatController.Instance.CheckBattleDeath();
     }
 
@@ -69,6 +62,44 @@ public class FoeController : MonoBehaviour {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = true;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
     }
+
+    // |**| \**\ |**| /**/ 
+
+    /* */
+    public IEnumerator WaitForAnimationEnd()
+    {
+        CombatController.Instance.CleanRangeAfterAttack();
+        CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
+        yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime);
+        CombatController.Instance.SetTileSpellIndicator();
+        foeHealth--;
+        CombatController.Instance.UpdateUI(foeID);
+
+        if (foeHealth == 0)
+        {
+            FoeDying();
+        }
+    }
+
+    public IEnumerator WaitForCaCAnimationEnd()
+    {
+        CombatController.Instance.CleanRangeAfterAttack();
+        CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
+
+        yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime/2);
+        spriteMonster.GetComponent<Animator>().Play("DamageMonster");
+        yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime / 2);
+        spriteMonster.GetComponent<Animator>().Play("IdleMonster");
+        CombatController.Instance.SetTileSpellIndicator();
+        foeHealth--;
+        CombatController.Instance.UpdateUI(foeID);
+
+        if (foeHealth == 0)
+        {
+            FoeDying();
+        }
+    }
+    /**/
 
     /* Accessors Methods */
     public int FoeID

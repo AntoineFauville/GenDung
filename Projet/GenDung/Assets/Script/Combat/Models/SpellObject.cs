@@ -16,5 +16,10 @@ public class SpellObject : ScriptableObject {
     public enum SpellType { CaC, Distance };
     public SpellType spellType;
 
+    public GameObject spellPrefab;
+
+    public enum SpellAnimator { Attack_1, Attack_2 , Attack_3 };
+    public SpellAnimator spellAnimator;
+
     public int spellCost = 1;
 }

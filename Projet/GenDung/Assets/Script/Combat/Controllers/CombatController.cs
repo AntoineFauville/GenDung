@@ -88,6 +88,9 @@ public class CombatController : MonoBehaviour {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + DungeonController.Instance.SpawnTilesList[i].x + "_" + DungeonController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
             }
 
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 0;
+            btnStartGame.GetComponent<CanvasGroup>().interactable = false;
+
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
         }
     }
@@ -375,6 +378,9 @@ public class CombatController : MonoBehaviour {
         {
             Destroy(spellCanvasInstantiated[s]);
         }
+
+        btnStartGame.GetComponent<CanvasGroup>().alpha = 1;
+        btnStartGame.GetComponent<CanvasGroup>().interactable = true;
 
         GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
     }
