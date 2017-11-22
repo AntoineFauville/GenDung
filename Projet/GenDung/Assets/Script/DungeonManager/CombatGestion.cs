@@ -46,7 +46,9 @@ public class CombatGestion : MonoBehaviour {
 		canvasTemp.GetComponent<Canvas> ().enabled = true;
 		//combat_grid.SetActive (false);
 		GameObject.FindGameObjectWithTag ("Unit").SetActive (false);
-		GameObject.FindGameObjectWithTag ("GridCanvas").SetActive (false);
+		//GameObject.FindGameObjectWithTag ("GridCanvas").SetActive (false);
+        Destroy(GameObject.FindGameObjectWithTag("GridCanvas").gameObject);
+        Destroy(GameObject.Find("CombatGridPrefab(Clone)").gameObject);
 
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = false;
 
