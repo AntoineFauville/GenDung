@@ -346,7 +346,10 @@ public class CombatController : MonoBehaviour {
     public void CheckBattleDeath()
     {
         if (monsterNmb <= 0)
-            EndBattle();
+        {
+            Debug.Log("All Monsters are dead, Combat will finish soon");
+            StartCoroutine(WaitBeforeEndBattle());
+        }
     }
 
     /**/
@@ -380,9 +383,15 @@ public class CombatController : MonoBehaviour {
     public IEnumerator WaitForAttackToEnd(int i)
     {
         //Debug.Log("Launch Wait Before inRange Get back to False");
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().UpdateTileUI();
+    }
+
+    public IEnumerator WaitBeforeEndBattle()
+    {
+        yield return new WaitForSeconds(2.5f);
+        EndBattle();
     }
 
     /* Accessors Methods */
