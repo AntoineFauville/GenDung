@@ -91,7 +91,34 @@ public class CombatController : MonoBehaviour {
             btnStartGame.GetComponent<CanvasGroup>().alpha = 0;
             btnStartGame.GetComponent<CanvasGroup>().interactable = false;
 
+            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
+            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
+
+            //targetUnit.Test();
+
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
+        }
+    }
+
+    public void NextEntityTurn()
+    {
+        btnSpell1.GetComponent<CanvasGroup>().alpha = 1;
+        btnSpell1.GetComponent<Button>().interactable = true;
+        btnSpell2.GetComponent<CanvasGroup>().alpha = 1;
+        btnSpell2.GetComponent<Button>().interactable = true;
+        btnSpell3.GetComponent<CanvasGroup>().alpha = 1;
+        btnSpell3.GetComponent<Button>().interactable = true;
+    }
+
+    public void SpellUsable(float rmnPA)
+    {
+        for (int i = 1; i < 4; i++)
+        {
+            if(rmnPA < targetUnit.PlayerSpells[i-1].spellCost)
+            {
+                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_"+i).GetComponent<Button>().interactable = false;
+                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_" + i).GetComponent<CanvasGroup>().alpha = 0.5f;
+            }
         }
     }
 

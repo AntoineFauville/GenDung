@@ -18,6 +18,7 @@ public class UnitController : MonoBehaviour {
 
     void Start()
     {
+        
     }
 
     void Update ()
@@ -99,6 +100,7 @@ public class UnitController : MonoBehaviour {
         if (remainingAction >= attackCost)
         {
             remainingAction -= attackCost;
+            CombatController.Instance.SpellUsable(remainingAction);
             Debug.Log("Action points left : " + remainingAction);
 
             // Check Spell Type Loutre Manger Cachuétes.
@@ -122,6 +124,11 @@ public class UnitController : MonoBehaviour {
             return false;
     }
 
+    public void Test()
+    {
+        CombatController.Instance.SpellUsable(0);
+    }
+
     public void NextTurn() // Penser à déplacer cette méthode dans le CombatController
     {
         while(currentPath!= null && remainingMovement > 0)
@@ -131,6 +138,7 @@ public class UnitController : MonoBehaviour {
 
         ResetMove();
         ResetAction();
+        CombatController.Instance.NextEntityTurn();
 
         Debug.Log("End of Turn: " + turnCount);
 
