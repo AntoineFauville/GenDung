@@ -361,7 +361,8 @@ public class CombatController : MonoBehaviour {
         // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
         for (int m = 0; m < foeData.enemies; m++)
         {
-            Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m).gameObject);
+            if(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m) != null)
+                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m).gameObject);
         }
 
         for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)

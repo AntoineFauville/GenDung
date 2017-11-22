@@ -37,14 +37,10 @@ public class FoeController : MonoBehaviour {
                 CombatController.Instance.SetTileSpellIndicator();
                 foeHealth--;
                 CombatController.Instance.UpdateUI(foeID);
+
                 if (foeHealth == 0)
                 {
-                    dead = true;
-                    CombatController.Instance.MonsterNmb--;
-                    spriteMonster.enabled = false;
-                    // Désactiver le DisplayUI lié à ce monstre.
-                    GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject.SetActive(false);
-                    CombatController.Instance.CheckBattleDeath();
+                    FoeDying();
                 }
             }
         }
@@ -53,6 +49,19 @@ public class FoeController : MonoBehaviour {
             Debug.Log("Monster not in Range, forget about attacking him");
             Debug.Log("Monster is on the Tile: " + pos.x + "," + pos.y);
         }
+    }
+
+    public void FoeDying()
+    {
+        dead = true;
+        CombatController.Instance.MonsterNmb--;
+        //spriteMonster.enabled = false;
+        // Désactiver le DisplayUI lié à ce monstre.
+        //GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject.SetActive(false)
+        Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject);
+        Destroy(GameObject.Find("Foe_" + foeID));
+        Debug.Log("Suppression du personnage: OK");
+        CombatController.Instance.CheckBattleDeath();
     }
 
     public void SetTileAsOccupied()
