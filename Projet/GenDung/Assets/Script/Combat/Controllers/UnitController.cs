@@ -18,7 +18,7 @@ public class UnitController : MonoBehaviour {
 
     void Start()
     {
-        spellCanvasPrefab = Resources.Load("Prefab/SpellCanvas") as GameObject;
+        
     }
 
     void Update ()
@@ -100,15 +100,33 @@ public class UnitController : MonoBehaviour {
         if (remainingAction >= attackCost)
         {
             remainingAction -= attackCost;
+            CombatController.Instance.SpellUsable(remainingAction);
             Debug.Log("Action points left : " + remainingAction);
 
-            // Check si la case est occupé par un ennemi
+            // Check Spell Type Loutre Manger Cachuétes.
+            if(playerSpells[s].spellType == SpellObject.SpellType.Distance)
+            {
+                spellCanvasPrefab = playerSpells[s].spellPrefab;
+                spellCanvas = Instantiate(spellCanvasPrefab);
+                spellCanvas.transform.Find("Unit").transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + xPos + "_" + yPos).transform.position;
+                CombatController.Instance.SpellCanvasInstantiated.Add(spellCanvas);
+            }
 
-            spellCanvas = Instantiate(spellCanvasPrefab);
-            spellCanvas.transform.Find("Unit").transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + xPos + "_" + yPos).transform.position;
-            CombatController.Instance.SpellCanvasInstantiated.Add(spellCanvas);
-            StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime, xPos, yPos));
+            StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime, xPos, yPos, s));
         }
+    }
+
+    public bool CheckPA()
+    {
+        if (remainingAction >= attackCost)
+            return true;
+        else
+            return false;
+    }
+
+    public void Test()
+    {
+        CombatController.Instance.SpellUsable(0);
     }
 
     public void NextTurn() // Penser à déplacer cette méthode dans le CombatController
@@ -120,6 +138,7 @@ public class UnitController : MonoBehaviour {
 
         ResetMove();
         ResetAction();
+        CombatController.Instance.NextEntityTurn();
 
         Debug.Log("End of Turn: " + turnCount);
 
@@ -157,11 +176,14 @@ public class UnitController : MonoBehaviour {
         transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
     }
 
-    public IEnumerator WaitForAttackCompletion(float t, int _x, int _y)
+    public IEnumerator WaitForAttackCompletion(float t, int _x, int _y, int s)
     {
+        // Play Attack Animation.
+        this.transform.Find("Cube/Image").GetComponent<Animator>().Play(playerSpells[s].spellAnimator.ToString());
         yield return new WaitForSeconds(t);
         Debug.Log("Switching Back to Movement Mode");
-        spellCanvas.transform.Find("Unit").gameObject.SetActive(false);
+        if(spellCanvas != null)
+            spellCanvas.transform.Find("Unit").gameObject.SetActive(false);
         CombatController.Instance.AttackMode = false;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().UpdateTileUI();
     }

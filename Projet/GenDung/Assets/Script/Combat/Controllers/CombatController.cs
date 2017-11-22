@@ -88,7 +88,37 @@ public class CombatController : MonoBehaviour {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + DungeonController.Instance.SpawnTilesList[i].x + "_" + DungeonController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
             }
 
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 0;
+            btnStartGame.GetComponent<CanvasGroup>().interactable = false;
+
+            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
+            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
+
+            //targetUnit.Test();
+
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
+        }
+    }
+
+    public void NextEntityTurn()
+    {
+        btnSpell1.GetComponent<CanvasGroup>().alpha = 1;
+        btnSpell1.GetComponent<Button>().interactable = true;
+        btnSpell2.GetComponent<CanvasGroup>().alpha = 1;
+        btnSpell2.GetComponent<Button>().interactable = true;
+        btnSpell3.GetComponent<CanvasGroup>().alpha = 1;
+        btnSpell3.GetComponent<Button>().interactable = true;
+    }
+
+    public void SpellUsable(float rmnPA)
+    {
+        for (int i = 1; i < 4; i++)
+        {
+            if(rmnPA < targetUnit.PlayerSpells[i-1].spellCost)
+            {
+                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_"+i).GetComponent<Button>().interactable = false;
+                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_" + i).GetComponent<CanvasGroup>().alpha = 0.5f;
+            }
         }
     }
 
@@ -361,7 +391,8 @@ public class CombatController : MonoBehaviour {
         // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
         for (int m = 0; m < foeData.enemies; m++)
         {
-            Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m).gameObject);
+            if(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m) != null)
+                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m).gameObject);
         }
 
         for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)
@@ -374,6 +405,9 @@ public class CombatController : MonoBehaviour {
         {
             Destroy(spellCanvasInstantiated[s]);
         }
+
+        btnStartGame.GetComponent<CanvasGroup>().alpha = 1;
+        btnStartGame.GetComponent<CanvasGroup>().interactable = true;
 
         GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
     }
