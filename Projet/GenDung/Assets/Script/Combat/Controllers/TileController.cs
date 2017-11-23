@@ -53,7 +53,13 @@ public class TileController : MonoBehaviour {
         {
             if (Input.GetMouseButtonUp(0))
             {
-                if (Input.GetKey(KeyCode.LeftControl))
+                if(Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift))
+                {
+                    Debug.Log("Ctrl and shift are hold and Mouse click 0 detected");
+                    EditorController.Instance.AddMovementRange(x, y);
+                    this.GetComponent<Image>().color = Color.green;
+                }
+                else if (Input.GetKey(KeyCode.LeftControl))
                 {
                     Debug.Log("Ctrl is hold and Mouse 0 click detected");
                     EditorController.Instance.AddSpawn(x,y);
@@ -78,7 +84,13 @@ public class TileController : MonoBehaviour {
             }
             else if (Input.GetMouseButtonUp(1))
             {
-                if (Input.GetKey(KeyCode.LeftControl))
+                if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift))
+                {
+                    Debug.Log("Ctrl and shift are hold and Mouse click 1 detected");
+                    EditorController.Instance.RemoveMovementRange(x, y);
+                    this.GetComponent<Image>().color = new Color(255, 255, 255, 0.1f);
+                }
+                else if (Input.GetKey(KeyCode.LeftControl))
                 {
                     Debug.Log("Ctrl is hold and Mouse 1 click detected");
                     EditorController.Instance.RemoveSpawn(x, y);

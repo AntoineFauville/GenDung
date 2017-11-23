@@ -10,11 +10,13 @@ public class EditorController : MonoBehaviour {
 
     public RoomObject room;
     public SpellObject spell;
+    public MovementRangeObject movement;
     private Transform testTile;
     private Vector2 wall;
     private Vector2 spawn;
     private Vector2 monsterSpawn;
     private Vector2 spellRange;
+    private Vector2 movementRange;
     private UnitController unit;
 
     public void Start()
@@ -176,6 +178,39 @@ public class EditorController : MonoBehaviour {
     }
     /* */
 
+    /* Movement Related Methods */
+    public void AddMovementRange(int x, int y)
+    {
+        movementRange = new Vector2((x - unit.TileX), (y - unit.TileY));
+
+        if (!movement.movementRange.Contains(movementRange))
+        {
+            movement.movementRange.Add(movementRange);
+            Debug.Log("Movement Range has been added : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Non non non, Cette Tile (" + x + "," + y + ") fait deja partie de la Range ... ");
+    }
+
+    public void RemoveMovementRange(int x, int y)
+    {
+        movementRange = new Vector2((x - unit.TileX), (y - unit.TileY));
+
+        if (movement.movementRange.Contains(movementRange))
+        {
+            movement.movementRange.Remove(movementRange);
+            Debug.Log("Movement Range has been removed : (" + x + "," + y + ")");
+        }
+        else
+            Debug.Log("Cette Tile (" + x + "," + y + ") ne fait pas partie de la Range  ... ");
+    }
+
+    public bool CheckMovementRange(int x, int y)
+    {
+        Vector2 test = new Vector2((x - unit.TileX), (y - unit.TileY));
+        return movement.movementRange.Contains(test);
+    }
+    /* */
     /* Accessors Methods */
     public static EditorController Instance
     {
