@@ -38,11 +38,6 @@ public class FoeController : MonoBehaviour {
                     StartCoroutine(WaitForAnimationEnd());
             }
         }
-        else if (!tileInRange)
-        {
-            Debug.Log("Monster not in Range, forget about attacking him");
-            Debug.Log("Monster is on the Tile: " + pos.x + "," + pos.y);
-        }
     }
 
     public void FoeDying()
@@ -68,8 +63,8 @@ public class FoeController : MonoBehaviour {
     /* */
     public IEnumerator WaitForAnimationEnd()
     {
-        CombatController.Instance.CleanRangeAfterAttack();
         CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
+        CombatController.Instance.CleanRangeAfterAttack();
         yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime);
         CombatController.Instance.SetTileSpellIndicator();
         foeHealth--;
@@ -83,8 +78,8 @@ public class FoeController : MonoBehaviour {
 
     public IEnumerator WaitForCaCAnimationEnd()
     {
-        CombatController.Instance.CleanRangeAfterAttack();
         CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
+        CombatController.Instance.CleanRangeAfterAttack();
 
         yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime/2);
         spriteMonster.GetComponent<Animator>().Play("DamageMonster");
