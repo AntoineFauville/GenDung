@@ -68,7 +68,8 @@ public class DungeonLoader : MonoBehaviour {
     EndDungeon,	//verifier si le donjon est fini ou pas
     DoOnceAllRelatedToUpgradeTavernPanel,
     InstantiateFade,
-    InstantiatedCombatModule;
+    InstantiatedCombatModule,
+    QuestStartOn;
 
 	void Start () {
 		//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
@@ -249,6 +250,15 @@ public class DungeonLoader : MonoBehaviour {
             //--------Taverne--------//
             if (activeScene == "Tavern")
             {
+
+                //affiche le canvas Quest Start si c'est la premiere fois qu'on vient dans la taverne
+                if (QuestStartOn) {
+                    QuestStartOn = false;
+
+                    Instantiate(Resources.Load("UI_Interface/CanvasQuestStart"));
+
+                }
+                
                 //montre le nombre de gold que possede le joueur pour l'achat de upgrade
                 GameObject.Find("GoldTotalPlayerUp").GetComponent<Text>().text = "Your Gold : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
 
@@ -256,6 +266,8 @@ public class DungeonLoader : MonoBehaviour {
                 //affiche l'image dans le panel en fonction du personnage selectionner avec le bouton
                 GameObject.Find("CharDisImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].TempSprite;
                 GameObject.Find("HistoryText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].story;
+
+
 
               
                 if (!DoOnceAllRelatedToUpgradeTavernPanel)
@@ -277,7 +289,11 @@ public class DungeonLoader : MonoBehaviour {
                         characterUI.transform.Find("TeamSpriteImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
                     }
 
-                    
+                    //a ajouter pour chaque membre de l'équipe
+                    //ajoute autour du feu les membres de l'équipe
+                    GameObject.Find("PersoTeamTaverne1").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].TempSprite;
+                    // + animator
+                    GameObject.Find("PersoTeamTaverne1").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].persoAnimator;
                 }
 
                 //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement

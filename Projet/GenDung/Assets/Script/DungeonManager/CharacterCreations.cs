@@ -15,6 +15,8 @@ public class CharacterCreations : MonoBehaviour {
 	public int indexMouseOverLeftPanel;
 	public int indexMouseOverRightPanel;
 
+    public bool didweChooseTheTeam;
+
 	public Character[] charac;
 
     public Character[] tempCharac;
@@ -151,6 +153,16 @@ public class CharacterCreations : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if (didweChooseTheTeam)
+        {
+            GameObject.Find("LaunchButton").GetComponent<Button>().interactable = true;
+            GameObject.Find("LaunchButton").GetComponent<Image>().color = Color.white;
+        }
+        else {
+            GameObject.Find("LaunchButton").GetComponent<Button>().interactable = false;
+            GameObject.Find("LaunchButton").GetComponent<Image>().color = Color.grey;
+        }
+
         //pour etre sur qu'on ne dépasse pas
 		if (SizeOfTheTeam > 4) {
 			SizeOfTheTeam = 4;
@@ -206,6 +218,7 @@ public class CharacterCreations : MonoBehaviour {
         if (charac[indexMouseOverLeftPanel].hasAnimations == true)
         {
             RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
+            didweChooseTheTeam = true;
         }
     }
 
@@ -219,12 +232,13 @@ public class CharacterCreations : MonoBehaviour {
 
 	public void LaunchGame () {
 
+        //set the list to the list we choosed
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList.Length; i++)
         {
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i] = tempCharac[i];
         }
-
-        SceneManager.LoadScene ("Map");
-		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim ();
+        GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().QuestStartOn = true;
+        GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
+        SceneManager.LoadScene ("Tavern");
 	}
 }
