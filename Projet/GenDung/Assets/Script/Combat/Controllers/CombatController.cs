@@ -262,13 +262,13 @@ public class CombatController : MonoBehaviour {
     public void CleanRangeAfterAttack()
     {
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
-
         // si on clique sur une case en dehors de la Range, voir pour faire correspondre le S avec le bon bouton.
 
         for (int i = 0; i < targetUnit.PlayerSpells[actualSpell].range.spellRange.Count; i++)
         {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
             StartCoroutine(WaitForAttackToEnd(i));
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
         }
 
         spell1 = false;
@@ -282,7 +282,7 @@ public class CombatController : MonoBehaviour {
         {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
         }
-
+        //actualSpell = 99;
     }
 
     /* Code de gestion du début de combat */
@@ -417,9 +417,8 @@ public class CombatController : MonoBehaviour {
     public IEnumerator WaitForAttackToEnd(int i)
     {
         //Debug.Log("Launch Wait Before inRange Get back to False");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().IsInRange = false;
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().UpdateTileUI();
     }
 
     public IEnumerator WaitBeforeEndBattle()

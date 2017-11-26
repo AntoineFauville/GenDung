@@ -38,11 +38,6 @@ public class FoeController : MonoBehaviour {
                     StartCoroutine(WaitForAnimationEnd());
             }
         }
-        else if (!tileInRange)
-        {
-            Debug.Log("Monster not in Range, forget about attacking him");
-            Debug.Log("Monster is on the Tile: " + pos.x + "," + pos.y);
-        }
     }
 
     public void FoeDying()

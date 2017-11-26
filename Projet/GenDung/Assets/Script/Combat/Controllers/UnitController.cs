@@ -180,12 +180,13 @@ public class UnitController : MonoBehaviour {
     {
         // Play Attack Animation.
         this.transform.Find("Cube/Image").GetComponent<Animator>().Play(playerSpells[s].spellAnimator.ToString());
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + _x + "_" + _y).GetComponent<TileController>().RemoveRange();
         yield return new WaitForSeconds(t);
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + _x + "_" + _y).GetComponent<TileController>().RemoveRange();
         Debug.Log("Switching Back to Movement Mode");
         if(spellCanvas != null)
             spellCanvas.transform.Find("Unit").gameObject.SetActive(false);
         CombatController.Instance.AttackMode = false;
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().UpdateTileUI();
     }
     /* */
 
