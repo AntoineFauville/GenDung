@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d419bf1b415e5b1418d23f09ec5ac84e
-timeCreated: 1510773481
+timeCreated: 1511980514
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -13,6 +13,8 @@ TextureImporter:
     21300012: UI_6
     21300014: UI_7
     21300016: UI_8
+    21300018: UI_9
+    21300020: UI_10
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -214,6 +216,32 @@ TextureImporter:
         y: 56
         width: 27
         height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_9
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 389
+        width: 114
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_10
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 301
+        width: 156
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
