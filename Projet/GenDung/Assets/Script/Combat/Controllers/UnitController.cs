@@ -18,7 +18,10 @@ public class UnitController : MonoBehaviour {
 
     void Start()
     {
-        
+        GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
+        GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
+        GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
+        GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
     }
 
     void Update ()
@@ -103,8 +106,14 @@ public class UnitController : MonoBehaviour {
             CombatController.Instance.SpellUsable(remainingAction);
             Debug.Log("Action points left : " + remainingAction);
 
+            GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = true;
+            GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = true;
+            GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.white;
+            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = true;
+            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().onClick.AddListener(NextTurn);
+
             // Check Spell Type Loutre Manger Cachuétes.
-            if(playerSpells[s].spellType == SpellObject.SpellType.Distance)
+            if (playerSpells[s].spellType == SpellObject.SpellType.Distance)
             {
                 spellCanvasPrefab = playerSpells[s].spellPrefab;
                 spellCanvas = Instantiate(spellCanvasPrefab);
@@ -136,9 +145,14 @@ public class UnitController : MonoBehaviour {
             AdvancePathing();
         }
 
+        GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
+        GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
+        GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
+        GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
+
         ResetMove();
         ResetAction();
-        CombatController.Instance.NextEntityTurn();
+        
 
         Debug.Log("End of Turn: " + turnCount);
 
@@ -165,8 +179,16 @@ public class UnitController : MonoBehaviour {
     public IEnumerator WaitForFoeEndTurn()
     {
         Debug.Log("Simulating Foe Turn");
+        GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
+        GameObject.Find("TextYourTurn").GetComponent<Text>().text = "ENNEMI TURN";
         yield return new WaitForSeconds(3f);
         turnCount++;
+
+        //ajout de l'animation de ton tour
+        GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
+        GameObject.Find("TextYourTurn").GetComponent<Text>().text = "YOUR TURN";
+        CombatController.Instance.NextEntityTurn();
+
         Debug.Log("Begin Turn: " + turnCount);
     }
 
