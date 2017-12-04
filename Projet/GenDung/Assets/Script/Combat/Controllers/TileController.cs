@@ -201,6 +201,13 @@ public class TileController : MonoBehaviour {
         this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
     }
 
+    public void SetMovementRange()
+    {
+        RemoveRange();
+        if (DungeonController.Instance.Dungeon.Tiles[x, y].isWalkable) // On vérifie si isWalkable est vrai
+            this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
+    }
+
     /* IEnumerator Methods */
     public IEnumerator WaitAfterClick()
     {

@@ -21,6 +21,7 @@ public class CombatController : MonoBehaviour {
     private GameObject monster_go, monsterPrefab, UIMonsterDisplayPrefab, UIMonsterDisplay, UIPlayerDisplay;
 
     private List<GameObject> spellCanvasInstantiated = new List<GameObject>();
+    private MovementRangeObject movRange;
 
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
 
@@ -97,6 +98,7 @@ public class CombatController : MonoBehaviour {
             //targetUnit.Test();
 
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
+            SetMovementRangeOnGrid();
         }
     }
 
@@ -147,6 +149,18 @@ public class CombatController : MonoBehaviour {
     }
 
     /* Code de gestion du Mode Attaque ou Mode Déplacement */
+
+    public void SetMovementRangeOnGrid()
+    {
+        movRange = Resources.Load<MovementRangeObject>("MovementRange/MovementRange_" + targetUnit.remainingMovement);
+
+        Debug.Log("MovementRange / MovementRange_" + targetUnit.remainingMovement);
+
+        for (int m = 0; m < movRange.movementRange.Count; m++)
+        {
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (movRange.movementRange[m].x + targetUnit.TileX) + "_" + (movRange.movementRange[m].y + targetUnit.TileY)).GetComponent<TileController>().SetRange();
+        }
+    }
 
     public void SwitchAttackModeFirst()
     {
@@ -282,6 +296,7 @@ public class CombatController : MonoBehaviour {
         {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
         }
+        SetMovementRangeOnGrid();
         //actualSpell = 99;
     }
 
