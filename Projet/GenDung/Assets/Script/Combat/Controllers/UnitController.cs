@@ -88,6 +88,7 @@ public class UnitController : MonoBehaviour {
         if (currentPath.Count == 1) // on vérifie si il ne reste pas que la case de destination.
         {
             currentPath = null;
+            CombatController.Instance.SetMovementRangeOnGrid();
         }
     }
 
@@ -191,6 +192,7 @@ public class UnitController : MonoBehaviour {
         GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
         GameObject.Find("TextYourTurn").GetComponent<Text>().text = "YOUR TURN";
         CombatController.Instance.NextEntityTurn();
+        CombatController.Instance.SetMovementRangeOnGrid();
 
         Debug.Log("Begin Turn: " + turnCount);
     }

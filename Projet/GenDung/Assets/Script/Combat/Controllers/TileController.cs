@@ -21,6 +21,7 @@ public class TileController : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
+
             if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && !occupied)
             {
                 MoveTo();

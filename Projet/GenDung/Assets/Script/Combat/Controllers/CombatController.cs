@@ -21,7 +21,9 @@ public class CombatController : MonoBehaviour {
     private GameObject monster_go, monsterPrefab, UIMonsterDisplayPrefab, UIMonsterDisplay, UIPlayerDisplay;
 
     private List<GameObject> spellCanvasInstantiated = new List<GameObject>();
+
     private MovementRangeObject movRange;
+    private List<Vector2> movRangeList = new List<Vector2>();
 
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
 
@@ -41,6 +43,9 @@ public class CombatController : MonoBehaviour {
         {
             btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
             btnStartGame.onClick.AddListener(StartCombatMode);
+
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 1;
+            btnStartGame.GetComponent<CanvasGroup>().interactable = true;
 
             btnSpell1 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_1").GetComponent<Button>();
             btnSpell1.onClick.AddListener(SwitchAttackModeFirst);
@@ -152,13 +157,31 @@ public class CombatController : MonoBehaviour {
 
     public void SetMovementRangeOnGrid()
     {
-        movRange = Resources.Load<MovementRangeObject>("MovementRange/MovementRange_" + targetUnit.remainingMovement);
+        targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
 
-        Debug.Log("MovementRange / MovementRange_" + targetUnit.remainingMovement);
-
-        for (int m = 0; m < movRange.movementRange.Count; m++)
+        if(targetUnit.remainingMovement != 0)
         {
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (movRange.movementRange[m].x + targetUnit.TileX) + "_" + (movRange.movementRange[m].y + targetUnit.TileY)).GetComponent<TileController>().SetRange();
+            movRange = Resources.Load<MovementRangeObject>("MovementRange/MovementRange_0" + targetUnit.remainingMovement);
+
+            for (int m = 0; m < movRange.movementRange.Count; m++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (movRange.movementRange[m].x + targetUnit.TileX) + "_" + (movRange.movementRange[m].y + targetUnit.TileY)).GetComponent<TileController>().SetMovementRange();
+                movRangeList.Add(new Vector2((movRange.movementRange[m].x + targetUnit.TileX), (movRange.movementRange[m].y + targetUnit.TileY)));
+            }
+        }
+
+    }
+
+    public void RemoveMovementRangeOnGrid()
+    {
+        if (movRange != null)
+        {
+            for (int m = 0; m < movRange.movementRange.Count; m++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (movRange.movementRange[m].x + targetUnit.TileX) + "_" + (movRange.movementRange[m].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
+            }
+
+            movRangeList = new List<Vector2>();
         }
     }
 

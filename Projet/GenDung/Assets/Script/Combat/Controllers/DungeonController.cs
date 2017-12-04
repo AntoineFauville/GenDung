@@ -271,6 +271,8 @@ public class DungeonController : MonoBehaviour {
         currentPath.Reverse();
 
         unit.CurrentPath = currentPath;
+
+        CombatController.Instance.RemoveMovementRangeOnGrid(); // On clean la grid des tiles indicatrices de mouvemement.
     }
 
     public void LaunchUnitAttack(int _x,int _y)
