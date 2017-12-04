@@ -18,10 +18,13 @@ public class UnitController : MonoBehaviour {
 
     void Start()
     {
-        GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
-        GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
-        GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
-        GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
+        if(SceneManager.GetActiveScene().name != "Editor")
+        {
+            GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
+            GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
+            GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
+            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
+        }
     }
 
     void Update ()
