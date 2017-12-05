@@ -461,7 +461,7 @@ public class DungeonLoader : MonoBehaviour {
 				GameObject enemyUI;
 				enemyUI = Instantiate (Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
 				enemyUI.transform.SetParent (GameObject.FindGameObjectWithTag ("EnemyPanel").transform, false);
-				enemyUI.transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemiesList [i].enemyIcon;
+				enemyUI.transform.GetChild(0).transform.GetChild(0).GetComponent<Image> ().sprite = roomListDungeon [dungeonIndex].RoomOfTheDungeon [index].enemiesList [i].enemyIcon;
 			}
 
 		}
