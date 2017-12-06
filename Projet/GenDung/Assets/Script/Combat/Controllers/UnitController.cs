@@ -97,6 +97,9 @@ public class UnitController : MonoBehaviour {
 
     public void Attack(int s, int xPos, int yPos) // méthode d'attaque du personnage.
     {
+
+        // ajouter self (spellType ==> spell 3 : buff) + verif pos identique à pos unit + ajouter indicateur buff pv 
+
         //attacking = false;
 
         if (remainingAction <= 0)

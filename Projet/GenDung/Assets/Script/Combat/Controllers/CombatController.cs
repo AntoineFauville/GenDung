@@ -264,7 +264,7 @@ public class CombatController : MonoBehaviour {
     {
         if (!attackMode && !spell3 || attackMode && !spell3 || attackMode && spell1 || attackMode && spell2) // Active le spell 2
         {
-            Debug.Log("Attack Mode has been selected, Spell N°2");
+            Debug.Log("Attack Mode has been selected, Spell N°3");
             attackMode = true;
             spell1 = false;
             spell2 = false;

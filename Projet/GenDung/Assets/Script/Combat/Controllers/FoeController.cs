@@ -65,7 +65,11 @@ public class FoeController : MonoBehaviour {
     {
         CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
         CombatController.Instance.CleanRangeAfterAttack();
-        yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime);
+        //yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime);
+        yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime / 2);
+        spriteMonster.GetComponent<Animator>().Play("DamageMonster");
+        yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime / 2);
+        spriteMonster.GetComponent<Animator>().Play("IdleMonster");
         CombatController.Instance.SetTileSpellIndicator();
         foeHealth--;
         CombatController.Instance.UpdateUI(foeID);
