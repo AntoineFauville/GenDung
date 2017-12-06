@@ -9,6 +9,11 @@ public class Tile {
         Floor,Wall,
     }
 
+    public enum TileState
+    {
+        Neutral,Movement,Range,Wall,Spawn,MonsterSpawn
+    }
+
     TileType type = TileType.Floor;
     public int x;
     public int y;
@@ -16,6 +21,7 @@ public class Tile {
     public bool isStarterTile = false;
     public bool isMonsterTile = false;
     public float movementCost = 1;
+    public TileState state = TileState.Neutral;
     Dungeon dungeon;
 
     public Tile(Dungeon _dungeon, int _x, int _y)

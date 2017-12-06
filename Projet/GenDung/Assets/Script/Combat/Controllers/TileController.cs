@@ -134,6 +134,9 @@ public class TileController : MonoBehaviour {
 
     public void TileEnter()
     {
+        // OLD Indicator System //
+        /*
+        
         if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x,y))
             this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
         else if (CheckSpawnType() && !CombatController.Instance.CombatStarted && !checkMouse)
@@ -142,11 +145,38 @@ public class TileController : MonoBehaviour {
             this.GetComponent<Image>().color = new Color(255,255,0, 0.6f); // yellow
 
         StartCoroutine(WaitAfterMouseCheck());
+        
+        */
+
+        switch(DungeonController.Instance.Dungeon.Tiles[x, y].state)
+        {
+            case Tile.TileState.Neutral:
+                this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
+                break;
+            case Tile.TileState.Movement:
+                this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
+                break;
+            case Tile.TileState.Range:
+                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
+                break;
+            case Tile.TileState.Wall: // Editor
+                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
+                break;
+            case Tile.TileState.Spawn: // Editor && Play
+                this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f); // cyan
+                break;
+            case Tile.TileState.MonsterSpawn: // Editor
+                this.GetComponent<Image>().color = new Color(255, 0, 255, 0.4f); // magenta
+                break;
+        }
 
     }
 
     public void TileExit()
     {
+        // OLD Indicator System //
+        /*
+        
         if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckWall(x, y))
             this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
         else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckSpawn(x, y))
@@ -164,6 +194,31 @@ public class TileController : MonoBehaviour {
             this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
 
         StartCoroutine(WaitAfterMouseCheck());
+        
+        */
+
+        switch (DungeonController.Instance.Dungeon.Tiles[x, y].state)
+        {
+            case Tile.TileState.Neutral:
+                this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
+                break;
+            case Tile.TileState.Movement:
+                this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
+                break;
+            case Tile.TileState.Range:
+                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
+                break;
+            case Tile.TileState.Wall: // Editor
+                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
+                break;
+            case Tile.TileState.Spawn: // Editor && Play
+                this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f); // cyan
+                break;
+            case Tile.TileState.MonsterSpawn: // Editor
+                this.GetComponent<Image>().color = new Color(255, 0, 255, 0.4f); // magenta
+                break;
+        }
+
     }
 
     public void UpdateTileUI()
@@ -193,20 +248,23 @@ public class TileController : MonoBehaviour {
     public void SetRange()
     {
         RemoveRange();
-        this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
+        //this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
+        DungeonController.Instance.Dungeon.Tiles[x, y].state = Tile.TileState.Range;
     }
 
     public void RemoveRange()
     {
-        Debug.Log("Cleaning Tile from any color");
-        this.GetComponent<Image>().color = new Color(255, 255, 255, 0);
+        /*Debug.Log("Cleaning Tile from any color");
+        this.GetComponent<Image>().color = new Color(255, 255, 255, 0);*/
+        DungeonController.Instance.Dungeon.Tiles[x, y].state = Tile.TileState.Neutral;
     }
 
     public void SetMovementRange()
     {
         RemoveRange();
         if (DungeonController.Instance.Dungeon.Tiles[x, y].isWalkable) // On vérifie si isWalkable est vrai
-            this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
+            DungeonController.Instance.Dungeon.Tiles[x, y].state = Tile.TileState.Movement;
+        //this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
     }
 
     /* IEnumerator Methods */
