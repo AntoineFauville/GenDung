@@ -91,6 +91,7 @@ public class CombatController : MonoBehaviour {
 
             for (int i = 0; i < DungeonController.Instance.SpawnTilesList.Count; i++) // Update de l'UI des Tiles servant de Zones de placement pré-combat.
             {
+                DungeonController.Instance.Dungeon.Tiles[Mathf.RoundToInt(DungeonController.Instance.SpawnTilesList[i].x), Mathf.RoundToInt(DungeonController.Instance.SpawnTilesList[i].y)].state = Tile.TileState.Neutral;
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + DungeonController.Instance.SpawnTilesList[i].x + "_" + DungeonController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
             }
 
@@ -159,7 +160,7 @@ public class CombatController : MonoBehaviour {
     {
         targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
 
-        if(targetUnit.remainingMovement != 0)
+        if(targetUnit.remainingMovement != 0 && combatStarted)
         {
             movRange = Resources.Load<MovementRangeObject>("MovementRange/MovementRange_0" + targetUnit.remainingMovement);
 
