@@ -9,5 +9,7 @@ public class BuffIndicator : ScriptableObject
     public int buffIndId;
 
     public Color color;
-    public string textOfTheBuff = "+0PX";
+
+    public string textOfTheBuffA = "+";
+    public string textOfTheBuffB = "PX";
 }

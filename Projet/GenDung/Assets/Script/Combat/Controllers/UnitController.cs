@@ -73,13 +73,16 @@ public class UnitController : MonoBehaviour {
             return;
         }
 
-        remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y); // on retire le coût du déplacement par la case.
+        remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y); // on retire le coût du déplacement par case.
 
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
 
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
+
+        if (CombatController.Instance.CombatStarted)
+            GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0,3,Mathf.RoundToInt(24),0f);
 
         StartCoroutine(WaitBeforeNextMovement()); // Coroutine pour faire patienter le joueur et donné une meilleure impression de déplacement.
 
@@ -125,6 +128,8 @@ public class UnitController : MonoBehaviour {
                 CombatController.Instance.SpellCanvasInstantiated.Add(spellCanvas);
             }
 
+            GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 1, playerSpells[s].spellCost,0f);
+
             StartCoroutine(WaitForAttackCompletion(playerSpells[s].SpellCastAnimationTime, xPos, yPos, s));
         }
     }
@@ -167,11 +172,13 @@ public class UnitController : MonoBehaviour {
     public void ResetMove()
     {
         remainingMovement = pm;
+        GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 2, pm,0f);
     }
 
     public void ResetAction()
     {
         remainingAction = pa;
+        GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 0, pm,1f);
     }
 
     public void SetDefaultSpawn(Vector3 pos)
