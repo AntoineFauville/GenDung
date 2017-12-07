@@ -56,11 +56,13 @@ public class FoeController : MonoBehaviour {
     public void SetTileAsOccupied() // Indique d'une Tile est Occupé par un Monstre.
     {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = true;
+        GridController.Instance.Grid.Tiles[Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y)].Type = Tile.TileType.Occupied;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
     }
     public void RemoveTileAsOccupied()// Retire l'indication d'occupation d'une Tile.
     {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = false;
+        GridController.Instance.Grid.Tiles[Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y)].Type = Tile.TileType.Floor;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().MonsterOnTile = null;
     }
 

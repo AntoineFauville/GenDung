@@ -88,6 +88,7 @@ public class GridController : MonoBehaviour {
         GameObject c = GameObject.Instantiate(PrefabGrid);
         /* */
 
+        // Load du Prefab de la Tile // 
 		GameObject tileUIPrefab = Resources.Load("UI_Interface/Tile") as GameObject;
 
         /* Creation Tile par Tile de la grille représentant le Grid */
@@ -106,6 +107,7 @@ public class GridController : MonoBehaviour {
                 tile_canvas.GetComponent<TileController>().Y = y;
 
                 Grid.Tiles[x, y].isWalkable = true;
+                Grid.Tiles[x, y].Type = Tile.TileType.Floor;
 
             }
         }
@@ -285,7 +287,12 @@ public class GridController : MonoBehaviour {
 
     public bool UnitCanEnterTile(int x, int y)
     {
-        return Grid.Tiles[x,y].isWalkable;
+        //return Grid.Tiles[x,y].isWalkable; OLD CODE
+
+        if (Grid.Tiles[x, y].Type == Tile.TileType.Floor)
+            return true;
+        else
+            return false;
     }
 
     public Tile GetTileAtWorldCoord(Vector3 coord)
@@ -314,6 +321,7 @@ public class GridController : MonoBehaviour {
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls[x];
             Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
+            Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Tile.TileType.Wall;
         }
     }
     /* */

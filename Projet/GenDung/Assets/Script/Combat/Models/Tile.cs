@@ -6,7 +6,7 @@ public class Tile {
 
 	public enum TileType
     {
-        Floor,Wall,
+        Floor,Wall,Occupied
     }
 
     public enum TileState

@@ -30,7 +30,7 @@ public class TileController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
 
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && !occupied && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor /*!occupied*/ && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement)
             {
                 MoveTo();
             }
@@ -275,17 +275,14 @@ public class TileController : MonoBehaviour {
 
     public void RemoveRange()
     {
-        /*Debug.Log("Cleaning Tile from any color");
-        this.GetComponent<Image>().color = new Color(255, 255, 255, 0);*/
         GridController.Instance.Grid.Tiles[x, y].state = Tile.TileState.Neutral;
     }
 
     public void SetMovementRange()
     {
         RemoveRange();
-        if (GridController.Instance.Grid.Tiles[x, y].isWalkable) // On vérifie si isWalkable est vrai
+        if (GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor) // On vérifie si isWalkable est vrai
             GridController.Instance.Grid.Tiles[x, y].state = Tile.TileState.Movement;
-        //this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
     }
 
     /* IEnumerator Methods */
@@ -305,7 +302,7 @@ public class TileController : MonoBehaviour {
     {
         yield return new WaitForSeconds(seconds);
         UpdateTileUI();
-        StartCoroutine(WaitBeforeCleanUp(0.5f));
+        StartCoroutine(WaitBeforeCleanUp(0.3f));
     }
     /* */
 
