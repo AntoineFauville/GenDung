@@ -44,6 +44,7 @@ public class FoeController : MonoBehaviour {
     {
         dead = true;
         CombatController.Instance.MonsterNmb--;
+        RemoveTileAsOccupied();
         //spriteMonster.enabled = false;
         // Désactiver le DisplayUI lié à ce monstre.
         //GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject.SetActive(false)
@@ -52,10 +53,15 @@ public class FoeController : MonoBehaviour {
         CombatController.Instance.CheckBattleDeath();
     }
 
-    public void SetTileAsOccupied()
+    public void SetTileAsOccupied() // Indique d'une Tile est Occupé par un Monstre.
     {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = true;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
+    }
+    public void RemoveTileAsOccupied()// Retire l'indication d'occupation d'une Tile.
+    {
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = false;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().MonsterOnTile = null;
     }
 
     // |**| \**\ |**| /**/ 
@@ -64,7 +70,7 @@ public class FoeController : MonoBehaviour {
     public IEnumerator WaitForAnimationEnd()
     {
         CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
-        CombatController.Instance.CleanRangeAfterAttack();
+        //CombatController.Instance.CleanRangeAfterAttack();
         //yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime);
         yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime / 2);
         spriteMonster.GetComponent<Animator>().Play("DamageMonster");
@@ -83,7 +89,7 @@ public class FoeController : MonoBehaviour {
     public IEnumerator WaitForCaCAnimationEnd()
     {
         CombatController.Instance.TargetUnit.Attack(CombatController.Instance.ActualSpell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
-        CombatController.Instance.CleanRangeAfterAttack();
+        //CombatController.Instance.CleanRangeAfterAttack();
 
         yield return new WaitForSeconds(CombatController.Instance.TargetUnit.PlayerSpells[CombatController.Instance.ActualSpell].SpellCastAnimationTime/2);
         spriteMonster.GetComponent<Animator>().Play("DamageMonster");

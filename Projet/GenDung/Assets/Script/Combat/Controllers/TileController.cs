@@ -36,7 +36,7 @@ public class TileController : MonoBehaviour {
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange && !clicked)
             {
-                CombatController.Instance.CleanRangeAfterAttack();
+                //CombatController.Instance.CleanRangeAfterAttack();
 
                 if (monsterOnTile != null && occupied && CombatController.Instance.TargetUnit.CheckPA())
                     monsterOnTile.FoeClicked();
@@ -45,6 +45,7 @@ public class TileController : MonoBehaviour {
 
                 //RemoveRange();
                 CombatController.Instance.SetTileSpellIndicator();
+                CombatController.Instance.SetMovementRangeOnGrid();
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && !isInRange && !clicked)
             {
