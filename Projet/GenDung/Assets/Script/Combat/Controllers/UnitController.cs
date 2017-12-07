@@ -215,11 +215,10 @@ public class UnitController : MonoBehaviour {
 
     public IEnumerator WaitForAttackCompletion(float t, int _x, int _y, int s)
     {
+        CombatController.Instance.CleanActualSpellRange();
         // Play Attack Animation.
         this.transform.Find("Cube/Image").GetComponent<Animator>().Play(playerSpells[s].spellAnimator.ToString());
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + _x + "_" + _y).GetComponent<TileController>().RemoveRange();
         yield return new WaitForSeconds(t);
-        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + _x + "_" + _y).GetComponent<TileController>().RemoveRange();
         Debug.Log("Switching Back to Movement Mode");
         if(spellCanvas != null)
             spellCanvas.transform.Find("Unit").gameObject.SetActive(false);
