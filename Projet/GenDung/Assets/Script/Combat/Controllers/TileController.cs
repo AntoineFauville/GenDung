@@ -43,14 +43,14 @@ public class TileController : MonoBehaviour {
                 else
                     CombatController.Instance.TargetUnit.Attack(s, x, y);
 
-                RemoveRange();
+                //RemoveRange();
                 CombatController.Instance.SetTileSpellIndicator();
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && !isInRange && !clicked)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
                 CombatController.Instance.AttackMode = false;
-                RemoveRange();
+                //RemoveRange();
             }
             else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
             {

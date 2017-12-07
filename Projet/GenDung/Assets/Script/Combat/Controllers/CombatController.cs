@@ -198,6 +198,8 @@ public class CombatController : MonoBehaviour {
             actualSpell = 0;
             // Afficher la portée sur la grille (en Rouge).
 
+            RemoveMovementRangeOnGrid();
+
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
@@ -220,6 +222,7 @@ public class CombatController : MonoBehaviour {
             {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
             }
+            SetMovementRangeOnGrid();
         }
     }
 
@@ -234,6 +237,8 @@ public class CombatController : MonoBehaviour {
             spell3 = false;
             actualSpell = 1;
             // Afficher la portée sur la grille (en Rouge).
+
+            RemoveMovementRangeOnGrid();
 
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
@@ -257,6 +262,7 @@ public class CombatController : MonoBehaviour {
             {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[1].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[1].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
             }
+            SetMovementRangeOnGrid();
         }
     }
 
@@ -271,6 +277,8 @@ public class CombatController : MonoBehaviour {
             spell3 = true;
             actualSpell = 2;
             // Afficher la portée sur la grille (en Rouge).
+
+            RemoveMovementRangeOnGrid();
 
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
@@ -294,6 +302,7 @@ public class CombatController : MonoBehaviour {
             {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[2].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[2].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
             }
+            SetMovementRangeOnGrid();
         }
     }
 
