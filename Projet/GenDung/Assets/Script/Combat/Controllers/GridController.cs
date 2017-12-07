@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GridController : MonoBehaviour {
 
     private static GridController instance;
-    private Dungeon dungeon;
+    private Grid grid;
     private Node[,] graph;
     private UnitController unit;
     private GameData playerData;
@@ -81,7 +81,7 @@ public class GridController : MonoBehaviour {
 
     public void GenerateMapData()
     {
-        Dungeon = new Dungeon();
+        Grid = new Grid();
 
         /* Creation du GridCanvas */
         GameObject PrefabGrid = Resources.Load("UI_Interface/GridCanvas") as GameObject;
@@ -90,10 +90,10 @@ public class GridController : MonoBehaviour {
 
 		GameObject tileUIPrefab = Resources.Load("UI_Interface/Tile") as GameObject;
 
-        /* Creation Tile par Tile de la grille représentant le Dungeon */
-        for (int x = 0; x < Dungeon.Width; x++)
+        /* Creation Tile par Tile de la grille représentant le Grid */
+        for (int x = 0; x < Grid.Width; x++)
         {
-            for (int y = 0; y < Dungeon.Height; y++)
+            for (int y = 0; y < Grid.Height; y++)
             {
 				GameObject tile_canvas = GameObject.Instantiate(tileUIPrefab,c.transform.Find("PanelGrid"));
                 tile_canvas.name = "Tile_" + x + "_" + y;
@@ -105,7 +105,7 @@ public class GridController : MonoBehaviour {
                 tile_canvas.GetComponent<TileController>().X = x;
                 tile_canvas.GetComponent<TileController>().Y = y;
 
-                Dungeon.Tiles[x, y].isWalkable = true;
+                Grid.Tiles[x, y].isWalkable = true;
 
             }
         }
@@ -117,12 +117,12 @@ public class GridController : MonoBehaviour {
     void GeneratePathfindingGraph()
     {
         // Initialisation du Array
-        graph = new Node[Dungeon.Width, Dungeon.Height];
+        graph = new Node[Grid.Width, Grid.Height];
 
         // Initialize a Node for each spot in the array
-        for (int x = 0; x < Dungeon.Width; x++)
+        for (int x = 0; x < Grid.Width; x++)
         {
-            for (int y = 0; y < Dungeon.Height; y++)
+            for (int y = 0; y < Grid.Height; y++)
             {
                 graph[x, y] = new Node();
                 graph[x, y].x = x;
@@ -131,18 +131,18 @@ public class GridController : MonoBehaviour {
         }
 
         // Now that all the nodes exist, calculate their neighbours
-        for (int x = 0; x < Dungeon.Width; x++)
+        for (int x = 0; x < Grid.Width; x++)
         {
-            for (int y = 0; y < Dungeon.Height; y++)
+            for (int y = 0; y < Grid.Height; y++)
             {
                 // This is the 4-way connection version:
     			if(x > 0)
 					graph[x,y].neighbours.Add( graph[x-1, y] );
-				if(x < Dungeon.Width-1)
+				if(x < Grid.Width-1)
 					graph[x,y].neighbours.Add( graph[x+1, y] );
 				if(y > 0)
 					graph[x,y].neighbours.Add( graph[x, y-1] );
-				if(y < Dungeon.Height-1)
+				if(y < Grid.Height-1)
 					graph[x,y].neighbours.Add( graph[x, y+1] );
 
                 /*
@@ -153,24 +153,24 @@ public class GridController : MonoBehaviour {
                     graph[x, y].neighbours.Add(graph[x - 1, y]);
                     if (y > 0)
                         graph[x, y].neighbours.Add(graph[x - 1, y - 1]);
-                    if (y < Dungeon.Height - 1)
+                    if (y < Grid.Height - 1)
                         graph[x, y].neighbours.Add(graph[x - 1, y + 1]);
                 }
 
                 // Try Right
-                if (x < Dungeon.Width - 1)
+                if (x < Grid.Width - 1)
                 {
                     graph[x, y].neighbours.Add(graph[x + 1, y]);
                     if (y > 0)
                         graph[x, y].neighbours.Add(graph[x + 1, y - 1]);
-                    if (y < Dungeon.Height - 1)
+                    if (y < Grid.Height - 1)
                         graph[x, y].neighbours.Add(graph[x + 1, y + 1]);
                 }
 
                 // Try straight up and down
                 if (y > 0)
                     graph[x, y].neighbours.Add(graph[x, y - 1]);
-                if (y < Dungeon.Height - 1)
+                if (y < Grid.Height - 1)
                     graph[x, y].neighbours.Add(graph[x, y + 1]);
                 */
             }
@@ -285,7 +285,7 @@ public class GridController : MonoBehaviour {
 
     public bool UnitCanEnterTile(int x, int y)
     {
-        return Dungeon.Tiles[x,y].isWalkable;
+        return Grid.Tiles[x,y].isWalkable;
     }
 
     public Tile GetTileAtWorldCoord(Vector3 coord)
@@ -293,7 +293,7 @@ public class GridController : MonoBehaviour {
         int x = (int)Mathf.Floor(coord.x) ;
         int y = (int)Mathf.Floor(coord.y) ;
 
-        return dungeon.GetTileAt(x, y);
+        return grid.GetTileAt(x, y);
     }
 
     public Vector3 TileCoordToWorldCoord(int x, int y)
@@ -313,7 +313,7 @@ public class GridController : MonoBehaviour {
         for (int x = 0; x < wallsNumber; x++)
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls[x];
-            Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
+            Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
         }
     }
     /* */
@@ -325,7 +325,7 @@ public class GridController : MonoBehaviour {
         for (int y = 0; y < spawnNumber; y++)
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[y];
-            Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
+            Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
             spawnTilesList.Add(tile);
         }
     }
@@ -338,7 +338,7 @@ public class GridController : MonoBehaviour {
         for (int z = 0; z < spawnMonsterNumber; z++)
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[z];
-            Dungeon.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isMonsterTile = true;
+            Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isMonsterTile = true;
         }
     }
     /* */
@@ -358,16 +358,16 @@ public class GridController : MonoBehaviour {
         }
     }
 
-    public Dungeon Dungeon
+    public Grid Grid
     {
         get
         {
-            return dungeon;
+            return grid;
         }
 
         set
         {
-            dungeon = value;
+            grid = value;
         }
     }
 

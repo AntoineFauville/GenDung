@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dungeon {
+public class Grid {
 
     Tile[,] tiles;
     int width;
     int height;
 
-    public Dungeon(int _width = 20, int _height = 14)
+    public Grid(int _width = 20, int _height = 14)
     {
         this.Width = _width;
         this.Height = _height;

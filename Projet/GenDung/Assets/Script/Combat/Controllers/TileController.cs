@@ -20,7 +20,7 @@ public class TileController : MonoBehaviour {
     public void Start()
     {
         if (CheckSpawnType())
-            GridController.Instance.Dungeon.Tiles[x, y].state = Tile.TileState.Spawn;
+            GridController.Instance.Grid.Tiles[x, y].state = Tile.TileState.Spawn;
 
         StartCoroutine(WaitBeforeCleanUp(0f)); // Look for White Tiles at the beginning 
     }
@@ -30,7 +30,7 @@ public class TileController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
 
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && !occupied && GridController.Instance.Dungeon.Tiles[x,y].state == Tile.TileState.Movement)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && !occupied && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement)
             {
                 MoveTo();
             }
@@ -149,7 +149,7 @@ public class TileController : MonoBehaviour {
         
         */
 
-        switch(GridController.Instance.Dungeon.Tiles[x, y].state)
+        switch(GridController.Instance.Grid.Tiles[x, y].state)
         {
             case Tile.TileState.Neutral:
                 this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
@@ -198,7 +198,7 @@ public class TileController : MonoBehaviour {
         
         */
 
-        switch (GridController.Instance.Dungeon.Tiles[x, y].state)
+        switch (GridController.Instance.Grid.Tiles[x, y].state)
         {
             case Tile.TileState.Neutral:
                 this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
@@ -224,7 +224,7 @@ public class TileController : MonoBehaviour {
 
     public void UpdateTileUI()
     {
-        switch (GridController.Instance.Dungeon.Tiles[x, y].state)
+        switch (GridController.Instance.Grid.Tiles[x, y].state)
         {
             case Tile.TileState.Neutral:
                 this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
@@ -260,7 +260,7 @@ public class TileController : MonoBehaviour {
 
     public bool CheckSpawnType()
     {
-        if (GridController.Instance.Dungeon.Tiles[x, y].isStarterTile && CombatController.Instance.PlacementDone == false)
+        if (GridController.Instance.Grid.Tiles[x, y].isStarterTile && CombatController.Instance.PlacementDone == false)
             return true;
         else
             return false;        
@@ -269,22 +269,22 @@ public class TileController : MonoBehaviour {
     public void SetRange()
     {
         RemoveRange();
-        if (GridController.Instance.Dungeon.Tiles[x, y].isWalkable)
-            GridController.Instance.Dungeon.Tiles[x, y].state = Tile.TileState.Range;
+        if (GridController.Instance.Grid.Tiles[x, y].isWalkable)
+            GridController.Instance.Grid.Tiles[x, y].state = Tile.TileState.Range;
     }
 
     public void RemoveRange()
     {
         /*Debug.Log("Cleaning Tile from any color");
         this.GetComponent<Image>().color = new Color(255, 255, 255, 0);*/
-        GridController.Instance.Dungeon.Tiles[x, y].state = Tile.TileState.Neutral;
+        GridController.Instance.Grid.Tiles[x, y].state = Tile.TileState.Neutral;
     }
 
     public void SetMovementRange()
     {
         RemoveRange();
-        if (GridController.Instance.Dungeon.Tiles[x, y].isWalkable) // On vérifie si isWalkable est vrai
-            GridController.Instance.Dungeon.Tiles[x, y].state = Tile.TileState.Movement;
+        if (GridController.Instance.Grid.Tiles[x, y].isWalkable) // On vérifie si isWalkable est vrai
+            GridController.Instance.Grid.Tiles[x, y].state = Tile.TileState.Movement;
         //this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
     }
 

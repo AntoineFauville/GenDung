@@ -22,11 +22,11 @@ public class Tile {
     public bool isMonsterTile = false;
     public float movementCost = 1;
     public TileState state = TileState.Neutral;
-    Dungeon dungeon;
+    Grid grid;
 
-    public Tile(Dungeon _dungeon, int _x, int _y)
+    public Tile(Grid _dungeon, int _x, int _y)
     {
-        this.dungeon = _dungeon;
+        this.grid = _dungeon;
         this.x = _x;
         this.y = _y;
     }

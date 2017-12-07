@@ -68,7 +68,7 @@ public class CombatController : MonoBehaviour {
 
     public void ConfirmCharaPosition(int x,int y)
     {
-        if (GridController.Instance.Dungeon.Tiles[x, y].isStarterTile == true)
+        if (GridController.Instance.Grid.Tiles[x, y].isStarterTile == true)
         {
             tileX = x;
             tileY = y;
@@ -91,7 +91,7 @@ public class CombatController : MonoBehaviour {
 
             for (int i = 0; i < GridController.Instance.SpawnTilesList.Count; i++) // Update de l'UI des Tiles servant de Zones de placement pré-combat.
             {
-                GridController.Instance.Dungeon.Tiles[Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].x), Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].y)].state = Tile.TileState.Neutral;
+                GridController.Instance.Grid.Tiles[Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].x), Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].y)].state = Tile.TileState.Neutral;
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + GridController.Instance.SpawnTilesList[i].x + "_" + GridController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
             }
 
