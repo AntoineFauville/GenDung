@@ -23,7 +23,7 @@ public class CombatGestion : MonoBehaviour {
 	}
 
 	public void InstantiateCombatPrefab () {
-		/* Ajoute de manière dynamique mon DungeonController à l'objet (Pas de modification de scène nécessaire ;) )  */
+		/* Ajoute de manière dynamique mon GridController à l'objet (Pas de modification de scène nécessaire ;) )  */
 
 		/**/if (SceneManager.GetActiveScene().name == "Dungeon" && !instantiateCombatGrid)
 		{

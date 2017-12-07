@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class DungeonController : MonoBehaviour {
+public class GridController : MonoBehaviour {
 
-    private static DungeonController instance;
+    private static GridController instance;
     private Dungeon dungeon;
     private Node[,] graph;
     private UnitController unit;
@@ -345,7 +345,7 @@ public class DungeonController : MonoBehaviour {
 
     /* Accessors Methods */
 
-    public static DungeonController Instance
+    public static GridController Instance
     {
         get
         {

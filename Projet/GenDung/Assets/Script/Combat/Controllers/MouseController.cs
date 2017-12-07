@@ -33,18 +33,18 @@ public class MouseController : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0))
         {
-            DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
+            GridController.Instance.GetTileAtWorldCoord(currentFramePosition);
         }
 
         if (Input.GetMouseButtonUp(1))
         {
-            DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
+            GridController.Instance.GetTileAtWorldCoord(currentFramePosition);
         }
 	}
 
     public void UpdateCursor()
     {
-        Tile tileUnderMouse = DungeonController.Instance.GetTileAtWorldCoord(currentFramePosition);
+        Tile tileUnderMouse = GridController.Instance.GetTileAtWorldCoord(currentFramePosition);
         if (tileUnderMouse != null && tileUnderMouse.Type != Tile.TileType.Wall)
         {
             cursorPrefab.SetActive(true);

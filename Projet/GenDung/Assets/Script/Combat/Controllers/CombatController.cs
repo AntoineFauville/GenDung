@@ -68,7 +68,7 @@ public class CombatController : MonoBehaviour {
 
     public void ConfirmCharaPosition(int x,int y)
     {
-        if (DungeonController.Instance.Dungeon.Tiles[x, y].isStarterTile == true)
+        if (GridController.Instance.Dungeon.Tiles[x, y].isStarterTile == true)
         {
             tileX = x;
             tileY = y;
@@ -86,13 +86,13 @@ public class CombatController : MonoBehaviour {
         {
             combatStarted = true;
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().TileExit();
-            DungeonController.Instance.Unit.ResetMove();
-            DungeonController.Instance.Unit.ResetAction();
+            GridController.Instance.Unit.ResetMove();
+            GridController.Instance.Unit.ResetAction();
 
-            for (int i = 0; i < DungeonController.Instance.SpawnTilesList.Count; i++) // Update de l'UI des Tiles servant de Zones de placement pré-combat.
+            for (int i = 0; i < GridController.Instance.SpawnTilesList.Count; i++) // Update de l'UI des Tiles servant de Zones de placement pré-combat.
             {
-                DungeonController.Instance.Dungeon.Tiles[Mathf.RoundToInt(DungeonController.Instance.SpawnTilesList[i].x), Mathf.RoundToInt(DungeonController.Instance.SpawnTilesList[i].y)].state = Tile.TileState.Neutral;
-                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + DungeonController.Instance.SpawnTilesList[i].x + "_" + DungeonController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
+                GridController.Instance.Dungeon.Tiles[Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].x), Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].y)].state = Tile.TileState.Neutral;
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + GridController.Instance.SpawnTilesList[i].x + "_" + GridController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
             }
 
             btnStartGame.GetComponent<CanvasGroup>().alpha = 0;

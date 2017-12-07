@@ -35,8 +35,8 @@ public class UnitController : MonoBehaviour {
 
             while (currNode < currentPath.Count-1)
             {
-                Vector3 start = DungeonController.Instance.TileCoordToWorldCoord(currentPath[currNode].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
-                Vector3 end = DungeonController.Instance.TileCoordToWorldCoord(currentPath[currNode + 1].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
+                Vector3 start = GridController.Instance.TileCoordToWorldCoord(currentPath[currNode].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
+                Vector3 end = GridController.Instance.TileCoordToWorldCoord(currentPath[currNode + 1].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
 
                 //Debug.DrawLine(start, end, Color.red);
                 currNode++;
@@ -59,7 +59,7 @@ public class UnitController : MonoBehaviour {
     {
         if (!CombatController.Instance.CombatStarted) // On vérifie si le placement pré-combat a été fait ou pas (ainsi, on téléporte le joueur sur la case cliquée pour le placement pré-combat). 
         {
-            transform.position = DungeonController.Instance.WorldPosTemp;
+            transform.position = GridController.Instance.WorldPosTemp;
         }
 
         if (currentPath == null) // Cas où le chemin est null, on arrete l'éxécution de la méthode.
@@ -73,7 +73,7 @@ public class UnitController : MonoBehaviour {
             return;
         }
 
-        remainingMovement -= DungeonController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y); // on retire le coût du déplacement par case.
+        remainingMovement -= GridController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y); // on retire le coût du déplacement par case.
 
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
