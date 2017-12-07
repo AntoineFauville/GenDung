@@ -186,10 +186,24 @@ public class CombatController : MonoBehaviour {
         }
     }
 
+    public void CleanActualSpellRange()
+    {
+        if(actualSpell != 99)
+        {
+            for (int i = 0; i < targetUnit.PlayerSpells[actualSpell].range.spellRange.Count; i++)
+            {
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().RemoveRange();
+            }
+        }
+
+    }
+
     public void SwitchAttackModeFirst()
     {
         if (!attackMode && !spell1 || attackMode && !spell1 || attackMode && spell2 || attackMode && spell3) // Active le spell 0 
         {
+            CleanActualSpellRange();
+
             Debug.Log("Attack Mode has been selected, Spell N°1");
             attackMode = true;
             spell1 = true;
@@ -230,6 +244,8 @@ public class CombatController : MonoBehaviour {
     {
         if (!attackMode && !spell2 || attackMode && !spell2 || attackMode && spell1 || attackMode && spell3) // Active le spell 1
         {
+            CleanActualSpellRange();
+
             Debug.Log("Attack Mode has been selected, Spell N°2");
             attackMode = true;
             spell1 = false;
@@ -270,6 +286,8 @@ public class CombatController : MonoBehaviour {
     {
         if (!attackMode && !spell3 || attackMode && !spell3 || attackMode && spell1 || attackMode && spell2) // Active le spell 2
         {
+            CleanActualSpellRange();
+
             Debug.Log("Attack Mode has been selected, Spell N°3");
             attackMode = true;
             spell1 = false;
@@ -329,6 +347,9 @@ public class CombatController : MonoBehaviour {
         {
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[actualSpell].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 99;
         }
+        spell1 = false;
+        spell2 = false;
+        spell3 = false;
         SetMovementRangeOnGrid();
         //actualSpell = 99;
     }
