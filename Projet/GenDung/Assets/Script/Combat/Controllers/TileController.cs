@@ -30,11 +30,11 @@ public class TileController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
 
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor /*!occupied*/ && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement &&  CombatController.Instance.Turn == CombatController.turnType.Player)
             {
                 MoveTo();
             }
-            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange && !clicked)
+            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange && !clicked && CombatController.Instance.Turn == CombatController.turnType.Player)
             {
                 //CombatController.Instance.CleanRangeAfterAttack();
 

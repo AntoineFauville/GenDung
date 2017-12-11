@@ -22,8 +22,8 @@ public class UnitController : MonoBehaviour {
         {
             GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
             GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
-            GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
-            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
+            //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
+            //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
         }
     }
 
@@ -118,9 +118,9 @@ public class UnitController : MonoBehaviour {
 
             GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = true;
             GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = true;
-            GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.white;
-            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = true;
-            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().onClick.AddListener(NextTurn);
+            //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.white;
+            //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = true;
+            //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().onClick.AddListener(NextTurn);
 
             // Check Spell Type Loutre Manger Cachuétes.
             if (playerSpells[s].spellType == SpellObject.SpellType.Distance)
@@ -159,8 +159,8 @@ public class UnitController : MonoBehaviour {
 
         GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
         GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
-        GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
-        GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
+        //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
+        //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
 
         ResetMove();
         ResetAction();

@@ -17,6 +17,7 @@ public class CombatController : MonoBehaviour {
     private FoeController foe;
     private Room foeData;
     private UnitController targetUnit;
+    private FoeController targetFoe;
     private int monsterNmb, rndNmb;
     private List<int> monsterPos;
     private GameObject monster_go, monsterPrefab, UIMonsterDisplayPrefab, UIMonsterDisplay, UIPlayerDisplay;
@@ -27,8 +28,11 @@ public class CombatController : MonoBehaviour {
     private List<Vector2> movRangeList = new List<Vector2>();
 
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
-    //private Dictionary<int,GameObject> initiativeList = new Dictionary<int, GameObject>();
     private List<GameObject> sortedGameobjectInit = new List<GameObject>();
+    private int iniTurn = 0;
+
+    public enum turnType { Player,IA };
+    private turnType turn;
 
     void CreateInstance()
     {
@@ -42,6 +46,9 @@ public class CombatController : MonoBehaviour {
     public void Start()
     {
         CreateInstance();
+
+        iniTurn = 0;
+
         if (SceneManager.GetActiveScene().name != "Editor")
         {
             btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
@@ -111,14 +118,43 @@ public class CombatController : MonoBehaviour {
         }
     }
 
-    public void NextEntityTurn()
+    public void NextEntityTurn() //Fin de Tour Réel (UnitController NextTurn() is for debug)
     {
-        btnSpell1.GetComponent<CanvasGroup>().alpha = 1;
-        btnSpell1.GetComponent<Button>().interactable = true;
-        btnSpell2.GetComponent<CanvasGroup>().alpha = 1;
-        btnSpell2.GetComponent<Button>().interactable = true;
-        btnSpell3.GetComponent<CanvasGroup>().alpha = 1;
-        btnSpell3.GetComponent<Button>().interactable = true;
+
+        // Bloquer Déplacement, Attaque Joueur.
+        // Désactiver Display infos Joueur.
+        // Ajouter Temps Ennemi (déplacement, actions, ...)
+        // retirer NextTurn dans UnitController.
+        // your Turn Panel Ennemie/Player displayed + ajouter "temps mort" (before action is possible).
+
+        /* Detection tour character + reset */
+        if (iniTurn == (sortedGameobjectInit.Count - 1))
+            iniTurn = 0;
+        else
+            iniTurn++;
+        /* */
+
+        // Detection si Player ou Ennemi
+        if (sortedGameobjectInit[iniTurn].transform.parent.name.Contains("Foe"))
+        {
+            Debug.Log("Monsters!!!");
+            turn = turnType.IA;
+        }
+        else
+        {
+            Debug.Log("Players!!!");
+            turn = turnType.Player;
+
+            /* Visual Part */
+            btnSpell1.GetComponent<CanvasGroup>().alpha = 1;
+            btnSpell1.GetComponent<Button>().interactable = true;
+            btnSpell2.GetComponent<CanvasGroup>().alpha = 1;
+            btnSpell2.GetComponent<Button>().interactable = true;
+            btnSpell3.GetComponent<CanvasGroup>().alpha = 1;
+            btnSpell3.GetComponent<Button>().interactable = true;
+            /* */
+        }
+
     }
 
     public void SpellUsable(float rmnPA)
@@ -144,22 +180,43 @@ public class CombatController : MonoBehaviour {
         for (int p = 0; p < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; p++) // On parcourt la liste des Personnages du Joueur.
         {
             initiativeList.Add(GameObject.Find("Character_" + p).transform.Find("Unit").gameObject, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative);
-            //initiativeList.Add(GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject);
         }
 
         for (int m = 0; m < foeData.enemies; m++)
         {
             initiativeList.Add(GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject, GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative);
-            //initiativeList.Add(GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative, GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject);
         }
 
         sortedGameobjectInit = initiativeList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
 
-        Debug.Log(initiativeList);
-
-        for (int i = 0; i < sortedGameobjectInit.Count; i++)
+        /*for (int i = 0; i < sortedGameobjectInit.Count; i++)
         {
             Debug.Log(sortedGameobjectInit[i].transform.parent.name);
+        }
+        */  
+    }
+
+    public void FirstCharacter()
+    {
+
+        /* Detection si Player ou Ennemi */
+        if (sortedGameobjectInit[iniTurn].transform.parent.name.Contains("Foe"))
+        {
+            // Bloquer Déplacement, Attaque Joueur.
+            // Désactiver Display infos Joueur.
+
+            Debug.Log("Monsters!!!");
+            turn = turnType.IA;
+            targetFoe = sortedGameobjectInit[iniTurn].GetComponent<FoeController>();
+        }
+        else
+        {
+            // !Bloquer Déplacement, Attaque Joueur.
+            // !Désactiver Display infos Joueur.
+
+            Debug.Log("Players!!!");
+            turn = turnType.Player;
+            targetUnit = sortedGameobjectInit[iniTurn].GetComponent<UnitController>();
         }
     }
 
@@ -369,6 +426,7 @@ public class CombatController : MonoBehaviour {
     {
         SpawnMonster(); // Le combat se lance; 1 ére étape: Spawn du(des) monstre(s).
         GatherCharacterInitiative();
+        FirstCharacter();
     }
 
     public void SpawnMonster()
@@ -598,6 +656,18 @@ public class CombatController : MonoBehaviour {
         set
         {
             spellCanvasInstantiated = value;
+        }
+    }
+
+    public turnType Turn
+    {
+        get
+        {
+            return turn;
+        }
+        set
+        {
+            turn = value;
         }
     }
     /**/
