@@ -195,7 +195,7 @@ public class UnitController : MonoBehaviour {
         Debug.Log("Simulating Foe Turn");
         GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
         GameObject.Find("TextYourTurn").GetComponent<Text>().text = "ENNEMI TURN";
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.2f);
         turnCount++;
 
         //ajout de l'animation de ton tour

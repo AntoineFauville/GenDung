@@ -30,6 +30,8 @@ public class CombatController : MonoBehaviour {
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
     private List<GameObject> sortedGameobjectInit = new List<GameObject>();
     private int iniTurn = 0;
+    private int turnCount = 0;
+    private GameObject display;
 
     public enum turnType { Player,IA };
     private turnType turn;
@@ -48,6 +50,7 @@ public class CombatController : MonoBehaviour {
         CreateInstance();
 
         iniTurn = 0;
+        turnCount = 0;
 
         if (SceneManager.GetActiveScene().name != "Editor")
         {
@@ -65,6 +68,8 @@ public class CombatController : MonoBehaviour {
 
             btnSpell3 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_3").GetComponent<Button>();
             btnSpell3.onClick.AddListener(SwitchAttackModeThird);
+
+            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().onClick.AddListener(NextEntityTurn);
 
             foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
             monsterNmb = foeData.enemies;
@@ -120,6 +125,19 @@ public class CombatController : MonoBehaviour {
 
     public void NextEntityTurn() //Fin de Tour Réel (UnitController NextTurn() is for debug)
     {
+        /* Old NextTurn() */
+        GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
+        GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
+        //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
+        //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
+
+        targetUnit.ResetMove();
+        targetUnit.ResetAction();
+
+        Debug.Log("End of Turn: " + turnCount);
+
+        /* */
+
 
         // Bloquer Déplacement, Attaque Joueur.
         // Désactiver Display infos Joueur.
@@ -127,18 +145,29 @@ public class CombatController : MonoBehaviour {
         // retirer NextTurn dans UnitController.
         // your Turn Panel Ennemie/Player displayed + ajouter "temps mort" (before action is possible).
 
+        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
+        display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 0f);
+
         /* Detection tour character + reset */
         if (iniTurn == (sortedGameobjectInit.Count - 1))
+        {
             iniTurn = 0;
+            turnCount++;
+        }
         else
             iniTurn++;
         /* */
+
+        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
+        display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 1f);
 
         // Detection si Player ou Ennemi
         if (sortedGameobjectInit[iniTurn].transform.parent.name.Contains("Foe"))
         {
             Debug.Log("Monsters!!!");
             turn = turnType.IA;
+
+            StartCoroutine(WaitForEndTurn());
         }
         else
         {
@@ -198,6 +227,8 @@ public class CombatController : MonoBehaviour {
 
     public void FirstCharacter()
     {
+        GameObject display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
+        display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 1f);
 
         /* Detection si Player ou Ennemi */
         if (sortedGameobjectInit[iniTurn].transform.parent.name.Contains("Foe"))
@@ -439,7 +470,7 @@ public class CombatController : MonoBehaviour {
             UIPlayerDisplay = Instantiate(UIMonsterDisplayPrefab);
             UIPlayerDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
             UIPlayerDisplay.transform.localScale = new Vector3(1, 1, 1);
-            UIPlayerDisplay.name = "UIDisplayPlayer_" + i;
+            UIPlayerDisplay.name = "UIDisplayCharacter_" + i;
             UIPlayerDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV  / (float)GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV);
 
             UIPlayerDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
@@ -473,7 +504,7 @@ public class CombatController : MonoBehaviour {
             UIMonsterDisplay = Instantiate(UIMonsterDisplayPrefab);
             UIMonsterDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
             UIMonsterDisplay.transform.localScale = new Vector3(1, 1, 1);
-            UIMonsterDisplay.name = "UIDisplayMonster_" + x;
+            UIMonsterDisplay.name = "UIDisplayFoe_" + x;
             UIMonsterDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (foe.FoeHealth / foe.FoeMaxHealth);
 
             UIMonsterDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = foeData.enemiesList[x].enemyIcon;
@@ -562,6 +593,20 @@ public class CombatController : MonoBehaviour {
     {
         yield return new WaitForSeconds(2.5f);
         EndBattle();
+    }
+
+    public IEnumerator WaitForEndTurn()
+    {
+        Debug.Log("Simulating Foe Turn");
+        GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
+        GameObject.Find("TextYourTurn").GetComponent<Text>().text = sortedGameobjectInit[iniTurn].transform.parent.name;
+        yield return new WaitForSeconds(2f);
+
+        //ajout de l'animation de ton tour
+        //GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
+        //GameObject.Find("TextYourTurn").GetComponent<Text>().text = "YOUR TURN";
+
+        CombatController.Instance.SetMovementRangeOnGrid();
     }
 
     /* Accessors Methods */

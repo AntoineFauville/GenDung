@@ -73,10 +73,12 @@ public class GridController : MonoBehaviour {
 
     void Update ()
     {
+        /*
         if (Input.GetButtonUp("Jump"))
         {
             unit.NextTurn();
         }
+        */ 
     }
 
     public void GenerateMapData()
