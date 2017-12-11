@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -26,6 +27,8 @@ public class CombatController : MonoBehaviour {
     private List<Vector2> movRangeList = new List<Vector2>();
 
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
+    //private Dictionary<int,GameObject> initiativeList = new Dictionary<int, GameObject>();
+    private List<GameObject> sortedGameobjectInit = new List<GameObject>();
 
     void CreateInstance()
     {
@@ -140,17 +143,23 @@ public class CombatController : MonoBehaviour {
 
         for (int p = 0; p < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; p++) // On parcourt la liste des Personnages du Joueur.
         {
-            initiativeList.Add(GameObject.Find("Character_"+p).transform.Find("Unit").gameObject, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative);
+            initiativeList.Add(GameObject.Find("Character_" + p).transform.Find("Unit").gameObject, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative);
+            //initiativeList.Add(GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject);
         }
 
         for (int m = 0; m < foeData.enemies; m++)
         {
             initiativeList.Add(GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject, GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative);
+            //initiativeList.Add(GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative, GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject);
         }
 
-        for (int x = 0; x < initiativeList.Count; x++)
+        sortedGameobjectInit = initiativeList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+
+        Debug.Log(initiativeList);
+
+        for (int i = 0; i < sortedGameobjectInit.Count; i++)
         {
-            
+            Debug.Log(sortedGameobjectInit[i].transform.parent.name);
         }
     }
 
@@ -359,6 +368,7 @@ public class CombatController : MonoBehaviour {
     public void CombatBeginning()
     {
         SpawnMonster(); // Le combat se lance; 1 ére étape: Spawn du(des) monstre(s).
+        GatherCharacterInitiative();
     }
 
     public void SpawnMonster()
