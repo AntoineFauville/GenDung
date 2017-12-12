@@ -36,14 +36,11 @@ public class TileController : MonoBehaviour {
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && isInRange && !clicked && CombatController.Instance.Turn == CombatController.turnType.Player)
             {
-                //CombatController.Instance.CleanRangeAfterAttack();
-
                 if (monsterOnTile != null && occupied && CombatController.Instance.TargetUnit.CheckPA())
                     monsterOnTile.FoeClicked();
                 else
                     CombatController.Instance.TargetUnit.Attack(s, x, y);
 
-                //RemoveRange();
                 CombatController.Instance.SetTileSpellIndicator();
                 CombatController.Instance.SetMovementRangeOnGrid();
             }
@@ -51,14 +48,12 @@ public class TileController : MonoBehaviour {
             {
                 CombatController.Instance.CleanRangeAfterAttack();
                 CombatController.Instance.ActualCombatState = CombatController.combatState.Movement;
-                //RemoveRange();
             }
             else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
             {
                 if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
                 {
                     CombatController.Instance.ConfirmCharaPosition(x, y);
-                    //RemoveRange();
                 }
             }
         }
@@ -130,58 +125,6 @@ public class TileController : MonoBehaviour {
         }
 
         StartCoroutine(WaitAfterClick());
-
-    }
-
-    public void TileEnter()
-    {
-        switch(GridController.Instance.Grid.Tiles[x, y].state)
-        {
-            case Tile.TileState.Neutral:
-                this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
-                break;
-            case Tile.TileState.Movement:
-                this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
-                break;
-            case Tile.TileState.Range:
-                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
-                break;
-            case Tile.TileState.Wall: // Editor
-                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
-                break;
-            case Tile.TileState.Spawn: // Editor && Play
-                this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f); // cyan
-                break;
-            case Tile.TileState.MonsterSpawn: // Editor
-                this.GetComponent<Image>().color = new Color(255, 0, 255, 0.4f); // magenta
-                break;
-        }
-
-    }
-
-    public void TileExit()
-    {
-        switch (GridController.Instance.Grid.Tiles[x, y].state)
-        {
-            case Tile.TileState.Neutral:
-                this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
-                break;
-            case Tile.TileState.Movement:
-                this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
-                break;
-            case Tile.TileState.Range:
-                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
-                break;
-            case Tile.TileState.Wall: // Editor
-                this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
-                break;
-            case Tile.TileState.Spawn: // Editor && Play
-                this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f); // cyan
-                break;
-            case Tile.TileState.MonsterSpawn: // Editor
-                this.GetComponent<Image>().color = new Color(255, 0, 255, 0.4f); // magenta
-                break;
-        }
 
     }
 
