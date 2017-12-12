@@ -47,7 +47,7 @@ public class TileController : MonoBehaviour {
                 CombatController.Instance.SetTileSpellIndicator();
                 CombatController.Instance.SetMovementRangeOnGrid();
             }
-            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Movement && !isInRange && !clicked)
+            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && !isInRange && !clicked)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
                 CombatController.Instance.ActualCombatState = CombatController.combatState.Movement;
