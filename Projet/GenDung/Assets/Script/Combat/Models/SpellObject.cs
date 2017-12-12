@@ -9,6 +9,8 @@ public class SpellObject : ScriptableObject {
 
     public int spellID;
 
+    public Sprite spellIcon;
+
     public SpellRangeObject range;
 
     public float SpellCastAnimationTime = 1;

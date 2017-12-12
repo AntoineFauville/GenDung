@@ -1,12 +1,13 @@
 fileFormatVersion: 2
 guid: d1d86c2acbf6a5a4a8a99bb509dd743f
-timeCreated: 1511564724
+timeCreated: 1513103239
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: IconeBearClaw_0
     21300002: IconeBearClaw_1
     21300004: IconeBearClaw_2
+    21300006: IconeBearClaw_3
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -81,7 +82,7 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -94,7 +95,7 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -103,6 +104,19 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: IconeBearClaw_3
+      rect:
+        serializedVersion: 2
+        x: 385
         y: 0
         width: 128
         height: 128
