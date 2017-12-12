@@ -151,11 +151,14 @@ public class CombatController : MonoBehaviour {
         // your Turn Panel Ennemie/Player displayed + ajouter "temps mort" (before action is possible).
         // Automatic "Player Turn " temporaire.
 
+        // Fixer souci lors de la mort d'un ennemi, retirer celui-ci de la liste et régler iniTurn.
+        Debug.Log("IniTurn Value Before ++ is :" + iniTurn);
+        Debug.Log("sortedGameobjectInit before ++ is : " + sortedGameobjectInit[iniTurn].transform.parent.name);
         display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 0f);
 
         /* Detection tour character + reset */
-        if (iniTurn == (sortedGameobjectInit.Count - 1))
+        if (iniTurn >= (sortedGameobjectInit.Count - 1))
         {
             iniTurn = 0;
             turnCount++;
@@ -165,7 +168,8 @@ public class CombatController : MonoBehaviour {
         /* */
 
 
-
+        Debug.Log("IniTurn Value is :" + iniTurn );
+        Debug.Log("sortedGameobjectInit is : " + sortedGameobjectInit[iniTurn].transform.parent.name);
         display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 1f);
 
@@ -250,6 +254,21 @@ public class CombatController : MonoBehaviour {
             Debug.Log(sortedGameobjectInit[i].transform.parent.name);
         }
         */  
+    }
+
+    public void RemoveDeadCharacter(string s)
+    {
+        for (int i = 0; i < sortedGameobjectInit.Count; i++)
+        {
+            Debug.Log(sortedGameobjectInit[i].transform.parent.name);
+            if (sortedGameobjectInit[i].transform.parent.name == s)
+            {
+                Debug.Log(sortedGameobjectInit[i].transform.parent.name + "Has been Removed");
+                sortedGameobjectInit.RemoveAt(i);
+            }
+            else
+                Debug.Log("Sodomite Allemand!!!");
+        }
     }
 
     public void FirstCharacter()
@@ -578,7 +597,7 @@ public class CombatController : MonoBehaviour {
 
     public void UpdateUI(int id)
     {
-        GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_"+id).transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("Foe_"+id).transform.Find("Unit").GetComponent<FoeController>().FoeHealth / (float)GameObject.Find("Foe_" + id).transform.Find("Unit").GetComponent<FoeController>().FoeMaxHealth);
+        GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_"+id).transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("Foe_"+id).transform.Find("Unit").GetComponent<FoeController>().FoeHealth / (float)GameObject.Find("Foe_" + id).transform.Find("Unit").GetComponent<FoeController>().FoeMaxHealth);
     }
 
     public void CheckBattleDeath()
