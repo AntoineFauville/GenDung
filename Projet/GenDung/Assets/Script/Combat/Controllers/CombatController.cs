@@ -10,7 +10,6 @@ public class CombatController : MonoBehaviour {
     private static CombatController instance;
     private bool placementDone = false;
     private bool combatStarted = false;
-    private bool attackMode = false;
     private bool spell1 = false, spell2 = false, spell3 = false;
     private int tileX,tileY , actualSpell = 99;
     private Button btnStartGame,btnSpell1,btnSpell2,btnSpell3;
@@ -32,6 +31,9 @@ public class CombatController : MonoBehaviour {
     private int iniTurn = 0;
     private int turnCount = 0;
     private GameObject display;
+
+    public enum combatState { Movement, Attack }
+    private combatState actualCombatState;
 
     public enum turnType { Player,IA };
     private turnType turn;
@@ -158,6 +160,8 @@ public class CombatController : MonoBehaviour {
             iniTurn++;
         /* */
 
+
+
         display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 1f);
 
@@ -166,15 +170,29 @@ public class CombatController : MonoBehaviour {
         {
             Debug.Log("Monsters!!!");
             turn = turnType.IA;
+            targetFoe = sortedGameobjectInit[iniTurn].GetComponent<FoeController>();
 
+            /* Visual Part */
+            // Désactivation des Boutons de Spells
+            btnSpell1.GetComponent<CanvasGroup>().alpha = 0;
+            btnSpell1.GetComponent<Button>().interactable = false;
+            btnSpell2.GetComponent<CanvasGroup>().alpha = 0;
+            btnSpell2.GetComponent<Button>().interactable = false;
+            btnSpell3.GetComponent<CanvasGroup>().alpha = 0;
+            btnSpell3.GetComponent<Button>().interactable = false;
+            /* */
+             
             StartCoroutine(WaitForEndTurn());
         }
         else
         {
             Debug.Log("Players!!!");
             turn = turnType.Player;
+            targetUnit = sortedGameobjectInit[iniTurn].GetComponent<UnitController>();
+            StartCoroutine(WaitForEndTurn());
 
             /* Visual Part */
+            // Réactivation des Boutons de Spells
             btnSpell1.GetComponent<CanvasGroup>().alpha = 1;
             btnSpell1.GetComponent<Button>().interactable = true;
             btnSpell2.GetComponent<CanvasGroup>().alpha = 1;
@@ -297,12 +315,12 @@ public class CombatController : MonoBehaviour {
 
     public void SwitchAttackModeFirst()
     {
-        if (!attackMode && !spell1 || attackMode && !spell1 || attackMode && spell2 || attackMode && spell3) // Active le spell 0 
+        if (actualCombatState == combatState.Movement && !spell1 || actualCombatState == combatState.Attack && !spell1 || actualCombatState == combatState.Attack && spell2 || actualCombatState == combatState.Attack && spell3) // Active le spell 0 
         {
             CleanActualSpellRange();
 
             Debug.Log("Attack Mode has been selected, Spell N°1");
-            attackMode = true;
+            actualCombatState = combatState.Attack;
             spell1 = true;
             spell2 = false;
             spell3 = false;
@@ -321,9 +339,9 @@ public class CombatController : MonoBehaviour {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[0].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[0].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 0;
             }
         }
-        else if (attackMode && spell1) // Désactive le spell 0 et clean la Range. 
+        else if (actualCombatState == combatState.Attack && spell1) // Désactive le spell 0 et clean la Range. 
         {
-            attackMode = false;
+            actualCombatState = combatState.Movement;
             spell1 = false;
             actualSpell = 99;
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
@@ -339,12 +357,12 @@ public class CombatController : MonoBehaviour {
 
     public void SwitchAttackModeSecond()
     {
-        if (!attackMode && !spell2 || attackMode && !spell2 || attackMode && spell1 || attackMode && spell3) // Active le spell 1
+        if (actualCombatState == combatState.Movement && !spell2 || actualCombatState == combatState.Attack && !spell2 || actualCombatState == combatState.Attack && spell1 || actualCombatState == combatState.Attack && spell3) // Active le spell 1
         {
             CleanActualSpellRange();
 
             Debug.Log("Attack Mode has been selected, Spell N°2");
-            attackMode = true;
+            actualCombatState = combatState.Attack;
             spell1 = false;
             spell2 = true;
             spell3 = false;
@@ -363,9 +381,9 @@ public class CombatController : MonoBehaviour {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[1].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[1].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 1;
             }
         }
-        else if (attackMode && spell2) // Désactive le spell 1 et clean la Range. 
+        else if (actualCombatState == combatState.Attack && spell2) // Désactive le spell 1 et clean la Range. 
         {
-            attackMode = false;
+            actualCombatState = combatState.Movement;
             spell2 = false;
             actualSpell = 99;
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
@@ -381,12 +399,12 @@ public class CombatController : MonoBehaviour {
 
     public void SwitchAttackModeThird()
     {
-        if (!attackMode && !spell3 || attackMode && !spell3 || attackMode && spell1 || attackMode && spell2) // Active le spell 2
+        if (actualCombatState == combatState.Movement && !spell3 || actualCombatState == combatState.Attack && !spell3 || actualCombatState == combatState.Attack && spell1 || actualCombatState == combatState.Attack && spell2) // Active le spell 2
         {
             CleanActualSpellRange();
 
             Debug.Log("Attack Mode has been selected, Spell N°3");
-            attackMode = true;
+            actualCombatState = combatState.Attack;
             spell1 = false;
             spell2 = false;
             spell3 = true;
@@ -405,9 +423,9 @@ public class CombatController : MonoBehaviour {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (targetUnit.PlayerSpells[2].range.spellRange[i].x + targetUnit.TileX) + "_" + (targetUnit.PlayerSpells[2].range.spellRange[i].y + targetUnit.TileY)).GetComponent<TileController>().S = 2;
             }
         }
-        else if (attackMode && spell3) // Désactive le spell 2 et clean la Range. 
+        else if (actualCombatState == combatState.Attack && spell3) // Désactive le spell 2 et clean la Range. 
         {
-            attackMode = false;
+            actualCombatState = combatState.Movement;
             spell3 = false;
             actualSpell = 99;
             targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
@@ -647,18 +665,6 @@ public class CombatController : MonoBehaviour {
             combatStarted = value;
         }
     }
-    public bool AttackMode
-    {
-        get
-        {
-            return attackMode;
-        }
-
-        set
-        {
-            attackMode = value;
-        }
-    }
     public int MonsterNmb
     {
         get
@@ -701,6 +707,18 @@ public class CombatController : MonoBehaviour {
         set
         {
             spellCanvasInstantiated = value;
+        }
+    }
+
+    public combatState ActualCombatState
+    {
+        get
+        {
+            return actualCombatState;
+        }
+        set
+        {
+            actualCombatState = value;
         }
     }
 

@@ -30,11 +30,11 @@ public class TileController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
 
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && !CombatController.Instance.AttackMode && !clicked && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement &&  CombatController.Instance.Turn == CombatController.turnType.Player)
+            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Movement && !clicked && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement &&  CombatController.Instance.Turn == CombatController.turnType.Player)
             {
                 MoveTo();
             }
-            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && isInRange && !clicked && CombatController.Instance.Turn == CombatController.turnType.Player)
+            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && isInRange && !clicked && CombatController.Instance.Turn == CombatController.turnType.Player)
             {
                 //CombatController.Instance.CleanRangeAfterAttack();
 
@@ -47,10 +47,10 @@ public class TileController : MonoBehaviour {
                 CombatController.Instance.SetTileSpellIndicator();
                 CombatController.Instance.SetMovementRangeOnGrid();
             }
-            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.AttackMode && !isInRange && !clicked)
+            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Movement && !isInRange && !clicked)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
-                CombatController.Instance.AttackMode = false;
+                CombatController.Instance.ActualCombatState = CombatController.combatState.Movement;
                 //RemoveRange();
             }
             else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
@@ -135,20 +135,6 @@ public class TileController : MonoBehaviour {
 
     public void TileEnter()
     {
-        // OLD Indicator System //
-        /*
-        
-        if (SceneManager.GetActiveScene().name == "Editor" && !EditorController.Instance.CheckWall(x,y))
-            this.GetComponent<Image>().color = new Color(0, 255, 0, 0.4f); // green
-        else if (CheckSpawnType() && !CombatController.Instance.CombatStarted && !checkMouse)
-            this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f); // cyan
-        else if (!CombatController.Instance.AttackMode || !isInRange)
-            this.GetComponent<Image>().color = new Color(255,255,0, 0.6f); // yellow
-
-        StartCoroutine(WaitAfterMouseCheck());
-        
-        */
-
         switch(GridController.Instance.Grid.Tiles[x, y].state)
         {
             case Tile.TileState.Neutral:
@@ -175,29 +161,6 @@ public class TileController : MonoBehaviour {
 
     public void TileExit()
     {
-        // OLD Indicator System //
-        /*
-        
-        if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckWall(x, y))
-            this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
-        else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckSpawn(x, y))
-            this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f);// cyan
-        else if (CheckSpawnType() && !CombatController.Instance.CombatStarted && !checkMouse)
-            this.GetComponent<Image>().color = new Color(0, 255, 255, 0.4f);// cyan
-        else if (SceneManager.GetActiveScene().name == "Editor" && EditorController.Instance.CheckMonsterSpawn(x, y))
-            this.GetComponent<Image>().color = new Color(255, 0, 255, 0.4f); // magenta
-        else if (isInRange && CombatController.Instance.AttackMode && !checkMouse)
-        {
-            this.GetComponent<Image>().color = new Color(255, 0, 0, 0.4f); // red
-            Debug.Log("Tile is attack colored");
-        }
-        else if (!CombatController.Instance.AttackMode || !isInRange)
-            this.GetComponent<Image>().color = new Color(255, 255, 255, 0); // Transparent
-
-        StartCoroutine(WaitAfterMouseCheck());
-        
-        */
-
         switch (GridController.Instance.Grid.Tiles[x, y].state)
         {
             case Tile.TileState.Neutral:

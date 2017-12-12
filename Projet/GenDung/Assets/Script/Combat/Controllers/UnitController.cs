@@ -105,7 +105,7 @@ public class UnitController : MonoBehaviour {
         if (remainingAction <= 0)
         {
             Debug.Log("No action points left, no action done");
-            CombatController.Instance.AttackMode = false;
+            CombatController.Instance.ActualCombatState = CombatController.combatState.Movement;
             Debug.Log("Switching Back to Movement Mode");
             return;
         }
@@ -222,7 +222,7 @@ public class UnitController : MonoBehaviour {
         Debug.Log("Switching Back to Movement Mode");
         if(spellCanvas != null)
             spellCanvas.transform.Find("Unit").gameObject.SetActive(false);
-        CombatController.Instance.AttackMode = false;
+        CombatController.Instance.ActualCombatState = CombatController.combatState.Movement;
     }
     /* */
 
