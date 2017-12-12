@@ -32,6 +32,8 @@ public class CombatController : MonoBehaviour {
     private int turnCount = 0;
     private GameObject display;
 
+    public Sprite defaultIcon;
+
     public enum combatState { Movement, Attack }
     private combatState actualCombatState;
 
@@ -59,8 +61,8 @@ public class CombatController : MonoBehaviour {
             btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
             btnStartGame.onClick.AddListener(StartCombatMode);
 
-            btnStartGame.GetComponent<CanvasGroup>().alpha = 1;
-            btnStartGame.GetComponent<CanvasGroup>().interactable = true;
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 0.5f;
+            btnStartGame.GetComponent<CanvasGroup>().interactable = false;
 
             btnSpell1 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_1").GetComponent<Button>();
             btnSpell1.onClick.AddListener(SwitchAttackModeFirst);
@@ -90,6 +92,8 @@ public class CombatController : MonoBehaviour {
             tileX = x;
             tileY = y;
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MoveTo();
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 1f;
+            btnStartGame.GetComponent<CanvasGroup>().interactable = true;
         }
         else
             Debug.Log("Not a Starter Tile, forget about it");
@@ -102,7 +106,7 @@ public class CombatController : MonoBehaviour {
         if (placementDone && !combatStarted)
         {
             combatStarted = true;
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().TileExit();
+            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().UpdateTileUI();
             GridController.Instance.Unit.ResetMove();
             GridController.Instance.Unit.ResetAction();
 
@@ -114,11 +118,8 @@ public class CombatController : MonoBehaviour {
 
             btnStartGame.GetComponent<CanvasGroup>().alpha = 0;
             btnStartGame.GetComponent<CanvasGroup>().interactable = false;
-
-            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
-            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
-
-            //targetUnit.Test();
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1f;
 
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
             SetMovementRangeOnGrid();
@@ -177,14 +178,17 @@ public class CombatController : MonoBehaviour {
 
             /* Visual Part */
             // Désactivation des Boutons de Spells
-            btnSpell1.GetComponent<CanvasGroup>().alpha = 0;
+            btnSpell1.GetComponent<Image>().sprite = defaultIcon ;
             btnSpell1.GetComponent<Button>().interactable = false;
-            btnSpell2.GetComponent<CanvasGroup>().alpha = 0;
+            btnSpell2.GetComponent<Image>().sprite = defaultIcon;
             btnSpell2.GetComponent<Button>().interactable = false;
-            btnSpell3.GetComponent<CanvasGroup>().alpha = 0;
+            btnSpell3.GetComponent<Image>().sprite = defaultIcon;
             btnSpell3.GetComponent<Button>().interactable = false;
+
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
+
             /* */
-             
+
             StartCoroutine(WaitForEndTurn());
         }
         else
@@ -196,12 +200,14 @@ public class CombatController : MonoBehaviour {
 
             /* Visual Part */
             // Réactivation des Boutons de Spells
-            btnSpell1.GetComponent<CanvasGroup>().alpha = 1;
+            btnSpell1.GetComponent<Image>().sprite = targetUnit.PlayerSpells[0].spellIcon;
             btnSpell1.GetComponent<Button>().interactable = true;
-            btnSpell2.GetComponent<CanvasGroup>().alpha = 1;
+            btnSpell2.GetComponent<Image>().sprite = targetUnit.PlayerSpells[1].spellIcon;
             btnSpell2.GetComponent<Button>().interactable = true;
-            btnSpell3.GetComponent<CanvasGroup>().alpha = 1;
+            btnSpell3.GetComponent<Image>().sprite = targetUnit.PlayerSpells[2].spellIcon;
             btnSpell3.GetComponent<Button>().interactable = true;
+
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             /* */
         }
 
@@ -260,6 +266,15 @@ public class CombatController : MonoBehaviour {
             Debug.Log("Monsters!!!");
             turn = turnType.IA;
             targetFoe = sortedGameobjectInit[iniTurn].GetComponent<FoeController>();
+
+            // Désactivation des Boutons de Spells
+            btnSpell1.GetComponent<Image>().sprite = defaultIcon;
+            btnSpell1.GetComponent<Button>().interactable = false;
+            btnSpell2.GetComponent<Image>().sprite = defaultIcon;
+            btnSpell2.GetComponent<Button>().interactable = false;
+            btnSpell3.GetComponent<Image>().sprite = defaultIcon;
+            btnSpell3.GetComponent<Button>().interactable = false;
+            /* */
         }
         else
         {
@@ -269,6 +284,15 @@ public class CombatController : MonoBehaviour {
             Debug.Log("Players!!!");
             turn = turnType.Player;
             targetUnit = sortedGameobjectInit[iniTurn].GetComponent<UnitController>();
+
+            // Réactivation des Boutons de Spells
+            btnSpell1.GetComponent<Image>().sprite = targetUnit.PlayerSpells[0].spellIcon;
+            btnSpell1.GetComponent<Button>().interactable = true;
+            btnSpell2.GetComponent<Image>().sprite = targetUnit.PlayerSpells[1].spellIcon;
+            btnSpell2.GetComponent<Button>().interactable = true;
+            btnSpell3.GetComponent<Image>().sprite = targetUnit.PlayerSpells[2].spellIcon;
+            btnSpell3.GetComponent<Button>().interactable = true;
+            /* */
         }
     }
 
@@ -276,9 +300,6 @@ public class CombatController : MonoBehaviour {
 
     public void SetMovementRangeOnGrid()
     {
-        //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
-
-
         if(targetUnit != null && targetUnit.remainingMovement != 0 && combatStarted)
         {
             movRange = Resources.Load<MovementRangeObject>("MovementRange/MovementRange_0" + targetUnit.remainingMovement);
@@ -333,7 +354,6 @@ public class CombatController : MonoBehaviour {
 
             RemoveMovementRangeOnGrid();
 
-            //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
             for (int i = 0; i < targetUnit.PlayerSpells[0].range.spellRange.Count; i++)
@@ -348,7 +368,6 @@ public class CombatController : MonoBehaviour {
             actualCombatState = combatState.Movement;
             spell1 = false;
             actualSpell = 99;
-            //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
             for (int i = 0; i < targetUnit.PlayerSpells[0].range.spellRange.Count; i++)
@@ -375,7 +394,7 @@ public class CombatController : MonoBehaviour {
 
             RemoveMovementRangeOnGrid();
 
-            //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
             for (int i = 0; i < targetUnit.PlayerSpells[1].range.spellRange.Count; i++) 
@@ -390,7 +409,6 @@ public class CombatController : MonoBehaviour {
             actualCombatState = combatState.Movement;
             spell2 = false;
             actualSpell = 99;
-            //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
             for (int i = 0; i < targetUnit.PlayerSpells[1].range.spellRange.Count; i++)
@@ -417,7 +435,7 @@ public class CombatController : MonoBehaviour {
 
             RemoveMovementRangeOnGrid();
 
-            //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
             for (int i = 0; i < targetUnit.PlayerSpells[2].range.spellRange.Count; i++)
@@ -432,7 +450,7 @@ public class CombatController : MonoBehaviour {
             actualCombatState = combatState.Movement;
             spell3 = false;
             actualSpell = 99;
-            //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+            // On récupére le personnage dont c'est le tour.
             // Lié la ligne du dessus avec le code du système d'Initiative. 
 
             for (int i = 0; i < targetUnit.PlayerSpells[2].range.spellRange.Count; i++)
@@ -445,7 +463,7 @@ public class CombatController : MonoBehaviour {
 
     public void CleanRangeAfterAttack()
     {
-        //targetUnit = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>(); // On récupére le personnage dont c'est le tour.
+        // On récupére le personnage dont c'est le tour.
         // si on clique sur une case en dehors de la Range, voir pour faire correspondre le S avec le bon bouton.
 
         for (int i = 0; i < targetUnit.PlayerSpells[actualSpell].range.spellRange.Count; i++)
