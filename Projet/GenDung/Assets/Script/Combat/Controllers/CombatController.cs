@@ -61,8 +61,8 @@ public class CombatController : MonoBehaviour {
             btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
             btnStartGame.onClick.AddListener(StartCombatMode);
 
-            btnStartGame.GetComponent<CanvasGroup>().alpha = 1;
-            btnStartGame.GetComponent<CanvasGroup>().interactable = true;
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 0.5f;
+            btnStartGame.GetComponent<CanvasGroup>().interactable = false;
 
             btnSpell1 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_1").GetComponent<Button>();
             btnSpell1.onClick.AddListener(SwitchAttackModeFirst);
@@ -92,6 +92,8 @@ public class CombatController : MonoBehaviour {
             tileX = x;
             tileY = y;
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MoveTo();
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 1f;
+            btnStartGame.GetComponent<CanvasGroup>().interactable = true;
         }
         else
             Debug.Log("Not a Starter Tile, forget about it");
@@ -116,9 +118,8 @@ public class CombatController : MonoBehaviour {
 
             btnStartGame.GetComponent<CanvasGroup>().alpha = 0;
             btnStartGame.GetComponent<CanvasGroup>().interactable = false;
-
-            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
-            GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1f;
 
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
             SetMovementRangeOnGrid();
@@ -183,8 +184,11 @@ public class CombatController : MonoBehaviour {
             btnSpell2.GetComponent<Button>().interactable = false;
             btnSpell3.GetComponent<Image>().sprite = defaultIcon;
             btnSpell3.GetComponent<Button>().interactable = false;
+
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
+
             /* */
-             
+
             StartCoroutine(WaitForEndTurn());
         }
         else
@@ -202,6 +206,8 @@ public class CombatController : MonoBehaviour {
             btnSpell2.GetComponent<Button>().interactable = true;
             btnSpell3.GetComponent<Image>().sprite = targetUnit.PlayerSpells[2].spellIcon;
             btnSpell3.GetComponent<Button>().interactable = true;
+
+            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             /* */
         }
 

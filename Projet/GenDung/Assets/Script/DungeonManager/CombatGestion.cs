@@ -38,7 +38,11 @@ public class CombatGestion : MonoBehaviour {
             }
 
             canvasTemp.GetComponent<Canvas> ().enabled = false;
-		} /**/
+
+            //GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
+            //GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
+
+        } /**/
 	}
 
 	public void FinishedCombat () {
@@ -57,5 +61,8 @@ public class CombatGestion : MonoBehaviour {
             GameObject.Find("CharacterBG").GetComponent<Image>().enabled = true;
             GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = true;
         }
+
+        GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
+        GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
     }
 }
