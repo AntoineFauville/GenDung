@@ -258,6 +258,9 @@ public class CombatController : MonoBehaviour {
 
     public void RemoveDeadCharacter(string s)
     {
+        if (iniTurn == (sortedGameobjectInit.Count - 1))
+            iniTurn--;
+
         for (int i = 0; i < sortedGameobjectInit.Count; i++)
         {
             Debug.Log(sortedGameobjectInit[i].transform.parent.name);
@@ -618,13 +621,13 @@ public class CombatController : MonoBehaviour {
         // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
         for (int m = 0; m < foeData.enemies; m++)
         {
-            if(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m) != null)
-                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + m).gameObject);
+            if(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m) != null)
+                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m).gameObject);
         }
 
         for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)
         {
-            Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayPlayer_" + j).gameObject);
+            Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j).gameObject);
         }
         // Clean 'SpellCanvas(Clone)' from Hierarchy
 
