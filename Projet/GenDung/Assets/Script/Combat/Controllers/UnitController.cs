@@ -43,7 +43,7 @@ public class UnitController : MonoBehaviour {
             }
         }
         
-        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
+        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted && CombatController.Instance.Turn == CombatController.turnType.Player) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
         {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);

@@ -191,6 +191,9 @@ public class CombatController : MonoBehaviour {
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
+            targetFoe.SetTargetIntel(7,8); // Hard Coded value for Testing Purpose. Need to find a way to send Player Position :) 
+            targetFoe.CalculatePath();
+
             /* */
 
             StartCoroutine(WaitForEndTurn());
@@ -589,6 +592,8 @@ public class CombatController : MonoBehaviour {
 
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
             foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
+            foe.TileX = Mathf.RoundToInt(tile.x);
+            foe.TileY = Mathf.RoundToInt(tile.y);
             foe.Pos = tile;
             foe.SetTileAsOccupied();
             monsterPos.Add(rndNmb);
@@ -729,6 +734,18 @@ public class CombatController : MonoBehaviour {
         set
         {
             targetUnit = value;
+        }
+    }
+
+    public FoeController TargetFoe
+    {
+        get
+        {
+            return targetFoe;
+        }
+        set
+        {
+            targetFoe = value;
         }
     }
     public int ActualSpell

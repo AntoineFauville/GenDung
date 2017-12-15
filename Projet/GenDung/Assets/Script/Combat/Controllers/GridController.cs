@@ -10,6 +10,7 @@ public class GridController : MonoBehaviour {
     private Grid grid;
     private Node[,] graph;
     private UnitController unit;
+    private FoeController foeUnit;
     private GameData playerData;
     private Vector3 worldPosTemp;
     private List<Vector2> spawnTilesList = new List<Vector2>();
@@ -210,7 +211,14 @@ public class GridController : MonoBehaviour {
 
         List<Node> unvisited = new List<Node>();
 
-        Node source = graph[unit.TileX, unit.TileY];
+        Node source;
+
+        if (!CombatController.Instance.CombatStarted)
+            source = graph[unit.TileX, unit.TileY];
+        else if (CombatController.Instance.Turn == CombatController.turnType.Player)
+            source = graph[CombatController.Instance.TargetUnit.TileX, CombatController.Instance.TargetUnit.TileY];
+        else
+            source = graph[CombatController.Instance.TargetFoe.TileX, CombatController.Instance.TargetFoe.TileY];
 
         Node target = graph[x, y];
 
@@ -274,7 +282,12 @@ public class GridController : MonoBehaviour {
 
         currentPath.Reverse();
 
-        unit.CurrentPath = currentPath;
+        if (!CombatController.Instance.CombatStarted)
+            unit.CurrentPath = currentPath;
+        else if (CombatController.Instance.Turn == CombatController.turnType.Player)
+            CombatController.Instance.TargetUnit.CurrentPath = currentPath;
+        else
+            CombatController.Instance.TargetFoe.CurrentPath = currentPath;
 
         CombatController.Instance.RemoveMovementRangeOnGrid(); // On clean la grid des tiles indicatrices de mouvemement.
     }
