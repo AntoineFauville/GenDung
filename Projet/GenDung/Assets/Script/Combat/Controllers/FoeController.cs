@@ -36,6 +36,34 @@ public class FoeController : MonoBehaviour {
     {
         targetTileX = _x;
         targetTileY = _y;
+
+        int diffX = (targetTileX - tileX);
+        int diffY = (targetTileY - tileY);
+
+        if (diffX > diffY)
+        {
+            if (diffY > 0)
+            {
+                targetTileY--;
+            }
+            else
+            {
+                targetTileY++;
+            }
+        }
+        else if (diffY > diffX)
+        {
+            if (diffX > 0)
+            {
+                targetTileX--;
+            }
+            else
+            {
+                targetTileX++;
+            }
+        }
+
+        Debug.Log("Tile(" + targetTileX + "," + targetTileY + ')');
     } 
 
     public void CalculatePath()

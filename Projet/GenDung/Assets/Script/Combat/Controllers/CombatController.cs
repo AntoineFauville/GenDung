@@ -191,8 +191,6 @@ public class CombatController : MonoBehaviour {
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
-            //targetFoe.SetTargetIntel(7,8); // Hard Coded value for Testing Purpose. Need to find a way to send Player Position :) 
-
             if (targetUnit != null)
                 targetFoe.SetTargetIntel(targetUnit.TileX, targetUnit.TileY);
             else
