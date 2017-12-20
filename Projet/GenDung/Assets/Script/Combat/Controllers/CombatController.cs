@@ -650,7 +650,12 @@ public class CombatController : MonoBehaviour {
 
         for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)
         {
-            Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j).gameObject);
+            if(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j) != null)
+                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j).gameObject);
+
+            if (GameObject.Find("Character_" + j) != null)
+                Destroy(GameObject.Find("Character_" + j).gameObject);
+
         }
         // Clean 'SpellCanvas(Clone)' from Hierarchy
 
