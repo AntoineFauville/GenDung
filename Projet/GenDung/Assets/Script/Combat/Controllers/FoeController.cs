@@ -92,7 +92,9 @@ public class FoeController : MonoBehaviour {
         tileY = currentPath[1].y;
 
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().MonsterOnTile = null;
 
         if (CombatController.Instance.CombatStarted)
             GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 3, Mathf.RoundToInt(24), 0f);
@@ -116,6 +118,8 @@ public class FoeController : MonoBehaviour {
 
     public void FoeClicked()
     {
+        Debug.Log("Click on Monster detected");
+
         tileInRange = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().IsInRange;
 
         if (Input.GetMouseButtonUp(0) && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack)
