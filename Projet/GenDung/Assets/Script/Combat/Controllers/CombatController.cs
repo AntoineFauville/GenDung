@@ -139,6 +139,11 @@ public class CombatController : MonoBehaviour {
             targetUnit.ResetMove();
             targetUnit.ResetAction();
         }
+        else if ( targetFoe != null)
+        {
+            targetFoe.ResetMove();
+            targetFoe.ResetAction();
+        }
 
 
         Debug.Log("End of Turn: " + turnCount);
@@ -192,7 +197,10 @@ public class CombatController : MonoBehaviour {
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
             if (targetUnit != null)
+            {
                 targetFoe.SetTargetIntel(targetUnit.TileX, targetUnit.TileY);
+                Debug.Log("Player Tile : (" + targetUnit.TileX + "," + targetUnit.TileY + ")");
+            }
             else
             {
                 UnitController tempTarget = GameObject.Find("Character_0").transform.Find("Unit").GetComponent<UnitController>();
