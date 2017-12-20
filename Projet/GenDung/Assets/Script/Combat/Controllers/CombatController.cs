@@ -156,7 +156,6 @@ public class CombatController : MonoBehaviour {
         // your Turn Panel Ennemie/Player displayed + ajouter "temps mort" (before action is possible).
         // Automatic "Player Turn " temporaire.
 
-        // Fixer souci lors de la mort d'un ennemi, retirer celui-ci de la liste et régler iniTurn.
         Debug.Log("IniTurn Value Before ++ is :" + iniTurn);
         Debug.Log("sortedGameobjectInit before ++ is : " + sortedGameobjectInit[iniTurn].transform.parent.name);
         display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
@@ -566,6 +565,7 @@ public class CombatController : MonoBehaviour {
             /* Instantiate this foe */
             monster_go = Instantiate(monsterPrefab);
             monster_go.name = "Foe_" + x;
+            monster_go.transform.Find("Unit/Cube/Image").GetComponent<Animator>().runtimeAnimatorController = foeData.enemiesList[x].enemyAnimator;
             foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
             /* */
 

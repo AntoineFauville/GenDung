@@ -9,6 +9,7 @@ public class EnemyObject : ScriptableObject {
     enemyName = "New Name";
 
     public Sprite enemyIcon;
+    public RuntimeAnimatorController enemyAnimator;
 
     public int 
         health,
