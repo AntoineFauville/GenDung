@@ -553,7 +553,7 @@ public class CombatController : MonoBehaviour {
             UIPlayerDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].MovementPoints_PM.ToString();
         }
 
-        for (int x = 0; x < foeData.enemies; x++)
+        for (int x = 0; x < foeData.enemiesList.Length; x++)
         {
             /* Instantiate this foe */
             monster_go = Instantiate(monsterPrefab);
