@@ -76,7 +76,7 @@ public class CombatController : MonoBehaviour {
             GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().onClick.AddListener(NextEntityTurn);
 
             foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
-            monsterNmb = foeData.enemies;
+            monsterNmb = foeData.enemiesList.Length;
             monsterPos = new List<int>();
 
             GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = true;
@@ -260,7 +260,7 @@ public class CombatController : MonoBehaviour {
             initiativeList.Add(GameObject.Find("Character_" + p).transform.Find("Unit").gameObject, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative);
         }
 
-        for (int m = 0; m < foeData.enemies; m++)
+        for (int m = 0; m < foeData.enemiesList.Length; m++)
         {
             initiativeList.Add(GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject, GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative);
         }
@@ -636,13 +636,16 @@ public class CombatController : MonoBehaviour {
 
     /* Code de gestion de fin de combat */
 
-    public void EndBattle()
+    public void CleanEndBattle()
     {
         // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
-        for (int m = 0; m < foeData.enemies; m++)
+        for (int m = 0; m < foeData.enemiesList.Length; m++)
         {
-            if(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m) != null)
+            if (GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m) != null)
                 Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m).gameObject);
+
+            if (GameObject.Find("Foe_" + m) != null)
+                Destroy(GameObject.Find("Foe_" + m).gameObject);
         }
 
         for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)
@@ -655,6 +658,11 @@ public class CombatController : MonoBehaviour {
         {
             Destroy(spellCanvasInstantiated[s]);
         }
+    }
+
+    public void EndBattle()
+    {
+        CleanEndBattle();
 
         btnStartGame.GetComponent<CanvasGroup>().alpha = 1;
         btnStartGame.GetComponent<CanvasGroup>().interactable = true;
