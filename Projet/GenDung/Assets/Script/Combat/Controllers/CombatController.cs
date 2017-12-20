@@ -126,25 +126,13 @@ public class CombatController : MonoBehaviour {
         }
     }
 
-    public void NextEntityTurn() //Fin de Tour Réel (UnitController NextTurn() is for debug)
+    public void NextEntityTurn() //Fin de Tour Réel
     {
         /* Old NextTurn() */
         GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
         GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
         //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
         //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
-
-        if (targetUnit != null)
-        {
-            targetUnit.ResetMove();
-            targetUnit.ResetAction();
-        }
-        else if ( targetFoe != null)
-        {
-            targetFoe.ResetMove();
-            targetFoe.ResetAction();
-        }
-
 
         Debug.Log("End of Turn: " + turnCount);
 
@@ -156,8 +144,6 @@ public class CombatController : MonoBehaviour {
         // your Turn Panel Ennemie/Player displayed + ajouter "temps mort" (before action is possible).
         // Automatic "Player Turn " temporaire.
 
-        Debug.Log("IniTurn Value Before ++ is :" + iniTurn);
-        Debug.Log("sortedGameobjectInit before ++ is : " + sortedGameobjectInit[iniTurn].transform.parent.name);
         display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 0f);
 
@@ -166,21 +152,33 @@ public class CombatController : MonoBehaviour {
         {
             iniTurn = 0;
             turnCount++;
+
+            if (targetUnit != null)
+            {
+                targetUnit.ResetMove();
+                targetUnit.ResetAction();
+            }
+
+            if (targetFoe != null)
+            {
+                for (int m = 0; m < foeData.enemiesList.Length; m++)
+                {
+                    targetFoe = GameObject.Find("Foe_" + m).transform.Find("Unit").GetComponent<FoeController>();
+                    targetFoe.ResetMove();
+                    targetFoe.ResetAction();
+                }
+            }
         }
         else
             iniTurn++;
         /* */
 
-
-        Debug.Log("IniTurn Value is :" + iniTurn );
-        Debug.Log("sortedGameobjectInit is : " + sortedGameobjectInit[iniTurn].transform.parent.name);
         display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 1f);
 
         // Detection si Player ou Ennemi
         if (sortedGameobjectInit[iniTurn].transform.parent.name.Contains("Foe"))
         {
-            Debug.Log("Monsters!!!");
             turn = turnType.IA;
             targetFoe = sortedGameobjectInit[iniTurn].GetComponent<FoeController>();
 
@@ -198,7 +196,6 @@ public class CombatController : MonoBehaviour {
             if (targetUnit != null)
             {
                 targetFoe.SetTargetIntel(targetUnit.TileX, targetUnit.TileY);
-                Debug.Log("Player Tile : (" + targetUnit.TileX + "," + targetUnit.TileY + ")");
             }
             else
             {
@@ -214,7 +211,6 @@ public class CombatController : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Players!!!");
             turn = turnType.Player;
             targetUnit = sortedGameobjectInit[iniTurn].GetComponent<UnitController>();
             StartCoroutine(WaitForEndTurn());
@@ -223,10 +219,13 @@ public class CombatController : MonoBehaviour {
             // Réactivation des Boutons de Spells
             btnSpell1.GetComponent<Image>().sprite = targetUnit.PlayerSpells[0].spellIcon;
             btnSpell1.GetComponent<Button>().interactable = true;
+            btnSpell1.GetComponent<CanvasGroup>().alpha = 1f;
             btnSpell2.GetComponent<Image>().sprite = targetUnit.PlayerSpells[1].spellIcon;
             btnSpell2.GetComponent<Button>().interactable = true;
+            btnSpell2.GetComponent<CanvasGroup>().alpha = 1f;
             btnSpell3.GetComponent<Image>().sprite = targetUnit.PlayerSpells[2].spellIcon;
             btnSpell3.GetComponent<Button>().interactable = true;
+            btnSpell3.GetComponent<CanvasGroup>().alpha = 1f;
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             /* */
