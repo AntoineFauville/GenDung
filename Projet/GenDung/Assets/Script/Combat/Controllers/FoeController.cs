@@ -63,7 +63,7 @@ public class FoeController : MonoBehaviour {
             }
         }
 
-        Debug.Log("Tile(" + targetTileX + "," + targetTileY + ')');
+        Debug.Log("Target Tile for Foe Movement: (" + targetTileX + "," + targetTileY + ')');
     } 
 
     public void CalculatePath()
@@ -155,6 +155,18 @@ public class FoeController : MonoBehaviour {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().Occupied = false;
         GridController.Instance.Grid.Tiles[Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y)].Type = Tile.TileType.Floor;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + pos.x + "_" + pos.y).GetComponent<TileController>().MonsterOnTile = null;
+    }
+
+    public void ResetMove()
+    {
+        remainingMovement = foePM;
+        //GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 2, pm, 0f);
+    }
+
+    public void ResetAction()
+    {
+        remainingAction = foePA;
+        //GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 0, pm, 1f);
     }
 
     // |**| \**\ |**| /**/ 
