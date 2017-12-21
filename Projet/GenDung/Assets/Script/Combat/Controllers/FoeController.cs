@@ -9,7 +9,7 @@ public class FoeController : MonoBehaviour {
     private string foeName;
     private int tileX, tileY, targetTileX, targetTileY;
     private int foeID,foeHealth,foePA,foePM,foeAtk,foeMaxHealth, foeInitiative;
-    public float remainingMovement = 99, remainingAction = 5;
+    public float remainingMovement = 5, remainingAction = 5;
     private Vector2 pos; // Actual tile position where the monster stand.
     private List<Node> currentPath = null; // Liste des noeuds pour le PathFinding.
     private bool dead = false;
@@ -95,6 +95,7 @@ public class FoeController : MonoBehaviour {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().MonsterOnTile = null;
+        pos = new Vector2(tileX, tileY); // Reset pos information to the new tile of the monster 
 
         if (CombatController.Instance.CombatStarted)
             GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 3, Mathf.RoundToInt(24), 0f);
