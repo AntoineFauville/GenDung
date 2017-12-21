@@ -204,7 +204,6 @@ public class CombatController : MonoBehaviour {
             }
 
             targetFoe.CalculatePath();
-
             /* */
 
             StartCoroutine(WaitForEndTurn());

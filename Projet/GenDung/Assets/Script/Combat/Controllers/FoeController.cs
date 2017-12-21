@@ -15,17 +15,19 @@ public class FoeController : MonoBehaviour {
     private bool dead = false;
     private Image spriteMonster;
     private bool tileInRange;
+    private Color turnIndicator;
 
     public void Start()
     {
         spriteMonster = this.transform.Find("Cube/Image").GetComponent<Image>();
+        turnIndicator = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + foeID).transform.Find("BouleVerte").GetComponent<Image>().color;
         remainingMovement = foePM;
         remainingAction = foePA;
     }
 
     public void Update()
     {
-        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted && CombatController.Instance.Turn == CombatController.turnType.IA) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
+        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted && CombatController.Instance.Turn == CombatController.turnType.IA && turnIndicator == new Color(0, 255, 0, 1f)) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
         {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
@@ -109,6 +111,8 @@ public class FoeController : MonoBehaviour {
             currentPath = null;
             CombatController.Instance.SetMovementRangeOnGrid();
         }
+
+        transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime); // Movement line
     }
 
     public void SetDefaultSpawn(Vector3 pos)
