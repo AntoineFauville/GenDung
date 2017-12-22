@@ -23,7 +23,6 @@ public class FoeController : MonoBehaviour {
     {
         state = foeState.Neutral;
         spriteMonster = this.transform.Find("Cube/Image").GetComponent<Image>();
-        Debug.Log("Foe ID is : " + foeID);
         remainingMovement = foePM;
         remainingAction = foePA;
     }
@@ -42,6 +41,8 @@ public class FoeController : MonoBehaviour {
         targetTileX = _x;
         targetTileY = _y;
 
+        // Need to check if tile is not Occupied by an other Character
+
         int diffX = (targetTileX - tileX);
         int diffY = (targetTileY - tileY);
 
@@ -50,10 +51,14 @@ public class FoeController : MonoBehaviour {
             if (diffY > 0)
             {
                 targetTileY--;
+                while(!CheckTileOccupation())
+                { targetTileY--; }
             }
             else
             {
                 targetTileY++;
+                while (!CheckTileOccupation())
+                { targetTileY++; }
             }
         }
         else if (diffY > diffX)
@@ -61,15 +66,27 @@ public class FoeController : MonoBehaviour {
             if (diffX > 0)
             {
                 targetTileX--;
+                while (!CheckTileOccupation())
+                { targetTileX--; }
             }
             else
             {
                 targetTileX++;
+                while (!CheckTileOccupation())
+                { targetTileX++; }
             }
         }
 
         Debug.Log("Target Tile for Foe Movement: (" + targetTileX + "," + targetTileY + ')');
     } 
+
+    public bool CheckTileOccupation()
+    {
+        if (!(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().Occupied))
+            return true;
+        else
+            return false;
+    }
 
     public void CalculatePath()
     {
