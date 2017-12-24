@@ -111,10 +111,10 @@ public class FoeController : MonoBehaviour {
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
 
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
         GridController.Instance.Grid.Tiles[tileX,tileY].Type = Tile.TileType.Occupied;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
+        //GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
         GridController.Instance.Grid.Tiles[currentPath[0].x, currentPath[0].y].Type = Tile.TileType.Floor;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().MonsterOnTile = null;
         pos = new Vector2(tileX, tileY); // Reset pos information to the new tile of the monster 

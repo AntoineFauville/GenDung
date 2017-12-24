@@ -79,7 +79,9 @@ public class UnitController : MonoBehaviour {
         tileY = currentPath[1].y;
 
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
+        GridController.Instance.Grid.Tiles[tileX, tileY].Type = Tile.TileType.Occupied;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
+        GridController.Instance.Grid.Tiles[currentPath[0].x, currentPath[0].y].Type = Tile.TileType.Floor;
 
         if (CombatController.Instance.CombatStarted)
             GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0,3,Mathf.RoundToInt(24),0f);
