@@ -155,12 +155,12 @@ public class TileController : MonoBehaviour {
 
     public void MoveTo()
     {
-        if (!occupied)
+        if (/*!occupied && */GridController.Instance.Grid.Tiles[x, y].Type != Tile.TileType.Occupied)
         {
             GridController.Instance.WorldPosTemp = this.transform.position;
             GridController.Instance.GeneratePathTo(x, y);
         }
-        else if (occupied)
+        else if (GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Occupied)
             Debug.Log("This tile has already someone on it, this isn't Tetris man!");
     }
 

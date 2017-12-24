@@ -36,13 +36,11 @@ public class FoeController : MonoBehaviour {
         }
     }
 
-    public void SetTargetIntel(int _x, int _y)
+    public void SetTargetIntel(int _x, int _y) // Actual IA Movement ~~ Need to Improve this !!!
     {
         targetTileX = _x;
         targetTileY = _y;
-
         // Need to check if tile is not Occupied by an other Character
-
         int diffX = (targetTileX - tileX);
         int diffY = (targetTileY - tileY);
 
@@ -114,8 +112,10 @@ public class FoeController : MonoBehaviour {
         tileY = currentPath[1].y;
 
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
+        GridController.Instance.Grid.Tiles[tileX,tileY].Type = Tile.TileType.Occupied;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MonsterOnTile = this.gameObject.GetComponent<FoeController>();
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
+        GridController.Instance.Grid.Tiles[currentPath[0].x, currentPath[0].y].Type = Tile.TileType.Floor;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().MonsterOnTile = null;
         pos = new Vector2(tileX, tileY); // Reset pos information to the new tile of the monster 
 
