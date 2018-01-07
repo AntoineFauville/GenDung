@@ -9,12 +9,5 @@ public class RoomList : ScriptableObject {
 
     public int dungeonGold = 1;
 
-    [Range(1, 4)]
-    public int somethign;
-    
-    [Header("something")]
-    [Space(10)]
-    public int somethidddgn;
-
-
+	public string dungeonStory = "IMPLEMENT STORY DAMIT";
 }

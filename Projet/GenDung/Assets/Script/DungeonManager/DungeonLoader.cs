@@ -352,6 +352,11 @@ public class DungeonLoader : MonoBehaviour {
 		}
 	}
 
+	void StoryLoadingTime () {
+		Instantiate(Resources.Load("UI_Interface/CanvasStoryGetIntoDungeon"));
+		GameObject.Find ("EnterD_Text").GetComponent<Text> ().text = roomListDungeon [dungeonIndex].dungeonStory;
+	}
+
 	//load first time room function
 	void LoadRoom () {
 		if (!loadOnce2) {
@@ -361,7 +366,7 @@ public class DungeonLoader : MonoBehaviour {
 
 			FadeInOutAnim();
 
-            Instantiate(Resources.Load("UI_Interface/CanvasStoryGetIntoDungeon"));
+			StoryLoadingTime ();
 
             Instantiate (Resources.Load("UI_Interface/Room1"));
 
