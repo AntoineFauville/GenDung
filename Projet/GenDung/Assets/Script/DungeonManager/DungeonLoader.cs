@@ -29,6 +29,9 @@ public class DungeonLoader : MonoBehaviour {
 	RoomObject
 	roomObject;
 
+	LogGestionTool
+	LogT;
+
 	Door
 	door;
 
@@ -76,6 +79,8 @@ public class DungeonLoader : MonoBehaviour {
 		SceneManager.sceneLoaded += OnSceneLoaded;
         FadeInOutAnim();
 
+		LogT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
+
     }
 
 	//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
@@ -94,7 +99,7 @@ public class DungeonLoader : MonoBehaviour {
 
             //-----------Dungeon gestion scene-------------//
             if (activeScene == "Dungeon") {
-
+				
                 //print ("index " + index);
 
                 //initialise la référence au background de la salle
@@ -352,6 +357,8 @@ public class DungeonLoader : MonoBehaviour {
 		if (!loadOnce2) {
 			loadOnce2 = true;
 
+			LogT.AddLogLine ("Initial Room Loaded");
+
 			FadeInOutAnim();
 
             Instantiate(Resources.Load("UI_Interface/CanvasStoryGetIntoDungeon"));
@@ -373,6 +380,8 @@ public class DungeonLoader : MonoBehaviour {
 			//si la salle n'est pas vérouillée
 			if (!roomIsLocked) {
 				loadOnce3 = true;
+
+				LogT.AddLogLine ("You have got deeper in the dungeon");
 
 				FadeInOutAnim ();
 
@@ -436,6 +445,8 @@ public class DungeonLoader : MonoBehaviour {
 		if (roomType == "chest") {
 			roomIsLocked = true;
 
+			LogT.AddLogLine ("Chest room ! Where could it be?");
+
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
 				Instantiate (Resources.Load("UI_Interface/ChestRoomUI"));
@@ -449,6 +460,8 @@ public class DungeonLoader : MonoBehaviour {
 		//--------FIGHT---------//
 		if (roomType == "fight") {
 			roomIsLocked = true;
+
+			LogT.AddLogLine ("Fight room !");
 
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
@@ -469,6 +482,8 @@ public class DungeonLoader : MonoBehaviour {
 		//--------BOSS---------//
 		if (roomType == "boss") {
 			roomIsLocked = true;
+
+			LogT.AddLogLine ("DEBUG ! NO BOSS ROOM ALLOWED");
 
 			if (!isUIinstantiated) {
 				isUIinstantiated = true;
@@ -536,7 +551,7 @@ public class DungeonLoader : MonoBehaviour {
     {
         //ajoute un montant d or au joueur
         this.transform.GetComponent<CurrencyGestion>().IncreaseMoney(roomListDungeon[dungeonIndex].RoomOfTheDungeon[index-1].chestsList[0].GoldInTheChest);
-
+		LogT.AddLogLine ("You have gain " + roomListDungeon[dungeonIndex].RoomOfTheDungeon[index-1].chestsList[0].GoldInTheChest + " gold !");
         //save all the player money
         this.transform.GetComponent<CurrencyGestion>().SaveMoney();
     }
