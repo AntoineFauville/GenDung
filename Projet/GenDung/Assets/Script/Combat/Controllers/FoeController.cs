@@ -16,6 +16,9 @@ public class FoeController : MonoBehaviour {
     private Image spriteMonster;
     private bool tileInRange;
 
+    private SpellRangeObject spell;
+    private List<Vector2> Range = new List<Vector2>(); 
+
     public enum foeState { Movement, Attack, Neutral }
     private foeState state;
 
@@ -36,16 +39,41 @@ public class FoeController : MonoBehaviour {
         }
     }
 
-    public void SetAttackTiles()
+    public void SetAttackTiles(UnitController target)
     {
         Debug.Log("Setting Attack Tiles");
+
+        Range = new List<Vector2>();
+
+        for (int i = 0; i < spell.spellRange.Count; i++)
+        {
+            Range.Add(new Vector2((spell.spellRange[i].x + target.TileX),(spell.spellRange[i].y + target.TileY)));
+        }
     }
 
     public void SetTargetIntel(int _x, int _y) // Actual IA Movement ~~ Need to Improve this !!!
     {
+        if (CombatController.Instance.TargetUnit == null)
+        {
+            targetTileX = _x;
+            targetTileY = _y;
+        }
+        else
+        {
+            do
+            {
+                int rand = Random.Range(0, (spell.spellRange.Count - 1));
+
+                targetTileX = Mathf.RoundToInt(Range[rand].x);
+                targetTileY = Mathf.RoundToInt(Range[rand].y);
+            }
+            while (!CheckTileOccupation());
+        }
+
+        /*
         targetTileX = _x;
         targetTileY = _y;
-        // Need to check if tile is not Occupied by an other Character
+        // Need to check if tile is not Occupied by another Character
         int diffX = (targetTileX - tileX);
         int diffY = (targetTileY - tileY);
 
@@ -81,6 +109,7 @@ public class FoeController : MonoBehaviour {
         }
 
         Debug.Log("Target Tile for Foe Movement: (" + targetTileX + "," + targetTileY + ')');
+        */
     } 
 
     public bool CheckTileOccupation()
@@ -396,5 +425,16 @@ public class FoeController : MonoBehaviour {
             state = value;
         }
     }
+    public SpellRangeObject Spell
+    {
+        get
+        {
+            return spell;
+        }
+        set
+        {
+            spell = value;
+        }
+    } 
     /*  */
 }

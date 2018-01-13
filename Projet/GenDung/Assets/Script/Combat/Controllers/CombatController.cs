@@ -203,7 +203,7 @@ public class CombatController : MonoBehaviour {
 
             if (targetUnit != null)
             {
-                targetFoe.SetAttackTiles();
+                targetFoe.SetAttackTiles(targetUnit);
                 targetFoe.SetTargetIntel(targetUnit.TileX, targetUnit.TileY);
             }
             else
@@ -587,6 +587,7 @@ public class CombatController : MonoBehaviour {
             foe.FoePM = foeData.enemiesList[x].pm;
             foe.FoeAtk = foeData.enemiesList[x].atk;
             foe.FoeInitiative = foeData.enemiesList[x].initiative;
+            foe.Spell = foeData.enemiesList[x].enemyRange;
             /* */
 
             /* Instantiate the UI Display for this foe */
