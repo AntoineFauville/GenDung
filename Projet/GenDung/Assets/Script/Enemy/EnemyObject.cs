@@ -10,6 +10,7 @@ public class EnemyObject : ScriptableObject {
 
     public Sprite enemyIcon;
     public RuntimeAnimatorController enemyAnimator;
+    public SpellRangeObject enemyRange;
 
     public int 
         health,

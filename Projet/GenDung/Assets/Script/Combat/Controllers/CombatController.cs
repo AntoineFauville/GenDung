@@ -12,7 +12,7 @@ public class CombatController : MonoBehaviour {
     private bool combatStarted = false;
     private bool spell1 = false, spell2 = false, spell3 = false;
     private int tileX,tileY , actualSpell = 99;
-    private Button btnStartGame,btnSpell1,btnSpell2,btnSpell3;
+    private Button btnStartGame,btnSpell1,btnSpell2,btnSpell3,btnNextTurn;
     private FoeController foe;
     private Room foeData;
     private UnitController targetUnit;
@@ -72,6 +72,8 @@ public class CombatController : MonoBehaviour {
 
             btnSpell3 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_3").GetComponent<Button>();
             btnSpell3.onClick.AddListener(SwitchAttackModeThird);
+
+            btnNextTurn = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/PanelPassYourTurn/ButtonPassYourTurn").GetComponent<Button>();
 
             GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().onClick.AddListener(NextEntityTurn);
 
@@ -195,6 +197,8 @@ public class CombatController : MonoBehaviour {
             btnSpell3.GetComponent<Image>().sprite = defaultIcon;
             btnSpell3.GetComponent<Button>().interactable = false;
 
+            btnNextTurn.interactable = false;
+
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
             if (targetUnit != null)
@@ -210,7 +214,7 @@ public class CombatController : MonoBehaviour {
             targetFoe.CalculatePath();
             /* */
 
-            StartCoroutine(WaitForEndTurn());
+            StartCoroutine(WaitForEnemyEndTurn());
         }
         else
         {
@@ -229,6 +233,8 @@ public class CombatController : MonoBehaviour {
             btnSpell3.GetComponent<Image>().sprite = targetUnit.PlayerSpells[2].spellIcon;
             btnSpell3.GetComponent<Button>().interactable = true;
             btnSpell3.GetComponent<CanvasGroup>().alpha = 1f;
+
+            btnNextTurn.interactable = true;
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             /* */
@@ -704,6 +710,21 @@ public class CombatController : MonoBehaviour {
         //GameObject.Find("TextYourTurn").GetComponent<Text>().text = "YOUR TURN";
 
         CombatController.Instance.SetMovementRangeOnGrid();
+    }
+
+    public IEnumerator WaitForEnemyEndTurn()
+    {
+        Debug.Log("Simulating Foe Turn");
+        GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
+        GameObject.Find("TextYourTurn").GetComponent<Text>().text = sortedGameobjectInit[iniTurn].transform.parent.name;
+        yield return new WaitForSeconds(2f);
+
+        //ajout de l'animation de ton tour
+        //GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
+        //GameObject.Find("TextYourTurn").GetComponent<Text>().text = "YOUR TURN";
+
+        CombatController.Instance.SetMovementRangeOnGrid();
+        NextEntityTurn();
     }
 
     /* Accessors Methods */
