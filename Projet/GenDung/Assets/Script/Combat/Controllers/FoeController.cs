@@ -36,6 +36,11 @@ public class FoeController : MonoBehaviour {
         }
     }
 
+    public void SetAttackTiles()
+    {
+        Debug.Log("Setting Attack Tiles");
+    }
+
     public void SetTargetIntel(int _x, int _y) // Actual IA Movement ~~ Need to Improve this !!!
     {
         targetTileX = _x;

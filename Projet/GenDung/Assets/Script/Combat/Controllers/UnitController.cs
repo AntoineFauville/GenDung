@@ -147,33 +147,6 @@ public class UnitController : MonoBehaviour {
             return false;
     }
 
-    public void Test()
-    {
-        CombatController.Instance.SpellUsable(0);
-    }
-
-    public void NextTurn() // Penser à déplacer cette méthode dans le CombatController
-    {
-        while(currentPath!= null && remainingMovement > 0)
-        {
-            AdvancePathing();
-        }
-
-        GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
-        GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
-        //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
-        //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
-
-        ResetMove();
-        ResetAction();
-        
-
-        Debug.Log("End of Turn: " + turnCount);
-
-        // Wait a time for simulationg Foe Action Here.
-        StartCoroutine(WaitForFoeEndTurn());
-    }
-
     public void ResetMove()
     {
         remainingMovement = pm;

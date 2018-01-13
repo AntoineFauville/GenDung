@@ -196,13 +196,14 @@ public class CombatController : MonoBehaviour {
             btnSpell2.GetComponent<Button>().interactable = false;
             btnSpell3.GetComponent<Image>().sprite = defaultIcon;
             btnSpell3.GetComponent<Button>().interactable = false;
-
+            // Désactivation du bouton 'Next Turn'
             btnNextTurn.interactable = false;
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
             if (targetUnit != null)
             {
+                targetFoe.SetAttackTiles();
                 targetFoe.SetTargetIntel(targetUnit.TileX, targetUnit.TileY);
             }
             else
@@ -233,7 +234,7 @@ public class CombatController : MonoBehaviour {
             btnSpell3.GetComponent<Image>().sprite = targetUnit.PlayerSpells[2].spellIcon;
             btnSpell3.GetComponent<Button>().interactable = true;
             btnSpell3.GetComponent<CanvasGroup>().alpha = 1f;
-
+            // Réactivation du bouton 'Next Turn'
             btnNextTurn.interactable = true;
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
