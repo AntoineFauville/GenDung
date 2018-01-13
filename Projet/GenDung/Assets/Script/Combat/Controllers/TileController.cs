@@ -36,10 +36,15 @@ public class TileController : MonoBehaviour {
             }
             else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && isInRange && !clicked && CombatController.Instance.Turn == CombatController.turnType.Player)
             {
-                if (monsterOnTile != null && occupied && CombatController.Instance.TargetUnit.CheckPA())
-                    monsterOnTile.FoeClicked();
+                if (monsterOnTile != null && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Occupied && CombatController.Instance.TargetUnit.CheckPA())
+                {
+                    Debug.Log("Ennemy on Tile");
+                    monsterOnTile.FoeClicked();                }
                 else
+                {
+                    Debug.Log("No Ennemy");
                     CombatController.Instance.TargetUnit.Attack(s, x, y);
+                }
 
                 CombatController.Instance.SetTileSpellIndicator();
                 CombatController.Instance.SetMovementRangeOnGrid();

@@ -58,6 +58,10 @@ public class FoeController : MonoBehaviour {
             targetTileX = _x;
             targetTileY = _y;
         }
+        else if (tileX == targetTileX && tileY == targetTileY)
+        {
+            Debug.Log("Monster On tile for attack");
+        }
         else
         {
             do
