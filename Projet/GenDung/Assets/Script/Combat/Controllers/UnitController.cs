@@ -139,6 +139,12 @@ public class UnitController : MonoBehaviour {
         }
     }
 
+    public void TakeDamage(int value)
+    {
+        health -= value;
+        Debug.Log("Ouch!!!"); 
+    }
+
     public bool CheckPA()
     {
         if (remainingAction >= attackCost)

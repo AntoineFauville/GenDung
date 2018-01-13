@@ -17,7 +17,8 @@ public class FoeController : MonoBehaviour {
     private bool tileInRange;
 
     private SpellRangeObject spell;
-    private List<Vector2> Range = new List<Vector2>(); 
+    private List<Vector2> Range = new List<Vector2>();
+    private UnitController charaTarget; 
 
     public enum foeState { Movement, Attack, Neutral }
     private foeState state;
@@ -43,6 +44,8 @@ public class FoeController : MonoBehaviour {
     {
         Debug.Log("Setting Attack Tiles");
 
+        charaTarget = target;
+
         Range = new List<Vector2>();
 
         for (int i = 0; i < spell.spellRange.Count; i++)
@@ -58,9 +61,10 @@ public class FoeController : MonoBehaviour {
             targetTileX = _x;
             targetTileY = _y;
         }
-        else if (tileX == targetTileX && tileY == targetTileY)
+        else if (tileX == targetTileX && tileY == targetTileY) // Change this to check if the monster is already on a tile in Range for Attack.
         {
             Debug.Log("Monster On tile for attack");
+            charaTarget.TakeDamage(foeAtk);
         }
         else
         {
@@ -74,46 +78,7 @@ public class FoeController : MonoBehaviour {
             while (!CheckTileOccupation());
         }
 
-        /*
-        targetTileX = _x;
-        targetTileY = _y;
-        // Need to check if tile is not Occupied by another Character
-        int diffX = (targetTileX - tileX);
-        int diffY = (targetTileY - tileY);
-
-        if (diffX > diffY)
-        {
-            if (diffY > 0)
-            {
-                targetTileY--;
-                while(!CheckTileOccupation())
-                { targetTileY--; }
-            }
-            else
-            {
-                targetTileY++;
-                while (!CheckTileOccupation())
-                { targetTileY++; }
-            }
-        }
-        else if (diffY > diffX)
-        {
-            if (diffX > 0)
-            {
-                targetTileX--;
-                while (!CheckTileOccupation())
-                { targetTileX--; }
-            }
-            else
-            {
-                targetTileX++;
-                while (!CheckTileOccupation())
-                { targetTileX++; }
-            }
-        }
-
         Debug.Log("Target Tile for Foe Movement: (" + targetTileX + "," + targetTileY + ')');
-        */
     } 
 
     public bool CheckTileOccupation()
@@ -260,6 +225,7 @@ public class FoeController : MonoBehaviour {
 
         if (foeHealth == 0)
         {
+            CombatController.Instance.TargetFoe = null;
             FoeDying();
         }
     }
@@ -279,6 +245,7 @@ public class FoeController : MonoBehaviour {
 
         if (foeHealth == 0)
         {
+            CombatController.Instance.TargetFoe = null;
             FoeDying();
         }
     }

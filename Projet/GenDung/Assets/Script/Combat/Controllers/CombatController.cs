@@ -149,7 +149,8 @@ public class CombatController : MonoBehaviour {
         display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 0f);
         // Désactiver condition de déplacement du FoeTarget
-        targetFoe.State = FoeController.foeState.Neutral;
+        if (targetFoe != null)
+            targetFoe.State = FoeController.foeState.Neutral;
 
         /* Detection tour character + reset */
         if (iniTurn >= (sortedGameobjectInit.Count - 1))
