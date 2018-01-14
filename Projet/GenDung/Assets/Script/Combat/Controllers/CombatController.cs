@@ -187,7 +187,7 @@ public class CombatController : MonoBehaviour {
         {
             turn = turnType.IA;
             targetFoe = sortedGameobjectInit[iniTurn].GetComponent<FoeController>();
-            targetFoe.State = FoeController.foeState.Movement; // Active le déplacement de l'ennemi
+            //targetFoe.State = FoeController.foeState.Movement; // Active le déplacement de l'ennemi
 
             /* Visual Part */
             // Désactivation des Boutons de Spells

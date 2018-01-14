@@ -80,6 +80,8 @@ public class FoeController : MonoBehaviour {
                 }
                 while (!CheckTileOccupation());
 
+                state = FoeController.foeState.Movement;
+
                 if (CheckAttack())
                 {
                     Debug.Log("Position is good after movement; Attacking Target");
@@ -95,9 +97,6 @@ public class FoeController : MonoBehaviour {
     {
         for (int i = 0; i < spell.spellRange.Count; i++)
         {
-            //Debug.Log("Actual Tile : (" + tileX + "," + tileY + ")");
-            //Debug.Log("Checking Range Tile : (" + spell.spellRange[i].x + "," + spell.spellRange[i].y + ")");
-
             if (tileX == (spell.spellRange[i].x + charaTarget.TileX ) && tileY == (spell.spellRange[i].y + charaTarget.TileY))
             {
                 return true;
@@ -110,7 +109,14 @@ public class FoeController : MonoBehaviour {
     public bool CheckTileOccupation()
     {
         if (!(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().Occupied))
+        {
+            Debug.Log("Tile is not Occupied");
             return true;
+        }
+        else if ((GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().Occupied) && (GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().MonsterOnTile == this.GetComponent<FoeController>()))
+        {
+            return true;
+        }
         else
             return false;
     }
