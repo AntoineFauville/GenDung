@@ -12,6 +12,11 @@ public class CombatUIController : MonoBehaviour {
     {
         linkButtons();
         SetButtonsActions();
+
+        /* Get Specific Sprite from Multiple Sprites */
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/IconeBearClaw");
+        defaultIcon = sprites[4];
+        /**/
 	}
 
     public void linkButtons() // link the gameobject to the variable.

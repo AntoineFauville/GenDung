@@ -120,7 +120,7 @@ public class FoeController : MonoBehaviour {
             Debug.Log("Tile is not Occupied");
             return true;
         }
-        else if ((GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().Occupied) && (GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().MonsterOnTile == this.GetComponent<FoeController>()))
+        else if ((GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().Occupied) && (GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().MonsterOnTile == this.GetComponent<FoeController>()) && (GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + targetTileX + "_" + targetTileY).GetComponent<TileController>().PlayerOnTile != null))
         {
             return true;
         }

@@ -7,12 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class CombatController : MonoBehaviour {
 
+    public CombatUIController combatUIController;
+
     private static CombatController instance;
     private bool placementDone = false;
     private bool combatStarted = false;
     private bool spell1 = false, spell2 = false, spell3 = false;
     private int tileX,tileY , actualSpell = 99;
-    private Button btnStartGame,btnSpell1,btnSpell2,btnSpell3,btnNextTurn;
+    //private Button btnStartGame,btnSpell1,btnSpell2,btnSpell3,btnNextTurn;
     private FoeController foe;
     private Room foeData;
     private UnitController targetUnit;
@@ -53,11 +55,18 @@ public class CombatController : MonoBehaviour {
     {
         CreateInstance();
 
+        if (this.GetComponent<CombatUIController>() == null)
+        {
+            this.gameObject.AddComponent<CombatUIController>();
+            combatUIController = this.GetComponent<CombatUIController>();
+        }
+
         iniTurn = 0;
         turnCount = 0;
 
         if (SceneManager.GetActiveScene().name != "Editor")
         {
+            /*
             btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
             btnStartGame.onClick.AddListener(StartCombatMode);
 
@@ -76,6 +85,9 @@ public class CombatController : MonoBehaviour {
             btnNextTurn = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/PanelPassYourTurn/ButtonPassYourTurn").GetComponent<Button>();
 
             btnNextTurn.onClick.AddListener(NextEntityTurn);
+            */
+
+            combatUIController.SetStartVisual();
 
             foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
             monsterNmb = foeData.enemiesList.Length;
@@ -94,8 +106,11 @@ public class CombatController : MonoBehaviour {
             tileX = x;
             tileY = y;
             GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MoveTo();
+            /*
             btnStartGame.GetComponent<CanvasGroup>().alpha = 1f;
             btnStartGame.GetComponent<CanvasGroup>().interactable = true;
+            */
+            combatUIController.SwitchStartVisual();
         }
         else
             Debug.Log("Not a Starter Tile, forget about it");
@@ -118,8 +133,12 @@ public class CombatController : MonoBehaviour {
                 GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + GridController.Instance.SpawnTilesList[i].x + "_" + GridController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
             }
 
+            /*
             btnStartGame.GetComponent<CanvasGroup>().alpha = 0;
             btnStartGame.GetComponent<CanvasGroup>().interactable = false;
+            */
+            combatUIController.SwitchStartVisual();
+
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1f;
 
@@ -199,6 +218,7 @@ public class CombatController : MonoBehaviour {
 
             /* Visual Part */
             // Désactivation des Boutons de Spells
+            /*
             btnSpell1.GetComponent<Image>().sprite = defaultIcon ;
             btnSpell1.GetComponent<Button>().interactable = false;
             btnSpell2.GetComponent<Image>().sprite = defaultIcon;
@@ -207,6 +227,9 @@ public class CombatController : MonoBehaviour {
             btnSpell3.GetComponent<Button>().interactable = false;
             // Désactivation du bouton 'Next Turn'
             btnNextTurn.interactable = false;
+            */
+
+            combatUIController.MonsterTurnButton();
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
@@ -236,6 +259,7 @@ public class CombatController : MonoBehaviour {
 
             /* Visual Part */
             // Réactivation des Boutons de Spells
+            /*
             btnSpell1.GetComponent<Image>().sprite = targetUnit.PlayerSpells[0].spellIcon;
             btnSpell1.GetComponent<Button>().interactable = true;
             btnSpell1.GetComponent<CanvasGroup>().alpha = 1f;
@@ -247,6 +271,9 @@ public class CombatController : MonoBehaviour {
             btnSpell3.GetComponent<CanvasGroup>().alpha = 1f;
             // Réactivation du bouton 'Next Turn'
             btnNextTurn.interactable = true;
+            */
+
+            combatUIController.PlayerTurnButton();
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             /* */
@@ -326,6 +353,7 @@ public class CombatController : MonoBehaviour {
             turn = turnType.IA;
             targetFoe = sortedGameobjectInit[iniTurn].GetComponent<FoeController>();
 
+            /*
             // Désactivation des Boutons de Spells
             btnSpell1.GetComponent<Image>().sprite = defaultIcon;
             btnSpell1.GetComponent<Button>().interactable = false;
@@ -333,7 +361,10 @@ public class CombatController : MonoBehaviour {
             btnSpell2.GetComponent<Button>().interactable = false;
             btnSpell3.GetComponent<Image>().sprite = defaultIcon;
             btnSpell3.GetComponent<Button>().interactable = false;
+            */
             /* */
+
+            combatUIController.MonsterTurnButton();
         }
         else
         {
@@ -344,6 +375,7 @@ public class CombatController : MonoBehaviour {
             turn = turnType.Player;
             targetUnit = sortedGameobjectInit[iniTurn].GetComponent<UnitController>();
 
+            /*
             // Réactivation des Boutons de Spells
             btnSpell1.GetComponent<Image>().sprite = targetUnit.PlayerSpells[0].spellIcon;
             btnSpell1.GetComponent<Button>().interactable = true;
@@ -351,6 +383,9 @@ public class CombatController : MonoBehaviour {
             btnSpell2.GetComponent<Button>().interactable = true;
             btnSpell3.GetComponent<Image>().sprite = targetUnit.PlayerSpells[2].spellIcon;
             btnSpell3.GetComponent<Button>().interactable = true;
+            */
+
+            combatUIController.PlayerTurnButton();
             /* */
         }
     }
@@ -689,9 +724,12 @@ public class CombatController : MonoBehaviour {
     public void EndBattle()
     {
         CleanEndBattle();
-
+        /*
         btnStartGame.GetComponent<CanvasGroup>().alpha = 1;
         btnStartGame.GetComponent<CanvasGroup>().interactable = true;
+        */
+
+        combatUIController.SwitchStartVisual();
 
         GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
     }
