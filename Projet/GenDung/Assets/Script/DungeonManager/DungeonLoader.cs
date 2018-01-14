@@ -9,6 +9,10 @@ using UnityEngine.EventSystems;
 
 public class DungeonLoader : MonoBehaviour {
 
+    private static DungeonLoader instance;
+
+    private MapController mapController;
+
 	public string 
 	activeScene, //check active scene
 	previousScene, //previous scene
@@ -39,12 +43,12 @@ public class DungeonLoader : MonoBehaviour {
 	roomListDungeon; // this are the dungeons, 
 
 	public GameObject[] 
-	dungeonOnTheMap;	//list des boutons des donjons sur la carte
+	dungeonOnTheMap;    //list des boutons des donjons sur la carte
 
-	public int 
-	index, //index de la salle connecté à actualIndex.
-    actualIndex, // index de la salle actuelle.
-	dungeonIndex;//index pour le donjon.
+    public int
+    index, //index de la salle connecté à actualIndex.
+    actualIndex; // index de la salle actuelle.
+	public int dungeonIndex;//index pour le donjon.
 
     //all int for upgrade temp
     public int
@@ -69,12 +73,26 @@ public class DungeonLoader : MonoBehaviour {
     sceneLoaded,    //attendre que la scene est bien chargé
     InstrantiateOnceEndDungeon, //instancier une fois l'écran de fin de donjon
     EndDungeon,	//verifier si le donjon est fini ou pas
-    DoOnceAllRelatedToUpgradeTavernPanel,
     InstantiateFade,
     InstantiatedCombatModule,
     QuestStartOn;
 
-	void Start () {
+    private bool doOnceAllRelatedToUpgradeTavernPanel;
+
+    void CreateInstance()
+    {
+        if (instance != null)
+        {
+            Debug.Log("There should never have two DungeonLoader.");
+        }
+        instance = this;
+    }
+
+    void Start ()
+    {
+        CreateInstance();
+
+        mapController = GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>();
 		//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
 		SceneManager.sceneLoaded += OnSceneLoaded;
         FadeInOutAnim();
@@ -84,39 +102,32 @@ public class DungeonLoader : MonoBehaviour {
     }
 
 	//permet de vérifier ce qu'est la scene actuelle et d'attendre qu'elle aie fini de charger
-	void OnSceneLoaded(Scene scene, LoadSceneMode mode){
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
 		sceneLoaded = true;
 	}
 
-
-	void FixedUpdate () {
-
+	void FixedUpdate ()
+    {
 		//permet de savoir quel nom de scene
 		activeScene = SceneManager.GetActiveScene ().name;
 
 		//attendre que la scene soit chargée
-		if (!sceneLoaded) {
-
+		if (!sceneLoaded)
+        {
             //-----------Dungeon gestion scene-------------//
-            if (activeScene == "Dungeon") {
-				
-                //print ("index " + index);
-
+            if (activeScene == "Dungeon")
+            {	
                 //initialise la référence au background de la salle
                 BG = GameObject.FindGameObjectWithTag("backgroundOfRoom");
 
                 //met les infos a jour sur le coté en fonction du joueur actif
                 GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
-                //GameObject.Find("ActualPlayerImage").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].persoAnimator;
-                // GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
-                // GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
-                // GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
 
                 if (InstantiatedCombatModule)
                 {
                     if (GameObject.Find("CombatGridPrefab(Clone)").GetComponent<PreCombatController>().CombatStarted)
                     {
-                        //GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingAction.ToString();
                         GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingAction.ToString();
                         GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingMovement.ToString();
                     }
@@ -134,10 +145,14 @@ public class DungeonLoader : MonoBehaviour {
 			}		
 
 			//-----------Map gestion scene-------------//
-			if (activeScene == "Map") {
+			if (activeScene == "Map")
+            {
 
+                mapController.Loutre();
+
+                /*
                 //reset la taverne
-                DoOnceAllRelatedToUpgradeTavernPanel = false;
+                doOnceAllRelatedToUpgradeTavernPanel = false;
 
                 //show on the map current money
                 GameObject.Find("GoldUIDispatcherText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
@@ -249,7 +264,7 @@ public class DungeonLoader : MonoBehaviour {
                         }
                     }
                 }
-
+                */
             }
 
             //--------Taverne--------//
@@ -275,7 +290,7 @@ public class DungeonLoader : MonoBehaviour {
 
 
               
-                if (!DoOnceAllRelatedToUpgradeTavernPanel)
+                if (!doOnceAllRelatedToUpgradeTavernPanel)
                 {
                     //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement
                     healthTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV;
@@ -283,7 +298,7 @@ public class DungeonLoader : MonoBehaviour {
                     CACTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].CloseAttaqueValue;
                     DistTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].DistanceAttaqueValue;
 
-                    DoOnceAllRelatedToUpgradeTavernPanel = true;
+                    doOnceAllRelatedToUpgradeTavernPanel = true;
                     GameObject.Find("CanvasUpgradePanel").GetComponent<Canvas>().enabled = false;
                     //pour chaque membre de l'équipe ajoute un nouveau bouton au menu pour passer d'un membre a un autre dans le panel upgrade
                     for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
@@ -313,13 +328,14 @@ public class DungeonLoader : MonoBehaviour {
 
                 //Dist
                 GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + DistTemp.ToString();
-
-
             }
-        } else {
+        }
+        else
+        {
 			//systeme de vérification pour voir si la scene a bien charger
 			//au sinon lance une coroutine qui attend peu et reinitialise les données
-			if (!doOnceCoroutine) {
+			if (!doOnceCoroutine)
+            {
 				doOnceCoroutine = true;
 				StartCoroutine ("WaitLoading");
 			}
@@ -327,7 +343,7 @@ public class DungeonLoader : MonoBehaviour {
 	}
 
 	//load the dungeon scene
-	void LoadSceneDungeon () {
+	public void LoadSceneDungeon () {
 		if (!loadbutton) {
 			loadbutton = true;
 
@@ -341,7 +357,7 @@ public class DungeonLoader : MonoBehaviour {
 	}
 
 	//charge la scene map
-	void LoadSceneMap () {
+	public void LoadSceneMap () {
 		if (!loadbutton2) {
 			loadbutton2 = true;
 
@@ -352,7 +368,7 @@ public class DungeonLoader : MonoBehaviour {
 		}
 	}
 
-	void StoryLoadingTime () {
+	public void StoryLoadingTime () {
 		Instantiate(Resources.Load("UI_Interface/CanvasStoryGetIntoDungeon"));
 		GameObject.Find ("EnterD_Text").GetComponent<Text> ().text = roomListDungeon [dungeonIndex].dungeonStory;
 	}
@@ -679,15 +695,51 @@ public class DungeonLoader : MonoBehaviour {
     }
 
 	//coroutine qui attend pour ne pas spammer le bouton de porte
-	IEnumerator waitLagForClicking () {
+	IEnumerator waitLagForClicking ()
+    {
 		yield return new WaitForSeconds (0.03f);
 		loadOnce3 = false;
 	}
 
-	IEnumerator FadeInOutCoroutine(){
+	IEnumerator FadeInOutCoroutine()
+    {
 		yield return new WaitForSeconds (0.4f);
 		FadeInAnimator.SetBool ("Fade",false);
         InstantiateFade = false;
+    }
 
+    /* Accessors Method */
+    public static DungeonLoader Instance
+    {
+        get
+        {
+            return instance;
+        }
+        set
+        {
+            instance = value;
+        }
+    }
+    public bool DoOnceAllRelatedToUpgradeTavernPanel
+    {
+        get
+        {
+            return doOnceAllRelatedToUpgradeTavernPanel;
+        }
+        set
+        {
+            doOnceAllRelatedToUpgradeTavernPanel = value;
+        }
+    }
+    public int DungeonIndex
+    {
+        get
+        {
+            return dungeonIndex;
+        }
+        set
+        {
+            dungeonIndex = value;
+        }
     }
 }

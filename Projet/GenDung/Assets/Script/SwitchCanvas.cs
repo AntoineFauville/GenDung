@@ -19,13 +19,11 @@ public class SwitchCanvas : MonoBehaviour {
 	public GameObject[] 
 	canvas;
 
-	void Start () {
+	void Start ()
+    {
 		activeScene = SceneManager.GetActiveScene ().name;
 
 		previousScene = activeScene;
-
-		//print (activeScene);
-		//print (SceneManager.GetActiveScene ().name);
 
 		if (!didIInstantiate) {
 
@@ -40,20 +38,21 @@ public class SwitchCanvas : MonoBehaviour {
 		}
 	}
 
-	void Update () {
+	void Update ()
+    {
 		activeScene = SceneManager.GetActiveScene ().name;
 
-		if (activeScene != previousScene) {
-
+		if (activeScene != previousScene)
+        {
 			didIInstantiate = false;
 
-			if (!didIInstantiate) {
-
+			if (!didIInstantiate)
+            {
 				DestroyImmediate(GameObject.FindGameObjectWithTag ("canvas"));
-
-				for (int i = 0; i < 4; i++) {
-
-					if (activeScene == sceneNames [i]) {
+				for (int i = 0; i < 4; i++)
+                {
+					if (activeScene == sceneNames [i])
+                    {
 						print (activeScene);
 						Instantiate (canvas [i]);
 						didIInstantiate = true;
@@ -61,7 +60,8 @@ public class SwitchCanvas : MonoBehaviour {
 				}
             }
 
-			if(activeScene == sceneNames [0]){
+			if(activeScene == sceneNames [0])
+            {
 				DestroyImmediate (GameObject.Find("DontDestroyOnLoad"));
 
 				#if UNITY_EDITOR
@@ -72,14 +72,9 @@ public class SwitchCanvas : MonoBehaviour {
 				GameObject.Find("IncreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().UnlockNextDungeon);
 				GameObject.Find("DecreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().DecreaseUnlockDungeonIndex);
 				GameObject.Find("ResetUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().ResetUnlockDungeonIndex);
-
 				#endif
-
 			}
-
-
 			previousScene = activeScene;
 		}
-
 	}
 }

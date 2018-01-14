@@ -7,7 +7,8 @@ public class CurrencyGestion : MonoBehaviour {
     public int localMoney;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
        localMoney = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney;
     }
 	
