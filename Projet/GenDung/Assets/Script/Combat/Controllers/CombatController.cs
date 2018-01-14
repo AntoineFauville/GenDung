@@ -75,7 +75,7 @@ public class CombatController : MonoBehaviour {
 
             btnNextTurn = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/PanelPassYourTurn/ButtonPassYourTurn").GetComponent<Button>();
 
-            GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().onClick.AddListener(NextEntityTurn);
+            btnNextTurn.onClick.AddListener(NextEntityTurn);
 
             foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
             monsterNmb = foeData.enemiesList.Length;
@@ -168,9 +168,17 @@ public class CombatController : MonoBehaviour {
             {
                 for (int m = 0; m < foeData.enemiesList.Length; m++)
                 {
-                    targetFoe = GameObject.Find("Foe_" + m).transform.Find("Unit").GetComponent<FoeController>();
-                    targetFoe.ResetMove();
-                    targetFoe.ResetAction();
+                    try
+                    {
+                        targetFoe = GameObject.Find("Foe_" + m).transform.Find("Unit").GetComponent<FoeController>();
+                        targetFoe.ResetMove();
+                        targetFoe.ResetAction();
+                    }
+                    catch
+                    {
+                        Debug.Log("Monster number :" + m + "is dead");
+                    }
+                    
                 }
             }
         }
