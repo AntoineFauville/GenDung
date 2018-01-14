@@ -61,25 +61,45 @@ public class FoeController : MonoBehaviour {
             targetTileX = _x;
             targetTileY = _y;
         }
-        else if (tileX == targetTileX && tileY == targetTileY) // Change this to check if the monster is already on a tile in Range for Attack.
-        {
-            Debug.Log("Monster On tile for attack");
-            charaTarget.TakeDamage(foeAtk);
-        }
         else
         {
-            do
+            if (CheckAttack())
             {
-                int rand = Random.Range(0, (spell.spellRange.Count - 1));
-
-                targetTileX = Mathf.RoundToInt(Range[rand].x);
-                targetTileY = Mathf.RoundToInt(Range[rand].y);
+                Debug.Log("Position is good; Attacking Target");
+                charaTarget.TakeDamage(foeAtk);
             }
-            while (!CheckTileOccupation());
+            else
+            {
+                Debug.Log("Position not good enough; Moving to another Tiles");
+                do
+                {
+                    int rand = Random.Range(0, (spell.spellRange.Count - 1));
+
+                    targetTileX = Mathf.RoundToInt(Range[rand].x);
+                    targetTileY = Mathf.RoundToInt(Range[rand].y);
+                }
+                while (!CheckTileOccupation());
+            }
         }
 
         Debug.Log("Target Tile for Foe Movement: (" + targetTileX + "," + targetTileY + ')');
-    } 
+    }
+
+    public bool CheckAttack()
+    {
+        for (int i = 0; i < spell.spellRange.Count; i++)
+        {
+            //Debug.Log("Actual Tile : (" + tileX + "," + tileY + ")");
+            //Debug.Log("Checking Range Tile : (" + spell.spellRange[i].x + "," + spell.spellRange[i].y + ")");
+
+            if (tileX == (spell.spellRange[i].x + charaTarget.TileX ) && tileY == (spell.spellRange[i].y + charaTarget.TileY))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public bool CheckTileOccupation()
     {
