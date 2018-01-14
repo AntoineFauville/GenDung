@@ -63,7 +63,7 @@ public class FoeController : MonoBehaviour {
         }
         else
         {
-            if (CheckAttack())
+            if (CheckAttack()) // Monsters should be able to move and attack in the same turn if PA and PM are available.
             {
                 Debug.Log("Position is good; Attacking Target");
                 charaTarget.TakeDamage(foeAtk);
@@ -79,6 +79,12 @@ public class FoeController : MonoBehaviour {
                     targetTileY = Mathf.RoundToInt(Range[rand].y);
                 }
                 while (!CheckTileOccupation());
+
+                if (CheckAttack())
+                {
+                    Debug.Log("Position is good after movement; Attacking Target");
+                    charaTarget.TakeDamage(foeAtk);
+                }
             }
         }
 
