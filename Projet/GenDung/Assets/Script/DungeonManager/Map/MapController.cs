@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MapController : MonoBehaviour {
 
@@ -12,7 +13,7 @@ public class MapController : MonoBehaviour {
         dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
     }
 
-    public void Loutre()
+    public void Map()
     {
         dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
 
@@ -85,9 +86,8 @@ public class MapController : MonoBehaviour {
         //va rechercher dans la liste de donjon dans le prefab de carte l'index qui permet de savoir en passant la souris dans quel donjon on va entrer
         dungeonLoader.dungeonIndex = GameObject.FindGameObjectWithTag("DungeonButtonMap").GetComponent<DungeonListOnMap>().indexLocal;
 
-        //ajoute a tout les boutons sur la carte le fait de charger la salle donjon
-
-        dungeonLoader.dungeonOnTheMap[dungeonLoader.dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(dungeonLoader.LoadSceneDungeon);
+        //ajoute au bouton actuel qui correspond à l'index sur la carte le fait de charger la salle donjon
+        dungeonLoader.dungeonOnTheMap[dungeonLoader.dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(LoadSceneDungeon);
         //assure que les salles sont bien unlock
         dungeonLoader.roomIsLocked = false;
         //reinitialise le systeme de check de salle
@@ -136,4 +136,40 @@ public class MapController : MonoBehaviour {
             }
         }
     }
+
+    //load the dungeon scene
+    public void LoadSceneDungeon()
+    {
+        if (!dungeonLoader.loadbutton)
+        {
+            dungeonLoader.loadbutton = true;
+
+            dungeonLoader.FadeInOutAnim();
+
+            dungeonLoader.InstrantiateOnceEndDungeon = false;
+            SceneManager.LoadScene("Dungeon");
+        }
+    }
+
+    public void UnlockNextDungeon()
+    {
+        if (dungeonLoader.dungeonUnlockedIndex < dungeonLoader.dungeonOnTheMap.Length)
+        {
+            dungeonLoader.dungeonUnlockedIndex++;
+        }
+    }
+
+    public void DecreaseUnlockDungeonIndex()
+    {
+        if (dungeonLoader.dungeonUnlockedIndex > 1)
+        {
+            dungeonLoader.dungeonUnlockedIndex--;
+        }
+    }
+
+    public void ResetUnlockDungeonIndex()
+    {
+        dungeonLoader.dungeonUnlockedIndex = 1;
+    }
+
 }

@@ -69,9 +69,9 @@ public class SwitchCanvas : MonoBehaviour {
 
 				Instantiate(Resources.Load("UI_Interface/DebugCanvas"));
 
-				GameObject.Find("IncreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().UnlockNextDungeon);
-				GameObject.Find("DecreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().DecreaseUnlockDungeonIndex);
-				GameObject.Find("ResetUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().ResetUnlockDungeonIndex);
+				GameObject.Find("IncreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>().UnlockNextDungeon);
+				GameObject.Find("DecreaseUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>().DecreaseUnlockDungeonIndex);
+				GameObject.Find("ResetUnlockIndexButton").GetComponent<Button> ().onClick.AddListener (GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>().ResetUnlockDungeonIndex);
 				#endif
 			}
 			previousScene = activeScene;
