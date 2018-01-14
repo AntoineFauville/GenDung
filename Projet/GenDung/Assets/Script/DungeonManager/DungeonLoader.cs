@@ -114,7 +114,7 @@ public class DungeonLoader : MonoBehaviour {
 
                 if (InstantiatedCombatModule)
                 {
-                    if (GameObject.Find("CombatGridPrefab(Clone)").GetComponent<CombatController>().CombatStarted)
+                    if (GameObject.Find("CombatGridPrefab(Clone)").GetComponent<PreCombatController>().CombatStarted)
                     {
                         //GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingAction.ToString();
                         GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("Character_0/Unit").GetComponent<UnitController>().remainingAction.ToString();

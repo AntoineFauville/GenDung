@@ -33,7 +33,7 @@ public class FoeController : MonoBehaviour {
 
     public void Update()
     {
-        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted && CombatController.Instance.Turn == CombatController.turnType.IA && state == foeState.Movement) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
+        if (SceneManager.GetActiveScene().name != "Editor" && PreCombatController.Instance.CombatStarted && CombatController.Instance.Turn == CombatController.turnType.IA && state == foeState.Movement) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
         {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
@@ -161,7 +161,7 @@ public class FoeController : MonoBehaviour {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().MonsterOnTile = null;
         pos = new Vector2(tileX, tileY); // Reset pos information to the new tile of the monster 
 
-        if (CombatController.Instance.CombatStarted)
+        if (PreCombatController.Instance.CombatStarted)
             GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 3, Mathf.RoundToInt(24), 0f);
 
         StartCoroutine(WaitBeforeNextMovement()); // Coroutine pour faire patienter le joueur et donné une meilleure impression de déplacement.

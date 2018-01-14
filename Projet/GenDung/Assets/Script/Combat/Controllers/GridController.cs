@@ -189,7 +189,7 @@ public class GridController : MonoBehaviour {
         Tile target = GetTileAtWorldCoord(new Vector3(targetX, targetY, 0));
         cost = target.movementCost;
 
-        if (CombatController.Instance.CombatStarted && UnitCanEnterTile(targetX,targetY) == false)
+        if (PreCombatController.Instance.CombatStarted && UnitCanEnterTile(targetX,targetY) == false)
         {
             return Mathf.Infinity;
         }
@@ -213,7 +213,7 @@ public class GridController : MonoBehaviour {
 
         Node source;
 
-        if (!CombatController.Instance.CombatStarted)
+        if (!PreCombatController.Instance.CombatStarted)
             source = graph[unit.TileX, unit.TileY];
         else if (CombatController.Instance.Turn == CombatController.turnType.Player)
             source = graph[CombatController.Instance.TargetUnit.TileX, CombatController.Instance.TargetUnit.TileY];
@@ -282,7 +282,7 @@ public class GridController : MonoBehaviour {
 
         currentPath.Reverse();
 
-        if (!CombatController.Instance.CombatStarted)
+        if (!PreCombatController.Instance.CombatStarted)
             unit.CurrentPath = currentPath;
         else if (CombatController.Instance.Turn == CombatController.turnType.Player)
             CombatController.Instance.TargetUnit.CurrentPath = currentPath;

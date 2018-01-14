@@ -22,8 +22,6 @@ public class UnitController : MonoBehaviour {
         {
             GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
             GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
-            //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
-            //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
         }
     }
 
@@ -37,18 +35,16 @@ public class UnitController : MonoBehaviour {
             {
                 Vector3 start = GridController.Instance.TileCoordToWorldCoord(currentPath[currNode].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
                 Vector3 end = GridController.Instance.TileCoordToWorldCoord(currentPath[currNode + 1].x, currentPath[currNode].y) + new Vector3(0, 0, -1f);
-
-                //Debug.DrawLine(start, end, Color.red);
                 currNode++;
             }
         }
         
-        if (SceneManager.GetActiveScene().name != "Editor" && CombatController.Instance.CombatStarted && CombatController.Instance.Turn == CombatController.turnType.Player) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
+        if (SceneManager.GetActiveScene().name != "Editor" && PreCombatController.Instance.CombatStarted && CombatController.Instance.Turn == CombatController.turnType.Player) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
         {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
-        else if (SceneManager.GetActiveScene().name != "Editor" && !CombatController.Instance.CombatStarted) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat n'as pas été réalisé.
+        else if (SceneManager.GetActiveScene().name != "Editor" && !PreCombatController.Instance.CombatStarted) // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat n'as pas été réalisé.
         {
             SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position);
             AdvancePathing();
@@ -57,7 +53,7 @@ public class UnitController : MonoBehaviour {
 
     public void AdvancePathing() // Méthode de déplacement du personnage.
     {
-        if (!CombatController.Instance.CombatStarted) // On vérifie si le placement pré-combat a été fait ou pas (ainsi, on téléporte le joueur sur la case cliquée pour le placement pré-combat). 
+        if (!PreCombatController.Instance.CombatStarted) // On vérifie si le placement pré-combat a été fait ou pas (ainsi, on téléporte le joueur sur la case cliquée pour le placement pré-combat). 
         {
             transform.position = GridController.Instance.WorldPosTemp;
         }
@@ -83,7 +79,7 @@ public class UnitController : MonoBehaviour {
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
         GridController.Instance.Grid.Tiles[currentPath[0].x, currentPath[0].y].Type = Tile.TileType.Floor;
 
-        if (CombatController.Instance.CombatStarted)
+        if (PreCombatController.Instance.CombatStarted)
             GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0,3,Mathf.RoundToInt(24),0f);
 
         StartCoroutine(WaitBeforeNextMovement()); // Coroutine pour faire patienter le joueur et donné une meilleure impression de déplacement.
@@ -130,7 +126,7 @@ public class UnitController : MonoBehaviour {
                 spellCanvasPrefab = playerSpells[s].spellPrefab;
                 spellCanvas = Instantiate(spellCanvasPrefab);
                 spellCanvas.transform.Find("Unit").transform.position = GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + xPos + "_" + yPos).transform.position;
-                CombatController.Instance.SpellCanvasInstantiated.Add(spellCanvas);
+                PostCombatController.Instance.SpellCanvasInstantiated.Add(spellCanvas);
             }
 
             GameObject.Find("DontDestroyOnLoad").GetComponent<BuffIndicatorGestion>().GetBuffIndicator(0, 1, playerSpells[s].spellCost,0f);

@@ -5,12 +5,24 @@ using UnityEngine.UI;
 
 public class CombatUIController : MonoBehaviour {
 
+    private static CombatUIController instance;
+
     private Button btnStartGame, btnSpell1, btnSpell2, btnSpell3, btnNextTurn;
     private Sprite defaultIcon;
     private GameObject UIMonsterDisplayPrefab, UIMonsterDisplay, UIPlayerDisplay;
 
+    void CreateInstance()
+    {
+        if (instance != null)
+        {
+            Debug.Log("There should never have two CombatUIControllers.");
+        }
+        instance = this;
+    }
+
     void Start ()
     {
+        CreateInstance();
         linkButtons();
         SetButtonsActions();
 
@@ -33,7 +45,7 @@ public class CombatUIController : MonoBehaviour {
 
     public void SetButtonsActions() // set action on click.
     {
-        btnStartGame.onClick.AddListener(CombatController.Instance.StartCombatMode);
+        btnStartGame.onClick.AddListener(PreCombatController.Instance.StartCombatMode);
         btnSpell1.onClick.AddListener(CombatController.Instance.SwitchAttackModeFirst);
         btnSpell2.onClick.AddListener(CombatController.Instance.SwitchAttackModeSecond);
         btnSpell3.onClick.AddListener(CombatController.Instance.SwitchAttackModeThird);
@@ -115,14 +127,14 @@ public class CombatUIController : MonoBehaviour {
             UIMonsterDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
             UIMonsterDisplay.transform.localScale = new Vector3(1, 1, 1);
             UIMonsterDisplay.name = "UIDisplayFoe_" + x;
-            UIMonsterDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (CombatController.Instance.Foe.FoeHealth / CombatController.Instance.Foe.FoeMaxHealth);
+            UIMonsterDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (PreCombatController.Instance.Foe.FoeHealth / PreCombatController.Instance.Foe.FoeMaxHealth);
 
             UIMonsterDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].enemiesList[x].enemyIcon;
 
-            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = CombatController.Instance.Foe.FoeName.ToString();
-            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "PV : " + CombatController.Instance.Foe.FoeHealth.ToString();
-            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "PA : " + CombatController.Instance.Foe.FoePA.ToString();
-            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPM").GetComponent<Text>().text = "PM : " + CombatController.Instance.Foe.FoePM.ToString();
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = PreCombatController.Instance.Foe.FoeName.ToString();
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "PV : " + PreCombatController.Instance.Foe.FoeHealth.ToString();
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "PA : " + PreCombatController.Instance.Foe.FoePA.ToString();
+            UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPM").GetComponent<Text>().text = "PM : " + PreCombatController.Instance.Foe.FoePM.ToString();
     }
 
     public void OrganizeUIBattleOrder(List<GameObject> initiativeSortedList)
@@ -130,6 +142,19 @@ public class CombatUIController : MonoBehaviour {
         for (int i = 0; i < initiativeSortedList.Count; i++)
         {
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + initiativeSortedList[i].transform.parent.name).gameObject.transform.SetAsLastSibling(); 
+        }
+    }
+
+    public static CombatUIController Instance
+    {
+        get
+        {
+            return instance;
+        }
+
+        set
+        {
+            instance = value;
         }
     }
 }

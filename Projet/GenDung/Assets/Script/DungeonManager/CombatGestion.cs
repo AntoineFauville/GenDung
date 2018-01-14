@@ -18,7 +18,7 @@ public class CombatGestion : MonoBehaviour {
 
 	void Update (){
 		if (Input.GetButtonDown ("Cancel")) {
-            CombatController.Instance.CleanEndBattle();
+            PostCombatController.Instance.CleanEndBattle();
 			FinishedCombat ();
 		}
 	}

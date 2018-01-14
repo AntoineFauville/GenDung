@@ -7,28 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class CombatController : MonoBehaviour {
 
-    public CombatUIController combatUIController;
-
     private static CombatController instance;
-    private bool placementDone = false;
-    private bool combatStarted = false;
     private bool spell1 = false, spell2 = false, spell3 = false;
-    private int tileX,tileY , actualSpell = 99;
-    private FoeController foe;
-    private Room foeData;
+    private int actualSpell = 99;
     private UnitController targetUnit;
     private FoeController targetFoe;
     private int monsterNmb, rndNmb;
-    private List<int> monsterPos;
-    private GameObject monster_go, monsterPrefab;
-
-    private List<GameObject> spellCanvasInstantiated = new List<GameObject>();
-
     private MovementRangeObject movRange;
     private List<Vector2> movRangeList = new List<Vector2>();
-
-    private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
-    private List<GameObject> sortedGameobjectInit = new List<GameObject>();
     private int iniTurn = 0;
     private int turnCount = 0;
     private GameObject display;
@@ -48,15 +34,6 @@ public class CombatController : MonoBehaviour {
         instance = this;
     }
 
-    public void Awake()
-    {
-        if (this.GetComponent<CombatUIController>() == null)
-        {
-            this.gameObject.AddComponent<CombatUIController>();
-            combatUIController = this.GetComponent<CombatUIController>();
-        }
-    }
-
     public void Start()
     {
         CreateInstance();
@@ -66,82 +43,27 @@ public class CombatController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
-            monsterNmb = foeData.enemiesList.Length;
-            monsterPos = new List<int>();
-
             GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = true;
-        }
-    }
-
-    /* Code de gestion du placement des personnages Pré-Combat*/
-
-    public void ConfirmCharaPosition(int x,int y)
-    {
-        if (GridController.Instance.Grid.Tiles[x, y].isStarterTile == true)
-        {
-            tileX = x;
-            tileY = y;
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().MoveTo();
-            combatUIController.SwitchStartVisual();
-        }
-        else
-            Debug.Log("Not a Starter Tile, forget about it");
-    }
-
-    public void StartCombatMode()
-    {
-        placementDone = true;
-
-        if (placementDone && !combatStarted)
-        {
-            combatStarted = true;
-            GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().UpdateTileUI();
-            GridController.Instance.Unit.ResetMove();
-            GridController.Instance.Unit.ResetAction();
-
-            for (int i = 0; i < GridController.Instance.SpawnTilesList.Count; i++) // Update de l'UI des Tiles servant de Zones de placement pré-combat.
-            {
-                GridController.Instance.Grid.Tiles[Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].x), Mathf.RoundToInt(GridController.Instance.SpawnTilesList[i].y)].state = Tile.TileState.Neutral;
-                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + GridController.Instance.SpawnTilesList[i].x + "_" + GridController.Instance.SpawnTilesList[i].y).GetComponent<TileController>().UpdateTileUI();
-            }
-
-            combatUIController.SwitchStartVisual();
-
-            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
-            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1f;
-
-            CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
-            SetMovementRangeOnGrid();
         }
     }
 
     public void NextEntityTurn() //Fin de Tour Réel
     {
-        /* Old NextTurn() */
         GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;
         GameObject.Find("ImageFondPassYourTurn").GetComponent<Image>().enabled = false;
-        //GameObject.Find("ButtonPassYourTurn").GetComponent<Image>().color = Color.grey;
-        //GameObject.Find("ButtonPassYourTurn").GetComponent<Button>().interactable = false;
 
         Debug.Log("End of Turn: " + turnCount);
 
-        /* */
-
-
         // Désactiver Display infos Joueur.
-        // Ajouter Temps Ennemi (déplacement, actions, ...)
-        // your Turn Panel Ennemie/Player displayed + ajouter "temps mort" (before action is possible).
-        // Automatic "Player Turn " temporaire.
 
-        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
+        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 0f);
         // Désactiver condition de déplacement du FoeTarget
         if (targetFoe != null)
             targetFoe.State = FoeController.foeState.Neutral;
 
         /* Detection tour character + reset */
-        if (iniTurn >= (sortedGameobjectInit.Count - 1))
+        if (iniTurn >= (PreCombatController.Instance.SortedGameobjectInit.Count - 1))
         {
             iniTurn = 0;
             turnCount++;
@@ -154,7 +76,7 @@ public class CombatController : MonoBehaviour {
 
             if (targetFoe != null)
             {
-                for (int m = 0; m < foeData.enemiesList.Length; m++)
+                for (int m = 0; m < PreCombatController.Instance.FoeData.enemiesList.Length; m++)
                 {
                     try
                     {
@@ -165,8 +87,7 @@ public class CombatController : MonoBehaviour {
                     catch
                     {
                         Debug.Log("Monster number :" + m + "is dead");
-                    }
-                    
+                    } 
                 }
             }
         }
@@ -174,19 +95,19 @@ public class CombatController : MonoBehaviour {
             iniTurn++;
         /* */
 
-        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + sortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
+        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 1f);
 
 
         // Detection si Player ou Ennemi
-        if (sortedGameobjectInit[iniTurn].transform.parent.name.Contains("Foe"))
+        if (PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name.Contains("Foe"))
         {
             turn = turnType.IA;
-            targetFoe = sortedGameobjectInit[iniTurn].GetComponent<FoeController>();
+            targetFoe = PreCombatController.Instance.SortedGameobjectInit[iniTurn].GetComponent<FoeController>();
             //targetFoe.State = FoeController.foeState.Movement; // Active le déplacement de l'ennemi
 
 
-            combatUIController.MonsterTurnButton();
+            CombatUIController.Instance.MonsterTurnButton();
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
@@ -211,10 +132,10 @@ public class CombatController : MonoBehaviour {
         else
         {
             turn = turnType.Player;
-            targetUnit = sortedGameobjectInit[iniTurn].GetComponent<UnitController>();
+            targetUnit = PreCombatController.Instance.SortedGameobjectInit[iniTurn].GetComponent<UnitController>();
             StartCoroutine(WaitForEndTurn());
 
-            combatUIController.PlayerTurnButton();
+            CombatUIController.Instance.PlayerTurnButton();
 
             GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             /* */
@@ -222,57 +143,30 @@ public class CombatController : MonoBehaviour {
 
     }
 
-    public void SpellUsable(float rmnPA)
+    public void SpellUsable(float rmnPA) // TODO: A régler plus tard ( Complexification Système stats)
     {
         for (int i = 1; i < 4; i++)
         {
             if(rmnPA < targetUnit.PlayerSpells[i-1].spellCost)
             {
-                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_"+i).GetComponent<Button>().interactable = false;
+                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_"+ i).GetComponent<Button>().interactable = false;
                 GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_" + i).GetComponent<CanvasGroup>().alpha = 0.5f;
             }
         }
     }
 
-    /* Code de gestion de l'Initiative des personnages */
-
-    public void GatherCharacterInitiative()
-    {
-        // On récupére l'initiative des personnages du Joueur ainsi que celle des ennemis.
-        // On stocke ces informations; Pourquoi pas dans une Liste d'objets spécifiques composés du GameObject du personnages (Joueur ou monstres) ainsi que de la valeur de son initiative.
-        // Ainsi, on récupére le gameobject et on l'utilise pour le reste du code ( Voir Dictionary de Unity si réalisable).
-
-        for (int p = 0; p < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; p++) // On parcourt la liste des Personnages du Joueur.
-        {
-            initiativeList.Add(GameObject.Find("Character_" + p).transform.Find("Unit").gameObject, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative);
-        }
-
-        for (int m = 0; m < foeData.enemiesList.Length; m++)
-        {
-            initiativeList.Add(GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject, GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative);
-        }
-
-        sortedGameobjectInit = initiativeList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
-
-        /*for (int i = 0; i < sortedGameobjectInit.Count; i++)
-        {
-            Debug.Log(sortedGameobjectInit[i].transform.parent.name);
-        }
-        */  
-    }
-
     public void RemoveDeadCharacter(string s)
     {
-        if (iniTurn == (sortedGameobjectInit.Count - 1))
+        if (iniTurn == (PreCombatController.Instance.SortedGameobjectInit.Count - 1))
             iniTurn--;
 
-        for (int i = 0; i < sortedGameobjectInit.Count; i++)
+        for (int i = 0; i < PreCombatController.Instance.SortedGameobjectInit.Count; i++)
         {
-            Debug.Log(sortedGameobjectInit[i].transform.parent.name);
-            if (sortedGameobjectInit[i].transform.parent.name == s)
+            Debug.Log(PreCombatController.Instance.SortedGameobjectInit[i].transform.parent.name);
+            if (PreCombatController.Instance.SortedGameobjectInit[i].transform.parent.name == s)
             {
-                Debug.Log(sortedGameobjectInit[i].transform.parent.name + "Has been Removed");
-                sortedGameobjectInit.RemoveAt(i);
+                Debug.Log(PreCombatController.Instance.SortedGameobjectInit[i].transform.parent.name + "Has been Removed");
+                PreCombatController.Instance.SortedGameobjectInit.RemoveAt(i);
             }
             else
                 Debug.Log("Sodomite Allemand!!!");
@@ -282,7 +176,7 @@ public class CombatController : MonoBehaviour {
     /* Code de gestion du Mode Attaque ou Mode Déplacement */
     public void SetMovementRangeOnGrid()
     {
-        if(targetUnit != null && targetUnit.remainingMovement != 0 && combatStarted)
+        if(targetUnit != null && targetUnit.remainingMovement != 0 && PreCombatController.Instance.CombatStarted)
         {
             movRange = Resources.Load<MovementRangeObject>("MovementRange/MovementRange_0" + targetUnit.remainingMovement);
 
@@ -473,62 +367,6 @@ public class CombatController : MonoBehaviour {
         //actualSpell = 99;
     }
 
-    /* Code de gestion du début de combat */
-
-    public void CombatBeginning()
-    {
-        SpawnMonster(); // Le combat se lance; 1 ére étape: Spawn du(des) monstre(s).
-        GatherCharacterInitiative();
-        combatUIController.OrganizeUIBattleOrder(sortedGameobjectInit);
-        NextEntityTurn();
-    }
-
-    public void SpawnMonster()
-    {
-        monsterPrefab = Resources.Load("Prefab/Foe") as GameObject;
-        combatUIController.CreatePlayerUIBattleOrder();
-
-        for (int x = 0; x < foeData.enemiesList.Length; x++)
-        {
-            /* Instantiate this foe */
-            monster_go = Instantiate(monsterPrefab);
-            monster_go.name = "Foe_" + x;
-            monster_go.transform.Find("Unit/Cube/Image").GetComponent<Animator>().runtimeAnimatorController = foeData.enemiesList[x].enemyAnimator;
-            foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
-            /* */
-            /* Give Foe intels for this foe */
-            foe.FoeID = x;
-            foe.FoeName = foeData.enemiesList[x].enemyName;
-            foe.FoeHealth = foeData.enemiesList[x].health;
-            foe.FoeMaxHealth = foeData.enemiesList[x].health;
-            foe.FoePA = foeData.enemiesList[x].pa;
-            foe.FoePM = foeData.enemiesList[x].pm;
-            foe.FoeAtk = foeData.enemiesList[x].atk;
-            foe.FoeInitiative = foeData.enemiesList[x].initiative;
-            foe.Spell = foeData.enemiesList[x].enemyRange;
-            /* */
-            combatUIController.CreateMonsterUIBattleOrder(x);
-            /* Get some random number to choose a random position in the List and place the spawn monster at this position */
-            int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
-            rndNmb = Random.Range(0, spawnMonsterNumber);
-            while (monsterPos.Contains(rndNmb))
-            {
-                rndNmb = Random.Range(0, spawnMonsterNumber);
-                if (rndNmb == spawnMonsterNumber)
-                    rndNmb = rndNmb - 1;
-            }
-
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
-            foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
-            foe.TileX = Mathf.RoundToInt(tile.x);
-            foe.TileY = Mathf.RoundToInt(tile.y);
-            foe.Pos = tile;
-            foe.SetTileAsOccupied();
-            monsterPos.Add(rndNmb);
-            /* */
-        }
-    }
-
     /* Code de gestion du Combat */
 
     public void UpdateUI(int id)
@@ -544,48 +382,7 @@ public class CombatController : MonoBehaviour {
             StartCoroutine(WaitBeforeEndBattle());
         }
     }
-
     /**/
-
-    /* Code de gestion de fin de combat */
-
-    public void CleanEndBattle()
-    {
-        // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
-        for (int m = 0; m < foeData.enemiesList.Length; m++)
-        {
-            if (GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m) != null)
-                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m).gameObject);
-
-            if (GameObject.Find("Foe_" + m) != null)
-                Destroy(GameObject.Find("Foe_" + m).gameObject);
-        }
-
-        for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)
-        {
-            if(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j) != null)
-                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j).gameObject);
-
-            if (GameObject.Find("Character_" + j) != null)
-                Destroy(GameObject.Find("Character_" + j).gameObject);
-
-        }
-        // Clean 'SpellCanvas(Clone)' from Hierarchy
-
-        for (int s = 0; s < spellCanvasInstantiated.Count; s++)
-        {
-            Destroy(spellCanvasInstantiated[s]);
-        }
-    }
-
-    public void EndBattle()
-    {
-        CleanEndBattle();
-        combatUIController.SwitchStartVisual();
-
-        GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
-    }
-
     /*IEnumerator Methods*/
 
     public IEnumerator WaitForAttackToEnd(int i)
@@ -597,15 +394,15 @@ public class CombatController : MonoBehaviour {
 
     public IEnumerator WaitBeforeEndBattle()
     {
-        yield return new WaitForSeconds(2.5f);
-        EndBattle();
+        yield return new WaitForSeconds(1f);
+        PostCombatController.Instance.EndBattle();
     }
 
     public IEnumerator WaitForEndTurn()
     {
         Debug.Log("Simulating Foe Turn");
         GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
-        GameObject.Find("TextYourTurn").GetComponent<Text>().text = sortedGameobjectInit[iniTurn].transform.parent.name;
+        GameObject.Find("TextYourTurn").GetComponent<Text>().text = PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name;
         yield return new WaitForSeconds(2f);
 
         //ajout de l'animation de ton tour
@@ -619,7 +416,7 @@ public class CombatController : MonoBehaviour {
     {
         Debug.Log("Simulating Foe Turn");
         GameObject.Find("YourTurnPanel/Panel").GetComponent<Animator>().Play("yourturngo");
-        GameObject.Find("TextYourTurn").GetComponent<Text>().text = sortedGameobjectInit[iniTurn].transform.parent.name;
+        GameObject.Find("TextYourTurn").GetComponent<Text>().text = PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name;
         yield return new WaitForSeconds(2f);
 
         //ajout de l'animation de ton tour
@@ -641,31 +438,6 @@ public class CombatController : MonoBehaviour {
         set
         {
             instance = value;
-        }
-    }
-
-    public bool PlacementDone
-    {
-        get
-        {
-            return placementDone;
-        }
-
-        set
-        {
-            placementDone = value;
-        }
-    }
-    public bool CombatStarted
-    {
-        get
-        {
-            return combatStarted;
-        }
-
-        set
-        {
-            combatStarted = value;
         }
     }
     public int MonsterNmb
@@ -713,18 +485,6 @@ public class CombatController : MonoBehaviour {
             actualSpell = value;
         }
     }
-    public List<GameObject> SpellCanvasInstantiated
-    {
-        get
-        {
-            return spellCanvasInstantiated;
-        }
-        set
-        {
-            spellCanvasInstantiated = value;
-        }
-    }
-
     public combatState ActualCombatState
     {
         get
@@ -746,17 +506,6 @@ public class CombatController : MonoBehaviour {
         set
         {
             turn = value;
-        }
-    }
-    public FoeController Foe
-    {
-        get
-        {
-            return foe;
-        }
-        set
-        {
-            foe = value;
         }
     }
     /**/

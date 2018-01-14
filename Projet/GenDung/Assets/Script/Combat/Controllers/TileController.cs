@@ -30,11 +30,11 @@ public class TileController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name != "Editor")
         {
 
-            if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Movement && !clicked && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement &&  CombatController.Instance.Turn == CombatController.turnType.Player)
+            if (Input.GetMouseButtonUp(0) && PreCombatController.Instance.PlacementDone && PreCombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Movement && !clicked && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Floor && GridController.Instance.Grid.Tiles[x,y].state == Tile.TileState.Movement &&  CombatController.Instance.Turn == CombatController.turnType.Player)
             {
                 MoveTo();
             }
-            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && isInRange && !clicked && CombatController.Instance.Turn == CombatController.turnType.Player)
+            else if (Input.GetMouseButtonUp(0) && PreCombatController.Instance.PlacementDone && PreCombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && isInRange && !clicked && CombatController.Instance.Turn == CombatController.turnType.Player)
             {
                 if (monsterOnTile != null && GridController.Instance.Grid.Tiles[x, y].Type == Tile.TileType.Occupied && CombatController.Instance.TargetUnit.CheckPA())
                 {
@@ -49,16 +49,16 @@ public class TileController : MonoBehaviour {
                 CombatController.Instance.SetTileSpellIndicator();
                 CombatController.Instance.SetMovementRangeOnGrid();
             }
-            else if (Input.GetMouseButtonUp(0) && CombatController.Instance.PlacementDone && CombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && !isInRange && !clicked)
+            else if (Input.GetMouseButtonUp(0) && PreCombatController.Instance.PlacementDone && PreCombatController.Instance.CombatStarted && CombatController.Instance.ActualCombatState == CombatController.combatState.Attack && !isInRange && !clicked)
             {
                 CombatController.Instance.CleanRangeAfterAttack();
                 CombatController.Instance.ActualCombatState = CombatController.combatState.Movement;
             }
-            else if (!CombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
+            else if (!PreCombatController.Instance.PlacementDone) // Check si le placement Pré-Combat du personnage est deja fait.
             {
                 if (Input.GetMouseButtonUp(0) && CheckSpawnType()) // Vérifie le click gauche ainsi que le fait que la Tile doit être de type Spawn Point.
                 {
-                    CombatController.Instance.ConfirmCharaPosition(x, y);
+                    PreCombatController.Instance.ConfirmCharaPosition(x, y);
                 }
             }
         }
@@ -171,7 +171,7 @@ public class TileController : MonoBehaviour {
 
     public bool CheckSpawnType()
     {
-        if (GridController.Instance.Grid.Tiles[x, y].isStarterTile && CombatController.Instance.PlacementDone == false)
+        if (GridController.Instance.Grid.Tiles[x, y].isStarterTile && PreCombatController.Instance.PlacementDone == false)
             return true;
         else
             return false;        
