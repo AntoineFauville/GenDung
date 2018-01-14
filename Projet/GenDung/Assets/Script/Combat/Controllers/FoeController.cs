@@ -60,6 +60,8 @@ public class FoeController : MonoBehaviour {
         {
             targetTileX = _x;
             targetTileY = _y;
+
+            state = FoeController.foeState.Movement;
         }
         else
         {
@@ -67,6 +69,11 @@ public class FoeController : MonoBehaviour {
             {
                 Debug.Log("Position is good; Attacking Target");
                 charaTarget.TakeDamage(foeAtk);
+
+                targetTileX = tileX; // set Target Position to actual Position.
+                targetTileY = tileY;// set Target Position to actual Position.
+
+                state = FoeController.foeState.Movement;
             }
             else
             {

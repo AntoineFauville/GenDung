@@ -213,10 +213,12 @@ public class CombatController : MonoBehaviour {
                 targetFoe.SetTargetIntel(tempTarget.TileX, tempTarget.TileY);
             }
 
-            targetFoe.CalculatePath();
-            /* */
-
-            StartCoroutine(WaitForEnemyEndTurn());
+            if (targetFoe.State == FoeController.foeState.Movement)
+            {
+                targetFoe.CalculatePath();
+                StartCoroutine(WaitForEnemyEndTurn());
+            }
+                
         }
         else
         {
