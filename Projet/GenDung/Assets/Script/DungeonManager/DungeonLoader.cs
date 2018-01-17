@@ -31,14 +31,8 @@ public class DungeonLoader : MonoBehaviour {
 	doorinstantiated, //la porte instantiée
 	characterUI; //instaniated character
 
-	RoomObject
-	roomObject;
-
 	LogGestionTool
 	logT;
-
-	Door
-	door;
 
 	public RoomList[] 
 	roomListDungeon; // this are the dungeons, 
@@ -166,7 +160,7 @@ public class DungeonLoader : MonoBehaviour {
 			if (!doOnceCoroutine)
             {
 				doOnceCoroutine = true;
-				//StartCoroutine ("WaitLoading");
+				StartCoroutine ("WaitLoading");
 			}
 		}
 	}
@@ -235,7 +229,7 @@ public class DungeonLoader : MonoBehaviour {
 			isUIinstantiated = false;
 			loadbutton2 = false;
 
-            dungeonOnTheMap = GameObject.FindGameObjectWithTag("DungeonButtonMap").GetComponent<DungeonListOnMap>().dungeonOnTheMapList;
+            //dungeonOnTheMap = GameObject.FindGameObjectWithTag("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList;
 
         }
 

@@ -14,7 +14,9 @@ public class DungeonListOnMap : MonoBehaviour {
 
 	public GameObject[] dungeonOnTheMapList;
 
-	public void setIndex (int a) {
-		indexLocal = a;
+	public void setIndex (int a)
+    {
+        GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex = a;
+        //indexLocal = a;
 	}
 }

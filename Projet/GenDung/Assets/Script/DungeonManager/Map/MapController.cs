@@ -89,7 +89,7 @@ public class MapController : MonoBehaviour {
         dungeonLoader.dungeonIndex = GameObject.FindGameObjectWithTag("DungeonButtonMap").GetComponent<DungeonListOnMap>().indexLocal;
 
         //ajoute au bouton actuel qui correspond à l'index sur la carte le fait de charger la salle donjon
-        dungeonLoader.dungeonOnTheMap[dungeonLoader.dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(LoadSceneDungeon); // Euh .... What ?!!?
+        dungeonLoader.dungeonOnTheMap[dungeonLoader.dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(LoadSceneDungeon);
         //assure que les salles sont bien unlock
         dungeonLoader.roomIsLocked = false;
         //reinitialise le systeme de check de salle
