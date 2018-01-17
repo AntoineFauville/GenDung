@@ -43,7 +43,7 @@ public class DungeonLoader : MonoBehaviour {
     public int
     index, //index de la salle connecté à actualIndex.
     actualIndex; // index de la salle actuelle.
-	public int dungeonIndex;//index pour le donjon.
+	
 
     //all int for upgrade temp
     public int
@@ -266,17 +266,6 @@ public class DungeonLoader : MonoBehaviour {
         set
         {
             doOnceAllRelatedToUpgradeTavernPanel = value;
-        }
-    }
-    public int DungeonIndex
-    {
-        get
-        {
-            return dungeonIndex;
-        }
-        set
-        {
-            dungeonIndex = value;
         }
     }
     public GameObject CharacterUI

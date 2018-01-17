@@ -10,13 +10,10 @@ public class DungeonListOnMap : MonoBehaviour {
 	//2. assigner dans le pointerEnter le gameobject PanelDonjonListMachin
 	//3. lui donner en parametre un nouvel index
 
-	public int indexLocal;
-
 	public GameObject[] dungeonOnTheMapList;
 
 	public void setIndex (int a)
     {
-        GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonIndex = a;
-        //indexLocal = a;
+        MapController.Instance.ChangeDungeon(a);
 	}
 }
