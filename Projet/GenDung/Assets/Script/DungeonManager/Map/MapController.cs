@@ -112,7 +112,15 @@ public class MapController : MonoBehaviour {
         //----------Dungeon Unlocking Feature ------------//
         if (dungeonLoader.dungeonUnlockedIndex <= dungeonLoader.dungeonOnTheMap.Length)
         {
+            for (int i = (dungeonLoader.dungeonOnTheMap.Length -1); i > (dungeonLoader.dungeonUnlockedIndex -1); i--)
+            {
+                //Met faux tous les donjons non débloqué
+                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
+                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = false;
+                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
+            }
 
+            /*
             for (int i = 0; i < dungeonLoader.dungeonOnTheMap.Length; i++)
             {
                 //Met faux tous les donjons non débloqué
@@ -149,6 +157,7 @@ public class MapController : MonoBehaviour {
                     dungeonLoader.dungeonOnTheMap[i + 1].transform.Find("Road").GetComponent<Image>().enabled = true;
                 }
             }
+            */
         }
     }
 
