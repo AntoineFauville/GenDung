@@ -116,24 +116,33 @@ public class DungeonLoader : MonoBehaviour {
 		//permet de savoir quel nom de scene
 		activeScene = SceneManager.GetActiveScene ().name;
 
-		//attendre que la scene soit chargée
-		if (!sceneLoaded)
+        //attendre que la scene soit chargée
+        if (sceneLoaded)
         {
             //-----------Dungeon gestion scene-------------//
             if (activeScene == "Dungeon")
             {
+                Instantiate(Resources.Load("UI_Interface/CanvasUIDungeon")); // Instantiate Canvas when we click on Button.
+                sceneLoaded = false;
+
                 dungeonController.Dungeon();
 			}		
 
 			//-----------Map gestion scene-------------//
 			if (activeScene == "Map")
             {
+                Instantiate(Resources.Load("UI_Interface/CanvasCarte")); // Instantiate Canvas when we click on Button.
+                sceneLoaded = false;
+
                 mapController.Map();
             }
 
             //--------Taverne--------//
             if (activeScene == "Tavern")
             {
+                Instantiate(Resources.Load("UI_Interface/CanvasTavern")); // Instantiate Canvas when we click on Button.
+                sceneLoaded = false;
+
                 tavernController.Tavern();
             }
         }
@@ -144,7 +153,7 @@ public class DungeonLoader : MonoBehaviour {
 			if (!doOnceCoroutine)
             {
 				doOnceCoroutine = true;
-				StartCoroutine ("WaitLoading");
+				//StartCoroutine ("WaitLoading");
 			}
 		}
 	}
@@ -201,7 +210,7 @@ public class DungeonLoader : MonoBehaviour {
 
 		if (activeScene == "Map")
         {
-			dungeonOnTheMap = GameObject.FindGameObjectWithTag ("DungeonButtonMap").GetComponent<DungeonListOnMap> ().dungeonOnTheMapList;
+			
 
 			//reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
 			previousScene = "";
@@ -212,6 +221,8 @@ public class DungeonLoader : MonoBehaviour {
 			loadbutton = false;
 			isUIinstantiated = false;
 			loadbutton2 = false;
+
+            dungeonOnTheMap = GameObject.FindGameObjectWithTag("DungeonButtonMap").GetComponent<DungeonListOnMap>().dungeonOnTheMapList;
 
         }
 

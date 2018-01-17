@@ -83,11 +83,13 @@ public class MapController : MonoBehaviour {
             this.transform.GetComponent<CurrencyGestion>().SaveMoney();
         }
 
+        dungeonLoader.dungeonOnTheMap = GameObject.Find("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList; // Ajouter par mes soins ^^
+
         //va rechercher dans la liste de donjon dans le prefab de carte l'index qui permet de savoir en passant la souris dans quel donjon on va entrer
         dungeonLoader.dungeonIndex = GameObject.FindGameObjectWithTag("DungeonButtonMap").GetComponent<DungeonListOnMap>().indexLocal;
 
         //ajoute au bouton actuel qui correspond à l'index sur la carte le fait de charger la salle donjon
-        dungeonLoader.dungeonOnTheMap[dungeonLoader.dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(LoadSceneDungeon);
+        dungeonLoader.dungeonOnTheMap[dungeonLoader.dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(LoadSceneDungeon); // Euh .... What ?!!?
         //assure que les salles sont bien unlock
         dungeonLoader.roomIsLocked = false;
         //reinitialise le systeme de check de salle

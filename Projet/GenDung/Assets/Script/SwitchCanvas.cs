@@ -38,6 +38,7 @@ public class SwitchCanvas : MonoBehaviour {
 		}
 	}
 
+    /*
 	void Update ()
     {
 		activeScene = SceneManager.GetActiveScene ().name;
@@ -77,4 +78,5 @@ public class SwitchCanvas : MonoBehaviour {
 			previousScene = activeScene;
 		}
 	}
+    */
 }
