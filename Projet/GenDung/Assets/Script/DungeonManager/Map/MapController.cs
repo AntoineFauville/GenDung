@@ -118,6 +118,19 @@ public class MapController : MonoBehaviour {
                 dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
                 dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = false;
                 dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
+
+                //---- Grisé le donjon suivant------//
+                if (i == dungeonLoader.dungeonUnlockedIndex)
+                    if (i < dungeonLoader.dungeonOnTheMap.Length)
+                    {
+                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
+                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().interactable = false;
+                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = true;
+                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().image.color = Color.grey;
+                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
+                        dungeonLoader.dungeonOnTheMap[i].transform.Find("Road").GetComponent<Image>().enabled = true;
+                    }
+
             }
 
             /*

@@ -31,5 +31,6 @@ public class CurrencyGestion : MonoBehaviour {
     {
         localMoney = 0;
         GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney = 0;
+        DungeonLoader.Instance.dungeonUnlockedIndex = 1;
     }
 }
