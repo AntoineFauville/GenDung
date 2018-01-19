@@ -11,6 +11,7 @@ public class MapController : MonoBehaviour {
     private DungeonLoader dungeonLoader;
 
     private int dungeonIndex;//index pour le donjon.
+    private GameObject[] dungeonOnTheMap;//list des boutons des donjons sur la carte
 
     void CreateInstance()
     {
@@ -98,10 +99,7 @@ public class MapController : MonoBehaviour {
             this.transform.GetComponent<CurrencyGestion>().SaveMoney();
         }
 
-        dungeonLoader.dungeonOnTheMap = GameObject.Find("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList; // Ajouter par mes soins ^^
-
-        //va rechercher dans la liste de donjon dans le prefab de carte l'index qui permet de savoir en passant la souris dans quel donjon on va entrer
-        //dungeonIndex = GameObject.FindGameObjectWithTag("DungeonButtonMap").GetComponent<DungeonListOnMap>().indexLocal;
+        dungeonOnTheMap = GameObject.Find("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList; // Ajouter par mes soins ^^
 
         //assure que les salles sont bien unlock
         dungeonLoader.roomIsLocked = false;
@@ -110,67 +108,27 @@ public class MapController : MonoBehaviour {
 
 
         //----------Dungeon Unlocking Feature ------------//
-        if (dungeonLoader.dungeonUnlockedIndex <= dungeonLoader.dungeonOnTheMap.Length)
+        if (dungeonLoader.dungeonUnlockedIndex <= dungeonOnTheMap.Length)
         {
-            for (int i = (dungeonLoader.dungeonOnTheMap.Length -1); i > (dungeonLoader.dungeonUnlockedIndex -1); i--)
+            for (int i = (dungeonOnTheMap.Length -1); i > (dungeonLoader.dungeonUnlockedIndex -1); i--)
             {
                 //Met faux tous les donjons non débloqué
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = false;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
+                dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
+                dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = false;
+                dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
 
                 //---- Grisé le donjon suivant------//
                 if (i == dungeonLoader.dungeonUnlockedIndex)
-                    if (i < dungeonLoader.dungeonOnTheMap.Length)
+                    if (i < dungeonOnTheMap.Length)
                     {
-                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
-                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().interactable = false;
-                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = true;
-                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().image.color = Color.grey;
-                        dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
-                        dungeonLoader.dungeonOnTheMap[i].transform.Find("Road").GetComponent<Image>().enabled = true;
+                        dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
+                        dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().interactable = false;
+                        dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = true;
+                        dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().image.color = Color.grey;
+                        dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
+                        dungeonOnTheMap[i].transform.Find("Road").GetComponent<Image>().enabled = true;
                     }
-
             }
-
-            /*
-            for (int i = 0; i < dungeonLoader.dungeonOnTheMap.Length; i++)
-            {
-                //Met faux tous les donjons non débloqué
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = false;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
-                if (i > 0)
-                {
-                    dungeonLoader.dungeonOnTheMap[i].transform.Find("Road").GetComponent<Image>().enabled = false;
-                }
-            }
-            for (int i = 0; i < dungeonLoader.dungeonUnlockedIndex; i++)
-            {
-                //Met vrai tous les donjons débloqué
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().enabled = true;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().interactable = true;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Image>().enabled = true;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Button>().image.color = Color.white;
-                dungeonLoader.dungeonOnTheMap[i].transform.Find("DungeonButton").GetComponent<Animator>().enabled = true;
-
-                if (i > 0)
-                {
-                    dungeonLoader.dungeonOnTheMap[i].transform.Find("Road").GetComponent<Image>().enabled = true;
-                }
-
-                //---- Grisé le donjon suivant------//
-                if (i + 1 < dungeonLoader.dungeonOnTheMap.Length)
-                {
-                    dungeonLoader.dungeonOnTheMap[i + 1].transform.Find("DungeonButton").GetComponent<Button>().enabled = false;
-                    dungeonLoader.dungeonOnTheMap[i + 1].transform.Find("DungeonButton").GetComponent<Button>().interactable = false;
-                    dungeonLoader.dungeonOnTheMap[i + 1].transform.Find("DungeonButton").GetComponent<Image>().enabled = true;
-                    dungeonLoader.dungeonOnTheMap[i + 1].transform.Find("DungeonButton").GetComponent<Button>().image.color = Color.grey;
-                    dungeonLoader.dungeonOnTheMap[i + 1].transform.Find("DungeonButton").GetComponent<Animator>().enabled = false;
-                    dungeonLoader.dungeonOnTheMap[i + 1].transform.Find("Road").GetComponent<Image>().enabled = true;
-                }
-            }
-            */
         }
     }
 
@@ -178,7 +136,7 @@ public class MapController : MonoBehaviour {
     {
         dungeonIndex = hind;
         //ajoute au bouton actuel qui correspond à l'index sur la carte le fait de charger la salle donjon
-        dungeonLoader.dungeonOnTheMap[dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(LoadSceneDungeon);
+        dungeonOnTheMap[dungeonIndex].transform.Find("DungeonButton").GetComponent<Button>().onClick.AddListener(LoadSceneDungeon);
     }
 
     //load the dungeon scene
@@ -197,7 +155,7 @@ public class MapController : MonoBehaviour {
 
     public void UnlockNextDungeon()
     {
-        if (dungeonLoader.dungeonUnlockedIndex < dungeonLoader.dungeonOnTheMap.Length)
+        if (dungeonLoader.dungeonUnlockedIndex < dungeonOnTheMap.Length)
         {
             dungeonLoader.dungeonUnlockedIndex++;
         }
