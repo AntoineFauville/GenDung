@@ -16,7 +16,6 @@ public class DungeonLoader : MonoBehaviour {
 
 	public string 
 	activeScene, //check active scene
-	previousScene, //previous scene
 	roomType; // just a checker to see what room is the actual room that we are using.
 
 	Animator
@@ -34,8 +33,10 @@ public class DungeonLoader : MonoBehaviour {
 	LogGestionTool
 	logT;
 
+    public DungeonList dungeonList;
+
 	public RoomList[] 
-	roomListDungeon; // this are the dungeons, 
+	roomListDungeon; //  
 
     public int
     index, //index de la salle connecté à actualIndex.
@@ -59,7 +60,6 @@ public class DungeonLoader : MonoBehaviour {
     loadbutton, //pour ne charger qu'une fois la scene donjon
     loadbutton2,    //pour ne charger qu'une fois la scene map
     loadOnceDoor,   //pour ne charger qu'une fois la porte
-    roomIsLocked,   //permet de verouiller une porte
     isUIinstantiated,   //verifier dans le donjon si l'interface a bien été instanciée
     doOnceCoroutine,    //lance la coroutine qu'une fois
     sceneLoaded,    //attendre que la scene est bien chargé
@@ -116,7 +116,6 @@ public class DungeonLoader : MonoBehaviour {
             //-----------Main Menu gestion scene-------------//
             if (activeScene == "MainMenu")
             { 
-                if (true)
                 if (GameObject.Find("CanvasMainMenu(Clone)") == null)
                 {
                     Instantiate(Resources.Load("UI_Interface/CanvasMainMenu")); // Instantiate Canvas when we click on Button.
@@ -209,7 +208,7 @@ public class DungeonLoader : MonoBehaviour {
 		//reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
 		if (activeScene == "Dungeon")
         {
-			previousScene = "";
+			//previousScene = "";
 		}
 
 		if (activeScene == "Map")
@@ -217,7 +216,7 @@ public class DungeonLoader : MonoBehaviour {
 			
 
 			//reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
-			previousScene = "";
+			//previousScene = "";
 
 			//réinitialise les données
 			loadOnce3 = false;

@@ -102,9 +102,7 @@ public class MapController : MonoBehaviour {
         dungeonOnTheMap = GameObject.Find("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList; // Ajouter par mes soins ^^
 
         //assure que les salles sont bien unlock
-        dungeonLoader.roomIsLocked = false;
-        //reinitialise le systeme de check de salle
-        dungeonLoader.previousScene = null;
+        DungeonController.Instance.RoomIsLocked = false;
 
 
         //----------Dungeon Unlocking Feature ------------//

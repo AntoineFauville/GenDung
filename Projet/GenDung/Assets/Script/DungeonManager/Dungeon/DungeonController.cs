@@ -5,11 +5,24 @@ using UnityEngine.UI;
 
 public class DungeonController : MonoBehaviour {
 
+    private static DungeonController instance;
+
     private DungeonLoader dungeonLoader;
     private MapController mapController;
+    private bool roomIsLocked;  //permet de verouiller une porte
+
+    void CreateInstance()
+    {
+        if (instance != null)
+        {
+            Debug.Log("There should never have two DungeonLoader.");
+        }
+        instance = this;
+    }
 
     void Start ()
     {
+        CreateInstance();
         dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
         mapController = GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>();
     }
@@ -39,11 +52,9 @@ public class DungeonController : MonoBehaviour {
             GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[dungeonLoader.actualPlayer].ActionPoints_PA.ToString();
             GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[dungeonLoader.actualPlayer].MovementPoints_PM.ToString();
         }
-        //permet de charger la salle room si on vient de changer de scene
-        if (dungeonLoader.previousScene != dungeonLoader.activeScene)
-        {
-            LoadRoom ();
-        }
+
+        //permet de charger la salle room
+        LoadRoom ();
     }
 
     public void StoryLoadingTime()
@@ -79,7 +90,7 @@ public class DungeonController : MonoBehaviour {
         if (!dungeonLoader.loadOnce3)
         {
             //si la salle n'est pas vérouillée
-            if (!dungeonLoader.roomIsLocked)
+            if (!roomIsLocked)
             {
                 dungeonLoader.loadOnce3 = true;
 
@@ -188,7 +199,7 @@ public class DungeonController : MonoBehaviour {
         //--------CHEST---------//
         if (dungeonLoader.roomType == "chest")
         {
-            dungeonLoader.roomIsLocked = true;
+            roomIsLocked = true;
 
             DungeonLoader.Instance.LogT.AddLogLine("Chest room ! Where could it be?");
 
@@ -206,7 +217,7 @@ public class DungeonController : MonoBehaviour {
         //--------FIGHT---------//
         if (dungeonLoader.roomType == "fight")
         {
-            dungeonLoader.roomIsLocked = true;
+            roomIsLocked = true;
 
             DungeonLoader.Instance.LogT.AddLogLine("Fight room !");
 
@@ -231,7 +242,7 @@ public class DungeonController : MonoBehaviour {
         //--------BOSS---------//
         if (dungeonLoader.roomType == "boss")
         {
-            dungeonLoader.roomIsLocked = true;
+            roomIsLocked = true;
 
             DungeonLoader.Instance.LogT.AddLogLine("DEBUG ! NO BOSS ROOM ALLOWED");
 
@@ -262,7 +273,7 @@ public class DungeonController : MonoBehaviour {
 
     public void UnlockRoom()
     {
-        dungeonLoader.roomIsLocked = false;
+        roomIsLocked = false;
         GameObject.FindGameObjectWithTag("canvasInDungeon").SetActive(false);
     }
 
@@ -326,5 +337,29 @@ public class DungeonController : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.03f);
         dungeonLoader.loadOnce3 = false;
+    }
+
+    /* Accessors Method */
+    public static DungeonController Instance
+    {
+        get
+        {
+            return instance;
+        }
+        set
+        {
+            instance = value;
+        }
+    }
+    public bool RoomIsLocked
+    {
+        get
+        {
+            return roomIsLocked; 
+        }
+        set
+        {
+            roomIsLocked = value;
+        }
     }
 }
