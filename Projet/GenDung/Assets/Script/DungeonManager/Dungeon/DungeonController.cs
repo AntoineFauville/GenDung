@@ -60,7 +60,7 @@ public class DungeonController : MonoBehaviour {
     public void StoryLoadingTime()
     {
         Instantiate(Resources.Load("UI_Interface/CanvasStoryGetIntoDungeon"));
-        GameObject.Find("EnterD_Text").GetComponent<Text>().text = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].dungeonStory;
+        GameObject.Find("EnterD_Text").GetComponent<Text>().text = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.dungeonStory;
     }
 
     //load first time room function
@@ -98,15 +98,15 @@ public class DungeonController : MonoBehaviour {
 
                 dungeonLoader.FadeInOutAnim();
 
-                dungeonLoader.actualIndex = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].number;
+                dungeonLoader.actualIndex = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].number;
 
                 //reset for ui
                 dungeonLoader.isUIinstantiated = false;
 
                 //look throught all the stats and asign them to object in the scene depending on the tags
                 //Change le background en fonction de la salle
-                if (dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].number <= dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon.Count)
-                    DungeonLoader.Instance.Background.transform.GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.back;
+                if (dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].number <= dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon.Count)
+                    DungeonLoader.Instance.Background.transform.GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.back;
 
                 //retire les anciens characters sur la carte de maniere dynamique
                 for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
@@ -129,7 +129,7 @@ public class DungeonController : MonoBehaviour {
                         DungeonLoader.Instance.CharacterUI.transform.Find("CharacterBG").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
                     }
 
-                    DungeonLoader.Instance.CharacterUI.transform.localPosition = new Vector3(dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].x, dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].y, 0);
+                    DungeonLoader.Instance.CharacterUI.transform.localPosition = new Vector3(dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].x, dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].y, 0);
                 }
 
                 //charge la porte
@@ -140,7 +140,7 @@ public class DungeonController : MonoBehaviour {
 
                 //change l'index pour naviger dans le donjon
                 //print ("index2 " + index);
-                dungeonLoader.index = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].connectingTo;
+                dungeonLoader.index = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].connectingTo;
                 //print ("index3 " + index);
 
                 //attend pour ne pas spammer le bouton de porte
@@ -172,10 +172,10 @@ public class DungeonController : MonoBehaviour {
             //assigne la porte a ses coordonnées
             DungeonLoader.Instance.Doorinstantiated = Instantiate(Resources.Load("UI_Interface/door"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
             DungeonLoader.Instance.Doorinstantiated.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false);
-            DungeonLoader.Instance.Doorinstantiated.transform.localPosition = new Vector3(dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.doorList[0].coordinate.x, dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.doorList[0].coordinate.y, 0);
+            DungeonLoader.Instance.Doorinstantiated.transform.localPosition = new Vector3(dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.doorList[0].coordinate.x, dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.doorList[0].coordinate.y, 0);
 
             //assigne les scripts que la porte a lorsqu'on clique dessus en fonction de son emplacement dans le donjon
-            if (dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].doorType.ToString() == "LastDoor")
+            if (dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].doorType.ToString() == "LastDoor")
             {
                 Debug.Log("hey im last door");
                 DungeonLoader.Instance.Doorinstantiated.GetComponent<Button>().onClick.AddListener(dungeonLoader.LoadSceneMap);
@@ -193,8 +193,8 @@ public class DungeonController : MonoBehaviour {
     public void GetRoomType()
     {
         //cherche pour la salle précise et store son room type
-        if (dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].number <= dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon.Count)
-            dungeonLoader.roomType = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].roomType.ToString();
+        if (dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].number <= dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon.Count)
+            dungeonLoader.roomType = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].roomType.ToString();
 
         //--------CHEST---------//
         if (dungeonLoader.roomType == "chest")
@@ -209,7 +209,7 @@ public class DungeonController : MonoBehaviour {
                 Instantiate(Resources.Load("UI_Interface/ChestRoomUI"));
                 GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(AddRewards);
                 GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
-                GameObject.Find("GoldUIDispatcherChest").GetComponent<Text>().text = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].chestsList[0].GoldInTheChest.ToString();
+                GameObject.Find("GoldUIDispatcherChest").GetComponent<Text>().text = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].chestsList[0].GoldInTheChest.ToString();
                 GameObject.Find("PanelBackground").SetActive(false);
             }
         }
@@ -229,12 +229,12 @@ public class DungeonController : MonoBehaviour {
             GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
 
             //instantie pour chaque enemi dans la liste une icone
-            for (int i = 0; i < dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].enemies; i++)
+            for (int i = 0; i < dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].enemies; i++)
             {
                 GameObject enemyUI;
                 enemyUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
                 enemyUI.transform.SetParent(GameObject.FindGameObjectWithTag("EnemyPanel").transform, false);
-                enemyUI.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].enemiesList[i].enemyIcon;
+                enemyUI.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].enemiesList[i].enemyIcon;
             }
 
         }
@@ -257,16 +257,16 @@ public class DungeonController : MonoBehaviour {
             GameObject bossUI;
             bossUI = Instantiate(Resources.Load("UI_Interface/BossPanelUI")) as GameObject;
             bossUI.transform.SetParent(GameObject.FindGameObjectWithTag("EnemyPanel").transform, false);
-            bossUI.transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].bossList[0].bossIcon;
+            bossUI.transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].bossList[0].bossIcon;
 
             //instantie pour chaque enemi dans la liste une icone
-            for (int i = 0; i < dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].enemies; i++)
+            for (int i = 0; i < dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].enemies; i++)
             {
 
                 GameObject enemyBossUI;
                 enemyBossUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
                 enemyBossUI.transform.SetParent(GameObject.FindGameObjectWithTag("EnemyPanel").transform, false);
-                enemyBossUI.transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].enemiesList[i].enemyIcon;
+                enemyBossUI.transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].enemiesList[i].enemyIcon;
             }
         }
     }
@@ -280,8 +280,8 @@ public class DungeonController : MonoBehaviour {
     public void AddRewards()
     {
         //ajoute un montant d or au joueur
-        this.transform.GetComponent<CurrencyGestion>().IncreaseMoney(dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index - 1].chestsList[0].GoldInTheChest);
-        DungeonLoader.Instance.LogT.AddLogLine("You have gain " + dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index - 1].chestsList[0].GoldInTheChest + " gold !");
+        this.transform.GetComponent<CurrencyGestion>().IncreaseMoney(dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index - 1].chestsList[0].GoldInTheChest);
+        DungeonLoader.Instance.LogT.AddLogLine("You have gain " + dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index - 1].chestsList[0].GoldInTheChest + " gold !");
         //save all the player money
         this.transform.GetComponent<CurrencyGestion>().SaveMoney();
     }
@@ -292,11 +292,11 @@ public class DungeonController : MonoBehaviour {
 
         //reset l'index du donjon
         dungeonLoader.index = 0;
-        dungeonLoader.actualIndex = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].number;
+        dungeonLoader.actualIndex = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].number;
 
         //attribue le background de la salle
         DungeonLoader.Instance.Background = GameObject.FindGameObjectWithTag("backgroundOfRoom");
-        DungeonLoader.Instance.Background.transform.GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.back;
+        DungeonLoader.Instance.Background.transform.GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.back;
 
         //montre en fonction de l'équipe que l'on a précédemment choisi les joueurs dans la salle.
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
@@ -313,7 +313,7 @@ public class DungeonController : MonoBehaviour {
             }
 
 
-            DungeonLoader.Instance.CharacterUI.transform.localPosition = new Vector3(dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].x, dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].y, 0);
+            DungeonLoader.Instance.CharacterUI.transform.localPosition = new Vector3(dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].x, dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.playerPositions[i].y, 0);
         }
 
         //instantiate the door
@@ -322,7 +322,7 @@ public class DungeonController : MonoBehaviour {
         //permet de vérifier le type de salle
         GetRoomType();
 
-        dungeonLoader.index = dungeonLoader.roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[dungeonLoader.index].connectingTo;
+        dungeonLoader.index = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].connectingTo;
     }
 
     //attend que la salle soit bien chargée

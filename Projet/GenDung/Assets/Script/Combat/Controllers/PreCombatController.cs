@@ -33,7 +33,7 @@ public class PreCombatController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name != "Editor")
         {
-            foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
+            foeData = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
             monsterNmb = foeData.enemiesList.Length;
             monsterPos = new List<int>();
         }
@@ -114,7 +114,7 @@ public class PreCombatController : MonoBehaviour {
             /* */
             CombatUIController.Instance.CreateMonsterUIBattleOrder(x);
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
-            int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
+            int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
             rndNmb = Random.Range(0, spawnMonsterNumber);
             while (monsterPos.Contains(rndNmb))
             {
@@ -123,7 +123,7 @@ public class PreCombatController : MonoBehaviour {
                     rndNmb = rndNmb - 1;
             }
 
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[MapController.Instance.DungeonIndex].RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
+            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
             foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
             foe.TileX = Mathf.RoundToInt(tile.x);
             foe.TileY = Mathf.RoundToInt(tile.y);

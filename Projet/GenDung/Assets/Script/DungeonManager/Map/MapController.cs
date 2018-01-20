@@ -49,51 +49,51 @@ public class MapController : MonoBehaviour {
             Instantiate(Resources.Load("UI_Interface/EndDungeonUI"));
 
             //montre le montant de gold que le donjon a donné
-            GameObject.Find("GoldDispatchEndUI").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().roomListDungeon[dungeonIndex].dungeonGold.ToString();
+            GameObject.Find("GoldDispatchEndUI").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[dungeonIndex].dungeon.dungeonGold.ToString();
 
             //verifie dans toutes les salles
-            for (int i = 0; i < dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon.Count; i++)
+            for (int i = 0; i < dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon.Count; i++)
             {
 
                 //si la salle est de type fight
-                if (dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon[i].roomType.ToString() == "fight")
+                if (dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].roomType.ToString() == "fight")
                 {
 
                     //prendre ses enfants et instantier une icone pour chaque + definir leur parent dans l'écran de fin
-                    for (int l = 0; l < dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon[i].enemies; l++)
+                    for (int l = 0; l < dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].enemies; l++)
                     {
 
                         GameObject enemyUI;
                         enemyUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
                         enemyUI.transform.SetParent(GameObject.FindGameObjectWithTag("EnemyPanel").transform, false);
-                        enemyUI.transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon[i].enemiesList[l].enemyIcon; // ==> Enemy HERE 
+                        enemyUI.transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].enemiesList[l].enemyIcon; // ==> Enemy HERE 
                     }
                 }
 
                 //si la salle est de type boss
-                if (dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon[i].roomType.ToString() == "boss")
+                if (dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].roomType.ToString() == "boss")
                 {
 
                     //prendre ses enfants et instantier une icone pour chaque + definir leur parent dans l'écran de fin
-                    for (int l = 0; l < dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon[i].enemies; l++)
+                    for (int l = 0; l < dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].enemies; l++)
                     {
 
                         GameObject enemyUI;
                         enemyUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI")) as GameObject;
                         enemyUI.transform.SetParent(GameObject.FindGameObjectWithTag("EnemyPanel").transform, false);
-                        enemyUI.transform.Find("Icon").GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon[i].enemiesList[l].enemyIcon;
+                        enemyUI.transform.Find("Icon").GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].enemiesList[l].enemyIcon;
                     }
 
                     //vu que c'est un type boss il y a aussi le boss a instancier
                     GameObject bossUI;
                     bossUI = Instantiate(Resources.Load("UI_Interface/BossPanelUI")) as GameObject;
                     bossUI.transform.SetParent(GameObject.FindGameObjectWithTag("EnemyPanel").transform, false);
-                    bossUI.transform.Find("Icon").GetComponent<Image>().sprite = dungeonLoader.roomListDungeon[dungeonIndex].RoomOfTheDungeon[i].bossList[0].bossIcon;
+                    bossUI.transform.Find("Icon").GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].bossList[0].bossIcon;
                 }
             }
 
             //ajoute un montant d or au joueur
-            this.transform.GetComponent<CurrencyGestion>().IncreaseMoney(dungeonLoader.roomListDungeon[dungeonIndex].dungeonGold);
+            this.transform.GetComponent<CurrencyGestion>().IncreaseMoney( dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.dungeonGold);
 
             //save all the player money
             this.transform.GetComponent<CurrencyGestion>().SaveMoney();

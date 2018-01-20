@@ -35,8 +35,7 @@ public class DungeonLoader : MonoBehaviour {
 
     public DungeonList dungeonList;
 
-	public RoomList[] 
-	roomListDungeon; //  
+	//public RoomList[] roomListDungeon;  
 
     public int
     index, //index de la salle connecté à actualIndex.
