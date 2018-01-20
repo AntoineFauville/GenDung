@@ -26,7 +26,6 @@ public class DungeonLoader : MonoBehaviour {
 
 	GameObject 
     a,
-	background, //background de la salle
 	doorinstantiated, //la porte instantiée
 	characterUI; //instaniated character
 
@@ -42,16 +41,10 @@ public class DungeonLoader : MonoBehaviour {
     actualIndex; // index de la salle actuelle.
 
     public int
-    dungeonUnlockedIndex = 1,	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
-    actualPlayer = 0;
+    dungeonUnlockedIndex = 1;	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
 
     public bool
-    loadOnce3, //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
-    loadOnce2,  //lié au loadRoom vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
-    loadbutton, //pour ne charger qu'une fois la scene donjon
     loadbutton2,    //pour ne charger qu'une fois la scene map
-    loadOnceDoor,   //pour ne charger qu'une fois la porte
-    isUIinstantiated,   //verifier dans le donjon si l'interface a bien été instanciée
     doOnceCoroutine,    //lance la coroutine qu'une fois
     sceneLoaded,    //attendre que la scene est bien chargé
     InstrantiateOnceEndDungeon, //instancier une fois l'écran de fin de donjon
@@ -155,7 +148,7 @@ public class DungeonLoader : MonoBehaviour {
 	public void LoadSceneMap ()
     {
 		if (!loadbutton2) {
-			loadbutton2 = true;
+            loadbutton2 = true;
 
 			FadeInOutAnim();
 
@@ -203,16 +196,15 @@ public class DungeonLoader : MonoBehaviour {
 
 		if (activeScene == "Map")
         {
-			
 
-			//reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
-			//previousScene = "";
 
-			//réinitialise les données
-			loadOnce3 = false;
-			loadOnce2 = false;
-			loadbutton = false;
-			isUIinstantiated = false;
+            //reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
+            //previousScene = "";
+
+            //réinitialise les données
+            DungeonController.Instance.ResetBoolDungeon();
+
+            MapController.Instance.Loadbutton = false; // Map Controller
 			loadbutton2 = false;
 
             //dungeonOnTheMap = GameObject.FindGameObjectWithTag("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList;
@@ -263,17 +255,6 @@ public class DungeonLoader : MonoBehaviour {
         set
         {
             characterUI = value;
-        }
-    }
-    public GameObject Background
-    {
-        get
-        {
-            return background;
-        }
-        set
-        {
-            background = value;
         }
     }
     public LogGestionTool LogT

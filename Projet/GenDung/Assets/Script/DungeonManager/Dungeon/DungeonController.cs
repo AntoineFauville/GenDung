@@ -5,11 +5,22 @@ using UnityEngine.UI;
 
 public class DungeonController : MonoBehaviour {
 
+    //
+    // TODO: Rethink Number and ConnectingTo system.
+    //
+
     private static DungeonController instance;
 
     private DungeonLoader dungeonLoader;
     private MapController mapController;
-    private bool roomIsLocked;  //permet de verouiller une porte
+    private bool roomIsLocked,  //permet de verrouiller une porte
+        isUIinstantiated, //verifier dans le donjon si l'interface a bien été instanciée
+        loadOnceDoor, //pour ne charger qu'une fois la porte
+        loadOnce2, //lié au loadRoom vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
+        loadOnce3; //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
+
+    private GameObject background; //background de la salle
+    private int actualPlayer = 0;
 
     void CreateInstance()
     {
@@ -33,10 +44,10 @@ public class DungeonController : MonoBehaviour {
         mapController = GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>();
 
         //initialise la référence au background de la salle
-        DungeonLoader.Instance.Background = GameObject.FindGameObjectWithTag("backgroundOfRoom");
+        background = GameObject.FindGameObjectWithTag("backgroundOfRoom");
 
         //met les infos a jour sur le coté en fonction du joueur actif
-        GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[dungeonLoader.actualPlayer].ICON;
+        GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
 
         if (dungeonLoader.InstantiatedCombatModule)
         {
@@ -48,9 +59,9 @@ public class DungeonController : MonoBehaviour {
         }
         else
         {
-            GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[dungeonLoader.actualPlayer].Health_PV.ToString();
-            GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[dungeonLoader.actualPlayer].ActionPoints_PA.ToString();
-            GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[dungeonLoader.actualPlayer].MovementPoints_PM.ToString();
+            GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
+            GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
+            GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
         }
 
         //permet de charger la salle room
@@ -63,12 +74,20 @@ public class DungeonController : MonoBehaviour {
         GameObject.Find("EnterD_Text").GetComponent<Text>().text = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.dungeonStory;
     }
 
+    public void ResetBoolDungeon()
+    {
+        loadOnceDoor = false;
+        loadOnce2 = false;
+        loadOnce3 = false;
+        isUIinstantiated = false;
+    }
+
     //load first time room function
     public void LoadRoom()
     {
-        if (!dungeonLoader.loadOnce2)
+        if (!loadOnce2)
         {
-            dungeonLoader.loadOnce2 = true;
+            loadOnce2 = true;
 
             DungeonLoader.Instance.LogT.AddLogLine("Initial Room Loaded");
 
@@ -87,12 +106,12 @@ public class DungeonController : MonoBehaviour {
 
     public void GoDeeperInTheDungeon()
     {
-        if (!dungeonLoader.loadOnce3)
+        if (!loadOnce3)
         {
             //si la salle n'est pas vérouillée
             if (!roomIsLocked)
             {
-                dungeonLoader.loadOnce3 = true;
+                loadOnce3 = true;
 
                 DungeonLoader.Instance.LogT.AddLogLine("You have got deeper in the dungeon");
 
@@ -101,12 +120,12 @@ public class DungeonController : MonoBehaviour {
                 dungeonLoader.actualIndex = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].number;
 
                 //reset for ui
-                dungeonLoader.isUIinstantiated = false;
+                isUIinstantiated = false;
 
                 //look throught all the stats and asign them to object in the scene depending on the tags
                 //Change le background en fonction de la salle
                 if (dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].number <= dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon.Count)
-                    DungeonLoader.Instance.Background.transform.GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.back;
+                    background.transform.GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.back;
 
                 //retire les anciens characters sur la carte de maniere dynamique
                 for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
@@ -152,9 +171,9 @@ public class DungeonController : MonoBehaviour {
     //charge la porte suivante et ses données
     public void loadDoor()
     {
-        if (!dungeonLoader.loadOnceDoor)
+        if (!loadOnceDoor)
         {
-            dungeonLoader.loadOnceDoor = true;
+            loadOnceDoor = true;
 
             //initialise the door at each time we call it
             GameObject[] tempDoor;
@@ -203,9 +222,9 @@ public class DungeonController : MonoBehaviour {
 
             DungeonLoader.Instance.LogT.AddLogLine("Chest room ! Where could it be?");
 
-            if (!dungeonLoader.isUIinstantiated)
+            if (!isUIinstantiated)
             {
-                dungeonLoader.isUIinstantiated = true;
+                isUIinstantiated = true;
                 Instantiate(Resources.Load("UI_Interface/ChestRoomUI"));
                 GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(AddRewards);
                 GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
@@ -221,9 +240,9 @@ public class DungeonController : MonoBehaviour {
 
             DungeonLoader.Instance.LogT.AddLogLine("Fight room !");
 
-            if (!dungeonLoader.isUIinstantiated)
+            if (!isUIinstantiated)
             {
-                dungeonLoader.isUIinstantiated = true;
+                isUIinstantiated = true;
                 Instantiate(Resources.Load("UI_Interface/FightRoomUI"));
             }
             GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
@@ -246,9 +265,9 @@ public class DungeonController : MonoBehaviour {
 
             DungeonLoader.Instance.LogT.AddLogLine("DEBUG ! NO BOSS ROOM ALLOWED");
 
-            if (!dungeonLoader.isUIinstantiated)
+            if (!isUIinstantiated)
             {
-                dungeonLoader.isUIinstantiated = true;
+                isUIinstantiated = true;
                 Instantiate(Resources.Load("UI_Interface/BossRoomUI"));
             }
             GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
@@ -295,8 +314,8 @@ public class DungeonController : MonoBehaviour {
         dungeonLoader.actualIndex = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].number;
 
         //attribue le background de la salle
-        DungeonLoader.Instance.Background = GameObject.FindGameObjectWithTag("backgroundOfRoom");
-        DungeonLoader.Instance.Background.transform.GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.back;
+        background = GameObject.FindGameObjectWithTag("backgroundOfRoom");
+        background.transform.GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].room.back;
 
         //montre en fonction de l'équipe que l'on a précédemment choisi les joueurs dans la salle.
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
@@ -329,14 +348,14 @@ public class DungeonController : MonoBehaviour {
     public IEnumerator LoadWaitRoom()
     {
         yield return new WaitForSeconds(0.03f);
-        dungeonLoader.loadOnceDoor = false;
+        loadOnceDoor = false;
     }
 
     //coroutine qui attend pour ne pas spammer le bouton de porte
     public IEnumerator WaitLagForClicking()
     {
         yield return new WaitForSeconds(0.03f);
-        dungeonLoader.loadOnce3 = false;
+        loadOnce3 = false;
     }
 
     /* Accessors Method */

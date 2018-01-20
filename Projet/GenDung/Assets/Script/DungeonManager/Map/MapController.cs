@@ -12,6 +12,7 @@ public class MapController : MonoBehaviour {
 
     private int dungeonIndex;//index pour le donjon.
     private GameObject[] dungeonOnTheMap;//list des boutons des donjons sur la carte
+    private bool loadbutton; //pour ne charger qu'une fois la scene donjon
 
     void CreateInstance()
     {
@@ -140,9 +141,9 @@ public class MapController : MonoBehaviour {
     //load the dungeon scene
     public void LoadSceneDungeon()
     {
-        if (!dungeonLoader.loadbutton)
+        if (!loadbutton)
         {
-            dungeonLoader.loadbutton = true;
+            loadbutton = true;
 
             dungeonLoader.FadeInOutAnim();
 
@@ -195,5 +196,15 @@ public class MapController : MonoBehaviour {
             dungeonIndex = value;
         }
     }
-
+    public bool Loadbutton
+    {
+        get
+        {
+            return loadbutton;
+        }
+        set
+        {
+            loadbutton = value;
+        }
+    }
 }
