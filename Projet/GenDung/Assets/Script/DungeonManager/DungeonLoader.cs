@@ -40,14 +40,6 @@ public class DungeonLoader : MonoBehaviour {
     public int
     index, //index de la salle connecté à actualIndex.
     actualIndex; // index de la salle actuelle.
-	
-
-    //all int for upgrade temp
-    public int
-    healthTemp,
-    ActionTemp,
-    CACTemp,
-    DistTemp;
 
     public int
     dungeonUnlockedIndex = 1,	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
@@ -65,8 +57,7 @@ public class DungeonLoader : MonoBehaviour {
     InstrantiateOnceEndDungeon, //instancier une fois l'écran de fin de donjon
     EndDungeon,	//verifier si le donjon est fini ou pas
     InstantiateFade,
-    InstantiatedCombatModule,
-    QuestStartOn;
+    InstantiatedCombatModule;
 
     private bool doOnceAllRelatedToUpgradeTavernPanel;
 
