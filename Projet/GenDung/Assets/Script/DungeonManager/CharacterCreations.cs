@@ -237,7 +237,6 @@ public class CharacterCreations : MonoBehaviour {
         {
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i] = tempCharac[i];
         }
-        GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().QuestStartOn = true;
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
         SceneManager.LoadScene ("Tavern");
 	}

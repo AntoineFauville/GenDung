@@ -27,7 +27,7 @@ public class CurrencyGestion : MonoBehaviour {
         GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney = localMoney;
     }
 
-    public void restartResetGame ()
+    public void ResetMoney ()
     {
         localMoney = 0;
         GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney = 0;

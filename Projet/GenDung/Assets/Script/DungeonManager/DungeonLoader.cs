@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEditor;
 using System.Linq;
 using UnityEngine.EventSystems;
 
@@ -17,7 +16,6 @@ public class DungeonLoader : MonoBehaviour {
 
 	public string 
 	activeScene, //check active scene
-	previousScene, //previous scene
 	roomType; // just a checker to see what room is the actual room that we are using.
 
 	Animator
@@ -28,56 +26,31 @@ public class DungeonLoader : MonoBehaviour {
 
 	GameObject 
     a,
-	background, //background de la salle
 	doorinstantiated, //la porte instantiée
 	characterUI; //instaniated character
-
-	RoomObject
-	roomObject;
 
 	LogGestionTool
 	logT;
 
-	Door
-	door;
+    public DungeonList dungeonList;
 
-	public RoomList[] 
-	roomListDungeon; // this are the dungeons, 
-
-	public GameObject[] 
-	dungeonOnTheMap;    //list des boutons des donjons sur la carte
+	//public RoomList[] roomListDungeon;  
 
     public int
     index, //index de la salle connecté à actualIndex.
     actualIndex; // index de la salle actuelle.
-	public int dungeonIndex;//index pour le donjon.
-
-    //all int for upgrade temp
-    public int
-    healthTemp,
-    ActionTemp,
-    CACTemp,
-    DistTemp;
 
     public int
-    dungeonUnlockedIndex = 1,	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
-    actualPlayer = 0;
+    dungeonUnlockedIndex = 1;	//index pour le donjon unlocked doit etre 1 sinon 0 bonjons ne s'afficheront
 
     public bool
-    loadOnce3, //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
-    loadOnce2,  //lié au loadRoom vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
-    loadbutton, //pour ne charger qu'une fois la scene donjon
     loadbutton2,    //pour ne charger qu'une fois la scene map
-    loadOnceDoor,   //pour ne charger qu'une fois la porte
-    roomIsLocked,   //permet de verouiller une porte
-    isUIinstantiated,   //verifier dans le donjon si l'interface a bien été instanciée
     doOnceCoroutine,    //lance la coroutine qu'une fois
     sceneLoaded,    //attendre que la scene est bien chargé
     InstrantiateOnceEndDungeon, //instancier une fois l'écran de fin de donjon
     EndDungeon,	//verifier si le donjon est fini ou pas
     InstantiateFade,
-    InstantiatedCombatModule,
-    QuestStartOn;
+    InstantiatedCombatModule;
 
     private bool doOnceAllRelatedToUpgradeTavernPanel;
 
@@ -93,6 +66,10 @@ public class DungeonLoader : MonoBehaviour {
     void Start ()
     {
         CreateInstance();
+
+        if(activeScene == "MainMenu")
+            Instantiate(Resources.Load("UI_Interface/CanvasMainMenu")); // Instantiate Canvas when we click on Button.
+        
         dungeonController = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonController>(); // Séparation Gestion Dungeon du DungeonLoader
         mapController = GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>(); // Séparation Gestion Map du DungeonLoader
         tavernController = GameObject.Find("DontDestroyOnLoad").GetComponent<TavernController>(); // Séparation Gestion Taverne du DungeonLoader
@@ -119,8 +96,17 @@ public class DungeonLoader : MonoBehaviour {
         //attendre que la scene soit chargée
         if (sceneLoaded)
         {
+            //-----------Main Menu gestion scene-------------//
+            if (activeScene == "MainMenu")
+            { 
+                if (GameObject.Find("CanvasMainMenu(Clone)") == null)
+                {
+                    Instantiate(Resources.Load("UI_Interface/CanvasMainMenu")); // Instantiate Canvas when we click on Button.
+                    sceneLoaded = false;
+                }
+            }
             //-----------Dungeon gestion scene-------------//
-            if (activeScene == "Dungeon")
+            if (activeScene == "Dungeon" && GameObject.Find("CanvasUIDungeon(Clone)") == null)
             {
                 Instantiate(Resources.Load("UI_Interface/CanvasUIDungeon")); // Instantiate Canvas when we click on Button.
                 sceneLoaded = false;
@@ -129,7 +115,7 @@ public class DungeonLoader : MonoBehaviour {
 			}		
 
 			//-----------Map gestion scene-------------//
-			if (activeScene == "Map")
+			if (activeScene == "Map" && GameObject.Find("CanvasCarte(Clone)") == null)
             {
                 Instantiate(Resources.Load("UI_Interface/CanvasCarte")); // Instantiate Canvas when we click on Button.
                 sceneLoaded = false;
@@ -138,7 +124,7 @@ public class DungeonLoader : MonoBehaviour {
             }
 
             //--------Taverne--------//
-            if (activeScene == "Tavern")
+            if (activeScene == "Tavern" && GameObject.Find("CanvasTavern(Clone)") == null)
             {
                 Instantiate(Resources.Load("UI_Interface/CanvasTavern")); // Instantiate Canvas when we click on Button.
                 sceneLoaded = false;
@@ -153,7 +139,7 @@ public class DungeonLoader : MonoBehaviour {
 			if (!doOnceCoroutine)
             {
 				doOnceCoroutine = true;
-				//StartCoroutine ("WaitLoading");
+				StartCoroutine ("WaitLoading");
 			}
 		}
 	}
@@ -162,7 +148,7 @@ public class DungeonLoader : MonoBehaviour {
 	public void LoadSceneMap ()
     {
 		if (!loadbutton2) {
-			loadbutton2 = true;
+            loadbutton2 = true;
 
 			FadeInOutAnim();
 
@@ -205,24 +191,23 @@ public class DungeonLoader : MonoBehaviour {
 		//reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
 		if (activeScene == "Dungeon")
         {
-			previousScene = "";
+			//previousScene = "";
 		}
 
 		if (activeScene == "Map")
         {
-			
 
-			//reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
-			previousScene = "";
 
-			//réinitialise les données
-			loadOnce3 = false;
-			loadOnce2 = false;
-			loadbutton = false;
-			isUIinstantiated = false;
+            //reinitialise la scene pour charger a nouveau lors du prochain donjon le LOADROOM
+            //previousScene = "";
+
+            //réinitialise les données
+            DungeonController.Instance.ResetBoolDungeon();
+
+            MapController.Instance.Loadbutton = false; // Map Controller
 			loadbutton2 = false;
 
-            dungeonOnTheMap = GameObject.FindGameObjectWithTag("DungeonButtonMap").GetComponent<DungeonListOnMap>().dungeonOnTheMapList;
+            //dungeonOnTheMap = GameObject.FindGameObjectWithTag("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList;
 
         }
 
@@ -261,17 +246,6 @@ public class DungeonLoader : MonoBehaviour {
             doOnceAllRelatedToUpgradeTavernPanel = value;
         }
     }
-    public int DungeonIndex
-    {
-        get
-        {
-            return dungeonIndex;
-        }
-        set
-        {
-            dungeonIndex = value;
-        }
-    }
     public GameObject CharacterUI
     {
         get
@@ -281,17 +255,6 @@ public class DungeonLoader : MonoBehaviour {
         set
         {
             characterUI = value;
-        }
-    }
-    public GameObject Background
-    {
-        get
-        {
-            return background;
-        }
-        set
-        {
-            background = value;
         }
     }
     public LogGestionTool LogT

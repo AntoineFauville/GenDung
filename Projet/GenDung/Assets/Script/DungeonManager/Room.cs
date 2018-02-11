@@ -20,7 +20,6 @@ public class Room {
 	public int connectingTo = 0;
 
 	public int enemies = 0;
-    //public Enemy[] enemiesList;
     public EnemyObject[] enemiesList; 
 
 	public int chests = 0;

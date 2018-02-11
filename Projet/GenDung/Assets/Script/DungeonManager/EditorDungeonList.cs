@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
-public class EditorDungeonManager : EditorWindow {
+public class EditorDungeonManager /*: EditorWindow */{
+
+    /*
 
 	public DungeonList dungeonList;
 	private int viewIndex = 1;
@@ -127,4 +129,6 @@ public class EditorDungeonManager : EditorWindow {
 	{
 		dungeonList.myDungeons.RemoveAt (index);
 	}
+
+    */
 }

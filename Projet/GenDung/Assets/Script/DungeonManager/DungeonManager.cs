@@ -8,5 +8,5 @@ public class DungeonManager {
 	public string dungeonName;
 	public enum DungeonType {Normal,Heroique};
 	public DungeonType dungeonType;
-	public ScriptableObject RoomList;
+	public RoomList dungeon;
 }

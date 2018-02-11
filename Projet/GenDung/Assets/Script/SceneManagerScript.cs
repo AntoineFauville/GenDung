@@ -16,12 +16,14 @@ public class SceneManagerScript : MonoBehaviour {
 	public void NewGameLoadMap () {
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
         SceneManager.LoadScene ("CharacterCreation");
-		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().dungeonUnlockedIndex = 1;
-        GameObject.Find("DontDestroyOnLoad").GetComponent<CurrencyGestion>().restartResetGame();
-
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.DungeonIndexData = 1;
+        DungeonLoader.Instance.dungeonUnlockedIndex = 1;
+        TavernController.Instance.QuestStartOn = true;
+        GameObject.Find("DontDestroyOnLoad").GetComponent<CurrencyGestion>().ResetMoney();
+        // Reset SaveData 
     }
 
-	public void LoadDungeon () {
+    public void LoadDungeon () {
 
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
         SceneManager.LoadScene ("Dungeon");

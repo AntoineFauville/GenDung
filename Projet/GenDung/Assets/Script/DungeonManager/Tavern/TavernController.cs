@@ -5,10 +5,30 @@ using UnityEngine.UI;
 
 public class TavernController : MonoBehaviour {
 
+    private static TavernController instance;
+
     private DungeonLoader dungeonLoader;
+    private bool questStartOn;
+
+    //all int for upgrade temp
+    private int healthTemp,
+        actionTemp,
+        cACTemp,
+        distTemp;
+
+
+    void CreateInstance()
+    {
+        if (instance != null)
+        {
+            Debug.Log("There should never have two DungeonLoader.");
+        }
+        instance = this;
+    }
 
     public void Start()
     {
+        CreateInstance();
         dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
     }
 
@@ -17,9 +37,9 @@ public class TavernController : MonoBehaviour {
         dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
 
         //affiche le canvas Quest Start si c'est la premiere fois qu'on vient dans la taverne
-        if (dungeonLoader.QuestStartOn)
+        if (questStartOn)
         {
-            dungeonLoader.QuestStartOn = false;
+            questStartOn = false;
 
             Instantiate(Resources.Load("UI_Interface/CanvasQuestStart"));
 
@@ -39,10 +59,10 @@ public class TavernController : MonoBehaviour {
         if (!DungeonLoader.Instance.DoOnceAllRelatedToUpgradeTavernPanel)
         {
             //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement
-            dungeonLoader.healthTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV;
-            dungeonLoader.ActionTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].ActionPoints_PA;
-            dungeonLoader.CACTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].CloseAttaqueValue;
-            dungeonLoader.DistTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].DistanceAttaqueValue;
+            healthTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV;
+            actionTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].ActionPoints_PA;
+            cACTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].CloseAttaqueValue;
+            distTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].DistanceAttaqueValue;
 
             DungeonLoader.Instance.DoOnceAllRelatedToUpgradeTavernPanel = true;
             GameObject.Find("CanvasUpgradePanel").GetComponent<Canvas>().enabled = false;
@@ -64,15 +84,83 @@ public class TavernController : MonoBehaviour {
 
         //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement
         //PV
-        GameObject.Find("HealthText").GetComponent<Text>().text = "Character Health : " + dungeonLoader.healthTemp.ToString();
+        GameObject.Find("HealthText").GetComponent<Text>().text = "Character Health : " + healthTemp.ToString();
 
         //PA
-        GameObject.Find("ActionText").GetComponent<Text>().text = "Character Action Points : " + dungeonLoader.ActionTemp.ToString();
+        GameObject.Find("ActionText").GetComponent<Text>().text = "Character Action Points : " + actionTemp.ToString();
 
         //CAC
-        GameObject.Find("AttackText").GetComponent<Text>().text = "Character Close Battle Attack : " + dungeonLoader.CACTemp.ToString();
+        GameObject.Find("AttackText").GetComponent<Text>().text = "Character Close Battle Attack : " + cACTemp.ToString();
 
         //Dist
-        GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + dungeonLoader.DistTemp.ToString();
+        GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + distTemp.ToString();
+    }
+
+    /* Accessors Method */
+    public static TavernController Instance
+    {
+        get
+        {
+            return instance;
+        }
+        set
+        {
+            instance = value;
+        }
+    }
+    public bool QuestStartOn
+    {
+        get
+        {
+            return questStartOn;
+        }
+        set
+        {
+            questStartOn = value;
+        }
+    }
+    public int HealthTemp
+    {
+        get
+        {
+            return healthTemp;
+        }
+        set
+        {
+            healthTemp = value;
+        }
+    }
+    public int ActionTemp
+    {
+        get
+        {
+            return actionTemp;
+        }
+        set
+        {
+            actionTemp = value;
+        }
+    }
+    public int CACTemp
+    {
+        get
+        {
+            return cACTemp;
+        }
+        set
+        {
+            cACTemp = value;
+        }
+    }
+    public int DistTemp
+    {
+        get
+        {
+            return distTemp;
+        }
+        set
+        {
+            distTemp = value;
+        }
     }
 }
