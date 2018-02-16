@@ -256,7 +256,6 @@ public class DungeonController : MonoBehaviour {
                 enemyUI.transform.SetParent(GameObject.FindGameObjectWithTag("EnemyPanel").transform, false);
                 enemyUI.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].enemiesList[i].enemyIcon;
             }
-
         }
 
         //--------BOSS---------//
