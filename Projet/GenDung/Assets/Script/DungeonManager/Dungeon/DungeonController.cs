@@ -16,7 +16,7 @@ public class DungeonController : MonoBehaviour {
     private bool roomIsLocked,  //permet de verrouiller une porte
         isUIinstantiated, //verifier dans le donjon si l'interface a bien été instanciée
         loadOnceDoor, //pour ne charger qu'une fois la porte
-        loadOnce2, //lié au loadRoom vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
+        checkFirstLoad, //lié au loadRoom vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
         loadOnce3; //lié au godeeperintodungeon vu que c'est un bouton ca a besoin de verifier que ca ne se fait qu'une fois
 
     private GameObject background; //background de la salle
@@ -49,6 +49,7 @@ public class DungeonController : MonoBehaviour {
         //met les infos a jour sur le coté en fonction du joueur actif
         GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
 
+        // For Loop for multiple Characters (Stats links)
         if (dungeonLoader.InstantiatedCombatModule)
         {
             if (GameObject.Find("CombatGridPrefab(Clone)").GetComponent<PreCombatController>().CombatStarted)
@@ -77,7 +78,7 @@ public class DungeonController : MonoBehaviour {
     public void ResetBoolDungeon()
     {
         loadOnceDoor = false;
-        loadOnce2 = false;
+        checkFirstLoad = false;
         loadOnce3 = false;
         isUIinstantiated = false;
     }
@@ -85,9 +86,9 @@ public class DungeonController : MonoBehaviour {
     //load first time room function
     public void LoadRoom()
     {
-        if (!loadOnce2)
+        if (!checkFirstLoad)
         {
-            loadOnce2 = true;
+            checkFirstLoad = true;
 
             DungeonLoader.Instance.LogT.AddLogLine("Initial Room Loaded");
 
@@ -169,6 +170,7 @@ public class DungeonController : MonoBehaviour {
     }
 
     //charge la porte suivante et ses données
+    // With new Dungeon Map Sytem, Doors will diseappear.
     public void loadDoor()
     {
         if (!loadOnceDoor)
@@ -208,6 +210,26 @@ public class DungeonController : MonoBehaviour {
         }
     }
 
+    public void GeneralRoomType(string typeOfRoomDebug, string RoomTypeUIPrefab, bool ChestRoomtype)
+    {
+        roomIsLocked = true;
+
+        DungeonLoader.Instance.LogT.AddLogLine(typeOfRoomDebug);
+
+        if (!isUIinstantiated)
+        {
+            isUIinstantiated = true;
+            Instantiate(Resources.Load("UI_Interface/"+ RoomTypeUIPrefab));
+            GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
+
+            if (ChestRoomtype)
+            {
+                GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(AddRewards);
+                GameObject.Find("GoldUIDispatcherChest").GetComponent<Text>().text = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].chestsList[0].GoldInTheChest.ToString();
+                GameObject.Find("PanelBackground").SetActive(false);
+            }
+        }
+    }
     //permet de savoir le type de la room
     public void GetRoomType()
     {
@@ -218,34 +240,13 @@ public class DungeonController : MonoBehaviour {
         //--------CHEST---------//
         if (dungeonLoader.roomType == "chest")
         {
-            roomIsLocked = true;
-
-            DungeonLoader.Instance.LogT.AddLogLine("Chest room ! Where could it be?");
-
-            if (!isUIinstantiated)
-            {
-                isUIinstantiated = true;
-                Instantiate(Resources.Load("UI_Interface/ChestRoomUI"));
-                GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(AddRewards);
-                GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
-                GameObject.Find("GoldUIDispatcherChest").GetComponent<Text>().text = dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].chestsList[0].GoldInTheChest.ToString();
-                GameObject.Find("PanelBackground").SetActive(false);
-            }
+            GeneralRoomType("Chest room ! Where could it be?", "ChestRoomUI", true);
         }
 
         //--------FIGHT---------//
         if (dungeonLoader.roomType == "fight")
         {
-            roomIsLocked = true;
-
-            DungeonLoader.Instance.LogT.AddLogLine("Fight room !");
-
-            if (!isUIinstantiated)
-            {
-                isUIinstantiated = true;
-                Instantiate(Resources.Load("UI_Interface/FightRoomUI"));
-            }
-            GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
+            GeneralRoomType("Fight room !", "FightRoomUI", false);
 
             //instantie pour chaque enemi dans la liste une icone
             for (int i = 0; i < dungeonLoader.dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[dungeonLoader.index].enemies; i++)
@@ -261,16 +262,7 @@ public class DungeonController : MonoBehaviour {
         //--------BOSS---------//
         if (dungeonLoader.roomType == "boss")
         {
-            roomIsLocked = true;
-
-            DungeonLoader.Instance.LogT.AddLogLine("DEBUG ! NO BOSS ROOM ALLOWED");
-
-            if (!isUIinstantiated)
-            {
-                isUIinstantiated = true;
-                Instantiate(Resources.Load("UI_Interface/BossRoomUI"));
-            }
-            GameObject.FindGameObjectWithTag("unlockRoomButton").GetComponent<Button>().onClick.AddListener(UnlockRoom);
+            GeneralRoomType("DEBUG ! NO BOSS ROOM ALLOWED", "BossRoomUI", false);
 
             //instantie l'icone de boss
             GameObject bossUI;
