@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 989674490ef465848a3708ee3bc488b7
-timeCreated: 1518957392
+guid: 3914f40778436f344b5312d6c9386519
+timeCreated: 1518961073
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Explo_Map_0
-    21300002: Explo_Map_1
-    21300004: Explo_Map_2
-    21300006: Explo_Map_3
-    21300008: Explo_Map_4
-    21300010: Explo_Map_5
-    21300012: Explo_Map_6
+    21300000: Ecran Menu De droite donjon_0
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -46,7 +40,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 1167, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -101,91 +95,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Explo_Map_0
+      name: Ecran Menu De droite donjon_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 12
-        width: 70
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Explo_Map_1
-      rect:
-        serializedVersion: 2
-        x: 77
-        y: 12
-        width: 70
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Explo_Map_2
-      rect:
-        serializedVersion: 2
-        x: 152
-        y: 12
-        width: 70
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Explo_Map_3
-      rect:
-        serializedVersion: 2
-        x: 227
-        y: 13
-        width: 70
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Explo_Map_4
-      rect:
-        serializedVersion: 2
-        x: 302
-        y: 13
-        width: 70
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Explo_Map_5
-      rect:
-        serializedVersion: 2
-        x: 451
-        y: 13
-        width: 70
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Explo_Map_6
-      rect:
-        serializedVersion: 2
-        x: 376
-        y: 13
-        width: 70
-        height: 70
+        x: 1168
+        y: 0
+        width: 450
+        height: 908
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
