@@ -41,13 +41,15 @@ public class Explo_GridController : MonoBehaviour {
             /* Assure le positionnement hors écran durant la phase de placement */
             unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
             worldPosTemp = new Vector3(-1000, -1000, 0);
-            /* */
 
             SetMovementTiles();
-            /*
             SetSpawnTiles();
+            /*
             SetMonsterSpawnTiles();
             */
+
+            unit.TileX = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].x);
+            unit.TileY = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].y);
         }
     }
 
@@ -80,7 +82,7 @@ public class Explo_GridController : MonoBehaviour {
 
                 Grid.ExploTiles[x, y].isWalkable = true;
 
-                Grid.ExploTiles[x, y].Type = Explo_Tile.Explo_TileType.Empty; //Explo_Tile.Explo_TileType.Wall;
+                Grid.ExploTiles[x, y].Type = Explo_Tile.Explo_TileType.Wall;
 
             }
         }
@@ -271,7 +273,7 @@ public class Explo_GridController : MonoBehaviour {
     {
         //return Grid.Tiles[x,y].isWalkable; OLD CODE
 
-        if (Grid.ExploTiles[x, y].Type == Explo_Tile.Explo_TileType.Empty)
+        if (Grid.ExploTiles[x, y].Type != Explo_Tile.Explo_TileType.Wall)
             return true;
         else
             return false;
@@ -298,30 +300,25 @@ public class Explo_GridController : MonoBehaviour {
     /* Indique aux Tiles concernées qu'elles sont des murs */
     public void SetMovementTiles()
     {
-        //int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls.Count;
-        int movementTilesNumber = 0;
+        int movementTilesNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles.Count;
         for (int x = 0; x < movementTilesNumber; x++)
         {
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls[x];
-            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
-            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Wall;
+            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles[x];
+            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Empty;
         }
     }
     /* */
 
     /* Indique aux Tiles concernées qu'elles sont des zones possibles de placement pré-Combat */
-    /*
     public void SetSpawnTiles()
     {
-        int spawnNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints.Count;
+        int spawnNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles.Count;
         for (int y = 0; y < spawnNumber; y++)
         {
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.SpawningPoints[y];
-            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
-            spawnTilesList.Add(tile);
+            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[y];
+            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
         }
     }
-    */
     /* */
 
     /* Indique aux Tiles concernées qu'elles sont des zones de spawn possibles de monstres */

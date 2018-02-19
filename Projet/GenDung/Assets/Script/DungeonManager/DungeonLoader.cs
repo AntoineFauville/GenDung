@@ -33,6 +33,7 @@ public class DungeonLoader : MonoBehaviour {
 	logT;
 
     public DungeonList dungeonList;
+    public Explo_DungeonList exploDungeonList;
 
 	//public RoomList[] roomListDungeon;  
 

@@ -24,15 +24,15 @@ public class ExploUnitController : MonoBehaviour {
             }
         }
 
-        if (SceneManager.GetActiveScene().name != "Editor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
-        {
-            AdvancePathing();
-            transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
-        }
-        else if (SceneManager.GetActiveScene().name != "Editor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat n'as pas été réalisé.
+        if (SceneManager.GetActiveScene().name == "ExploEditor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat n'as pas été réalisé.
         {
             SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position);
             AdvancePathing();
+        }
+        else if (SceneManager.GetActiveScene().name != "ExploEditor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
+        {
+            AdvancePathing();
+            transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
     }
 

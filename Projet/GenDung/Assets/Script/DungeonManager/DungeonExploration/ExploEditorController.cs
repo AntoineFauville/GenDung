@@ -33,6 +33,7 @@ public class ExploEditorController : MonoBehaviour {
 
         if (!exploMap.movTiles.Contains(movementTile))
         {
+            Explo_GridController.Instance.Grid.ExploTiles[x, y].Type = Explo_Tile.Explo_TileType.Empty;
             exploMap.movTiles.Add(movementTile);
             Debug.Log("Movement Tiles has been added : (" + x + "," + y + ")");
         }
@@ -46,6 +47,7 @@ public class ExploEditorController : MonoBehaviour {
 
         if (exploMap.movTiles.Contains(movementTile))
         {
+            Explo_GridController.Instance.Grid.ExploTiles[x, y].Type = Explo_Tile.Explo_TileType.Wall;
             exploMap.movTiles.Remove(movementTile);
             Debug.Log("Wall has been removed : (" + x + "," + y + ")");
         }
@@ -67,6 +69,7 @@ public class ExploEditorController : MonoBehaviour {
 
         if (!exploMap.eeTiles.Contains(eeTile))
         {
+            Explo_GridController.Instance.Grid.ExploTiles[x, y].Type = Explo_Tile.Explo_TileType.Entrance;
             exploMap.eeTiles.Add(eeTile);
             Debug.Log("Movement Tiles has been added : (" + x + "," + y + ")");
         }
@@ -80,6 +83,7 @@ public class ExploEditorController : MonoBehaviour {
 
         if (exploMap.eeTiles.Contains(eeTile))
         {
+            Explo_GridController.Instance.Grid.ExploTiles[x, y].Type = Explo_Tile.Explo_TileType.Wall;
             exploMap.eeTiles.Remove(eeTile);
             Debug.Log("Wall has been removed : (" + x + "," + y + ")");
         }
