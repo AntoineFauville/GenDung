@@ -22,11 +22,35 @@ public class ExploTileController : MonoBehaviour {
 
     public void TileClicked()
     {
-        if (SceneManager.GetActiveScene().name != "Editor")
+        if (SceneManager.GetActiveScene().name != "ExploEditor")
         {
             if (Explo_GridController.Instance.Grid.ExploTiles[x,y].Type != Explo_Tile.Explo_TileType.Wall)
             {
                 MoveTo();
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                Debug.Log("Adding Movement Tiles");
+                ExploEditorController.Instance.AddMovementTiles(x, y);
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                Debug.Log("Removing Movement Tiles");
+                ExploEditorController.Instance.RemoveMovementTiles(x, y);
+            }
+
+            if (Input.GetMouseButtonUp(0) && Input.GetKey(KeyCode.LeftShift))
+            {
+                Debug.Log("Adding EE Tiles");
+                ExploEditorController.Instance.AddEETiles(x, y);
+            }
+            else if (Input.GetMouseButtonUp(1) && Input.GetKey(KeyCode.LeftShift))
+            {
+                Debug.Log("Removing EE Tiles");
+                ExploEditorController.Instance.RemoveEETiles(x, y);
             }
         }
         StartCoroutine(WaitAfterClick());

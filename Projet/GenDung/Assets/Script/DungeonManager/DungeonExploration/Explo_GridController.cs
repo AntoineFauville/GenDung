@@ -43,8 +43,8 @@ public class Explo_GridController : MonoBehaviour {
             worldPosTemp = new Vector3(-1000, -1000, 0);
             /* */
 
+            SetMovementTiles();
             /*
-            SetWallTiles();
             SetSpawnTiles();
             SetMonsterSpawnTiles();
             */
@@ -296,18 +296,17 @@ public class Explo_GridController : MonoBehaviour {
     }
 
     /* Indique aux Tiles concernées qu'elles sont des murs */
-    /*
-    public void SetWallTiles()
+    public void SetMovementTiles()
     {
-        int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls.Count;
-        for (int x = 0; x < wallsNumber; x++)
+        //int wallsNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls.Count;
+        int movementTilesNumber = 0;
+        for (int x = 0; x < movementTilesNumber; x++)
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.Walls[x];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Wall;
         }
     }
-    */
     /* */
 
     /* Indique aux Tiles concernées qu'elles sont des zones possibles de placement pré-Combat */
