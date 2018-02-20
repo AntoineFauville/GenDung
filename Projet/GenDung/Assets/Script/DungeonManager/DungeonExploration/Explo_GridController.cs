@@ -41,15 +41,11 @@ public class Explo_GridController : MonoBehaviour {
             /* Assure le positionnement hors écran durant la phase de placement */
             unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
             worldPosTemp = new Vector3(-1000, -1000, 0);
-
-            SetMovementTiles();
-            SetSpawnTiles();
             /*
             SetMonsterSpawnTiles();
             */
 
-            unit.TileX = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].x);
-            unit.TileY = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].y);
+            StartCoroutine(WaitForSceneLoading());
         }
     }
 
@@ -297,7 +293,7 @@ public class Explo_GridController : MonoBehaviour {
         return worldPosTemp;
     }
 
-    /* Indique aux Tiles concernées qu'elles sont des murs */
+    /* Indique aux Tiles concernées qu'elles sont des Zones vides */
     public void SetMovementTiles()
     {
         int movementTilesNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles.Count;
@@ -305,6 +301,7 @@ public class Explo_GridController : MonoBehaviour {
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles[x];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Empty;
+            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
     /* */
@@ -317,6 +314,7 @@ public class Explo_GridController : MonoBehaviour {
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[y];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
+            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
     /* */
@@ -334,6 +332,15 @@ public class Explo_GridController : MonoBehaviour {
     }
     */
     /* */
+
+    public IEnumerator WaitForSceneLoading()
+    {
+        yield return new WaitForSeconds(0.3f);
+        SetMovementTiles();
+        SetSpawnTiles();
+        unit.TileX = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].x);
+        unit.TileY = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].y);
+    }
 
     /* Accessors Methods */
 
