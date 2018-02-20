@@ -21,7 +21,9 @@ public class ExploTileController : MonoBehaviour {
 
         StartCoroutine(WaitBeforeCleanUp(0f)); // Look for White Tiles at the beginning 
 
-        sprites = Resources.LoadAll<Sprite>("Sprites/Explo_Map");
+        sprites = Resources.LoadAll<Sprite>("Sprites/Explo_Map"); // Load the multiple sprites for changing visual.
+
+        UpdateTileUI(); // Need to make an Update at Start unless we want to have all tiles as Empty for the visual.
     }
 
     public void TileClicked()

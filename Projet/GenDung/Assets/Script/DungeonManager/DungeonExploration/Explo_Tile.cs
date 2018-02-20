@@ -9,7 +9,7 @@ public class Explo_Tile
         Empty, Wall, Fight, Treasure, Trap, OtterKingdom, Exit, Entrance
     }
 
-    Explo_TileType type = Explo_TileType.Empty; // Wall Type by Default
+    Explo_TileType type = Explo_TileType.Wall; 
     public int x;
     public int y;
     public bool isWalkable = true;
