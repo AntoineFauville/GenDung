@@ -12,7 +12,9 @@ public class Explo_GridController : MonoBehaviour {
     private Node[,] graph;
     private ExploUnitController unit;
     private Vector3 worldPosTemp;
-    private List<Vector2> spawnTilesList = new List<Vector2>();
+    private List<Vector2> emptyTilesList = new List<Vector2>();
+    private List<Vector2> fightRoomList = new List<Vector2>();
+    private List<Vector2> treasureRoomList = new List<Vector2>();
 
     void CreateInstance()
     {
@@ -75,8 +77,6 @@ public class Explo_GridController : MonoBehaviour {
                     );
                 tile_canvas.GetComponent<ExploTileController>().X = x;
                 tile_canvas.GetComponent<ExploTileController>().Y = y;
-
-                Grid.ExploTiles[x, y].isWalkable = true;
 
                 Grid.ExploTiles[x, y].Type = Explo_Tile.Explo_TileType.Wall;
 
@@ -301,6 +301,7 @@ public class Explo_GridController : MonoBehaviour {
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles[x];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Empty;
+            emptyTilesList.Add(tile);
             GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
@@ -319,27 +320,50 @@ public class Explo_GridController : MonoBehaviour {
     }
     /* */
 
-    /* Indique aux Tiles concernées qu'elles sont des zones de spawn possibles de monstres */
-    /*
-    public void SetMonsterSpawnTiles()
+    public void SetRandomFightTiles()
     {
-        int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
-        for (int z = 0; z < spawnMonsterNumber; z++)
+        int fightRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].fightRoomAmount;
+        for (int f = 0; f < fightRoomAmount; f++)
         {
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[z];
+            int emptyTilesCount = emptyTilesList.Count;
+            int rnd = Random.Range(0, emptyTilesCount);
+
+            Vector2 tile = emptyTilesList[rnd];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Fight;
+            fightRoomList.Add(tile);
+            emptyTilesList.RemoveAt(rnd);
+            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
-    */
-    /* */
 
-    public IEnumerator WaitForSceneLoading()
+    public void SetRandomTreasureTiles()
+    {
+        int treasureRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount;
+        for (int t = 0; t < treasureRoomAmount; t++)
+        {
+            int emptyTilesCount = emptyTilesList.Count;
+            int rnd = Random.Range(0, emptyTilesCount);
+
+            Vector2 tile = emptyTilesList[rnd];
+            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Treasure;
+            treasureRoomList.Add(tile);
+            emptyTilesList.RemoveAt(rnd);
+            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+        }
+    }
+
+    public IEnumerator WaitForSceneLoading() // Wait For the Scene to be loaded and then load the empty Tiles and Entrance/Exit Tiles
     {
         yield return new WaitForSeconds(0.3f);
+
         SetMovementTiles();
         SetSpawnTiles();
+
         unit.TileX = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].x);
         unit.TileY = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].y);
+
+        SetRandomFightTiles();
+        SetRandomTreasureTiles();
     }
 
     /* Accessors Methods */
@@ -395,15 +419,15 @@ public class Explo_GridController : MonoBehaviour {
         }
     }
 
-    public List<Vector2> SpawnTilesList
+    public List<Vector2> EmptyTilesList
     {
         get
         {
-            return spawnTilesList;
+            return emptyTilesList;
         }
         set
         {
-            spawnTilesList = value;
+            emptyTilesList = value;
         }
     }
     /* */
