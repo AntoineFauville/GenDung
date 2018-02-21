@@ -32,7 +32,6 @@ public class ExploTileController : MonoBehaviour {
         {
             if (Explo_GridController.Instance.Grid.ExploTiles[x,y].Type != Explo_Tile.Explo_TileType.Wall)
             {
-                Debug.Log("Checking this tile");
                 MoveTo();
             }
         }
@@ -72,7 +71,18 @@ public class ExploTileController : MonoBehaviour {
     {
         if (Explo_GridController.Instance.Grid.ExploTiles[x,y].Type != Explo_Tile.Explo_TileType.Wall)
         {
-            Debug.Log("Moving this tile");
+            switch(Explo_GridController.Instance.Grid.ExploTiles[x,y].Type)
+            {
+                case Explo_Tile.Explo_TileType.Fight:
+                    Debug.Log("Entering a Fight Room");
+                    break;
+                case Explo_Tile.Explo_TileType.Treasure:
+                    Debug.Log("Entering a Treasure Room");
+                    break;
+                default:
+                    Debug.Log("Entering an Empty Tile");
+                    break;
+            }
 
             Explo_GridController.Instance.WorldPosTemp = this.transform.position;
             Explo_GridController.Instance.GeneratePathTo(x, y);
