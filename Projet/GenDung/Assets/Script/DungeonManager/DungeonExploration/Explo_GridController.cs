@@ -13,8 +13,10 @@ public class Explo_GridController : MonoBehaviour {
     private ExploUnitController unit;
     private Vector3 worldPosTemp;
     private List<Vector2> emptyTilesList = new List<Vector2>();
+    private List<Vector2> eeTilesList = new List<Vector2>();
     private List<Vector2> fightRoomList = new List<Vector2>();
     private List<Vector2> treasureRoomList = new List<Vector2>();
+    private Vector2 entranceTile;
 
     void CreateInstance()
     {
@@ -43,9 +45,6 @@ public class Explo_GridController : MonoBehaviour {
             /* Assure le positionnement hors écran durant la phase de placement */
             unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
             worldPosTemp = new Vector3(-1000, -1000, 0);
-            /*
-            SetMonsterSpawnTiles();
-            */
 
             StartCoroutine(WaitForSceneLoading());
         }
@@ -181,14 +180,6 @@ public class Explo_GridController : MonoBehaviour {
 
         Node source;
 
-        /*if (!PreCombatController.Instance.CombatStarted)
-            source = graph[unit.TileX, unit.TileY];
-        else if (CombatController.Instance.Turn == CombatController.turnType.Player)
-            source = graph[CombatController.Instance.TargetUnit.TileX, CombatController.Instance.TargetUnit.TileY];
-        else
-            source = graph[CombatController.Instance.TargetFoe.TileX, CombatController.Instance.TargetFoe.TileY];
-            */
-
         source = graph[unit.TileX, unit.TileY];
 
         Node target = graph[x, y];
@@ -253,15 +244,6 @@ public class Explo_GridController : MonoBehaviour {
 
         currentPath.Reverse();
 
-        /*
-        if (!PreCombatController.Instance.CombatStarted)
-            unit.CurrentPath = currentPath;
-        else if (CombatController.Instance.Turn == CombatController.turnType.Player)
-            CombatController.Instance.TargetUnit.CurrentPath = currentPath;
-        else
-            CombatController.Instance.TargetFoe.CurrentPath = currentPath;
-        */
-
         unit.CurrentPath = currentPath;
     }
 
@@ -308,21 +290,38 @@ public class Explo_GridController : MonoBehaviour {
     /* */
 
     /* Indique aux Tiles concernées qu'elles sont des zones possibles de placement pré-Combat */
-    public void SetSpawnTiles()
+    public void SetEETiles()
     {
-        int spawnNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles.Count;
-        for (int y = 0; y < spawnNumber; y++)
+        // Amount of Possibilities for Entrance-Exit Tiles.
+        int spawnPossibilitiesAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles.Count;
+
+        for (int y = 0; y < spawnPossibilitiesAmount; y++) // Adding every possible tiles in eeTilesList.
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[y];
-            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
-            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+            eeTilesList.Add(tile);
         }
+
+        // Always One Entrance and One Exit.
+        // Choosing the tile for Entrance.
+        int rnd = Random.Range(0, eeTilesList.Count);
+        entranceTile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[rnd];
+        Grid.ExploTiles[Mathf.RoundToInt(entranceTile.x), Mathf.RoundToInt(entranceTile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
+        eeTilesList.Remove(entranceTile);
+        GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + entranceTile.x + "_" + entranceTile.y).GetComponent<ExploTileController>().UpdateTileUI();
+
+        // Choosing the tile for Exit.
+        rnd = Random.Range(0, eeTilesList.Count);
+        Vector2 exitTile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[rnd];
+        Grid.ExploTiles[Mathf.RoundToInt(exitTile.x), Mathf.RoundToInt(exitTile.y)].Type = Explo_Tile.Explo_TileType.Exit;
+        eeTilesList.Remove(exitTile);
+        GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + exitTile.x + "_" + exitTile.y).GetComponent<ExploTileController>().UpdateTileUI();
     }
     /* */
 
     public void SetRandomFightTiles()
     {
         int fightRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].fightRoomAmount;
+
         for (int f = 0; f < fightRoomAmount; f++)
         {
             int emptyTilesCount = emptyTilesList.Count;
@@ -357,10 +356,10 @@ public class Explo_GridController : MonoBehaviour {
         yield return new WaitForSeconds(0.3f);
 
         SetMovementTiles();
-        SetSpawnTiles();
+        SetEETiles();
 
-        unit.TileX = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].x);
-        unit.TileY = Mathf.RoundToInt(GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[0].y);
+        unit.TileX = Mathf.RoundToInt(entranceTile.x);
+        unit.TileY = Mathf.RoundToInt(entranceTile.y);
 
         SetRandomFightTiles();
         SetRandomTreasureTiles();
