@@ -37,30 +37,35 @@ public class ExploTileController : MonoBehaviour {
         }
         else
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetKey(KeyCode.LeftShift))
             {
-                Debug.Log("Adding Movement Tiles");
-                ExploEditorController.Instance.AddMovementTiles(x, y);
-                UpdateTileUI();
+                if (Input.GetMouseButtonUp(0))
+                {
+                    Debug.Log("Adding EE Tiles");
+                    ExploEditorController.Instance.AddEETiles(x, y);
+                    UpdateTileUI();
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    Debug.Log("Removing EE Tiles");
+                    ExploEditorController.Instance.RemoveEETiles(x, y);
+                    UpdateTileUI();
+                }
             }
-            else if (Input.GetMouseButtonUp(1))
+            else
             {
-                Debug.Log("Removing Movement Tiles");
-                ExploEditorController.Instance.RemoveMovementTiles(x, y);
-                UpdateTileUI();
-            }
-
-            if (Input.GetMouseButtonUp(0) && Input.GetKey(KeyCode.LeftShift))
-            {
-                Debug.Log("Adding EE Tiles");
-                ExploEditorController.Instance.AddEETiles(x, y);
-                UpdateTileUI();
-            }
-            else if (Input.GetMouseButtonUp(1) && Input.GetKey(KeyCode.LeftShift))
-            {
-                Debug.Log("Removing EE Tiles");
-                ExploEditorController.Instance.RemoveEETiles(x, y);
-                UpdateTileUI();
+                if (Input.GetMouseButtonUp(0))
+                {
+                    Debug.Log("Adding Movement Tiles");
+                    ExploEditorController.Instance.AddMovementTiles(x, y);
+                    UpdateTileUI();
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    Debug.Log("Removing Movement Tiles");
+                    ExploEditorController.Instance.RemoveMovementTiles(x, y);
+                    UpdateTileUI();
+                }
             }
         }
         StartCoroutine(WaitAfterClick());

@@ -17,6 +17,7 @@ public class Explo_GridController : MonoBehaviour {
     private List<Vector2> fightRoomList = new List<Vector2>();
     private List<Vector2> treasureRoomList = new List<Vector2>();
     private Vector2 entranceTile;
+    private int rnd;
 
     void CreateInstance()
     {
@@ -304,18 +305,18 @@ public class Explo_GridController : MonoBehaviour {
         // Always One Entrance and One Exit.
         // Choosing the tile for Entrance.
         int rnd = Random.Range(0, eeTilesList.Count);
-        entranceTile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[rnd];
+        entranceTile = eeTilesList[rnd];
         Grid.ExploTiles[Mathf.RoundToInt(entranceTile.x), Mathf.RoundToInt(entranceTile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
         eeTilesList.Remove(entranceTile);
         GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + entranceTile.x + "_" + entranceTile.y).GetComponent<ExploTileController>().UpdateTileUI();
 
         // Choosing the tile for Exit.
         rnd = Random.Range(0, eeTilesList.Count);
-        Vector2 exitTile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[rnd];
+        Vector2 exitTile = eeTilesList[rnd];
         Grid.ExploTiles[Mathf.RoundToInt(exitTile.x), Mathf.RoundToInt(exitTile.y)].Type = Explo_Tile.Explo_TileType.Exit;
         eeTilesList.Remove(exitTile);
         GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + exitTile.x + "_" + exitTile.y).GetComponent<ExploTileController>().UpdateTileUI();
-    }
+}
     /* */
 
     public void SetRandomFightTiles()
@@ -341,7 +342,7 @@ public class Explo_GridController : MonoBehaviour {
         for (int t = 0; t < treasureRoomAmount; t++)
         {
             int emptyTilesCount = emptyTilesList.Count;
-            int rnd = Random.Range(0, emptyTilesCount);
+            rnd = Random.Range(0, emptyTilesCount);
 
             Vector2 tile = emptyTilesList[rnd];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Treasure;
