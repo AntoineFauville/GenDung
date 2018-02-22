@@ -151,10 +151,10 @@ public class Explo_GridController : MonoBehaviour {
 
     public float CostToEnterTile(int sourceX, int sourceY, int targetX, int targetY)
     {
-        float cost = 0;
+        float cost = 1;
 
         Explo_Tile target = GetTileAtWorldCoord(new Vector3(targetX, targetY, 0));
-        cost = 0;
+        cost = 1;
 
         if (UnitCanEnterTile(targetX, targetY) == false)
         {

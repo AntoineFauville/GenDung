@@ -9,6 +9,7 @@ public class ExploUnitController : MonoBehaviour {
     private int tileX, tileY; // Position du Joueur en X, en Y.
     private List<Node> currentPath = null; // Liste des noeuds pour le PathFinding.
     private int characterID, health, maxHealth, pm, pa, attackCost = 1, initiative, turnCount; // ID, PV, Max PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
+    private float remainingMovement = 1;
 
     void Update()
     {
@@ -43,8 +44,15 @@ public class ExploUnitController : MonoBehaviour {
             return;
         }
 
+        if (remainingMovement <= 0)
+            return;
+
+        remainingMovement -= Explo_GridController.Instance.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
+
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
+
+        //Debug.Log(Explo_GridController.Instance.Grid.ExploTiles[tileX, tileY].Type); // Display Tile Type for Debug Purpose.
 
         StartCoroutine(WaitBeforeNextMovement()); // Coroutine pour faire patienter le joueur et donné une meilleure impression de déplacement.
 
@@ -54,6 +62,8 @@ public class ExploUnitController : MonoBehaviour {
         {
             currentPath = null;
         }
+
+        StartCoroutine(WaitBeforeNextTile());
     }
 
     public void SetDefaultSpawn(Vector3 pos)
@@ -66,7 +76,13 @@ public class ExploUnitController : MonoBehaviour {
     public IEnumerator WaitBeforeNextMovement()
     {
         yield return new WaitForSecondsRealtime(1f);
-        transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime); // 5f for lerp is also a good speed for movement
+    }
+
+    public IEnumerator WaitBeforeNextTile()
+    {
+        yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
+        remainingMovement = 1;
     }
     /* */
 
