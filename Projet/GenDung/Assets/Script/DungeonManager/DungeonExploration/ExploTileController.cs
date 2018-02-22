@@ -80,8 +80,26 @@ public class ExploTileController : MonoBehaviour {
                 case Explo_Tile.Explo_TileType.Treasure:
                     Debug.Log("Entering a Treasure Room");
                     break;
+                case Explo_Tile.Explo_TileType.Entrance:
+                    Debug.Log("Entrance Room");
+                    break;
+                case Explo_Tile.Explo_TileType.Exit:
+                    Debug.Log("Exit Room");
+                    break;
+                case Explo_Tile.Explo_TileType.Trap:
+                    Debug.Log("Entrance Room");
+                    break;
+                case Explo_Tile.Explo_TileType.OtterKingdom:
+                    Debug.Log("Entering a beautiful World full of Otters");
+                    break;
+                case Explo_Tile.Explo_TileType.Empty:
+                    Debug.Log("Waouh, an empty room...");
+                    break;
+                case Explo_Tile.Explo_TileType.Wall:
+                    Debug.Log("Are you some kind of ghost ?!!!");
+                    break;
                 default:
-                    Debug.Log("Entering an Empty Tile");
+                    Debug.Log("Uh Oh, something is wrong! THEO IS INVADING THE HELLO WORLD !!!");
                     break;
             }
 
@@ -97,7 +115,7 @@ public class ExploTileController : MonoBehaviour {
 
     public void UpdateTileUI()
     {
-        if (Explo_GridController.Instance.Grid.ExploTiles[x, y].State == Explo_Tile.Explo_TileState.Discovered)
+        if (SceneManager.GetActiveScene().name == "ExploEditor" || Explo_GridController.Instance.Grid.ExploTiles[x, y].State == Explo_Tile.Explo_TileState.Discovered)
         {
             switch (Explo_GridController.Instance.Grid.ExploTiles[x, y].Type)
             {
