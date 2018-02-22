@@ -361,7 +361,8 @@ public class Explo_GridController : MonoBehaviour {
 
         unit.TileX = Mathf.RoundToInt(entranceTile.x);
         unit.TileY = Mathf.RoundToInt(entranceTile.y);
-
+        unit.FirstDiscoverDungeon();
+       
         SetRandomFightTiles();
         SetRandomTreasureTiles();
     }
@@ -428,6 +429,18 @@ public class Explo_GridController : MonoBehaviour {
         set
         {
             emptyTilesList = value;
+        }
+    }
+
+    public Vector2 EntranceTile
+    {
+        get
+        {
+            return entranceTile;
+        }
+        set
+        {
+            entranceTile = value;
         }
     }
     /* */

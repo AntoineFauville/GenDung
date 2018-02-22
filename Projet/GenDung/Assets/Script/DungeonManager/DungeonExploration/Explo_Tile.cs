@@ -8,12 +8,15 @@ public class Explo_Tile
     {
         Empty, Wall, Fight, Treasure, Trap, OtterKingdom, Exit, Entrance
     }
+    public enum Explo_TileState
+    {
+        Discovered, Undiscovered, ToBeOrNotToBeDiscovered
+    }
 
-    Explo_TileType type = Explo_TileType.Wall; 
+    Explo_TileType type = Explo_TileType.Wall;
+    Explo_TileState state = Explo_TileState.Undiscovered;
     public int x;
     public int y;
-    public bool isWalkable = true;
-    public bool isStarterTile = false;
     Explo_Grid grid;
 
     public Explo_Tile(Explo_Grid _dungeon, int _x, int _y)
@@ -60,6 +63,18 @@ public class Explo_Tile
         set
         {
             type = value;
+        }
+    }
+
+    public Explo_TileState State
+    {
+        get
+        {
+            return state;
+        }
+        set
+        {
+            state = value;
         }
     }
     /* */

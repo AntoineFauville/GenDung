@@ -11,6 +11,14 @@ public class ExploUnitController : MonoBehaviour {
     private int characterID, health, maxHealth, pm, pa, attackCost = 1, initiative, turnCount; // ID, PV, Max PV, PM, PA, coût d'une attaque, Portée Maximale, Portée Minimale, Compteur de Tours.
     private float remainingMovement = 1;
 
+    private Explo_Range unitRange;
+
+    void Start()
+    {
+        unitRange = Resources.Load("ScriptableObject/ExplorationRange_01") as Explo_Range;
+        
+    }
+
     void Update()
     {
         if (currentPath != null)
@@ -54,6 +62,8 @@ public class ExploUnitController : MonoBehaviour {
 
         //Debug.Log(Explo_GridController.Instance.Grid.ExploTiles[tileX, tileY].Type); // Display Tile Type for Debug Purpose.
 
+        DiscoverDungeon();
+
         StartCoroutine(WaitBeforeNextMovement()); // Coroutine pour faire patienter le joueur et donné une meilleure impression de déplacement.
 
         currentPath.RemoveAt(0); // on retire la case précedente de la liste.
@@ -69,6 +79,33 @@ public class ExploUnitController : MonoBehaviour {
     public void SetDefaultSpawn(Vector3 pos)
     {
         this.transform.position = pos;
+    }
+
+    public void FirstDiscoverDungeon()
+    {
+        Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(Explo_GridController.Instance.EntranceTile.x), Mathf.RoundToInt(Explo_GridController.Instance.EntranceTile.y)].State = Explo_Tile.Explo_TileState.Discovered;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + Explo_GridController.Instance.EntranceTile.x + "_" + Explo_GridController.Instance.EntranceTile.y).GetComponent<ExploTileController>().UpdateTileUI();
+        DiscoverDungeon();
+    }
+
+    public void DiscoverDungeon()
+    {
+        StupeflipTile();
+
+        for (int i = 0; i < unitRange.exploTileRange.Count; i++)
+        {
+            if(Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State == Explo_Tile.Explo_TileState.Undiscovered)
+            {
+                Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State = Explo_Tile.Explo_TileState.ToBeOrNotToBeDiscovered;
+                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (this.tileX + unitRange.exploTileRange[i].x) + "_" + (this.tileY + unitRange.exploTileRange[i].y)).GetComponent<ExploTileController>().UpdateTileUI();
+            }
+        }
+    }
+
+    public void StupeflipTile()
+    {
+        Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY ].State = Explo_Tile.Explo_TileState.Discovered;
+        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
     }
 
     /* IEnumerator Methods*/
