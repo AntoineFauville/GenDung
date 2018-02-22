@@ -345,7 +345,7 @@ public class Explo_GridController : MonoBehaviour {
             rnd = Random.Range(0, emptyTilesCount);
 
             Vector2 tile = emptyTilesList[rnd];
-            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Treasure;
+            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Treasure; // This is a FUCKING TREASURE MAN
             treasureRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
             GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
