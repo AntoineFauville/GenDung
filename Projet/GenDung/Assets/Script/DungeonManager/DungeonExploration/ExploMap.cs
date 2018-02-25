@@ -9,7 +9,9 @@ public class ExploMap : ScriptableObject {
 	public string mapName = "New Map";
     public int fightRoomAmount = 1;
     public int treasureRoomAmount = 1;
-    // Room Bitch Antoine Salope
+
+    public List<RoomObject> rooms = new List<RoomObject>();
+
     public List<Vector2> movTiles = new List<Vector2>();
     public List<Vector2> eeTiles = new List<Vector2>();
 }

@@ -43,6 +43,8 @@ public class Explo_FightRoom : MonoBehaviour
     {
         fightRoomCanvas.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = 100;
         fightCanvas.GetComponent<Canvas>().sortingOrder = 0;
+
+        fightRoomCanvas.transform.Find("Canvas/Panel/background of the room").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms[0].back;
     }
 
     /* Accessors Methods */
