@@ -28,4 +28,9 @@ public class InitController : MonoBehaviour {
     {
         SceneManager.LoadScene("Editor");
     }
+
+	public void StartExploEditor()
+	{
+		SceneManager.LoadScene("ExploEditor");
+	}
 }
