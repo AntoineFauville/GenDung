@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3914f40778436f344b5312d6c9386519
-timeCreated: 1518991518
+timeCreated: 1519563031
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -99,9 +99,9 @@ TextureImporter:
       name: Ecran Menu De droite donjon_0
       rect:
         serializedVersion: 2
-        x: 1168
+        x: 1225
         y: 0
-        width: 450
+        width: 393
         height: 908
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -117,7 +117,7 @@ TextureImporter:
         width: 280
         height: 222
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
