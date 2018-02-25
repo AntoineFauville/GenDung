@@ -12,11 +12,12 @@ public class ExploUnitController : MonoBehaviour {
     private float remainingMovement = 1;
 
     private Explo_Range unitRange;
+    private Explo_FightRoom fightRoom;
 
     void Start()
     {
         unitRange = Resources.Load("ScriptableObject/ExplorationRange_01") as Explo_Range;
-        
+        fightRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
     }
 
     void Update()
@@ -104,8 +105,22 @@ public class ExploUnitController : MonoBehaviour {
 
     public void StupeflipTile()
     {
-        Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY ].State = Explo_Tile.Explo_TileState.Discovered;
+        Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].State = Explo_Tile.Explo_TileState.Discovered;
         GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
+
+        if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
+        {
+            switch (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type)
+            {
+                case Explo_Tile.Explo_TileType.Fight:
+                    Debug.Log("Character Entered a Treasure Room");
+                    fightRoom.LinkToRoom();
+                    break;
+                case Explo_Tile.Explo_TileType.Treasure:
+                    Debug.Log("Character Entered a Treasure Room");
+                    break;
+            }
+        }
     }
 
     /* IEnumerator Methods*/

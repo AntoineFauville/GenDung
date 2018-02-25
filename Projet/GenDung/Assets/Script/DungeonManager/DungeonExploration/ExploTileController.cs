@@ -75,25 +75,26 @@ public class ExploTileController : MonoBehaviour {
             switch(Explo_GridController.Instance.Grid.ExploTiles[x,y].Type)
             {
                 case Explo_Tile.Explo_TileType.Fight:
-                    Debug.Log("Entering a Fight Room");
+                    Debug.Log("Clicked on a Fight Room");
+                    //fightRoom.LinkToRoom();
                     break;
                 case Explo_Tile.Explo_TileType.Treasure:
-                    Debug.Log("Entering a Treasure Room");
+                    Debug.Log("Clicked on a Treasure Room");
                     break;
                 case Explo_Tile.Explo_TileType.Entrance:
-                    Debug.Log("Entrance Room");
+                    Debug.Log("Clicked on Entrance Room");
                     break;
                 case Explo_Tile.Explo_TileType.Exit:
-                    Debug.Log("Exit Room");
+                    Debug.Log("Clicked on Exit Room");
                     break;
                 case Explo_Tile.Explo_TileType.Trap:
-                    Debug.Log("Entrance Room");
+                    Debug.Log("Clicked on Entrance Room");
                     break;
                 case Explo_Tile.Explo_TileType.OtterKingdom:
-                    Debug.Log("Entering a beautiful World full of Otters");
+                    Debug.Log("Clicked on a beautiful World full of Otters");
                     break;
                 case Explo_Tile.Explo_TileType.Empty:
-                    Debug.Log("Waouh, an empty room...");
+                    Debug.Log("Waouh, Clicked on an empty room...");
                     break;
                 case Explo_Tile.Explo_TileType.Wall:
                     Debug.Log("Are you some kind of ghost ?!!!");
