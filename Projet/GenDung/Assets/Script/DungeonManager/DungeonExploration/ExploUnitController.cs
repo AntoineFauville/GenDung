@@ -108,19 +108,10 @@ public class ExploUnitController : MonoBehaviour {
         Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].State = Explo_Tile.Explo_TileState.Discovered;
         GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
 
-        if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
-        {
-            switch (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type)
-            {
-                case Explo_Tile.Explo_TileType.Fight:
-                    Debug.Log("Character Entered a Treasure Room");
-                    fightRoom.LinkToRoom();
-                    break;
-                case Explo_Tile.Explo_TileType.Treasure:
-                    Debug.Log("Character Entered a Treasure Room");
-                    break;
-            }
-        }
+		StartCoroutine ("WaitForFlipAnim");
+		Animator TyleAnim;
+		TyleAnim = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + tileX + "_" + tileY).transform.GetComponent<Animator> ();
+		TyleAnim.Play ("flipTile");
     }
 
     /* IEnumerator Methods*/
@@ -136,6 +127,26 @@ public class ExploUnitController : MonoBehaviour {
         yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
         remainingMovement = 1;
     }
+
+	public IEnumerator WaitForFlipAnim()
+	{
+		yield return new WaitForSecondsRealtime(1.0f); // 0.3f is perfect for waiting between movement.
+
+		if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
+		{
+			switch (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type)
+			{
+			case Explo_Tile.Explo_TileType.Fight:
+				Debug.Log("Character Entered a Treasure Room");
+				fightRoom.LinkToRoom();
+				break;
+			case Explo_Tile.Explo_TileType.Treasure:
+				Debug.Log("Character Entered a Treasure Room");
+				break;
+			}
+		}
+	}
+
     /* */
 
     /* Accessors Methods*/
