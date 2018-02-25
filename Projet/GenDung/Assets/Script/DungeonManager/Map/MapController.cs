@@ -40,11 +40,11 @@ public class MapController : MonoBehaviour {
         //show on the map current money
         GameObject.Find("GoldUIDispatcherText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
 
+        #region //----------ecran de fin de donjon-----------//
 
         //----------ecran de fin de donjon-----------//
         if (dungeonLoader.EndDungeon && !dungeonLoader.InstrantiateOnceEndDungeon)
         {
-
             //instantie l'écran de fin
             dungeonLoader.InstrantiateOnceEndDungeon = true;
             Instantiate(Resources.Load("UI_Interface/EndDungeonUI"));
@@ -100,6 +100,8 @@ public class MapController : MonoBehaviour {
             this.transform.GetComponent<CurrencyGestion>().SaveMoney();
         }
 
+        #endregion
+
         dungeonOnTheMap = GameObject.Find("CanvasCarte(Clone)/Panel/Panel/PanelScriptDungeonList").GetComponent<DungeonListOnMap>().dungeonOnTheMapList; // Ajouter par mes soins ^^
 
         //assure que les salles sont bien unlock
@@ -148,7 +150,7 @@ public class MapController : MonoBehaviour {
             dungeonLoader.FadeInOutAnim();
 
             dungeonLoader.InstrantiateOnceEndDungeon = false;
-            SceneManager.LoadScene("Dungeon");
+            SceneManager.LoadScene("Explo"); // "Dungeon"
         }
     }
 
