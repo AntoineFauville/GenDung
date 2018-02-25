@@ -36,11 +36,11 @@ public class CombatUIController : MonoBehaviour {
 
     public void linkButtons() // link the gameobject to the variable.
     {
-        btnStartGame = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
-        btnSpell1 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_1").GetComponent<Button>();
-        btnSpell2 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_2").GetComponent<Button>();
-        btnSpell3 = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_3").GetComponent<Button>();
-        btnNextTurn = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/PanelPassYourTurn/ButtonPassYourTurn").GetComponent<Button>();
+        btnStartGame = GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Button_Start_Game").GetComponent<Button>();
+        btnSpell1 = GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_1").GetComponent<Button>();
+        btnSpell2 = GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_2").GetComponent<Button>();
+        btnSpell3 = GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_3").GetComponent<Button>();
+        btnNextTurn = GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Spells/PanelPassYourTurn/ButtonPassYourTurn").GetComponent<Button>();
     }
 
     public void SetButtonsActions() // set action on click.

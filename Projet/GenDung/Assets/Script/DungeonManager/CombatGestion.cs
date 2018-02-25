@@ -49,11 +49,11 @@ public class CombatGestion : MonoBehaviour {
         combat_grid.SetActive(true);
         instantiateCombatGrid = true;
 
-        for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
-        {
-            GameObject.Find("CharacterBG").GetComponent<Image>().enabled = false;
-            GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = false;
-        }
+        //for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
+        //{
+          //  GameObject.Find("CharacterBG").GetComponent<Image>().enabled = false;
+            //GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = false;
+        //}
 
         canvasTemp.GetComponent<Canvas>().enabled = false;
 
