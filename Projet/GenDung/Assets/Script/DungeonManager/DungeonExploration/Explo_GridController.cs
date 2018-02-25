@@ -300,6 +300,11 @@ public class Explo_GridController : MonoBehaviour {
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[y];
             eeTilesList.Add(tile);
+            if (SceneManager.GetActiveScene().name == "ExploEditor")
+            {
+                Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
+                GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+            }
         }
 
         // Always One Entrance and One Exit.
