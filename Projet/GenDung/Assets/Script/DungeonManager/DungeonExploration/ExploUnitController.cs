@@ -36,13 +36,13 @@ public class ExploUnitController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name == "ExploEditor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat n'as pas été réalisé.
         {
-            SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position);
+            SetDefaultSpawn(GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position);
             AdvancePathing();
         }
         else if (SceneManager.GetActiveScene().name != "ExploEditor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
         {
             AdvancePathing();
-            transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
     }
 
@@ -85,7 +85,7 @@ public class ExploUnitController : MonoBehaviour {
     public void FirstDiscoverDungeon()
     {
         Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(Explo_GridController.Instance.EntranceTile.x), Mathf.RoundToInt(Explo_GridController.Instance.EntranceTile.y)].State = Explo_Tile.Explo_TileState.Discovered;
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + Explo_GridController.Instance.EntranceTile.x + "_" + Explo_GridController.Instance.EntranceTile.y).GetComponent<ExploTileController>().UpdateTileUI();
+        GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + Explo_GridController.Instance.EntranceTile.x + "_" + Explo_GridController.Instance.EntranceTile.y).GetComponent<ExploTileController>().UpdateTileUI();
         DiscoverDungeon();
     }
 
@@ -98,7 +98,7 @@ public class ExploUnitController : MonoBehaviour {
             if(Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State == Explo_Tile.Explo_TileState.Undiscovered)
             {
                 Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State = Explo_Tile.Explo_TileState.ToBeOrNotToBeDiscovered;
-                GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + (this.tileX + unitRange.exploTileRange[i].x) + "_" + (this.tileY + unitRange.exploTileRange[i].y)).GetComponent<ExploTileController>().UpdateTileUI();
+                GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + (this.tileX + unitRange.exploTileRange[i].x) + "_" + (this.tileY + unitRange.exploTileRange[i].y)).GetComponent<ExploTileController>().UpdateTileUI();
             }
         }
     }
@@ -106,7 +106,7 @@ public class ExploUnitController : MonoBehaviour {
     public void StupeflipTile()
     {
         Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].State = Explo_Tile.Explo_TileState.Discovered;
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
+        GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
 
         if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
         {
@@ -128,7 +128,7 @@ public class ExploUnitController : MonoBehaviour {
     public IEnumerator WaitBeforeNextMovement()
     {
         yield return new WaitForSecondsRealtime(1f);
-        transform.position = Vector3.Lerp(transform.position, GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime); // 5f for lerp is also a good speed for movement
+        transform.position = Vector3.Lerp(transform.position, GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime); // 5f for lerp is also a good speed for movement
     }
 
     public IEnumerator WaitBeforeNextTile()

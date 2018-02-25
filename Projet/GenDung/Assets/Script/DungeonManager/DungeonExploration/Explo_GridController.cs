@@ -58,6 +58,7 @@ public class Explo_GridController : MonoBehaviour {
         /* Creation du GridCanvas */
         GameObject PrefabGrid = Resources.Load("UI_Interface/GridCanvas") as GameObject;
         GameObject c = GameObject.Instantiate(PrefabGrid);
+        c.name = "ExploGridCanvas";
         /* */
 
         // Load du Prefab de la Tile // 
@@ -285,7 +286,7 @@ public class Explo_GridController : MonoBehaviour {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles[x];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Empty;
             emptyTilesList.Add(tile);
-            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+            GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
     /* */
@@ -303,7 +304,7 @@ public class Explo_GridController : MonoBehaviour {
             if (SceneManager.GetActiveScene().name == "ExploEditor")
             {
                 Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
-                GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+                GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
             }
         }
 
@@ -313,14 +314,14 @@ public class Explo_GridController : MonoBehaviour {
         entranceTile = eeTilesList[rnd];
         Grid.ExploTiles[Mathf.RoundToInt(entranceTile.x), Mathf.RoundToInt(entranceTile.y)].Type = Explo_Tile.Explo_TileType.Entrance;
         eeTilesList.Remove(entranceTile);
-        GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + entranceTile.x + "_" + entranceTile.y).GetComponent<ExploTileController>().UpdateTileUI();
+        GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + entranceTile.x + "_" + entranceTile.y).GetComponent<ExploTileController>().UpdateTileUI();
 
         // Choosing the tile for Exit.
         rnd = Random.Range(0, eeTilesList.Count);
         Vector2 exitTile = eeTilesList[rnd];
         Grid.ExploTiles[Mathf.RoundToInt(exitTile.x), Mathf.RoundToInt(exitTile.y)].Type = Explo_Tile.Explo_TileType.Exit;
         eeTilesList.Remove(exitTile);
-        GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + exitTile.x + "_" + exitTile.y).GetComponent<ExploTileController>().UpdateTileUI();
+        GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + exitTile.x + "_" + exitTile.y).GetComponent<ExploTileController>().UpdateTileUI();
 }
     /* */
 
@@ -337,7 +338,7 @@ public class Explo_GridController : MonoBehaviour {
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Fight;
             fightRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
-            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+            GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
 
@@ -353,7 +354,7 @@ public class Explo_GridController : MonoBehaviour {
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Treasure; // This is a FUCKING TREASURE MAN
             treasureRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
-            GameObject.Find("GridCanvas(Clone)/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+            GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
 

@@ -44,7 +44,20 @@ public class CombatGestion : MonoBehaviour {
             //GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
 
         } /**/
-	}
+
+        combat_grid = Instantiate(Resources.Load("UI_Interface/CombatGridPrefab")) as GameObject;
+        combat_grid.SetActive(true);
+        instantiateCombatGrid = true;
+
+        for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
+        {
+            GameObject.Find("CharacterBG").GetComponent<Image>().enabled = false;
+            GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = false;
+        }
+
+        canvasTemp.GetComponent<Canvas>().enabled = false;
+
+    }
 
 	public void FinishedCombat () {
 		instantiateCombatGrid = false;
