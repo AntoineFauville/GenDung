@@ -18,6 +18,7 @@ public class UnitController : MonoBehaviour {
 
     void Start()
     {
+		print ("unit well created");
         if(SceneManager.GetActiveScene().name != "Editor")
         {
             GameObject.Find("ImageFondPassYourTurn").GetComponent<Animator>().enabled = false;

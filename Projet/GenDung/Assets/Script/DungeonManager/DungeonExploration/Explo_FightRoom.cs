@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Explo_FightRoom : MonoBehaviour
 {
     private static Explo_FightRoom instance;
+	private static int roomRand;
     private GameObject fightCanvas;
     private GameObject fightRoomCanvas;
 
@@ -45,8 +46,8 @@ public class Explo_FightRoom : MonoBehaviour
         fightRoomCanvas.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = 100;
         fightCanvas.GetComponent<Canvas>().sortingOrder = 0;
  
-        int rnd = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms.Count);
-        actualFightRoom = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms[rnd];
+        roomRand = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms.Count);
+		actualFightRoom = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms[roomRand];
         fightRoomCanvas.transform.Find("Canvas/Panel/background of the room").GetComponent<Image>().sprite = actualFightRoom.back;
     }
 
@@ -64,4 +65,17 @@ public class Explo_FightRoom : MonoBehaviour
             instance = value;
         }
     }
+
+	public static int RoomRand
+	{
+		get
+		{
+			return roomRand;
+		}
+
+		set
+		{
+			roomRand = value;
+		}
+	}
 }
