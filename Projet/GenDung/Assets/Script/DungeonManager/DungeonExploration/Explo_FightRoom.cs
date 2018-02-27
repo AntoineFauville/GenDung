@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Explo_FightRoom : MonoBehaviour
 {
     private static Explo_FightRoom instance;
-	private static int roomRand;
+	private int roomRand;
     private GameObject fightCanvas;
     private GameObject fightRoomCanvas;
 
@@ -66,7 +66,7 @@ public class Explo_FightRoom : MonoBehaviour
         }
     }
 
-	public static int RoomRand
+	public int RoomRand
 	{
 		get
 		{
