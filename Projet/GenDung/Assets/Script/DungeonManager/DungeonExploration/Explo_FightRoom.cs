@@ -10,6 +10,8 @@ public class Explo_FightRoom : MonoBehaviour
     private GameObject fightCanvas;
     private GameObject fightRoomCanvas;
 
+    private CombatGestion cmbtGestion;
+
     private RoomObject actualFightRoom;
 
     void CreateInstance()
