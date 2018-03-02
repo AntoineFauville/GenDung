@@ -66,6 +66,7 @@ public class GridController : MonoBehaviour {
 
             /* Assure le positionnement hors écran durant la phase de placement */
             unit.SetDefaultSpawn(new Vector3(-1000,-1000,0));
+            unit.transform.parent.GetComponent<Canvas>().sortingOrder = 71;
             worldPosTemp = new Vector3(-1000, -1000, 0);
             /* */
 
@@ -82,6 +83,7 @@ public class GridController : MonoBehaviour {
         /* Creation du GridCanvas */
         GameObject PrefabGrid = Resources.Load("UI_Interface/GridCanvas") as GameObject;
         GameObject c = GameObject.Instantiate(PrefabGrid);
+        c.GetComponent<Canvas>().sortingOrder = 72;
         /* */
 
         // Load du Prefab de la Tile // 

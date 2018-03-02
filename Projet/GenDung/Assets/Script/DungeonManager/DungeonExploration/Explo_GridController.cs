@@ -59,6 +59,7 @@ public class Explo_GridController : MonoBehaviour {
         GameObject PrefabGrid = Resources.Load("UI_Interface/GridCanvas") as GameObject;
         GameObject c = GameObject.Instantiate(PrefabGrid);
         c.name = "ExploGridCanvas";
+        c.GetComponent<Canvas>().sortingOrder = 71;
         /* */
 
         // Load du Prefab de la Tile // 

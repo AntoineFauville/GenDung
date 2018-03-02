@@ -98,7 +98,7 @@ public class DungeonController : MonoBehaviour {
 
             //StoryLoadingTime();
 
-            Instantiate(Resources.Load("UI_Interface/Room1"));
+            //Instantiate(Resources.Load("UI_Interface/Room1"));
 
             GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
