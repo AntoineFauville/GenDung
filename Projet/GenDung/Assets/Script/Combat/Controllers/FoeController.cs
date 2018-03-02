@@ -210,7 +210,7 @@ public class FoeController : MonoBehaviour {
         //spriteMonster.enabled = false;
         // Désactiver le DisplayUI lié à ce monstre.
         //GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayMonster_" + foeID).gameObject.SetActive(false)
-        Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + foeID).gameObject);
+        Destroy(GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + foeID).gameObject);
         Destroy(GameObject.Find("Foe_" + foeID));
         CombatController.Instance.CheckBattleDeath();
     }

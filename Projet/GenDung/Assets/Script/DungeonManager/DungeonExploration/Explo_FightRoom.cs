@@ -8,6 +8,7 @@ public class Explo_FightRoom : MonoBehaviour
     private static Explo_FightRoom instance;
 	private int roomRand;
     private GameObject combatCanvas;
+    private GameObject combatUI;
     private GameObject combatRoom;
     private GameObject combatUnit;
     private GameObject combatGrid;
@@ -32,6 +33,7 @@ public class Explo_FightRoom : MonoBehaviour
     void Start ()
     {
         combatCanvas = GameObject.Find("FightRoomUI");
+        combatUI = GameObject.Find("CanvasUIDungeon");
         combatRoom = GameObject.Find("Room1");
 
         exploUnit = GameObject.Find("ExploUnit(Clone)");
@@ -52,11 +54,12 @@ public class Explo_FightRoom : MonoBehaviour
 
     public void SetFightRoom()
     {
-		GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
-		GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
+		GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
+		GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
 
 
         //print ("le room rand est de " + roomRand);
+        combatUI.GetComponent<Canvas>().sortingOrder = 79;
         combatRoom.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder += 40;
         combatCanvas.GetComponent<Canvas>().sortingOrder -= 40;
 

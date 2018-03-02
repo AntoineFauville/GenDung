@@ -56,7 +56,7 @@ public class CombatController : MonoBehaviour {
 
         // Désactiver Display infos Joueur.
 
-        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
+        display = GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 0f);
         // Désactiver condition de déplacement du FoeTarget
         if (targetFoe != null)
@@ -95,7 +95,7 @@ public class CombatController : MonoBehaviour {
             iniTurn++;
         /* */
 
-        display = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
+        display = GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + PreCombatController.Instance.SortedGameobjectInit[iniTurn].transform.parent.name).gameObject as GameObject;
         display.transform.Find("BouleVerte").GetComponent<Image>().color = new Color(0, 255, 0, 1f);
 
 
@@ -109,7 +109,7 @@ public class CombatController : MonoBehaviour {
 
             CombatUIController.Instance.MonsterTurnButton();
 
-            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
+            GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0.5f;
 
             if (targetUnit != null)
             {
@@ -137,7 +137,7 @@ public class CombatController : MonoBehaviour {
 
             CombatUIController.Instance.PlayerTurnButton();
 
-            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
+            GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
             /* */
         }
 
@@ -149,8 +149,8 @@ public class CombatController : MonoBehaviour {
         {
             if(rmnPA < targetUnit.PlayerSpells[i-1].spellCost)
             {
-                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_"+ i).GetComponent<Button>().interactable = false;
-                GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_" + i).GetComponent<CanvasGroup>().alpha = 0.5f;
+                GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_"+ i).GetComponent<Button>().interactable = false;
+                GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Spells/Panel/Button_Spell_" + i).GetComponent<CanvasGroup>().alpha = 0.5f;
             }
         }
     }
@@ -371,7 +371,7 @@ public class CombatController : MonoBehaviour {
 
     public void UpdateUI(int id)
     {
-        GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_"+id).transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("Foe_"+id).transform.Find("Unit").GetComponent<FoeController>().FoeHealth / (float)GameObject.Find("Foe_" + id).transform.Find("Unit").GetComponent<FoeController>().FoeMaxHealth);
+        GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_"+id).transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("Foe_"+id).transform.Find("Unit").GetComponent<FoeController>().FoeHealth / (float)GameObject.Find("Foe_" + id).transform.Find("Unit").GetComponent<FoeController>().FoeMaxHealth);
     }
 
     public void CheckBattleDeath()

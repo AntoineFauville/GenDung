@@ -18,6 +18,9 @@ public class PreCombatController : MonoBehaviour {
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
     private List<GameObject> sortedGameobjectInit = new List<GameObject>();
 
+    private Explo_FightRoom exploFight;
+    
+
     void CreateInstance()
     {
         if (instance != null)
@@ -33,6 +36,7 @@ public class PreCombatController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name != "Editor")
         {
+            exploFight = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
 			foeData = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex];  
 			// dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex];
 			monsterNmb = foeData.enemiesList.Count;
@@ -72,8 +76,8 @@ public class PreCombatController : MonoBehaviour {
 
             CombatUIController.Instance.SwitchStartVisual();
 
-            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
-            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1f;
+            GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1f;
+            GameObject.Find("CanvasUIDungeon").transform.Find("Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1f;
 
             CombatBeginning(); // Le Joueur confirme son positionnement, on lance le début du Combat.
             CombatController.Instance.SetMovementRangeOnGrid();
@@ -94,13 +98,18 @@ public class PreCombatController : MonoBehaviour {
         CombatController.Instance.MonsterNmb = monsterNmb;
         CombatUIController.Instance.CreatePlayerUIBattleOrder();
 
+        int monsterAmountMax = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].enemyMax;
 
+        int monsterAmount = Random.Range(1, monsterAmountMax);
 
-		for (int x = 0; x < foeData.enemiesList.Count; x++)
+        for (int x = 0; x < monsterAmount; x++)
         {
+            //int rnd = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].enemiesList.Count);
+
             /* Instantiate this foe */
             monster_go = Instantiate(monsterPrefab);
             monster_go.name = "Foe_" + x;
+            monster_go.GetComponent<Canvas>().sortingOrder = 71;
             monster_go.transform.Find("Unit/Cube/Image").GetComponent<Animator>().runtimeAnimatorController = foeData.enemiesList[x].enemyAnimator;
             foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
             /* */
@@ -119,8 +128,8 @@ public class PreCombatController : MonoBehaviour {
 
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
 
-			/*
-            int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>()dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
+            //int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>()dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
+            int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms[exploFight.RoomRand].MonsterSpawningPoints.Count; 
             rndNmb = Random.Range(0, spawnMonsterNumber);
             while (monsterPos.Contains(rndNmb))
             {
@@ -128,10 +137,8 @@ public class PreCombatController : MonoBehaviour {
                 if (rndNmb == spawnMonsterNumber)
                     rndNmb = rndNmb - 1;
             }
-			*/
 
-			/*
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints[rndNmb];
+            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms[exploFight.RoomRand].MonsterSpawningPoints[rndNmb];
             foe.SetDefaultSpawn(GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tile.x + "_" + tile.y).transform.position);
             foe.TileX = Mathf.RoundToInt(tile.x);
             foe.TileY = Mathf.RoundToInt(tile.y);
@@ -139,7 +146,6 @@ public class PreCombatController : MonoBehaviour {
             foe.SetTileAsOccupied();
             monsterPos.Add(rndNmb);
 
-			*/
             /* */
         }
     }

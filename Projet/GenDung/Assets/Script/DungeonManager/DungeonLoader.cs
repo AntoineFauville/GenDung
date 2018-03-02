@@ -109,7 +109,7 @@ public class DungeonLoader : MonoBehaviour {
             //-----------Dungeon gestion scene-------------//
             if (activeScene == "Explo" && GameObject.Find("CanvasUIDungeon(Clone)") == null)
             {
-                Instantiate(Resources.Load("UI_Interface/CanvasUIDungeon")); // Instantiate Canvas when we click on Button.
+                //Instantiate(Resources.Load("UI_Interface/CanvasUIDungeon")); // Instantiate Canvas when we click on Button.
                 sceneLoaded = false;
 
                 dungeonController.Dungeon();

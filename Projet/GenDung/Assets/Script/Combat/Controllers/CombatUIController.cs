@@ -107,7 +107,7 @@ public class CombatUIController : MonoBehaviour {
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
         {
             UIPlayerDisplay = Instantiate(UIMonsterDisplayPrefab);
-            UIPlayerDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
+            UIPlayerDisplay.transform.parent = GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel");
             UIPlayerDisplay.transform.localScale = new Vector3(1, 1, 1);
             UIPlayerDisplay.name = "UIDisplayCharacter_" + i;
             UIPlayerDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = ((float)GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV / (float)GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV);
@@ -124,7 +124,7 @@ public class CombatUIController : MonoBehaviour {
     public void CreateMonsterUIBattleOrder(int x)
     {
             UIMonsterDisplay = Instantiate(UIMonsterDisplayPrefab);
-            UIMonsterDisplay.transform.parent = GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel");
+            UIMonsterDisplay.transform.parent = GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel");
             UIMonsterDisplay.transform.localScale = new Vector3(1, 1, 1);
             UIMonsterDisplay.name = "UIDisplayFoe_" + x;
             UIMonsterDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (PreCombatController.Instance.Foe.FoeHealth / PreCombatController.Instance.Foe.FoeMaxHealth);
@@ -141,7 +141,7 @@ public class CombatUIController : MonoBehaviour {
     {
         for (int i = 0; i < initiativeSortedList.Count; i++)
         {
-            GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + initiativeSortedList[i].transform.parent.name).gameObject.transform.SetAsLastSibling(); 
+            GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplay" + initiativeSortedList[i].transform.parent.name).gameObject.transform.SetAsLastSibling(); 
         }
     }
 
