@@ -50,7 +50,7 @@ public class Explo_FightRoom : MonoBehaviour
 
 
 		//print ("le room rand est de " + roomRand);
-        fightRoomCanvas.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = 100;
+        fightRoomCanvas.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = 49;
         fightCanvas.GetComponent<Canvas>().sortingOrder = 0;
  
         roomRand = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms.Count);

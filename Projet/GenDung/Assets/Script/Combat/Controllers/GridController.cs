@@ -365,7 +365,7 @@ public class GridController : MonoBehaviour {
 		for (int y = 0; y < spawnNumber; y++)
 		{
 			Vector2 tile = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [exploFight.RoomRand].SpawningPoints[y];
-			Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
+			Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true; 
 			spawnTilesList.Add(tile);
 		}
 

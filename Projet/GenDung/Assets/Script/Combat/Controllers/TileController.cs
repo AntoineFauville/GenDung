@@ -23,6 +23,8 @@ public class TileController : MonoBehaviour {
             GridController.Instance.Grid.Tiles[x, y].state = Tile.TileState.Spawn;
 
         StartCoroutine(WaitBeforeCleanUp(0f)); // Look for White Tiles at the beginning 
+
+        UpdateTileUI();
     }
 
     public void TileClicked()
@@ -60,6 +62,10 @@ public class TileController : MonoBehaviour {
                 {
                     PreCombatController.Instance.ConfirmCharaPosition(x, y);
                 }
+            }
+            else
+            {
+                Debug.Log("Click on Tile detected but nothing to do");
             }
         }
         else

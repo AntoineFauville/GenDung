@@ -15,6 +15,7 @@ public class CombatGestion : MonoBehaviour {
 	combat_grid;
 
 	Explo_FightRoom EF;
+    GameObject exploCanvas;
 
     void CreateInstance()
     {
@@ -25,12 +26,15 @@ public class CombatGestion : MonoBehaviour {
         instance = this;
     }
 
-    void Start(){
+    void Start()
+    {
 		canvasTemp = GameObject.FindGameObjectWithTag ("canvasInDungeon");
 		EF = GameObject.Find ("ExploGridPrefab").GetComponent<Explo_FightRoom>();
+        exploCanvas = GameObject.Find("ExploGridCanvas");
 	}
 
-	void Update (){
+	void Update ()
+    {
 		if (Input.GetButtonDown ("Cancel")) {
             PostCombatController.Instance.CleanEndBattle();
 			FinishedCombat ();
@@ -38,9 +42,10 @@ public class CombatGestion : MonoBehaviour {
 	}
 
 	public void InstantiateCombatPrefab () {
-		/* Ajoute de manière dynamique mon GridController à l'objet (Pas de modification de scène nécessaire ;) )  */
+        /* Ajoute de manière dynamique mon GridController à l'objet (Pas de modification de scène nécessaire ;) )  */
 
-		/**/if (SceneManager.GetActiveScene().name == "Dungeon" && !instantiateCombatGrid)
+        /**/
+        if (SceneManager.GetActiveScene().name == "Dungeon" && !instantiateCombatGrid)
 		{
 			combat_grid = Instantiate (Resources.Load("UI_Interface/CombatGridPrefab")) as GameObject;
 			combat_grid.SetActive (true);
@@ -70,6 +75,8 @@ public class CombatGestion : MonoBehaviour {
         //}
 
         canvasTemp.GetComponent<Canvas>().enabled = false;
+
+        exploCanvas.GetComponent<Canvas>().sortingOrder = 25;
 
     }
 
