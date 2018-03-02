@@ -129,7 +129,7 @@ public class CombatUIController : MonoBehaviour {
             UIMonsterDisplay.name = "UIDisplayFoe_" + x;
             UIMonsterDisplay.transform.Find("PVOrderDisplay").GetComponent<Image>().fillAmount = (PreCombatController.Instance.Foe.FoeHealth / PreCombatController.Instance.Foe.FoeMaxHealth);
 
-            UIMonsterDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].enemiesList[x].enemyIcon;
+            //UIMonsterDisplay.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].enemiesList[x].enemyIcon;
 
             UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = PreCombatController.Instance.Foe.FoeName.ToString();
             UIMonsterDisplay.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "PV : " + PreCombatController.Instance.Foe.FoeHealth.ToString();

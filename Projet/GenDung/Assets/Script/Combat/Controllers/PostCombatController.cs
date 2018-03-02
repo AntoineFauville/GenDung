@@ -24,7 +24,7 @@ public class PostCombatController : MonoBehaviour {
     public void CleanEndBattle()
     {
         // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
-        for (int m = 0; m < PreCombatController.Instance.FoeData.enemiesList.Length; m++)
+		for (int m = 0; m < PreCombatController.Instance.FoeData.enemiesList.Count; m++)
         {
             if (GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m) != null)
                 Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m).gameObject);

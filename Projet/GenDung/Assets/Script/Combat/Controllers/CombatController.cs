@@ -76,7 +76,7 @@ public class CombatController : MonoBehaviour {
 
             if (targetFoe != null)
             {
-                for (int m = 0; m < PreCombatController.Instance.FoeData.enemiesList.Length; m++)
+				for (int m = 0; m < PreCombatController.Instance.FoeData.enemiesList.Count; m++)
                 {
                     try
                     {

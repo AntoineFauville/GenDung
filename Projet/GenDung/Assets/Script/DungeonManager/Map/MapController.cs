@@ -10,7 +10,7 @@ public class MapController : MonoBehaviour {
 
     private DungeonLoader dungeonLoader;
 
-    private int dungeonIndex;//index pour le donjon.
+    public int dungeonIndex = 1;//index pour le donjon.
     private GameObject[] dungeonOnTheMap;//list des boutons des donjons sur la carte
     private bool loadbutton; //pour ne charger qu'une fois la scene donjon
 
@@ -28,6 +28,7 @@ public class MapController : MonoBehaviour {
     {
         CreateInstance();
         dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
+
     }
 
     public void Map()
@@ -50,9 +51,10 @@ public class MapController : MonoBehaviour {
             Instantiate(Resources.Load("UI_Interface/EndDungeonUI"));
 
             //montre le montant de gold que le donjon a donné
-            GameObject.Find("GoldDispatchEndUI").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[dungeonIndex].dungeon.dungeonGold.ToString();
+            //GameObject.Find("GoldDispatchEndUI").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().dungeonList.myDungeons[dungeonIndex].dungeon.dungeonGold.ToString();
 
             //verifie dans toutes les salles
+			/*
             for (int i = 0; i < dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon.Count; i++)
             {
 
@@ -92,9 +94,10 @@ public class MapController : MonoBehaviour {
                     bossUI.transform.Find("Icon").GetComponent<Image>().sprite = dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.RoomOfTheDungeon[i].bossList[0].bossIcon;
                 }
             }
+            */
 
             //ajoute un montant d or au joueur
-            this.transform.GetComponent<CurrencyGestion>().IncreaseMoney( dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.dungeonGold);
+            //this.transform.GetComponent<CurrencyGestion>().IncreaseMoney( dungeonLoader.dungeonList.myDungeons[dungeonIndex].dungeon.dungeonGold);
 
             //save all the player money
             this.transform.GetComponent<CurrencyGestion>().SaveMoney();
