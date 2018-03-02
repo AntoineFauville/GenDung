@@ -15,6 +15,8 @@ public class GridController : MonoBehaviour {
     private Vector3 worldPosTemp;
     private List<Vector2> spawnTilesList = new List<Vector2>();
 
+    private Explo_FightRoom exploFight;
+
     void CreateInstance()
     {
         if (instance != null)
@@ -30,6 +32,7 @@ public class GridController : MonoBehaviour {
         GenerateMapData();
         GeneratePathfindingGraph();
 
+        exploFight = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
 
         /* Charge le prefab du Joueur */
         GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
@@ -331,11 +334,11 @@ public class GridController : MonoBehaviour {
         }*/
 
 		print ("second");
-		int wallsNumber = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [Explo_FightRoom.Instance.RoomRand].Walls.Count;
+		int wallsNumber = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [exploFight.RoomRand/*Explo_FightRoom.Instance.RoomRand*/].Walls.Count;
 		print ("amount of walls : " + wallsNumber);
 		for (int x = 0; x < wallsNumber; x++)
 		{
-			Vector2 tile = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [Explo_FightRoom.Instance.RoomRand].Walls[x];
+			Vector2 tile = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [exploFight.RoomRand].Walls[x];
 			Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isWalkable = false;
 			Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Tile.TileType.Wall;
 		}
@@ -357,11 +360,11 @@ public class GridController : MonoBehaviour {
         }
         */
 
-		int spawnNumber = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [Explo_FightRoom.Instance.RoomRand].SpawningPoints.Count;
+		int spawnNumber = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [exploFight.RoomRand].SpawningPoints.Count;
 		print ("spawn monster tiles : " + spawnNumber);
 		for (int y = 0; y < spawnNumber; y++)
 		{
-			Vector2 tile = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [Explo_FightRoom.Instance.RoomRand].SpawningPoints[y];
+			Vector2 tile = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [exploFight.RoomRand].SpawningPoints[y];
 			Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isStarterTile = true;
 			spawnTilesList.Add(tile);
 		}
@@ -381,11 +384,11 @@ public class GridController : MonoBehaviour {
             Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isMonsterTile = true;
         }
         */
-		int spawnMonsterNumber = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [Explo_FightRoom.Instance.RoomRand].MonsterSpawningPoints.Count;
+		int spawnMonsterNumber = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [exploFight.RoomRand].MonsterSpawningPoints.Count;
 		print ("spawn monster tiles : " + spawnMonsterNumber);
 		for (int z = 0; z < spawnMonsterNumber; z++)
 		{
-			Vector2 tile = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [Explo_FightRoom.Instance.RoomRand].MonsterSpawningPoints[z];
+			Vector2 tile = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [MapController.Instance.DungeonIndex].rooms [exploFight.RoomRand].MonsterSpawningPoints[z];
 			Grid.Tiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].isMonsterTile = true;
 		}
 

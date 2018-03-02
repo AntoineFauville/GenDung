@@ -6,13 +6,24 @@ using UnityEngine.SceneManagement;
 
 public class CombatGestion : MonoBehaviour {
 
-	bool instantiateCombatGrid;
+    private static CombatGestion instance;
+
+    bool instantiateCombatGrid;
 
 	GameObject 
 	canvasTemp,
 	combat_grid;
 
-	void Start(){
+    void CreateInstance()
+    {
+        if (instance != null)
+        {
+            Debug.Log("There should never have two world controllers.");
+        }
+        instance = this;
+    }
+
+    void Start(){
 		canvasTemp = GameObject.FindGameObjectWithTag ("canvasInDungeon");
 	}
 
@@ -78,5 +89,18 @@ public class CombatGestion : MonoBehaviour {
 
         GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
         GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
+    }
+
+    public static CombatGestion Instance
+    {
+        get
+        {
+            return instance;
+        }
+
+        set
+        {
+            instance = value;
+        }
     }
 }
