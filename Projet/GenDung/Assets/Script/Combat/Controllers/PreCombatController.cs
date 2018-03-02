@@ -17,7 +17,7 @@ public class PreCombatController : MonoBehaviour {
     private FoeController foe;
     private Dictionary<GameObject, int> initiativeList = new Dictionary<GameObject, int>();
     private List<GameObject> sortedGameobjectInit = new List<GameObject>();
-
+    private int monsterAmount;
     private Explo_FightRoom exploFight;
     
 
@@ -100,29 +100,29 @@ public class PreCombatController : MonoBehaviour {
 
         int monsterAmountMax = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].enemyMax;
 
-        int monsterAmount = Random.Range(1, monsterAmountMax);
+        monsterAmount = Random.Range(1, monsterAmountMax);
 
         for (int x = 0; x < monsterAmount; x++)
         {
-            //int rnd = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].enemiesList.Count);
+            int rnd = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].enemiesList.Count);
 
             /* Instantiate this foe */
             monster_go = Instantiate(monsterPrefab);
             monster_go.name = "Foe_" + x;
             monster_go.GetComponent<Canvas>().sortingOrder = 71;
-            monster_go.transform.Find("Unit/Cube/Image").GetComponent<Animator>().runtimeAnimatorController = foeData.enemiesList[x].enemyAnimator;
+            monster_go.transform.Find("Unit/Cube/Image").GetComponent<Animator>().runtimeAnimatorController = foeData.enemiesList[rnd].enemyAnimator;
             foe = monster_go.transform.Find("Unit").GetComponent<FoeController>();
             /* */
             /* Give Foe intels for this foe */
             foe.FoeID = x;
-            foe.FoeName = foeData.enemiesList[x].enemyName;
-            foe.FoeHealth = foeData.enemiesList[x].health;
-            foe.FoeMaxHealth = foeData.enemiesList[x].health;
-            foe.FoePA = foeData.enemiesList[x].pa;
-            foe.FoePM = foeData.enemiesList[x].pm;
-            foe.FoeAtk = foeData.enemiesList[x].atk;
-            foe.FoeInitiative = foeData.enemiesList[x].initiative;
-            foe.Spell = foeData.enemiesList[x].enemyRange;
+            foe.FoeName = foeData.enemiesList[rnd].enemyName;
+            foe.FoeHealth = foeData.enemiesList[rnd].health;
+            foe.FoeMaxHealth = foeData.enemiesList[rnd].health;
+            foe.FoePA = foeData.enemiesList[rnd].pa;
+            foe.FoePM = foeData.enemiesList[rnd].pm;
+            foe.FoeAtk = foeData.enemiesList[rnd].atk;
+            foe.FoeInitiative = foeData.enemiesList[rnd].initiative;
+            foe.Spell = foeData.enemiesList[rnd].enemyRange;
             /* */
             CombatUIController.Instance.CreateMonsterUIBattleOrder(x);
 
@@ -243,6 +243,17 @@ public class PreCombatController : MonoBehaviour {
         set
         {
             sortedGameobjectInit = value;
+        }
+    }
+    public int MonsterAmount
+    {
+        get
+        {
+            return monsterAmount;
+        }
+        set
+        {
+            monsterAmount = value;
         }
     }
 }

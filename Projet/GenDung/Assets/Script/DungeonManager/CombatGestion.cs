@@ -105,8 +105,8 @@ public class CombatGestion : MonoBehaviour {
         //    GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = true;
         //}
 
-        GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
-        GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
+        GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
+        GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
     }
 
     public static CombatGestion Instance

@@ -24,10 +24,10 @@ public class PostCombatController : MonoBehaviour {
     public void CleanEndBattle()
     {
         // Clean Battle Display : 'UIDisplayPlayer_x' and 'UIDisplayMonster_x'
-		for (int m = 0; m < PreCombatController.Instance.FoeData.enemiesList.Count; m++)
+		for (int m = 0; m < PreCombatController.Instance.MonsterAmount; m++)
         {
-            if (GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m) != null)
-                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m).gameObject);
+            if (GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m) != null)
+                Destroy(GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayFoe_" + m).gameObject);
 
             if (GameObject.Find("Foe_" + m) != null)
                 Destroy(GameObject.Find("Foe_" + m).gameObject);
@@ -35,8 +35,8 @@ public class PostCombatController : MonoBehaviour {
 
         for (int j = 0; j < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; j++)
         {
-            if (GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j) != null)
-                Destroy(GameObject.Find("CanvasUIDungeon(Clone)").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j).gameObject);
+            if (GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j) != null)
+                Destroy(GameObject.Find("CanvasUIDungeon").transform.Find("OrderOfBattle/OrderBattlePanel/UIDisplayCharacter_" + j).gameObject);
 
             if (GameObject.Find("Character_" + j) != null)
                 Destroy(GameObject.Find("Character_" + j).gameObject);
