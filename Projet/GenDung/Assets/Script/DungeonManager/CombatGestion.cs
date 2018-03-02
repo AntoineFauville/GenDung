@@ -14,6 +14,8 @@ public class CombatGestion : MonoBehaviour {
 	canvasTemp,
 	combat_grid;
 
+	Explo_FightRoom EF;
+
     void CreateInstance()
     {
         if (instance != null)
@@ -25,6 +27,7 @@ public class CombatGestion : MonoBehaviour {
 
     void Start(){
 		canvasTemp = GameObject.FindGameObjectWithTag ("canvasInDungeon");
+		EF = GameObject.Find ("ExploGridPrefab").GetComponent<Explo_FightRoom>();
 	}
 
 	void Update (){
@@ -71,22 +74,31 @@ public class CombatGestion : MonoBehaviour {
     }
 
 	public void FinishedCombat () {
+
 		instantiateCombatGrid = false;
+		GameObject.FindGameObjectWithTag ("Unit").SetActive (false);
+
+		EF.CleanFinishedFightRoom ();
+
+		/*
+
 		canvasTemp.GetComponent<Canvas> ().enabled = true;
 		//combat_grid.SetActive (false);
-		GameObject.FindGameObjectWithTag ("Unit").SetActive (false);
+
 		//GameObject.FindGameObjectWithTag ("GridCanvas").SetActive (false);
         Destroy(GameObject.FindGameObjectWithTag("GridCanvas").gameObject);
         Destroy(GameObject.Find("CombatGridPrefab(Clone)").gameObject);
 
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = false;
 
+		
+
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
         {
             GameObject.Find("CharacterBG").GetComponent<Image>().enabled = true;
             GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = true;
         }
-
+*/
         GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
         GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
     }

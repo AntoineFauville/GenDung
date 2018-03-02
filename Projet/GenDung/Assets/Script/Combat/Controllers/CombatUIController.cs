@@ -66,7 +66,7 @@ public class CombatUIController : MonoBehaviour {
         }
         else
         {
-            btnStartGame.GetComponent<CanvasGroup>().alpha = 0f;
+            btnStartGame.GetComponent<CanvasGroup>().alpha = 0.5f;
             btnStartGame.GetComponent<CanvasGroup>().interactable = false;
         }
     }

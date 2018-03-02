@@ -45,15 +45,27 @@ public class Explo_FightRoom : MonoBehaviour
 
     public void SetFightRoom()
     {
-		print ("le room rand est de " + roomRand);
+		GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
+		GameObject.Find("CanvasUIDungeon(Clone)/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
+
+
+		//print ("le room rand est de " + roomRand);
         fightRoomCanvas.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = 100;
         fightCanvas.GetComponent<Canvas>().sortingOrder = 0;
  
         roomRand = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms.Count);
-		print ("le room rand est de " + roomRand);
+		//print ("le room rand est de " + roomRand);
 		actualFightRoom = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms[roomRand];
         fightRoomCanvas.transform.Find("Canvas/Panel/background of the room").GetComponent<Image>().sprite = actualFightRoom.back;
     }
+
+	public void CleanFinishedFightRoom () {
+
+		print ("room. over. stop.");
+		fightCanvas.GetComponent<Canvas>().sortingOrder = 100;
+		fightRoomCanvas.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = 0;
+
+	}
 
     /* Accessors Methods */
 
