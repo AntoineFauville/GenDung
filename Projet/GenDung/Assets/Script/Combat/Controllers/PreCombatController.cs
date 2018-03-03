@@ -124,7 +124,7 @@ public class PreCombatController : MonoBehaviour {
             foe.FoeInitiative = foeData.enemiesList[rnd].initiative;
             foe.Spell = foeData.enemiesList[rnd].enemyRange;
             /* */
-            CombatUIController.Instance.CreateMonsterUIBattleOrder(x);
+            CombatUIController.Instance.CreateMonsterUIBattleOrder(x, rnd);
 
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
 
@@ -159,11 +159,13 @@ public class PreCombatController : MonoBehaviour {
         for (int p = 0; p < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; p++) // On parcourt la liste des Personnages du Joueur.
         {
             initiativeList.Add(GameObject.Find("Character_" + p).transform.Find("Unit").gameObject, GameObject.Find("Character_" + p).transform.Find("Unit").gameObject.GetComponent<UnitController>().Initiative);
+			print ("Added Character_" + p);
         }
 
-		for (int m = 0; m < foeData.enemiesList.Count; m++)
+		for (int m = 0; m < monsterAmount; m++)
         {
             initiativeList.Add(GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject, GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative);
+			print ("Added Foe_" + m + "with initiative of " + GameObject.Find("Foe_" + m).transform.Find("Unit").gameObject.GetComponent<FoeController>().FoeInitiative);
         }
 
         sortedGameobjectInit = initiativeList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
