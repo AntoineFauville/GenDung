@@ -19,11 +19,13 @@ public class LogGestionTool : MonoBehaviour {
 	IEnumerator checkDisplay () {
 		yield return new WaitForSeconds (0.1f);
 
-		if (SceneManager.GetActiveScene ().name == "Dungeon") {
+		if (SceneManager.GetActiveScene ().name == "Explo") {
 			//wait for loading the maps
-			yield return new WaitForSeconds (0.5f);
-			if (SceneManager.GetActiveScene ().name == "Dungeon") {
+			yield return new WaitForSeconds (0.2f);
+			if (SceneManager.GetActiveScene ().name == "Explo") {
+				print ("hey");
 				GameObject.Find ("textDisplayLog").GetComponent<Text> ().text = textDisplay;
+				GameObject.Find ("textDisplayLogExplo").GetComponent<Text> ().text = textDisplay;
 			}
 		}
 		StartCoroutine ("checkDisplay");

@@ -19,6 +19,8 @@ public class PreCombatController : MonoBehaviour {
     private List<GameObject> sortedGameobjectInit = new List<GameObject>();
     private int monsterAmount;
     private Explo_FightRoom exploFight;
+
+	LogGestionTool logT;
     
 
     void CreateInstance()
@@ -42,6 +44,8 @@ public class PreCombatController : MonoBehaviour {
 			monsterNmb = foeData.enemiesList.Count;
             monsterPos = new List<int>();
         }
+
+		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
     }
 
     public void ConfirmCharaPosition(int x, int y)
@@ -126,6 +130,8 @@ public class PreCombatController : MonoBehaviour {
             /* */
             CombatUIController.Instance.CreateMonsterUIBattleOrder(x, rnd);
 
+			//logT.AddLogLine ("M = " + x + rnd);
+
             /* Get some random number to choose a random position in the List and place the spawn monster at this position */
 
             //int spawnMonsterNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>()dungeonList.myDungeons[MapController.Instance.DungeonIndex].dungeon.RoomOfTheDungeon[GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().actualIndex].room.MonsterSpawningPoints.Count;
@@ -170,11 +176,14 @@ public class PreCombatController : MonoBehaviour {
 
         sortedGameobjectInit = initiativeList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
 
-        /*for (int i = 0; i < sortedGameobjectInit.Count; i++)
+		logT.AddLogLine ("And the battle order is : ");
+
+        for (int i = 0; i < sortedGameobjectInit.Count; i++)
         {
-            Debug.Log(sortedGameobjectInit[i].transform.parent.name);
+            //Debug.Log(sortedGameobjectInit[i].transform.parent.name);
+			logT.AddLogLine (i + 1 + " " + sortedGameobjectInit[i].transform.parent.name);
         }
-        */
+        
     }
 
     /* Accessors Methods */

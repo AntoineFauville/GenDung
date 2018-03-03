@@ -17,8 +17,11 @@ public class Explo_FightRoom : MonoBehaviour
     private GameObject exploRoom;
     private GameObject exploUnit;
     private GameObject exploGrid;
+	private GameObject exploUI;
 
     private RoomObject actualFightRoom;
+
+	LogGestionTool logT;
 
     void CreateInstance()
     {
@@ -36,10 +39,17 @@ public class Explo_FightRoom : MonoBehaviour
         combatUI = GameObject.Find("CanvasUIDungeon");
         combatRoom = GameObject.Find("Room1");
 
-        exploUnit = GameObject.Find("ExploUnit(Clone)");
-        exploGrid = GameObject.Find("ExploGridCanvas");
+		combatCanvas.GetComponent<Canvas>().sortingOrder = 39;
+		combatUI.GetComponent<Canvas>().sortingOrder = 39;
+		combatRoom.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = 30;
 
-        combatCanvas.GetComponent<Canvas>().sortingOrder = 0;
+        exploUnit = GameObject.Find("ExploUnit(Clone)"); //set canvas when instantiated
+        exploGrid = GameObject.Find("ExploGridCanvas"); //set canvas when instantiated
+		exploUI = GameObject.Find("CanvasUIExplo"); 
+
+		exploUI.GetComponent<Canvas>().sortingOrder = 79;
+
+		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
     }
 
     public void LinkToRoom()
@@ -57,6 +67,7 @@ public class Explo_FightRoom : MonoBehaviour
 		GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
 		GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
 
+		logT.AddLogLine ("Let the fight begin");
 
         //print ("le room rand est de " + roomRand);
         combatUI.GetComponent<Canvas>().sortingOrder = 79;
@@ -65,6 +76,7 @@ public class Explo_FightRoom : MonoBehaviour
 
         exploUnit.GetComponent<Canvas>().sortingOrder -= 40;
         exploGrid.GetComponent<Canvas>().sortingOrder -= 40;
+		exploUI.GetComponent<Canvas>().sortingOrder -= 40;
 
         roomRand = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms.Count);
 		//print ("le room rand est de " + roomRand);
@@ -74,12 +86,14 @@ public class Explo_FightRoom : MonoBehaviour
 
 	public void CleanFinishedFightRoom () {
 
-		print ("room. over. stop.");
+		logT.AddLogLine ("Let me clean that for you, now explore again, fool");
+
         combatCanvas.GetComponent<Canvas>().sortingOrder = 0;
         combatRoom.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder -= 40;
 
         exploUnit.GetComponent<Canvas>().sortingOrder += 40;
         exploGrid.GetComponent<Canvas>().sortingOrder += 40;
+		exploUI.GetComponent<Canvas>().sortingOrder += 40;
 
         Destroy(GameObject.Find(""));
 

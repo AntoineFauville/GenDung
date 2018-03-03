@@ -13,6 +13,11 @@ public class ExploTileController : MonoBehaviour {
     private ExploUnitController playerOnTile;
     private Sprite[] sprites;
 
+	LogGestionTool
+	logT;
+
+
+
     public void Start()
     {
         StartCoroutine(WaitBeforeCleanUp(0f)); // Look for White Tiles at the beginning 
@@ -20,6 +25,8 @@ public class ExploTileController : MonoBehaviour {
         sprites = Resources.LoadAll<Sprite>("Sprites/Explo_Map"); // Load the multiple sprites for changing visual.
 
         UpdateTileUI(); // Need to make an Update at Start unless we want to have all tiles as Empty for the visual.
+
+		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
     }
 
     public void TileClicked()
@@ -74,32 +81,41 @@ public class ExploTileController : MonoBehaviour {
         {
             switch(Explo_GridController.Instance.Grid.ExploTiles[x,y].Type)
             {
-                case Explo_Tile.Explo_TileType.Fight:
+			case Explo_Tile.Explo_TileType.Fight:
+					logT.AddLogLine ("Clicked on a Fight Room");
                     Debug.Log("Clicked on a Fight Room");
                     //fightRoom.LinkToRoom();
                     break;
                 case Explo_Tile.Explo_TileType.Treasure:
+					logT.AddLogLine ("Clicked on a Treasure Room");
                     Debug.Log("Clicked on a Treasure Room");
                     break;
                 case Explo_Tile.Explo_TileType.Entrance:
+					logT.AddLogLine ("Clicked on Entrance Room");
                     Debug.Log("Clicked on Entrance Room");
                     break;
                 case Explo_Tile.Explo_TileType.Exit:
+					logT.AddLogLine ("Clicked on Exit Room");
                     Debug.Log("Clicked on Exit Room");
                     break;
                 case Explo_Tile.Explo_TileType.Trap:
+					logT.AddLogLine ("Clicked on Entrance Room");
                     Debug.Log("Clicked on Entrance Room");
                     break;
                 case Explo_Tile.Explo_TileType.OtterKingdom:
+					logT.AddLogLine ("Clicked on a beautiful World full of Otters");
                     Debug.Log("Clicked on a beautiful World full of Otters");
                     break;
                 case Explo_Tile.Explo_TileType.Empty:
+					logT.AddLogLine ("Waouh, Clicked on an empty room...");
                     Debug.Log("Waouh, Clicked on an empty room...");
                     break;
                 case Explo_Tile.Explo_TileType.Wall:
+					logT.AddLogLine ("Are you some kind of ghost ?!!!");
                     Debug.Log("Are you some kind of ghost ?!!!");
                     break;
                 default:
+					logT.AddLogLine ("Uh Oh, something is wrong! THEO IS INVADING THE HELLO WORLD !!!");
                     Debug.Log("Uh Oh, something is wrong! THEO IS INVADING THE HELLO WORLD !!!");
                     break;
             }
@@ -168,7 +184,7 @@ public class ExploTileController : MonoBehaviour {
     public IEnumerator WaitAfterMouseCheck()
     {
         checkMouse = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         checkMouse = false;
     }
     public IEnumerator WaitBeforeCleanUp(float seconds)
