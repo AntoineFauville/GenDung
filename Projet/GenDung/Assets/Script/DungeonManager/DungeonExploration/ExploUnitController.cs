@@ -13,11 +13,14 @@ public class ExploUnitController : MonoBehaviour {
 
     private Explo_Range unitRange;
     private Explo_FightRoom fightRoom;
+	private Explo_ExitRoom exitRoom;
+
 
     void Start()
     {
         unitRange = Resources.Load("ScriptableObject/ExplorationRange_01") as Explo_Range;
         fightRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
+		exitRoom = GameObject.Find("EndExploScripts").GetComponent<Explo_ExitRoom>();
     }
 
     void Update()
@@ -130,7 +133,7 @@ public class ExploUnitController : MonoBehaviour {
 
 	public IEnumerator WaitForFlipAnim()
 	{
-		yield return new WaitForSecondsRealtime(1.0f); // 0.3f is perfect for waiting between movement.
+		yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
 
 		if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
 		{
@@ -138,10 +141,21 @@ public class ExploUnitController : MonoBehaviour {
 			{
 			case Explo_Tile.Explo_TileType.Fight:
 				Debug.Log("Character Entered a Treasure Room");
+
+
 				fightRoom.LinkToRoom();
+
+
 				break;
 			case Explo_Tile.Explo_TileType.Treasure:
 				Debug.Log("Character Entered a Treasure Room");
+				break;
+
+			case Explo_Tile.Explo_TileType.Exit:
+				Debug.Log ("Character Entered an Exit Room");
+
+				exitRoom.LinkToRoom ();
+
 				break;
 			}
 		}

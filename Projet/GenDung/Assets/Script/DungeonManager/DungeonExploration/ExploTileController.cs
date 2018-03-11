@@ -190,7 +190,7 @@ public class ExploTileController : MonoBehaviour {
     public IEnumerator WaitBeforeCleanUp(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        StartCoroutine(WaitBeforeCleanUp(0.3f));
+        StartCoroutine(WaitBeforeCleanUp(0.1f));
     }
     /* */
 
