@@ -87,6 +87,7 @@ public class CombatGestion : MonoBehaviour {
 
 		EF.CleanFinishedFightRoom ();
 
+		PostCombatController.Instance.CleanEndBattle();
 
 		canvasTemp.GetComponent<Canvas> ().enabled = true;
 		//combat_grid.SetActive (false);

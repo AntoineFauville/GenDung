@@ -55,7 +55,7 @@ public class PostCombatController : MonoBehaviour {
         CleanEndBattle();
         CombatUIController.Instance.SwitchStartVisual();
 
-        GameObject.Find("FightRoomUI(Clone)").transform.Find("ScriptManager").GetComponent<CombatGestion>().FinishedCombat();
+		GameObject.Find("FightRoomUI").transform.Find("ScriptManagerFightRoomUI").GetComponent<CombatGestion>().FinishedCombat();
     }
 
     /* Accessors Methods */
