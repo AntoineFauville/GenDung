@@ -30,11 +30,13 @@ public class Explo_ExitRoom : MonoBehaviour {
 	public void LinkToRoom()
 	{
 		endCanvas.GetComponent<Canvas>().sortingOrder += 40;// Pass the fightCanvas 
+		logT.AddLogLine("Leaving already ?");
 	}
 
 	public void ContinueExploration()
 	{
 		endCanvas.GetComponent<Canvas>().sortingOrder -= 40;// Pass the fightCanvas 
+		logT.AddLogLine("You.. you are greedy I see.. ?");
 	}
 
 	public void EndExploration()

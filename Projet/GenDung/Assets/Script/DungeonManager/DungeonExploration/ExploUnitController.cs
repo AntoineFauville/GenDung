@@ -14,6 +14,7 @@ public class ExploUnitController : MonoBehaviour {
     private Explo_Range unitRange;
     private Explo_FightRoom fightRoom;
 	private Explo_ExitRoom exitRoom;
+	private Explo_TresorRoom treasorRoom;
 
 
     void Start()
@@ -21,6 +22,7 @@ public class ExploUnitController : MonoBehaviour {
         unitRange = Resources.Load("ScriptableObject/ExplorationRange_01") as Explo_Range;
         fightRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
 		exitRoom = GameObject.Find("EndExploScripts").GetComponent<Explo_ExitRoom>();
+		treasorRoom = GameObject.Find("ExploScriptsTreasure").GetComponent<Explo_TresorRoom>();
     }
 
     void Update()
@@ -149,6 +151,9 @@ public class ExploUnitController : MonoBehaviour {
 				break;
 			case Explo_Tile.Explo_TileType.Treasure:
 				Debug.Log("Character Entered a Treasure Room");
+
+				treasorRoom.LinkToRoom ();
+
 				break;
 
 			case Explo_Tile.Explo_TileType.Exit:
