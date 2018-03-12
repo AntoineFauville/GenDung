@@ -36,6 +36,8 @@ public class Explo_TresorRoom : MonoBehaviour {
 	public void OpenTreasure()
 	{
 		RandomPicker ();
+		animTresorImageAnimator.Play ("Highlighted");
+		//lock local opening chest to this specific tile
 	}
 
 	public void RandomPicker()
@@ -51,18 +53,29 @@ public class Explo_TresorRoom : MonoBehaviour {
 
 	public void Itsatrap()
 	{
+		//if not locked
 		logT.AddLogLine("It's a trap");
 	}
 
 	public void OpenChest()
 	{
+		//if not locked
 		logT.AddLogLine("Chest Opened !");
-		animTresorImageAnimator.Play ("Highlighted");
+		GenerateGoldRand ();
+	}
+
+	public void GenerateGoldRand()
+	{
+		int randGold = Random.Range (1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].chestGoldRewardMax);
+
+
+		logT.AddLogLine("You gained : " + randGold + " !");
 	}
 
 	public void ClosingTab()
 	{
 		tresorCanvas.GetComponent<Canvas>().sortingOrder -= 40;
+		//lock local closing to not trigger IF locked
 	}
 
 	public static Explo_TresorRoom Instance

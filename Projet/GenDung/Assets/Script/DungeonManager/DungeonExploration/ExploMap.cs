@@ -12,10 +12,10 @@ public class ExploMap : ScriptableObject {
 	[Space(10)]
 
 	[Range(1, 5)]
-    public int fightRoomAmount = 1;
+    public int fightRoomAmount;
 
 	[Range(1, 5)]
-    public int treasureRoomAmount = 1;
+    public int treasureRoomAmount;
 
 	[Range(1, 3)]
 	public int enemyMax = 1;
@@ -27,6 +27,21 @@ public class ExploMap : ScriptableObject {
 	[Space(10)]
 
     public List<RoomObject> rooms = new List<RoomObject>();
+
+	[Space(10)]
+	[Header("Rewards")]
+	[Space(10)]
+
+	[Range(1, 20)]
+	public int endDungeonGoldRewardMax; //to finish the dungeon the amount max
+
+	[Range(1, 5)]
+	public int chestGoldRewardMax; //for getting a chest random amount max
+
+	[Header("Chances of getting gold opening a treasure")]
+
+	[Range(0, 100)]
+	public int percentage = 50;
 
 	[Space(10)]
 	[Header("Don't touch, editor related")]

@@ -20,9 +20,13 @@ public class ExploUnitController : MonoBehaviour {
     void Start()
     {
         unitRange = Resources.Load("ScriptableObject/ExplorationRange_01") as Explo_Range;
+
+		if (SceneManager.GetActiveScene().name != "ExploEditor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
+		{
         fightRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
 		exitRoom = GameObject.Find("EndExploScripts").GetComponent<Explo_ExitRoom>();
 		treasorRoom = GameObject.Find("ExploScriptsTreasure").GetComponent<Explo_TresorRoom>();
+		}
     }
 
     void Update()
