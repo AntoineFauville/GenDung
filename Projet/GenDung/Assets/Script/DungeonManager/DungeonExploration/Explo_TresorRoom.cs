@@ -56,7 +56,7 @@ public class Explo_TresorRoom : MonoBehaviour {
 
 	public void OpenChest()
 	{
-		logT.AddLogLine("Chest Openned !");
+		logT.AddLogLine("Chest Opened !");
 		animTresorImageAnimator.Play ("Highlighted");
 	}
 
