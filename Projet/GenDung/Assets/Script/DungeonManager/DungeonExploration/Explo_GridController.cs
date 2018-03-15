@@ -19,6 +19,9 @@ public class Explo_GridController : MonoBehaviour {
     private Vector2 entranceTile;
     private int rnd;
 
+	LogGestionTool
+	logT;
+
     void CreateInstance()
     {
         if (instance != null)
@@ -33,6 +36,8 @@ public class Explo_GridController : MonoBehaviour {
         CreateInstance();
         GenerateMapData();
         GeneratePathfindingGraph();
+
+		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
 
 
         /* Charge le prefab du Joueur */
@@ -323,12 +328,15 @@ public class Explo_GridController : MonoBehaviour {
         Grid.ExploTiles[Mathf.RoundToInt(exitTile.x), Mathf.RoundToInt(exitTile.y)].Type = Explo_Tile.Explo_TileType.Exit;
         eeTilesList.Remove(exitTile);
         GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + exitTile.x + "_" + exitTile.y).GetComponent<ExploTileController>().UpdateTileUI();
-}
+
+	}
     /* */
 
     public void SetRandomFightTiles()
     {
-        int fightRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].fightRoomAmount;
+		int fightRoomAmount = Random.Range(1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].fightRoomAmount);
+
+		//logT.AddLogLine ("Fight room : 0 / " + fightRoomAmount);
 
         for (int f = 0; f < fightRoomAmount; f++)
         {
@@ -345,7 +353,11 @@ public class Explo_GridController : MonoBehaviour {
 
     public void SetRandomTreasureTiles()
     {
-        int treasureRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount;
+		//int treasureRoomAmount = Random.Range(1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount);
+		int treasureRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount;
+
+		//logT.AddLogLine ("Treasure room : 0 / " + treasureRoomAmount);
+
         for (int t = 0; t < treasureRoomAmount; t++)
         {
             int emptyTilesCount = emptyTilesList.Count;

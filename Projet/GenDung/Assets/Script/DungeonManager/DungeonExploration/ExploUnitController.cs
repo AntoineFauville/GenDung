@@ -16,7 +16,6 @@ public class ExploUnitController : MonoBehaviour {
 	private Explo_ExitRoom exitRoom;
 	private Explo_TresorRoom treasorRoom;
 
-
     void Start()
     {
         unitRange = Resources.Load("ScriptableObject/ExplorationRange_01") as Explo_Range;
@@ -102,12 +101,18 @@ public class ExploUnitController : MonoBehaviour {
     {
         StupeflipTile();
 
+		StartCoroutine ("WaitForFlipAnim");
+
         for (int i = 0; i < unitRange.exploTileRange.Count; i++)
         {
             if(Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State == Explo_Tile.Explo_TileState.Undiscovered)
             {
                 Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State = Explo_Tile.Explo_TileState.ToBeOrNotToBeDiscovered;
                 GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + (this.tileX + unitRange.exploTileRange[i].x) + "_" + (this.tileY + unitRange.exploTileRange[i].y)).GetComponent<ExploTileController>().UpdateTileUI();
+
+				Animator TyleAnim;
+				TyleAnim = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + tileX + "_" + tileY).transform.GetComponent<Animator> ();
+				TyleAnim.Play ("flipTile");
             }
         }
     }
@@ -116,11 +121,6 @@ public class ExploUnitController : MonoBehaviour {
     {
         Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].State = Explo_Tile.Explo_TileState.Discovered;
         GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
-
-		StartCoroutine ("WaitForFlipAnim");
-		Animator TyleAnim;
-		TyleAnim = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + tileX + "_" + tileY).transform.GetComponent<Animator> ();
-		TyleAnim.Play ("flipTile");
     }
 
     /* IEnumerator Methods*/
@@ -134,7 +134,7 @@ public class ExploUnitController : MonoBehaviour {
     public IEnumerator WaitBeforeNextTile()
     {
         yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
-        remainingMovement = 1;
+		remainingMovement = 1;
     }
 
 	public IEnumerator WaitForFlipAnim()
@@ -146,17 +146,23 @@ public class ExploUnitController : MonoBehaviour {
 			switch (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type)
 			{
 			case Explo_Tile.Explo_TileType.Fight:
-				Debug.Log("Character Entered a Treasure Room");
+				Debug.Log ("Character Entered a Treasure Room");
 
-
-				fightRoom.LinkToRoom();
+				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isFightAlreadyLaunched == false) 
+				{
+					fightRoom.LinkToRoom ();
+					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isFightAlreadyLaunched = true;
+				}
 
 
 				break;
 			case Explo_Tile.Explo_TileType.Treasure:
 				Debug.Log("Character Entered a Treasure Room");
 
-				treasorRoom.LinkToRoom ();
+				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isChestOpenned == false) 
+				{
+					treasorRoom.LinkToRoom (this.tileX, this.tileY);
+				}
 
 				break;
 

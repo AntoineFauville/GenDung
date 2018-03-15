@@ -11,6 +11,8 @@ public class Explo_TresorRoom : MonoBehaviour {
 
 	LogGestionTool logT;
 
+	private int X,Y;
+
 	void CreateInstance()
 	{
 		if (instance != null)
@@ -28,15 +30,23 @@ public class Explo_TresorRoom : MonoBehaviour {
 		tresorCanvas.GetComponent<Canvas>().sortingOrder = 38;
 	}
 	
-	public void LinkToRoom()
+	public void LinkToRoom(int tileX, int tileY)
 	{
 		tresorCanvas.GetComponent<Canvas>().sortingOrder += 40;
+		X = tileX;
+		Y = tileY;
+
+		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned == false) {
+			animTresorImageAnimator.Play ("Normal");
+		}
 	}
 
 	public void OpenTreasure()
 	{
 		RandomPicker ();
 		animTresorImageAnimator.Play ("Highlighted");
+		GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned = true;
+
 		//lock local opening chest to this specific tile
 	}
 
