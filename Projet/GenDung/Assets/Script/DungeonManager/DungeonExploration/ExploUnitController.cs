@@ -16,7 +16,7 @@ public class ExploUnitController : MonoBehaviour {
 	private Explo_ExitRoom exitRoom;
 	private Explo_TresorRoom treasorRoom;
 
-	private bool updatePosCube;
+	//private bool updatePosCube;
 
     void Start()
     {
@@ -55,9 +55,11 @@ public class ExploUnitController : MonoBehaviour {
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
 
-		if (updatePosCube) {
-			GameObject.Find ("ExploUnit(Clone)/Cube").transform.position = Vector3.Lerp (GameObject.Find ("ExploUnit(Clone)/Cube").transform.position, GameObject.Find ("ExploUnit(Clone)/Unit").transform.position, 0.2f);
-		}
+		//if (updatePosCube) {
+			//GameObject.Find ("ExploUnit(Clone)/Cube").transform.position = Vector3.Lerp (GameObject.Find ("ExploUnit(Clone)/Cube").transform.position, GameObject.Find ("ExploUnit(Clone)/Unit").transform.position, 0.2f);
+		//}
+
+
     }
 
     public void AdvancePathing() // Méthode de déplacement du personnage.
@@ -107,7 +109,7 @@ public class ExploUnitController : MonoBehaviour {
     {
         StupeflipTile();
 
-		UpdatePositionCube ();
+		//UpdatePositionCube ();
 
 		StartCoroutine ("WaitForFlipAnim");
 
@@ -131,10 +133,10 @@ public class ExploUnitController : MonoBehaviour {
         GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
     }
 
-	public void UpdatePositionCube ()
-	{
-		StartCoroutine ("WaitUpdateCube");
-	}
+	//public void UpdatePositionCube ()
+	//{
+	//	StartCoroutine ("WaitUpdateCube");
+	//}
 
     /* IEnumerator Methods*/
 
@@ -150,17 +152,17 @@ public class ExploUnitController : MonoBehaviour {
 		remainingMovement = 1;
     }
 
-	public IEnumerator WaitUpdateCube ()
-	{
-		//if not discovered
+    //public IEnumerator WaitUpdateCube()
+    //{
+    //    if not discovered
 
-		yield return new WaitForSecondsRealtime (0.5f);
-		updatePosCube = true;
-		yield return new WaitForSecondsRealtime (1f);
-		updatePosCube = false;
-	}
+    //    yield return new WaitForSecondsRealtime(0.5f);
+    //    updatePosCube = true;
+    //    yield return new WaitForSecondsRealtime(1f);
+    //    updatePosCube = false;
+    //}
 
-	public IEnumerator WaitForFlipAnim()
+    public IEnumerator WaitForFlipAnim()
 	{
 		yield return new WaitForSecondsRealtime(1f); // 0.3f is perfect for waiting between movement.
 
