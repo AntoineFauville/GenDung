@@ -175,7 +175,7 @@ public class ExploUnitController : MonoBehaviour {
 
 				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isFightAlreadyLaunched == false) 
 				{
-					fightRoom.LinkToRoom ();
+					StartCoroutine(WaitForPainAndSufferingTime());
 					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isFightAlreadyLaunched = true;
 				}
 
@@ -186,7 +186,7 @@ public class ExploUnitController : MonoBehaviour {
 
 				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isChestOpenned == false) 
 				{
-					treasorRoom.LinkToRoom (this.tileX, this.tileY);
+					StartCoroutine(WaitForHappyTrap());
 				}
 
 				break;
@@ -199,9 +199,18 @@ public class ExploUnitController : MonoBehaviour {
 				break;
 			}
 		}
+	}
 
+	public IEnumerator WaitForPainAndSufferingTime()
+	{
+		yield return new WaitForSeconds(1.5f); // 0.3f is perfect for waiting between movement.
+		fightRoom.LinkToRoom ();
+	}
 
-
+	public IEnumerator WaitForHappyTrap()
+	{
+		yield return new WaitForSeconds(1f); // 0.3f is perfect for waiting between movement.
+		treasorRoom.LinkToRoom (this.tileX, this.tileY);
 	}
 
     /* */
