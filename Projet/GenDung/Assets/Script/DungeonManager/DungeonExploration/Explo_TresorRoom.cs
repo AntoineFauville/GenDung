@@ -43,10 +43,11 @@ public class Explo_TresorRoom : MonoBehaviour {
 
 	public void OpenTreasure()
 	{
-		RandomPicker ();
-		animTresorImageAnimator.Play ("Highlighted");
-		GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned = true;
-
+		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned == false) {
+			RandomPicker ();
+			animTresorImageAnimator.Play ("Highlighted");
+			GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned = true;
+		}
 		//lock local opening chest to this specific tile
 	}
 
@@ -70,7 +71,7 @@ public class Explo_TresorRoom : MonoBehaviour {
 	public void OpenChest()
 	{
 		//if not locked
-		logT.AddLogLine("Chest Opened !");
+		logT.AddLogLine ("Chest Opened !");
 		GenerateGoldRand ();
 	}
 
