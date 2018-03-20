@@ -16,6 +16,8 @@ public class ExploUnitController : MonoBehaviour {
 	private Explo_ExitRoom exitRoom;
 	private Explo_TresorRoom treasorRoom;
 
+	private bool updatePosCube;
+
     void Start()
     {
         unitRange = Resources.Load("ScriptableObject/ExplorationRange_01") as Explo_Range;
@@ -52,6 +54,10 @@ public class ExploUnitController : MonoBehaviour {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
+
+		if (updatePosCube) {
+			GameObject.Find ("ExploUnit(Clone)/Cube").transform.position = Vector3.Lerp (GameObject.Find ("ExploUnit(Clone)/Cube").transform.position, GameObject.Find ("ExploUnit(Clone)/Unit").transform.position, 0.2f);
+		}
     }
 
     public void AdvancePathing() // Méthode de déplacement du personnage.
@@ -101,9 +107,11 @@ public class ExploUnitController : MonoBehaviour {
     {
         StupeflipTile();
 
+		UpdatePositionCube ();
+
 		StartCoroutine ("WaitForFlipAnim");
 
-        for (int i = 0; i < unitRange.exploTileRange.Count; i++)
+		for (int i = 0; i < unitRange.exploTileRange.Count; i++)
         {
             if(Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State == Explo_Tile.Explo_TileState.Undiscovered)
             {
@@ -123,6 +131,11 @@ public class ExploUnitController : MonoBehaviour {
         GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
     }
 
+	public void UpdatePositionCube ()
+	{
+		StartCoroutine ("WaitUpdateCube");
+	}
+
     /* IEnumerator Methods*/
 
     public IEnumerator WaitBeforeNextMovement()
@@ -137,9 +150,19 @@ public class ExploUnitController : MonoBehaviour {
 		remainingMovement = 1;
     }
 
+	public IEnumerator WaitUpdateCube ()
+	{
+		//if not discovered
+
+		yield return new WaitForSecondsRealtime (0.5f);
+		updatePosCube = true;
+		yield return new WaitForSecondsRealtime (1f);
+		updatePosCube = false;
+	}
+
 	public IEnumerator WaitForFlipAnim()
 	{
-		yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
+		yield return new WaitForSecondsRealtime(1f); // 0.3f is perfect for waiting between movement.
 
 		if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
 		{
@@ -174,6 +197,9 @@ public class ExploUnitController : MonoBehaviour {
 				break;
 			}
 		}
+
+
+
 	}
 
     /* */
