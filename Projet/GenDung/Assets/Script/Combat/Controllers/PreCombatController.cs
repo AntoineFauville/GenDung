@@ -106,6 +106,9 @@ public class PreCombatController : MonoBehaviour {
 
         monsterAmount = Random.Range(1, monsterAmountMax);
 
+        // Set the monster Amount to reflect the random obtained above.
+        CombatController.Instance.MonsterNmb = monsterAmount;
+
         for (int x = 0; x < monsterAmount; x++)
         {
             int rnd = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].enemiesList.Count);
