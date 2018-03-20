@@ -39,7 +39,7 @@ public class ExploTileController : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene().name != "ExploEditor") 
         {
-			if (Explo_GridController.Instance.Grid.ExploTiles [x, y].Type != Explo_Tile.Explo_TileType.Wall) 
+			if (Explo_GridController.Instance.Grid.ExploTiles [x, y].Type != Explo_Tile.Explo_TileType.Wall && Explo_GridController.Instance.Grid.ExploTiles[x, y].State != Explo_Tile.Explo_TileState.Undiscovered) 
 			{
 					MoveTo ();
 			}
