@@ -37,7 +37,8 @@ public class Explo_ExitRoom : MonoBehaviour {
 	{
 		endCanvas.GetComponent<Canvas>().sortingOrder -= 40;// Pass the fightCanvas 
 		logT.AddLogLine("You.. you are greedy I see.. ?");
-	}
+        GameObject.Find("ExploUnit(Clone)/Unit").GetComponent<ExploUnitController>().ResetMovement();
+    }
 
 	public void EndExploration()
 	{

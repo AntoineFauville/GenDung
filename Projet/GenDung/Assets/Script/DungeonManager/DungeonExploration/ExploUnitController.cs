@@ -133,6 +133,12 @@ public class ExploUnitController : MonoBehaviour {
         GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
     }
 
+    public void ResetMovement()
+    {
+        remainingMovement = 1;
+        currentPath = null;
+    }
+
 	//public void UpdatePositionCube ()
 	//{
 	//	StartCoroutine ("WaitUpdateCube");
@@ -149,7 +155,13 @@ public class ExploUnitController : MonoBehaviour {
     public IEnumerator WaitBeforeNextTile()
     {
         yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
-		remainingMovement = 1;
+
+        if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Empty && !GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<ExploTileController>().isAlreadyDiscovered)
+        {
+            remainingMovement = 0;
+        }
+        else
+            remainingMovement = 1;
     }
 
     //public IEnumerator WaitUpdateCube()
@@ -173,11 +185,11 @@ public class ExploUnitController : MonoBehaviour {
 			case Explo_Tile.Explo_TileType.Fight:
 				Debug.Log ("Character Entered a Treasure Room");
 
-				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isFightAlreadyLaunched == false) 
+				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) 
 				{
 					yield return new WaitForSeconds(1.5f); 
 					fightRoom.LinkToRoom ();
-					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isFightAlreadyLaunched = true;
+					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;
 				}
 
 
@@ -185,7 +197,7 @@ public class ExploUnitController : MonoBehaviour {
 			case Explo_Tile.Explo_TileType.Treasure:
 				Debug.Log("Character Entered a Treasure Room");
 
-				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isChestOpenned == false) 
+				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) 
 				{
 					yield return new WaitForSeconds(1f); // 0.3f is perfect for waiting between movement.
 					treasorRoom.LinkToRoom (this.tileX, this.tileY);

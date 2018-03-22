@@ -17,7 +17,7 @@ public class ExploTileController : MonoBehaviour {
 	logT;
 
 	public bool isFightAlreadyLaunched;
-	public bool isChestOpenned;
+	public bool isLogAlready;
 	public bool isEndFound;
 	public bool isAlreadyDiscovered;
 
@@ -41,7 +41,7 @@ public class ExploTileController : MonoBehaviour {
         {
 			if (Explo_GridController.Instance.Grid.ExploTiles [x, y].Type != Explo_Tile.Explo_TileType.Wall && Explo_GridController.Instance.Grid.ExploTiles[x, y].State != Explo_Tile.Explo_TileState.Undiscovered) 
 			{
-					MoveTo ();
+				MoveTo ();
 			}
         }
         else
@@ -88,42 +88,52 @@ public class ExploTileController : MonoBehaviour {
             switch(Explo_GridController.Instance.Grid.ExploTiles[x,y].Type)
             {
 			case Explo_Tile.Explo_TileType.Fight:
-				if (!isFightAlreadyLaunched) {
-					logT.AddLogLine ("Clicked on a Fight Room");
-				}
+				if (!isAlreadyDiscovered)
+					    logT.AddLogLine ("Clicked on a Fight Room");
 				Debug.Log ("Clicked on a Fight Room");
                     //fightRoom.LinkToRoom();
                     break;
+
 			case Explo_Tile.Explo_TileType.Treasure:
-				if (!isChestOpenned) {
-					if (!isAlreadyDiscovered) {
+				if (!isAlreadyDiscovered)
+                    {
+					if (!isLogAlready)
+                        {
 						logT.AddLogLine ("Clicked on a Treasure Room");
-						isAlreadyDiscovered = true;
-					}
-				}
+                            isLogAlready = true;
+                        }
+				    }
 				Debug.Log ("Clicked on a Treasure Room");
 					break;
+
 			case Explo_Tile.Explo_TileType.Entrance:
 					//gT.AddLogLine ("Clicked on Entrance Room");
                     Debug.Log("Clicked on Entrance Room");
                     break;
+
 			case Explo_Tile.Explo_TileType.Exit:
-				if (!isEndFound) {
-					logT.AddLogLine ("Clicked on Exit Room");
-					isEndFound = true;
-				}
+                    if (!isAlreadyDiscovered)
+                    {
+                        if (!isLogAlready)
+                        {
+                            logT.AddLogLine("Clicked on Exit Room");
+                            isLogAlready = true;
+                        }
+                    }
                 Debug.Log("Clicked on Exit Room");
                     break;
-                case Explo_Tile.Explo_TileType.Trap:
+
+            case Explo_Tile.Explo_TileType.Trap:
 				if (!isAlreadyDiscovered) {
 					logT.AddLogLine ("Clicked on Entrance Room");
 				}
                     Debug.Log("Clicked on Entrance Room");
                     break;
-                case Explo_Tile.Explo_TileType.OtterKingdom:
+            case Explo_Tile.Explo_TileType.OtterKingdom:
 					logT.AddLogLine ("Clicked on a beautiful World full of Otters");
                     Debug.Log("Clicked on a beautiful World full of Otters");
                     break;
+
 			case Explo_Tile.Explo_TileType.Empty:
 				if (!isAlreadyDiscovered) {
 					logT.AddLogLine ("Waouh, Discovered on an empty room...");
@@ -131,11 +141,13 @@ public class ExploTileController : MonoBehaviour {
 				}
                     Debug.Log("Waouh, Clicked on an empty room...");
                     break;
-                case Explo_Tile.Explo_TileType.Wall:
+
+            case Explo_Tile.Explo_TileType.Wall:
 					logT.AddLogLine ("Are you some kind of ghost ?!!!");
                     Debug.Log("Are you some kind of ghost ?!!!");
                     break;
-                default:
+
+            default:
 					logT.AddLogLine ("Uh Oh, something is wrong! THEO IS INVADING THE HELLO WORLD !!!");
                     Debug.Log("Uh Oh, something is wrong! THEO IS INVADING THE HELLO WORLD !!!");
                     break;

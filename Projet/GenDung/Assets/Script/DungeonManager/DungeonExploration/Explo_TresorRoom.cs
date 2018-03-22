@@ -36,20 +36,23 @@ public class Explo_TresorRoom : MonoBehaviour {
 		X = tileX;
 		Y = tileY;
 
-		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned == false) {
+		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) {
 			animTresorImageAnimator.Play ("Normal");
 		}
 	}
 
 	public void OpenTreasure()
 	{
-		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned == false) {
+		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) {
 			RandomPicker ();
 			animTresorImageAnimator.Play ("Highlighted");
-			GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isChestOpenned = true;
+			GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;
 		}
-		//lock local opening chest to this specific tile
-	}
+
+        GameObject.Find("ExploUnit(Clone)/Unit").GetComponent<ExploUnitController>().ResetMovement();
+
+
+    }
 
 	public void RandomPicker()
 	{
@@ -86,8 +89,9 @@ public class Explo_TresorRoom : MonoBehaviour {
 	public void ClosingTab()
 	{
 		tresorCanvas.GetComponent<Canvas>().sortingOrder -= 40;
-		//lock local closing to not trigger IF locked
-	}
+        GameObject.Find("ExploUnit(Clone)/Unit").GetComponent<ExploUnitController>().ResetMovement();
+        //lock local closing to not trigger IF locked
+    }
 
 	public static Explo_TresorRoom Instance
 	{
