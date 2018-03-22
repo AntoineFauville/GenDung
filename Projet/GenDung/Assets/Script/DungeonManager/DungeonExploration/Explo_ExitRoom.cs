@@ -42,7 +42,8 @@ public class Explo_ExitRoom : MonoBehaviour {
 
 	public void EndExploration()
 	{
-		SceneManager.LoadScene("Map"); // load map
+        GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().SendToSave();
+
 		//need to add dungeon done etc etc
 
 		if (GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.dungeonUnlocked [MapController.Instance.dungeonIndex] == false) 
@@ -50,7 +51,9 @@ public class Explo_ExitRoom : MonoBehaviour {
 			GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.dungeonUnlocked[MapController.Instance.dungeonIndex] = true;
 			MapController.Instance.UnlockNextDungeon ();
 		}
-	}
+
+        SceneManager.LoadScene("Map"); // load map
+    }
 
 	public static Explo_ExitRoom Instance
 	{
