@@ -31,6 +31,8 @@ public class Explo_ExitRoom : MonoBehaviour {
 	{
 		endCanvas.GetComponent<Canvas>().sortingOrder += 40;// Pass the fightCanvas 
 		logT.AddLogLine("Leaving already ?");
+
+        GameObject.Find("Text EndDungeon").GetComponent<Text>().text = "You reached the end of the dungeon ! "+ '\n' + '\n' +  "You found nearby the end a treasure containing : " + GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().exploGold + " gold." + '\n' + '\n' + "What do you want to do now that you found the treasure ? ";
 	}
 
 	public void ContinueExploration()

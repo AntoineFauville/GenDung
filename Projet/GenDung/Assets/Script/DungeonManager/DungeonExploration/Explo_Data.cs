@@ -12,11 +12,6 @@ public class Explo_Data : MonoBehaviour {
     public int exploHealth;
     public int exploGold = 0;
     public List<Object> exploEnnemy = new List<Object>(); 
-
-	void Start ()
-    {
-
-	}
 	
     public void ModifyGold(int value)
     {
