@@ -11,6 +11,8 @@ public class Explo_TresorRoom : MonoBehaviour {
 
 	LogGestionTool logT;
 
+	private int X,Y;
+
 	void CreateInstance()
 	{
 		if (instance != null)
@@ -28,17 +30,29 @@ public class Explo_TresorRoom : MonoBehaviour {
 		tresorCanvas.GetComponent<Canvas>().sortingOrder = 38;
 	}
 	
-	public void LinkToRoom()
+	public void LinkToRoom(int tileX, int tileY)
 	{
 		tresorCanvas.GetComponent<Canvas>().sortingOrder += 40;
+		X = tileX;
+		Y = tileY;
+
+		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) {
+			animTresorImageAnimator.Play ("Normal");
+		}
 	}
 
 	public void OpenTreasure()
 	{
-		RandomPicker ();
-		animTresorImageAnimator.Play ("Highlighted");
-		//lock local opening chest to this specific tile
-	}
+		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) {
+			RandomPicker ();
+			animTresorImageAnimator.Play ("Highlighted");
+			GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;
+		}
+
+        GameObject.Find("ExploUnit(Clone)/Unit").GetComponent<ExploUnitController>().ResetMovement();
+
+
+    }
 
 	public void RandomPicker()
 	{
@@ -60,7 +74,7 @@ public class Explo_TresorRoom : MonoBehaviour {
 	public void OpenChest()
 	{
 		//if not locked
-		logT.AddLogLine("Chest Opened !");
+		logT.AddLogLine ("Chest Opened !");
 		GenerateGoldRand ();
 	}
 
@@ -68,15 +82,16 @@ public class Explo_TresorRoom : MonoBehaviour {
 	{
 		int randGold = Random.Range (1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].chestGoldRewardMax);
 
-
-		logT.AddLogLine("You gained : " + randGold + " !");
+		logT.AddLogLine("You gained : " + randGold + " Gold !");
+        GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().ModifyGold(randGold);
 	}
 
 	public void ClosingTab()
 	{
 		tresorCanvas.GetComponent<Canvas>().sortingOrder -= 40;
-		//lock local closing to not trigger IF locked
-	}
+        GameObject.Find("ExploUnit(Clone)/Unit").GetComponent<ExploUnitController>().ResetMovement();
+        //lock local closing to not trigger IF locked
+    }
 
 	public static Explo_TresorRoom Instance
 	{

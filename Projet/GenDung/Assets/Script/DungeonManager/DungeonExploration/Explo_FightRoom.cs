@@ -95,6 +95,8 @@ public class Explo_FightRoom : MonoBehaviour
         exploGrid.GetComponent<Canvas>().sortingOrder += 40;
 		exploUI.GetComponent<Canvas>().sortingOrder += 40;
 
+        exploUnit.transform.Find("Unit").GetComponent<ExploUnitController>().ResetMovement();
+
         Destroy(GameObject.Find(""));
 
     }

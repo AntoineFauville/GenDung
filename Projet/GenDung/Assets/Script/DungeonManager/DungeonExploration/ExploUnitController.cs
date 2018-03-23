@@ -16,6 +16,7 @@ public class ExploUnitController : MonoBehaviour {
 	private Explo_ExitRoom exitRoom;
 	private Explo_TresorRoom treasorRoom;
 
+	//private bool updatePosCube;
 
     void Start()
     {
@@ -53,6 +54,12 @@ public class ExploUnitController : MonoBehaviour {
             AdvancePathing();
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).transform.position, 5f * Time.deltaTime);
         }
+
+		//if (updatePosCube) {
+			//GameObject.Find ("ExploUnit(Clone)/Cube").transform.position = Vector3.Lerp (GameObject.Find ("ExploUnit(Clone)/Cube").transform.position, GameObject.Find ("ExploUnit(Clone)/Unit").transform.position, 0.2f);
+		//}
+
+
     }
 
     public void AdvancePathing() // Méthode de déplacement du personnage.
@@ -102,12 +109,20 @@ public class ExploUnitController : MonoBehaviour {
     {
         StupeflipTile();
 
-        for (int i = 0; i < unitRange.exploTileRange.Count; i++)
+		//UpdatePositionCube ();
+
+		StartCoroutine ("WaitForFlipAnim");
+
+		for (int i = 0; i < unitRange.exploTileRange.Count; i++)
         {
             if(Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State == Explo_Tile.Explo_TileState.Undiscovered)
             {
                 Explo_GridController.Instance.Grid.ExploTiles[Mathf.RoundToInt(this.tileX + unitRange.exploTileRange[i].x), Mathf.RoundToInt(this.tileY + unitRange.exploTileRange[i].y)].State = Explo_Tile.Explo_TileState.ToBeOrNotToBeDiscovered;
                 GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + (this.tileX + unitRange.exploTileRange[i].x) + "_" + (this.tileY + unitRange.exploTileRange[i].y)).GetComponent<ExploTileController>().UpdateTileUI();
+
+				Animator TyleAnim;
+				TyleAnim = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + tileX + "_" + tileY).transform.GetComponent<Animator> ();
+				TyleAnim.Play ("flipTile");
             }
         }
     }
@@ -116,12 +131,18 @@ public class ExploUnitController : MonoBehaviour {
     {
         Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].State = Explo_Tile.Explo_TileState.Discovered;
         GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
-
-		StartCoroutine ("WaitForFlipAnim");
-		Animator TyleAnim;
-		TyleAnim = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + tileX + "_" + tileY).transform.GetComponent<Animator> ();
-		TyleAnim.Play ("flipTile");
     }
+
+    public void ResetMovement()
+    {
+        remainingMovement = 1;
+        currentPath = null;
+    }
+
+	//public void UpdatePositionCube ()
+	//{
+	//	StartCoroutine ("WaitUpdateCube");
+	//}
 
     /* IEnumerator Methods*/
 
@@ -134,29 +155,53 @@ public class ExploUnitController : MonoBehaviour {
     public IEnumerator WaitBeforeNextTile()
     {
         yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
-        remainingMovement = 1;
+
+        if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Empty && !GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<ExploTileController>().isAlreadyDiscovered)
+        {
+            remainingMovement = 0;
+        }
+        else
+            remainingMovement = 1;
     }
 
-	public IEnumerator WaitForFlipAnim()
+    //public IEnumerator WaitUpdateCube()
+    //{
+    //    if not discovered
+
+    //    yield return new WaitForSecondsRealtime(0.5f);
+    //    updatePosCube = true;
+    //    yield return new WaitForSecondsRealtime(1f);
+    //    updatePosCube = false;
+    //}
+
+    public IEnumerator WaitForFlipAnim()
 	{
-		yield return new WaitForSecondsRealtime(0.3f); // 0.3f is perfect for waiting between movement.
+		yield return new WaitForSecondsRealtime(1f); // 0.3f is perfect for waiting between movement.
 
 		if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
 		{
 			switch (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type)
 			{
 			case Explo_Tile.Explo_TileType.Fight:
-				Debug.Log("Character Entered a Treasure Room");
+				Debug.Log ("Character Entered a Treasure Room");
 
-
-				fightRoom.LinkToRoom();
+				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) 
+				{
+					yield return new WaitForSeconds(1.5f); 
+					fightRoom.LinkToRoom ();
+					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;
+				}
 
 
 				break;
 			case Explo_Tile.Explo_TileType.Treasure:
 				Debug.Log("Character Entered a Treasure Room");
 
-				treasorRoom.LinkToRoom ();
+				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) 
+				{
+					yield return new WaitForSeconds(1f); // 0.3f is perfect for waiting between movement.
+					treasorRoom.LinkToRoom (this.tileX, this.tileY);
+				}
 
 				break;
 
