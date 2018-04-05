@@ -34,41 +34,41 @@ public class GridController : MonoBehaviour {
 
         exploFight = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
 
-        /* Charge le prefab du Joueur */
-        GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
-        /* */
+        ///* Charge le prefab du Joueur */
+        //GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
+        ///* */
 
         if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
         {
-            playerData = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData;
+        //    playerData = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData;
 
-            unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
-            for (int i = 0; i < playerData.SavedSizeOfTheTeam; i++)
-            {
-                unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = playerData.SavedCharacterList[i].TempSprite;
+        //    unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
+        //    for (int i = 0; i < playerData.SavedSizeOfTheTeam; i++)
+        //    {
+        //        unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = playerData.SavedCharacterList[i].TempSprite;
 
-                //setup the animator for the idle animation
-                if (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].hasAnimations)
-                {
-                    unit.transform.Find("Cube/Image").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
-                }
+        //        //setup the animator for the idle animation
+        //        if (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].hasAnimations)
+        //        {
+        //            unit.transform.Find("Cube/Image").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
+        //        }
 
-                unit_go.name = "Character_" + i;
+        //        unit_go.name = "Character_" + i;
 
-                unit.ID = i;
-                unit.Health = playerData.SavedCharacterList[i].Health_PV;
-                unit.MaxHealth = playerData.SavedCharacterList[i].Health_PV;
-                unit.PA = playerData.SavedCharacterList[i].ActionPoints_PA;
-                unit.PM = playerData.SavedCharacterList[i].MovementPoints_PM;
-                unit.PlayerSpells = playerData.SavedCharacterList[i].SpellList;
-                unit.Initiative = playerData.SavedCharacterList[i].Initiative;
-            }
+        //        unit.ID = i;
+        //        unit.Health = playerData.SavedCharacterList[i].Health_PV;
+        //        unit.MaxHealth = playerData.SavedCharacterList[i].Health_PV;
+        //        unit.PA = playerData.SavedCharacterList[i].ActionPoints_PA;
+        //        unit.PM = playerData.SavedCharacterList[i].MovementPoints_PM;
+        //        unit.PlayerSpells = playerData.SavedCharacterList[i].SpellList;
+        //        unit.Initiative = playerData.SavedCharacterList[i].Initiative;
+        //    }
 
-            /* Assure le positionnement hors écran durant la phase de placement */
-            unit.SetDefaultSpawn(new Vector3(-1000,-1000,0));
-            unit.transform.parent.GetComponent<Canvas>().sortingOrder = 71;
-            worldPosTemp = new Vector3(-1000, -1000, 0);
-            /* */
+        //    /* Assure le positionnement hors écran durant la phase de placement */
+        //    unit.SetDefaultSpawn(new Vector3(-1000,-1000,0));
+        //    unit.transform.parent.GetComponent<Canvas>().sortingOrder = 71;
+        //    worldPosTemp = new Vector3(-1000, -1000, 0);
+        //    /* */
 
             SetWallTiles();
             SetSpawnTiles();
@@ -195,6 +195,11 @@ public class GridController : MonoBehaviour {
         }
 
         return cost;
+    }
+
+    public void SetUnit(int index)
+    {
+        unit = GameObject.Find("Character" + index).GetComponent<UnitController>();
     }
 
     public void GeneratePathTo(int x, int y)

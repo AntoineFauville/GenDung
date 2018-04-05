@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PreCombatController : MonoBehaviour {
@@ -12,6 +13,8 @@ public class PreCombatController : MonoBehaviour {
     private bool placementDone = false, combatStarted = false;
     private GameObject monster_go, monsterPrefab;
 	private ExploMap foeData;
+    private GameData playerData;
+    private UnitController unit;
     private int monsterNmb, rndNmb;
     private List<int> monsterPos;
     private FoeController foe;
@@ -48,6 +51,7 @@ public class PreCombatController : MonoBehaviour {
 		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
     }
 
+    // Player
     public void ConfirmCharaPosition(int x, int y)
     {
         if (GridController.Instance.Grid.Tiles[x, y].isStarterTile == true)
@@ -90,10 +94,50 @@ public class PreCombatController : MonoBehaviour {
 
     public void CombatBeginning()
     {
+        SpawnPlayer();
         SpawnMonster(); // Le combat se lance; 1 ére étape: Spawn du(des) monstre(s).
         GatherCharacterInitiative();
         CombatUIController.Instance.OrganizeUIBattleOrder(sortedGameobjectInit);
         CombatController.Instance.NextEntityTurn();
+    }
+
+    public void SpawnPlayer()
+    {
+        /* Charge le prefab du Joueur */
+        GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit")) as GameObject;
+        /* */
+
+        if (SceneManager.GetActiveScene().name != "Editor") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
+        {
+            playerData = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData;
+
+            unit = unit_go.transform.Find("Unit").GetComponent<UnitController>();
+            for (int i = 0; i < playerData.SavedSizeOfTheTeam; i++)
+            {
+                unit.transform.Find("Cube/Image").GetComponent<Image>().sprite = playerData.SavedCharacterList[i].TempSprite;
+
+                //setup the animator for the idle animation
+                if (GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].hasAnimations)
+                {
+                    unit.transform.Find("Cube/Image").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
+                }
+
+                unit_go.name = "Character_" + i;
+
+                unit.ID = i;
+                unit.Health = playerData.SavedCharacterList[i].Health_PV;
+                unit.MaxHealth = playerData.SavedCharacterList[i].Health_PV;
+                unit.PA = playerData.SavedCharacterList[i].ActionPoints_PA;
+                unit.PM = playerData.SavedCharacterList[i].MovementPoints_PM;
+                unit.PlayerSpells = playerData.SavedCharacterList[i].SpellList;
+                unit.Initiative = playerData.SavedCharacterList[i].Initiative;
+            }
+
+            /* Assure le positionnement hors écran durant la phase de placement */
+            unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
+            unit.transform.parent.GetComponent<Canvas>().sortingOrder = 71;
+            /* */
+        }
     }
 
     public void SpawnMonster()
