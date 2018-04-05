@@ -199,12 +199,14 @@ public class GridController : MonoBehaviour {
 
     public void SetUnit(int index)
     {
-        unit = GameObject.Find("Character" + index).GetComponent<UnitController>();
+        unit = GameObject.Find("Character_" + index).transform.GetChild(0).GetComponent<UnitController>();
+        Debug.Log("unit is " + unit);
     }
 
     public void GeneratePathTo(int x, int y)
     {
-        unit.CurrentPath = null;
+        if (unit != null)
+            unit.CurrentPath = null;
 
         Dictionary<Node, float> dist = new Dictionary<Node, float>();
         Dictionary<Node, Node> prev = new Dictionary<Node, Node>();
