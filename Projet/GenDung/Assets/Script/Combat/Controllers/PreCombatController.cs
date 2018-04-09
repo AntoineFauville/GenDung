@@ -139,6 +139,8 @@ public class PreCombatController : MonoBehaviour {
                 unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
                 unit.transform.parent.GetComponent<Canvas>().sortingOrder = 71;
                 /* */
+
+                unit.GetComponent<UnitController>().enabled = false;
             }
         }
     }

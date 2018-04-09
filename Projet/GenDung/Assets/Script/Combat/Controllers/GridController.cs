@@ -199,7 +199,11 @@ public class GridController : MonoBehaviour {
 
     public void SetUnit(int index)
     {
-        unit = GameObject.Find("Character_" + index).transform.GetChild(0).GetComponent<UnitController>();
+        if (unit != null)
+            unit.GetComponent<UnitController>().enabled = false;
+
+        unit = GameObject.Find("Character_" + index).transform.GetChild(0).GetComponent<UnitController>(); // Searching after the newly selected unit.
+        unit.GetComponent<UnitController>().enabled = true;
         Debug.Log("unit is " + unit);
     }
 
