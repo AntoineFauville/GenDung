@@ -14,7 +14,7 @@ public class GridController : MonoBehaviour {
     private GameData playerData;
     private Vector3 worldPosTemp;
     private List<Vector2> spawnTilesList = new List<Vector2>();
-
+    LogGestionTool logT;
     private Explo_FightRoom exploFight;
 
     void CreateInstance()
@@ -31,6 +31,8 @@ public class GridController : MonoBehaviour {
         CreateInstance();
         GenerateMapData();
         GeneratePathfindingGraph();
+
+        logT = GameObject.Find("DontDestroyOnLoad").GetComponent<LogGestionTool>();
 
         exploFight = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
 
@@ -201,16 +203,19 @@ public class GridController : MonoBehaviour {
     {
         if (unit != null)
             unit.GetComponent<UnitController>().enabled = false;
+        else
+            logT.AddLogLine("Do you mind to select a character ?!");
 
         unit = GameObject.Find("Character_" + index).transform.GetChild(0).GetComponent<UnitController>(); // Searching after the newly selected unit.
         unit.GetComponent<UnitController>().enabled = true;
-        Debug.Log("unit is " + unit);
     }
 
     public void GeneratePathTo(int x, int y)
     {
         if (unit != null)
             unit.CurrentPath = null;
+        else
+            return;
 
         Dictionary<Node, float> dist = new Dictionary<Node, float>();
         Dictionary<Node, Node> prev = new Dictionary<Node, Node>();

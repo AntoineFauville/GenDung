@@ -22,7 +22,7 @@ public class PreCombatController : MonoBehaviour {
     private List<GameObject> sortedGameobjectInit = new List<GameObject>();
     private int monsterAmount;
     private Explo_FightRoom exploFight;
-
+    private int localIndex;
 	LogGestionTool logT;
     
 
@@ -243,22 +243,34 @@ public class PreCombatController : MonoBehaviour {
         {
             case 0:
                 logT.AddLogLine("Selected Character "+ index);
+                localIndex = index;
+                GridController.Instance.Grid.Tiles[GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileX, GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileY ].Type = Tile.TileType.Floor;
                 GameObject.Find("CombatGridPrefab(Clone)").GetComponent<GridController>().SetUnit(index);
+                unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
                 break;
 
             case 1:
                 logT.AddLogLine("Selected Character " + index);
+                localIndex = index;
+                GridController.Instance.Grid.Tiles[GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileX, GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileY].Type = Tile.TileType.Floor;
                 GameObject.Find("CombatGridPrefab(Clone)").GetComponent<GridController>().SetUnit(index);
+                unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
                 break;
 
             case 2:
                 logT.AddLogLine("Selected Character " + index);
+                localIndex = index;
+                GridController.Instance.Grid.Tiles[GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileX, GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileY].Type = Tile.TileType.Floor;
                 GameObject.Find("CombatGridPrefab(Clone)").GetComponent<GridController>().SetUnit(index);
+                unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
                 break;
 
             case 3:
                 logT.AddLogLine("Selected Character " + index);
+                localIndex = index;
+                GridController.Instance.Grid.Tiles[GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileX, GameObject.Find("Character_" + index).transform.Find("Unit").GetComponent<UnitController>().TileY].Type = Tile.TileType.Floor;
                 GameObject.Find("CombatGridPrefab(Clone)").GetComponent<GridController>().SetUnit(index);
+                unit.SetDefaultSpawn(new Vector3(-1000, -1000, 0));
                 break;
         }
     }
@@ -342,6 +354,17 @@ public class PreCombatController : MonoBehaviour {
         set
         {
             monsterAmount = value;
+        }
+    }
+    public int LocalIndex
+    {
+        get
+        {
+            return localIndex;
+        }
+        set
+        {
+            localIndex = value;
         }
     }
 }

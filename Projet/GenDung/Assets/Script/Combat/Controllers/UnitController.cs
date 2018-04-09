@@ -13,6 +13,8 @@ public class UnitController : MonoBehaviour {
     public float remainingMovement = 99, remainingAction = 5; // Compte de déplacement restant (99 pour la phase de placement) , Compte de PA restant.
     private SpellObject[] playerSpells; // liste des sorts du personnage.
 
+    private bool changePosition = false;
+
     private GameObject spellCanvasPrefab;
     private GameObject spellCanvas;
 
@@ -54,8 +56,9 @@ public class UnitController : MonoBehaviour {
 
     public void AdvancePathing() // Méthode de déplacement du personnage.
     {
-        if (!PreCombatController.Instance.CombatStarted) // On vérifie si le placement pré-combat a été fait ou pas (ainsi, on téléporte le joueur sur la case cliquée pour le placement pré-combat). 
+        if (!PreCombatController.Instance.CombatStarted && this.characterID == PreCombatController.Instance.LocalIndex) // On vérifie si le placement pré-combat a été fait ou pas (ainsi, on téléporte le joueur sur la case cliquée pour le placement pré-combat). 
         {
+            if(changePosition)
             transform.position = GridController.Instance.WorldPosTemp;
         }
 
@@ -75,9 +78,7 @@ public class UnitController : MonoBehaviour {
         tileX = currentPath[1].x;
         tileY = currentPath[1].y;
 
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + tileX + "_" + tileY).GetComponent<TileController>().Occupied = true;
         GridController.Instance.Grid.Tiles[tileX, tileY].Type = Tile.TileType.Occupied;
-        GameObject.Find("GridCanvas(Clone)").transform.Find("PanelGrid/Tile_" + currentPath[0].x + "_" + currentPath[0].y).GetComponent<TileController>().Occupied = false;
         GridController.Instance.Grid.Tiles[currentPath[0].x, currentPath[0].y].Type = Tile.TileType.Floor;
 
         if (PreCombatController.Instance.CombatStarted)

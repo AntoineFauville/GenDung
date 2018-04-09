@@ -166,7 +166,7 @@ public class TileController : MonoBehaviour {
 
     public void MoveTo()
     {
-        if (/*!occupied && */GridController.Instance.Grid.Tiles[x, y].Type != Tile.TileType.Occupied)
+        if (GridController.Instance.Grid.Tiles[x, y].Type != Tile.TileType.Occupied)
         {
             GridController.Instance.WorldPosTemp = this.transform.position;
             GridController.Instance.GeneratePathTo(x, y);

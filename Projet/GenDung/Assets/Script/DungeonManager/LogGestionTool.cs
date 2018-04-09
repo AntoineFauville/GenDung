@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class LogGestionTool : MonoBehaviour {
 
+    /* TODO : */
+    // Clean the log 
+
 	private List<string> LogList = new List<string> ();
 
 	string textDisplay = "";
