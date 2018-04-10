@@ -12,6 +12,8 @@ public class CharacterCreations : MonoBehaviour {
 	public int SizeOfTheTeam;
 	int realCalculationSize;
 
+	public bool clicked;
+
 	public int indexMouseOverLeftPanel;
 	public int indexMouseOverRightPanel;
 
@@ -27,8 +29,8 @@ public class CharacterCreations : MonoBehaviour {
 	void Start () {
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim ();
 
-        SetRightIndex(0);
-        SetLeftIndex(11);
+        //SetRightIndex(0);
+        //SetLeftIndex(11);
 
 
         SizeOfTheTeam = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam;
@@ -153,6 +155,15 @@ public class CharacterCreations : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		if (tempCharac [0] != charac [11] &&
+		    tempCharac [1] != charac [11] &&
+		    tempCharac [2] != charac [11] &&
+			tempCharac [3] != charac [11])
+		{
+			didweChooseTheTeam = true;
+		}
+
+
         if (didweChooseTheTeam)
         {
             GameObject.Find("LaunchButton").GetComponent<Button>().interactable = true;
@@ -196,11 +207,19 @@ public class CharacterCreations : MonoBehaviour {
         //{
         //    GameObject.Find("InfoCharaDispatch").GetComponent<Animator>().runtimeAnimatorController = charac[indexMouseOverLeftPanel].persoAnimator;
         //}
-        GameObject.Find ("PV").GetComponent<Text> ().text = 	"Health :          " + charac [indexMouseOverLeftPanel].Health_PV.ToString();
-		GameObject.Find ("PA").GetComponent<Text> ().text = 	"Action Points :   " + charac [indexMouseOverLeftPanel].ActionPoints_PA.ToString();
-		GameObject.Find ("CAC").GetComponent<Text> ().text = 	"Close Attack :    " + charac [indexMouseOverLeftPanel].CloseAttaqueValue.ToString();
-		GameObject.Find ("DIST").GetComponent<Text> ().text = 	"Distance Attack : " + charac [indexMouseOverLeftPanel].DistanceAttaqueValue.ToString ();
-		GameObject.Find ("Story").GetComponent<Text> ().text = charac [indexMouseOverLeftPanel].story;
+		//GameObject.Find ("PV").GetComponent<Text> ().text = 	"Health :          " + charac [indexMouseOverLeftPanel].Health_PV.ToString();
+		//GameObject.Find ("PA").GetComponent<Text> ().text = 	"Action Points :   " + charac [indexMouseOverLeftPanel].ActionPoints_PA.ToString();
+		//GameObject.Find ("CAC").GetComponent<Text> ().text = 	"Close Attack :    " + charac [indexMouseOverLeftPanel].CloseAttaqueValue.ToString();
+		//GameObject.Find ("DIST").GetComponent<Text> ().text = 	"Distance Attack : " + charac [indexMouseOverLeftPanel].DistanceAttaqueValue.ToString ();
+		//GameObject.Find ("Story").GetComponent<Text> ().text = charac [indexMouseOverLeftPanel].story;
+	}
+
+	public void SetUpInfo(int indexOfTeamMember){
+		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/PV").GetComponent<Text> ().text = 	"Health :          " + charac [indexOfTeamMember].Health_PV.ToString();
+		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/PA").GetComponent<Text> ().text = 	"Action Points :   " + charac [indexOfTeamMember].ActionPoints_PA.ToString();
+		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/CAC").GetComponent<Text> ().text = 	"Close Attack :    " + charac [indexOfTeamMember].CloseAttaqueValue.ToString();
+		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/DIST").GetComponent<Text> ().text = 	"Distance Attack : " + charac [indexOfTeamMember].DistanceAttaqueValue.ToString ();
+		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StoryPanel/Story").GetComponent<Text> ().text = charac [indexOfTeamMember].story;
 	}
 
     //index de la liste qui correspond a celle de l'équipe right = équipe left = temporaire
@@ -208,18 +227,35 @@ public class CharacterCreations : MonoBehaviour {
 		indexMouseOverRightPanel = a;
 	}
 
+	public void ClickedVoid (bool click){
+		clicked = click;
+	}
+
 	public void SetLeftIndex (int b){
-		indexMouseOverLeftPanel = b;
+		if (clicked) {
+			indexMouseOverLeftPanel = b;
+			clicked = false;
+		}
 
-        tempCharac[indexMouseOverRightPanel] = charac[indexMouseOverLeftPanel];
+		if (tempCharac[0] == charac[indexMouseOverLeftPanel] ||
+			tempCharac[1] == charac[indexMouseOverLeftPanel] ||
+			tempCharac[2] == charac[indexMouseOverLeftPanel] ||
+			tempCharac[3] == charac[indexMouseOverLeftPanel]
+		) {
+			print ("nop");
+		} else {
+			
+			tempCharac [indexMouseOverRightPanel] = charac [indexMouseOverLeftPanel];
 
-        RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Image> ().sprite = tempCharac [indexMouseOverRightPanel].TempSprite;
-
-        if (charac[indexMouseOverLeftPanel].hasAnimations == true)
-        {
-            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
-            didweChooseTheTeam = true;
-        }
+			if (charac[indexMouseOverLeftPanel].hasAnimations == true)
+			{
+				RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
+				//didweChooseTheTeam = true;
+			} else {
+				RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Animator> ().runtimeAnimatorController = null;
+				RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Image> ().sprite = tempCharac [indexMouseOverRightPanel].TempSprite;
+			}
+		}
     }
 
     public void GetBiggerTeam () {

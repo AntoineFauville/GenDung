@@ -39,7 +39,7 @@ public class ScrollRectSnap_CS : MonoBehaviour
 			distReposition[i] = center.GetComponent<RectTransform>().position.x - bttn[i].GetComponent<RectTransform>().position.x;
 			distance[i] = Mathf.Abs(distReposition[i]);
 
-			if (distReposition[i] > 1200)
+			if (distReposition[i] > 2100)
 			{
 				float curX = bttn[i].GetComponent<RectTransform>().anchoredPosition.x;
 				float curY = bttn[i].GetComponent<RectTransform>().anchoredPosition.y;
@@ -48,7 +48,7 @@ public class ScrollRectSnap_CS : MonoBehaviour
 				bttn[i].GetComponent<RectTransform>().anchoredPosition = newAnchoredPos;
 			}
 
-			if (distReposition[i] < -1200)
+			if (distReposition[i] < -2100)
 			{
 				float curX = bttn[i].GetComponent<RectTransform>().anchoredPosition.x;
 				float curY = bttn[i].GetComponent<RectTransform>().anchoredPosition.y;
@@ -98,10 +98,14 @@ public class ScrollRectSnap_CS : MonoBehaviour
 
 	public void updateAnim (Button btn) {
 		for (int a = 0; a < bttn.Length; a++) {
-			bttn [a].transform.localScale = new Vector3 (1, 1, 1);
+			//bttn [a].transform.localScale = new Vector3 (1, 1, 1);
+			//bttn[a].transform.GetComponent<Animator>().Play("PopingWindowSelectionCharacterBack");
+			bttn[a].transform.GetComponent<Animator>().SetBool("go",false);
 		}
 
-		btn.transform.localScale = new Vector3 (1.2f, 1.2f, 1.2f);
+		//btn.transform.GetComponent<Animator>().Play("PopingWindowSelectionCharacter");
+		btn.transform.GetComponent<Animator>().SetBool("go",true);
+		//btn.transform.localScale = new Vector3 (1.2f, 1.2f, 1.2f);
 	}
 }
 
