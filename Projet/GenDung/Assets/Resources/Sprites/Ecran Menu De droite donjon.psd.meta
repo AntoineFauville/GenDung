@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3914f40778436f344b5312d6c9386519
-timeCreated: 1523564560
+timeCreated: 1523609964
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -14,6 +14,8 @@ TextureImporter:
     21300014: Ecran Menu De droite donjon_7
     21300016: Ecran Menu De droite donjon_8
     21300018: Ecran Menu De droite donjon_9
+    21300020: Ecran Menu De droite donjon_10
+    21300022: Ecran Menu De droite donjon_11
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -208,19 +210,6 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Ecran Menu De droite donjon_8
-      rect:
-        serializedVersion: 2
-        x: 1992
-        y: 1672
-        width: 906
-        height: 149
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
       name: Ecran Menu De droite donjon_9
       rect:
         serializedVersion: 2
@@ -228,6 +217,45 @@ TextureImporter:
         y: 1802
         width: 75
         height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Ecran Menu De droite donjon_8
+      rect:
+        serializedVersion: 2
+        x: 1992
+        y: 1672
+        width: 434
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 26, y: 28, z: 27, w: 27}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Ecran Menu De droite donjon_10
+      rect:
+        serializedVersion: 2
+        x: 2426
+        y: 1672
+        width: 472
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Ecran Menu De droite donjon_11
+      rect:
+        serializedVersion: 2
+        x: 2499
+        y: 1672
+        width: 399
+        height: 19
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
