@@ -8,6 +8,8 @@ public class GameData : ScriptableObject {
 	public int DungeonIndexData = 1; // to know how much we have unlocked yet to load the map proprelly.
 
 	public Character[] SavedCharacterList;
+
+	[Range(1, 4)]
 	public int SavedSizeOfTheTeam = 1;
 
     public int PlayerMoney = 0;

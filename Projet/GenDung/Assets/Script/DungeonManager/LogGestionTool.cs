@@ -26,7 +26,7 @@ public class LogGestionTool : MonoBehaviour {
 			//wait for loading the maps
 			yield return new WaitForSeconds (0.2f);
 			if (SceneManager.GetActiveScene ().name == "Explo") {
-				print ("hey");
+				//print ("hey");
 				GameObject.Find ("textDisplayLog").GetComponent<Text> ().text = textDisplay;
 				GameObject.Find ("textDisplayLogExplo").GetComponent<Text> ().text = textDisplay;
 			}

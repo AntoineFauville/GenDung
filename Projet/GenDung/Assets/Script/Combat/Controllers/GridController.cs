@@ -34,7 +34,10 @@ public class GridController : MonoBehaviour {
 
         logT = GameObject.Find("DontDestroyOnLoad").GetComponent<LogGestionTool>();
 
-        exploFight = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
+		if (SceneManager.GetActiveScene().name == "Explo") // Check si la scéne est différente de l'Editeur (juste pour éviter des erreurs).
+		{
+			exploFight = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
+		}
 
         ///* Charge le prefab du Joueur */
         //GameObject unit_go = Instantiate(Resources.Load("Prefab/Unit"))as GameObject;
