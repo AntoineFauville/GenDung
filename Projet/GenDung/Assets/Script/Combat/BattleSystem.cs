@@ -6,14 +6,19 @@ using UnityEngine.UI;
 public class BattleSystem : MonoBehaviour {
 
 	[Header("Players")]
+	string playerString = "Player ";
 	public List<GameObject> PlayerList = new List<GameObject>();
+	public List<GameObject> DeadPlayerList = new List<GameObject>();
 
 	[Header("Enemies")]
+	string enemyString = "Enemy ";
 	public int amountOfEnemies = 4;
 	public List<GameObject> EnemyList = new List<GameObject>();
+	public List<GameObject> DeadEnemyList = new List<GameObject>();
 
 	[Header("Initiative")]
 	public List<GameObject> FighterList = new List<GameObject>();
+	public List<GameObject> DeadFighterList = new List<GameObject>();
 	public Sprite arrow;
 	public int actuallyPlaying;
 
@@ -21,15 +26,13 @@ public class BattleSystem : MonoBehaviour {
 	void Awake () {
 		SetupPlayers ();
 		SetupEnemies ();
-
+		SetFighterIndex ();
 		SetArrow ();
 		UpdateFighterPanel ();
 	}
 
-	void SetupPlayers(){
-
-		string playerString = "Player ";
-
+	void SetupPlayers()
+	{
 		for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++) {
 			//add the players in the gamefight list
 			PlayerList.Add (GameObject.Find(playerString + i));
@@ -38,14 +41,13 @@ public class BattleSystem : MonoBehaviour {
 			//PlayerList [i].GetComponent<Image> ().sprite = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i].ICON;
 			PlayerList [i].GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
 			PlayerList [i].GetComponent<LocalDataHolder> ().player = true;
-
+			PlayerList [i].GetComponent<LocalDataHolder> ().localIndex = i;
 		}
 	}
 
-	void SetupEnemies(){
 
-		string enemyString = "Enemy ";
-
+	void SetupEnemies()
+	{
 		for (int i = 0; i < amountOfEnemies; i++) {
 			//add the enemies in the gamefight list
 			EnemyList.Add (GameObject.Find(enemyString + i));
@@ -53,6 +55,13 @@ public class BattleSystem : MonoBehaviour {
 			//load their image depending on the list
 			//EnemyList [i].GetComponent<Image> ().sprite = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons[0].enemiesList[0].enemyIcon;
 			EnemyList [i].GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons[0].enemiesList[0];
+			EnemyList [i].GetComponent<LocalDataHolder> ().localIndex = i;
+		}
+	}
+
+	void SetFighterIndex(){
+		for (int i = 0; i < FighterList.Count; i++) {
+			FighterList[i].GetComponent<LocalDataHolder> ().fighterIndex = i;
 		}
 	}
 
@@ -65,22 +74,32 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	public void NextTurn(){
-		
+
+		//checkTurnRound ();
+
 		actuallyPlaying++;
+		if (actuallyPlaying >= FighterList.Count) {
+			actuallyPlaying = 0;
+		}
+		if(FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().dead){
+			NextTurn ();
+		}
 
 		if (actuallyPlaying >= FighterList.Count) {
 			actuallyPlaying = 0;
 		}
 
-		SetArrow ();
-
 		UpdateFighterPanel ();
+
+		FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().UpdateLife();
 
 		if (!FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
 			EnemyTurn ();
 		} else {
 			HideShowNext(true);
 		}
+
+		SetArrow ();
 	}
 
 	void UpdateFighterPanel () {
@@ -97,8 +116,8 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	void EnemyTurn () {
-		//attack random player
-		PlayerList[Random.Range(0,PlayerList.Count)].transform.Find("LifeBar").GetComponent<Image>().fillAmount -= 0.3f;
+		int rnd = Random.Range (0, PlayerList.Count);
+		PlayerList[rnd].GetComponent<LocalDataHolder> ().looseLife(1);
 
 		//hide next button
 		HideShowNext(false);
@@ -114,7 +133,7 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	IEnumerator slowEnemyTurn(){
-		yield return new WaitForSeconds (1.0f);
+		yield return new WaitForSeconds (0.3f);
 		NextTurn();
 	}
 }
