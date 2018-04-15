@@ -27,8 +27,8 @@ public class LogGestionTool : MonoBehaviour {
 			yield return new WaitForSeconds (0.2f);
 			if (SceneManager.GetActiveScene ().name == "Explo") {
 				//print ("hey");
-				GameObject.Find ("textDisplayLog").GetComponent<Text> ().text = textDisplay;
-				GameObject.Find ("textDisplayLogExplo").GetComponent<Text> ().text = textDisplay;
+				//GameObject.Find ("textDisplayLog").GetComponent<Text> ().text = textDisplay;
+				//GameObject.Find ("textDisplayLogExplo").GetComponent<Text> ().text = textDisplay;
 			}
 		}
 		StartCoroutine ("checkDisplay");

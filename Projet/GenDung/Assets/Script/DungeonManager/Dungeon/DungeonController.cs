@@ -47,7 +47,7 @@ public class DungeonController : MonoBehaviour {
         background = GameObject.FindGameObjectWithTag("backgroundOfRoom");
 
         //met les infos a jour sur le coté en fonction du joueur actif
-        GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
+        //GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
 
         // For Loop for multiple Characters (Stats links)
         if (dungeonLoader.InstantiatedCombatModule)
@@ -60,9 +60,9 @@ public class DungeonController : MonoBehaviour {
         }
         else
         {
-            GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
-            GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
-            GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
+//            GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
+//            GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
+//            GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
         }
 
         //permet de charger la salle room
