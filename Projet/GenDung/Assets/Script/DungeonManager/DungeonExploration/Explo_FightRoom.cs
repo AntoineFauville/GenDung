@@ -18,6 +18,7 @@ public class Explo_FightRoom : MonoBehaviour
     private GameObject exploUnit;
     private GameObject exploGrid;
 	private GameObject exploUI;
+	private GameObject battleSystemUI;
 
     private RoomObject actualFightRoom;
 
@@ -35,9 +36,13 @@ public class Explo_FightRoom : MonoBehaviour
 
     void Start ()
     {
+		battleSystemUI = GameObject.Find("BattleSystem");
+
         combatCanvas = GameObject.Find("FightRoomUI");
         combatUI = GameObject.Find("CanvasUIDungeon");
         combatRoom = GameObject.Find("Room1");
+
+		battleSystemUI.GetComponent<Canvas>().sortingOrder = 39;
 
 		combatCanvas.GetComponent<Canvas>().sortingOrder = 39;
 		combatUI.GetComponent<Canvas>().sortingOrder = 39;
@@ -69,8 +74,10 @@ public class Explo_FightRoom : MonoBehaviour
 
 		logT.AddLogLine ("Let the fight begin");
 
+		battleSystemUI.GetComponent<Canvas>().sortingOrder += 40;
+
         //print ("le room rand est de " + roomRand);
-        combatUI.GetComponent<Canvas>().sortingOrder = 79;
+        combatUI.GetComponent<Canvas>().sortingOrder = 80;
         combatRoom.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder += 40;
         combatCanvas.GetComponent<Canvas>().sortingOrder -= 40;
 
@@ -88,6 +95,8 @@ public class Explo_FightRoom : MonoBehaviour
 
 		logT.AddLogLine ("Let me clean that for you, now explore again, fool");
 
+		battleSystemUI.GetComponent<Canvas>().sortingOrder -= 40;
+
         combatCanvas.GetComponent<Canvas>().sortingOrder = 0;
         combatRoom.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder -= 40;
 
@@ -97,7 +106,7 @@ public class Explo_FightRoom : MonoBehaviour
 
         exploUnit.transform.Find("Unit").GetComponent<ExploUnitController>().ResetMovement();
 
-        Destroy(GameObject.Find(""));
+        //Destroy(GameObject.Find(""));
 
     }
 

@@ -64,9 +64,9 @@ public class CombatGestion : MonoBehaviour {
 
         } /**/
 
-        combat_grid = Instantiate(Resources.Load("UI_Interface/CombatGridPrefab")) as GameObject;
-        combat_grid.SetActive(true);
-        instantiateCombatGrid = true;
+        //combat_grid = Instantiate(Resources.Load("UI_Interface/CombatGridPrefab")) as GameObject;
+        //combat_grid.SetActive(true);
+        //instantiateCombatGrid = true;
 
         //for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++)
         //{
@@ -93,8 +93,8 @@ public class CombatGestion : MonoBehaviour {
 		//combat_grid.SetActive (false);
 
 		//GameObject.FindGameObjectWithTag ("GridCanvas").SetActive (false);
-        Destroy(GameObject.Find("GridCanvas(Clone)").gameObject);
-        Destroy(GameObject.Find("CombatGridPrefab(Clone)").gameObject);
+        //Destroy(GameObject.Find("GridCanvas(Clone)").gameObject);
+        //Destroy(GameObject.Find("CombatGridPrefab(Clone)").gameObject);
 
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = false;
 

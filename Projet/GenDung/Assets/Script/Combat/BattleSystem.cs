@@ -36,7 +36,7 @@ public class BattleSystem : MonoBehaviour {
 		SetupEnemies ();
 		SetFighterIndex ();
 		SetArrow ();
-		UpdateFighterPanel ();
+		SetupFighterPanel ();
 	}
 
 	void Update () {
@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour {
 			EndBattleAllPlayerDead ();
 		}
 		if (amountOfEnemiesLeft <= 0) {
-			EndBattleAllPlayerDead ();
+			EndBattleAllMonsterDead ();
 		}
 
 		/*
@@ -146,6 +146,10 @@ public class BattleSystem : MonoBehaviour {
 		SetArrow ();
 	}
 
+	void SetupFighterPanel () {
+		SetSpellLinks ();
+	}
+
 	void UpdateFighterPanel () {
 		if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder> ().player){
 			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().sizeDelta.x,0,0);
@@ -202,7 +206,23 @@ public class BattleSystem : MonoBehaviour {
 
 	void EndBattleAllPlayerDead () {
 		//UnityEditor.EditorApplication.isPlaying = false;
-		SceneManager.LoadScene ("Init");
+		SceneManager.LoadScene ("Map");
+	}
+
+	void EndBattleAllMonsterDead () {
+		if (SceneManager.GetActiveScene ().name != "NewCombatTest") {
+			GameObject.Find ("ExploGridPrefab").GetComponent<Explo_FightRoom> ().CleanFinishedFightRoom ();
+		} else {
+			SceneManager.LoadScene ("Init");
+		}
+
+		//reset for next fight
+		resetFight();
+		//need un reset en fonction de la salle des monstres
+	}
+
+	void resetFight(){
+		amountOfEnemiesLeft = amountOfEnemies;
 	}
 
 	void resetActionPoint(int index){

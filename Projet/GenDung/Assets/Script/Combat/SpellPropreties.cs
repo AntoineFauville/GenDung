@@ -38,8 +38,10 @@ public class SpellPropreties : MonoBehaviour {
 			InteractableSpell (false);
 		}
 
-		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer < spellObject.spellCost) {
-			InteractableSpell (false);
+		if (spellObject != null) {
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer < spellObject.spellCost) {
+				InteractableSpell (false);
+			}
 		}
 	}
 
