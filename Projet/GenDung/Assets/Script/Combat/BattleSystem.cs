@@ -47,6 +47,7 @@ public class BattleSystem : MonoBehaviour {
 			EndBattleAllPlayerDead ();
 		}
 
+		/*
 		if (attackMode) {
 			print ("attack mode " + attackMode);
 			HideShowNext (false);
@@ -54,6 +55,7 @@ public class BattleSystem : MonoBehaviour {
 			print ("attack mode " + attackMode);
 			HideShowNext(true);
 		}
+		*/
 
 		if (SelectedSpellObject != null) {
 			if (SelectedSpellObject.spellCost > FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer && FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
@@ -154,8 +156,11 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	void SetSpellLinks () {
-		GameObject.Find ("Button_Spell_1").GetComponent<Image> ().sprite = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList [0].spellIcon;
-		GameObject.Find ("Button_Spell_1").GetComponent<SpellPropreties> ().spellObject = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList[0];
+		for (int i = 0; i < 3; i++) {
+			GameObject.Find ("Button_Spell_" + i).GetComponent<Image> ().sprite = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList [i].spellIcon;
+			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().spellObject = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList[i];
+		}
+
 	}
 
 	void checkEnemyToAttack(){
@@ -190,6 +195,7 @@ public class BattleSystem : MonoBehaviour {
 
 	void HideShowNext (bool hide){
 		GameObject.Find ("NextPanel").GetComponent<Image> ().enabled = hide;
+		GameObject.Find ("NextPanel").GetComponent<Button> ().interactable = hide;
 		GameObject.Find ("NextPanel").GetComponent<Button> ().enabled = hide;
 		GameObject.Find ("NextPanel/NextText").GetComponent<Text> ().enabled = hide;
 	}
