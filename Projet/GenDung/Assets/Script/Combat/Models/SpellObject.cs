@@ -24,4 +24,6 @@ public class SpellObject : ScriptableObject {
     public SpellAnimator spellAnimator;
 
     public int spellCost = 1;
+
+	public int spellDamage = 1;
 }

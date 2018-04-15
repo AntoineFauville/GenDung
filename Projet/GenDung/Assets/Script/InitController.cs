@@ -33,4 +33,9 @@ public class InitController : MonoBehaviour {
 	{
 		SceneManager.LoadScene("ExploEditor");
 	}
+
+	public void StartBattleTest()
+	{
+		SceneManager.LoadScene("NewCombatTest");
+	}
 }

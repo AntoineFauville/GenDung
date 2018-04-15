@@ -2,25 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleSystem : MonoBehaviour {
 
 	[Header("Players")]
 	string playerString = "Player ";
-	public List<GameObject> PlayerList = new List<GameObject>();
-	public List<GameObject> DeadPlayerList = new List<GameObject>();
+	public int initialAmountOfPlayer;
+	public int amountOfPlayerLeft;
+	//public List<GameObject> PlayerList = new List<GameObject>();
+	//public List<GameObject> DeadPlayerList = new List<GameObject>();
+	public SpellObject SelectedSpellObject;
 
 	[Header("Enemies")]
 	string enemyString = "Enemy ";
 	public int amountOfEnemies = 4;
-	public List<GameObject> EnemyList = new List<GameObject>();
-	public List<GameObject> DeadEnemyList = new List<GameObject>();
+	public int amountOfEnemiesLeft;
+	//public List<GameObject> EnemyList = new List<GameObject>();
+	//public List<GameObject> DeadEnemyList = new List<GameObject>();
+	int rndAttackEnemy;
 
 	[Header("Initiative")]
 	public List<GameObject> FighterList = new List<GameObject>();
-	public List<GameObject> DeadFighterList = new List<GameObject>();
+	//public List<GameObject> DeadFighterList = new List<GameObject>();
 	public Sprite arrow;
 	public int actuallyPlaying;
+
+	public bool attackMode;
 
 	// keep it because of data holder delay as awake
 	void Awake () {
@@ -31,31 +39,63 @@ public class BattleSystem : MonoBehaviour {
 		UpdateFighterPanel ();
 	}
 
+	void Update () {
+		if (amountOfPlayerLeft <= 0) {
+			EndBattleAllPlayerDead ();
+		}
+		if (amountOfEnemiesLeft <= 0) {
+			EndBattleAllPlayerDead ();
+		}
+
+		if (attackMode) {
+			print ("attack mode " + attackMode);
+			HideShowNext (false);
+		} else {
+			print ("attack mode " + attackMode);
+			HideShowNext(true);
+		}
+
+		if (SelectedSpellObject != null) {
+			if (SelectedSpellObject.spellCost > FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer && FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+				attackMode = false;
+			}
+		}
+
+	}
+
 	void SetupPlayers()
 	{
-		for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedSizeOfTheTeam; i++) {
+		initialAmountOfPlayer = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam;
+
+		amountOfPlayerLeft = initialAmountOfPlayer;
+
+		for (int i = 0; i < initialAmountOfPlayer; i++) {
 			//add the players in the gamefight list
-			PlayerList.Add (GameObject.Find(playerString + i));
+			//PlayerList.Add (GameObject.Find(playerString + i));
 			FighterList.Add (GameObject.Find(playerString + i));
 			//load their image depending on the list
 			//PlayerList [i].GetComponent<Image> ().sprite = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i].ICON;
-			PlayerList [i].GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
-			PlayerList [i].GetComponent<LocalDataHolder> ().player = true;
-			PlayerList [i].GetComponent<LocalDataHolder> ().localIndex = i;
+			FighterList [i].GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
+			FighterList [i].GetComponent<LocalDataHolder> ().player = true;
+
+			FighterList [i].GetComponent<LocalDataHolder> ().localIndex = i;
 		}
 	}
 
 
 	void SetupEnemies()
 	{
+		amountOfEnemiesLeft = amountOfEnemies;
+
 		for (int i = 0; i < amountOfEnemies; i++) {
 			//add the enemies in the gamefight list
-			EnemyList.Add (GameObject.Find(enemyString + i));
+			//EnemyList.Add (GameObject.Find(enemyString + i));
 			FighterList.Add (GameObject.Find(enemyString + i));
 			//load their image depending on the list
 			//EnemyList [i].GetComponent<Image> ().sprite = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons[0].enemiesList[0].enemyIcon;
-			EnemyList [i].GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons[0].enemiesList[0];
-			EnemyList [i].GetComponent<LocalDataHolder> ().localIndex = i;
+			FighterList [i + initialAmountOfPlayer].GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons[0].enemiesList[0];
+
+			FighterList [i + initialAmountOfPlayer].GetComponent<LocalDataHolder> ().localIndex = i;
 		}
 	}
 
@@ -74,7 +114,6 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	public void NextTurn(){
-
 		//checkTurnRound ();
 
 		actuallyPlaying++;
@@ -83,7 +122,9 @@ public class BattleSystem : MonoBehaviour {
 		}
 		if(FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().dead){
 			NextTurn ();
+			return;
 		}
+
 
 		if (actuallyPlaying >= FighterList.Count) {
 			actuallyPlaying = 0;
@@ -99,6 +140,7 @@ public class BattleSystem : MonoBehaviour {
 			HideShowNext(true);
 		}
 
+		resetActionPoint (actuallyPlaying);
 		SetArrow ();
 	}
 
@@ -113,17 +155,37 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetSpellLinks () {
 		GameObject.Find ("Button_Spell_1").GetComponent<Image> ().sprite = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList [0].spellIcon;
+		GameObject.Find ("Button_Spell_1").GetComponent<SpellPropreties> ().spellObject = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList[0];
+	}
+
+	void checkEnemyToAttack(){
+
+		rndAttackEnemy = Random.Range (0, FighterList.Count);
+
+		if (FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().dead || !FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().player) {
+			checkEnemyToAttack ();
+		} else {
+			return;
+		}
 	}
 
 	void EnemyTurn () {
-		int rnd = Random.Range (0, PlayerList.Count);
-		PlayerList[rnd].GetComponent<LocalDataHolder> ().looseLife(1);
+		//attack enemy
+		if (amountOfPlayerLeft > 0) {
+			checkEnemyToAttack ();
 
-		//hide next button
-		HideShowNext(false);
+			FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().looseLife (1);
 
-		//next turn
-		StartCoroutine(slowEnemyTurn());
+			//hide next button
+			HideShowNext(false);
+
+			//next turn
+			StartCoroutine(slowEnemyTurn());
+		} 
+		else 
+		{
+			EndBattleAllPlayerDead ();
+		}
 	}
 
 	void HideShowNext (bool hide){
@@ -132,8 +194,17 @@ public class BattleSystem : MonoBehaviour {
 		GameObject.Find ("NextPanel/NextText").GetComponent<Text> ().enabled = hide;
 	}
 
+	void EndBattleAllPlayerDead () {
+		//UnityEditor.EditorApplication.isPlaying = false;
+		SceneManager.LoadScene ("Init");
+	}
+
+	void resetActionPoint(int index){
+		FighterList [index].GetComponent<LocalDataHolder> ().actionPointPlayer = FighterList [index].GetComponent<LocalDataHolder> ().maxActionPointPlayer;
+	}
+
 	IEnumerator slowEnemyTurn(){
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.8f);
 		NextTurn();
 	}
 }
