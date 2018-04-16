@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class BattleSystem : MonoBehaviour {
 
@@ -19,6 +20,7 @@ public class BattleSystem : MonoBehaviour {
 	int rndAttackEnemy;
 
 	[Header("Initiative")]
+	private Dictionary<GameObject, int> UnOrderedFighterList = new Dictionary<GameObject, int>();
 	public List<GameObject> FighterList = new List<GameObject>();
 	public Sprite arrow;
 	public int actuallyPlaying;
@@ -32,6 +34,7 @@ public class BattleSystem : MonoBehaviour {
 		SetFighterIndex ();
 		SetArrow ();
 		SetupFighterPanel ();
+		SetupFirstTurnAsEnemy ();
 	}
 
 	void Update ()
@@ -53,12 +56,11 @@ public class BattleSystem : MonoBehaviour {
 
 		for (int i = 0; i < initialAmountOfPlayer; i++) {
 			//add the players in the gamefight list
-			FighterList.Add (GameObject.Find(playerString + i));
+			UnOrderedFighterList.Add (GameObject.Find(playerString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i].Initiative);
 			//load their image depending on the list
-			FighterList [i].GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
-			FighterList [i].GetComponent<LocalDataHolder> ().player = true;
-
-			FighterList [i].GetComponent<LocalDataHolder> ().localIndex = i;
+			GameObject.Find(playerString + i).GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
+			GameObject.Find(playerString + i).GetComponent<LocalDataHolder> ().player = true;
+			GameObject.Find(playerString + i).GetComponent<LocalDataHolder> ().localIndex = i;
 		}
 	}
 
@@ -69,18 +71,42 @@ public class BattleSystem : MonoBehaviour {
 
 		for (int i = 0; i < amountOfEnemies; i++) {
 			//add the enemies in the gamefight list
-			FighterList.Add (GameObject.Find(enemyString + i));
-			//load their image depending on the list
-			FighterList [i + initialAmountOfPlayer].GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons[0].enemiesList[0];
 
-			FighterList [i + initialAmountOfPlayer].GetComponent<LocalDataHolder> ().localIndex = i;
+			if (SceneManager.GetActiveScene ().name != "NewCombatTest") 
+			{
+				int dungeon = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ().dungeonIndex;
+
+				int enemyRand = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList.Count);
+
+				UnOrderedFighterList.Add (GameObject.Find (enemyString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand].initiative);
+				//load their image depending on the list
+				GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand];
+			} 
+			else 
+			{
+				int enemyRand = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList.Count);
+
+				UnOrderedFighterList.Add (GameObject.Find (enemyString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList [enemyRand].initiative);
+				//load their image depending on the list
+				GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList [enemyRand];
+			}
+
+			GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().localIndex = i;
 		}
 	}
 
 	void SetFighterIndex(){
+
+		FighterList = UnOrderedFighterList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+
 		for (int i = 0; i < FighterList.Count; i++) {
 			FighterList[i].GetComponent<LocalDataHolder> ().fighterIndex = i;
 		}
+	}
+
+	void SetupFirstTurnAsEnemy () {
+
+		StartCoroutine(waitForStarting());
 	}
 
 	void SetArrow () {
@@ -98,7 +124,8 @@ public class BattleSystem : MonoBehaviour {
 			actuallyPlaying = 0;
 		}
 
-		if(FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().dead){
+		if(FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().dead)
+		{
 			NextTurn ();
 		}
         else
@@ -120,7 +147,9 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	void SetupFighterPanel () {
-		SetSpellLinks ();
+		if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+			SetSpellLinks ();
+		}
 	}
 
 	void UpdateFighterPanel () {
@@ -154,7 +183,7 @@ public class BattleSystem : MonoBehaviour {
 		if (amountOfPlayerLeft > 0) {
 			checkEnemyToAttack ();
 
-			FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().looseLife (1);
+			FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().looseLife (FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().enemyObject.atk);
 
 			//hide next button
 			HideShowNext(false);
@@ -203,6 +232,20 @@ public class BattleSystem : MonoBehaviour {
 	IEnumerator slowEnemyTurn(){
 		yield return new WaitForSeconds (0.8f);
 		NextTurn();
+	}
+
+	IEnumerator waitForStarting(){
+		yield return new WaitForSeconds (0.5f);
+
+		UpdateFighterPanel();
+
+		if (!FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+
+			EnemyTurn();
+		}
+
+		resetActionPoint(actuallyPlaying);
+		SetArrow();
 	}
 }
 
