@@ -127,7 +127,7 @@ public class BattleSystem : MonoBehaviour {
 			return;
 		}
 
-
+        // répétition inutile 
 		if (actuallyPlaying >= FighterList.Count) {
 			actuallyPlaying = 0;
 		}
