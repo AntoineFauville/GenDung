@@ -37,8 +37,10 @@ public class LocalDataHolder : MonoBehaviour {
 		transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 	}
 
-	public void looseLife(int pv){
-		if(health > 0) {
+	public void looseLife(int pv)
+    {
+		if(health > 0)
+        {
 			health -= pv;
 		}
 		UpdateLife ();
@@ -56,9 +58,14 @@ public class LocalDataHolder : MonoBehaviour {
 
 			if (player) {
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfPlayerLeft--;
-			} else {
+                if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfPlayerLeft <= 0)
+                    GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
+
+            } else {
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfEnemiesLeft--;
-			}
+                if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfEnemiesLeft <= 0)
+                    GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllMonsterDead();
+            }
 		}
 
 		transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
