@@ -15,7 +15,7 @@ public class BattleSystem : MonoBehaviour {
 
 	[Header("Enemies")]
 	string enemyString = "Enemy ";
-	public int amountOfEnemies = 4; // random from data for room.
+	public int amountOfEnemies = 2; // random from data for room.
 	public int amountOfEnemiesLeft;
 	int rndAttackEnemy;
 
@@ -67,7 +67,17 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetupEnemies()
 	{
-		amountOfEnemiesLeft = amountOfEnemies;
+		if (SceneManager.GetActiveScene ().name != "NewCombatTest") {
+
+			int dungeon = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ().dungeonIndex;
+
+			amountOfEnemies = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemyMax);
+
+		} else {
+			
+			amountOfEnemies = 4;
+			amountOfEnemiesLeft = amountOfEnemies;
+		}
 
 		for (int i = 0; i < amountOfEnemies; i++) {
 			//add the enemies in the gamefight list

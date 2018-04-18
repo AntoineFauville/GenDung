@@ -17,7 +17,7 @@ public class ExploMap : ScriptableObject {
 	[Range(1, 5)]
     public int treasureRoomAmount;
 
-	[Range(1, 3)]
+	[Range(1, 4)]
 	public int enemyMax = 1;
 
 	public List<EnemyObject> enemiesList = new List<EnemyObject>();

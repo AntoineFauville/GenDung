@@ -24,21 +24,36 @@ public class LocalDataHolder : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(!player){
-			this.GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
-			maxHealth = this.GetComponent<LocalDataHolder> ().enemyObject.health;
+
+		//if at the start and the enemyObject and the character Object are empty, it means we are not been selected by the holy church.
+		//you need to die.
+
+		if (enemyObject == null && characterObject == null) {
+
+			print (this.gameObject.name + " has died, sorry");
+
+			this.gameObject.transform.SetParent (GameObject.Find("BackupInvocationsEnemies").transform);
+
 		} else {
-			maxHealth = this.GetComponent<LocalDataHolder> ().characterObject.Health_PV;
-			this.GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
-			maxActionPointPlayer = this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA;
-			actionPointPlayer = maxActionPointPlayer;
+			
+			if(!player){
+				this.gameObject.transform.SetParent(GameObject.Find("EnemyPanelPlacement").transform);
+
+				this.GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
+				maxHealth = this.GetComponent<LocalDataHolder> ().enemyObject.health;
+			} else {
+				maxHealth = this.GetComponent<LocalDataHolder> ().characterObject.Health_PV;
+				this.GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
+				maxActionPointPlayer = this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA;
+				actionPointPlayer = maxActionPointPlayer;
+			}
+
+			health = maxHealth;
+
+			transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
+
+			SetupUiOrderObject ();
 		}
-
-		health = maxHealth;
-
-		transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
-
-		SetupUiOrderObject ();
 	}
 
 	public void looseLife(int pv)
@@ -69,6 +84,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 	public void UpdateUiOrderOrder (bool trig) {
 		UiOrderObject.transform.Find ("BouleVerte").GetComponent<Image> ().enabled = trig;
+		UiOrderObject.transform.Find ("Scripts").GetComponent<UIOrderBattle> ().Selected (trig);
 	}
 	
 	public void UpdateLife(){
