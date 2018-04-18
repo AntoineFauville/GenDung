@@ -101,6 +101,14 @@ public class BattleSystem : MonoBehaviour {
 
 		for (int i = 0; i < FighterList.Count; i++) {
 			FighterList[i].GetComponent<LocalDataHolder> ().fighterIndex = i;
+
+			GameObject UiBattleDisplay;
+
+			UiBattleDisplay = Instantiate(Resources.Load("UI_Interface/UIBattleOrderDisplay"), GameObject.Find ("OrderBattlePanel").transform) as GameObject;
+
+			FighterList [i].GetComponent<LocalDataHolder> ().UiOrderObject = UiBattleDisplay;
+
+			//FighterList [i].GetComponent<LocalDataHolder> ().SetupUiOrderObject();
 		}
 	}
 
@@ -115,6 +123,11 @@ public class BattleSystem : MonoBehaviour {
 
 		Vector3 actualPosition = FighterList [actuallyPlaying].GetComponent<RectTransform> ().position;
 		GameObject.Find ("Pastille").GetComponent<RectTransform>().position = actualPosition + new Vector3(0,32,0);
+
+		for (int i = 0; i < FighterList.Count; i++) {
+			FighterList [i].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (false);
+		}
+		FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (true);
 	}
 
 	public void NextTurn()

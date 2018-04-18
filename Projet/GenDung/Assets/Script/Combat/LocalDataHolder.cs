@@ -20,6 +20,8 @@ public class LocalDataHolder : MonoBehaviour {
 	public int maxActionPointPlayer;
 	public int actionPointPlayer;
 
+	public GameObject UiOrderObject;
+
 	// Use this for initialization
 	void Start () {
 		if(!player){
@@ -35,6 +37,8 @@ public class LocalDataHolder : MonoBehaviour {
 		health = maxHealth;
 
 		transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
+
+		SetupUiOrderObject ();
 	}
 
 	public void looseLife(int pv)
@@ -44,6 +48,27 @@ public class LocalDataHolder : MonoBehaviour {
 			health -= pv;
 		}
 		UpdateLife ();
+	}
+
+	public void SetupUiOrderObject () 
+	{
+		if(player){
+			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = this.GetComponent<LocalDataHolder> ().characterObject.Name.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + this.GetComponent<LocalDataHolder> ().characterObject.Health_PV.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "PA = " + this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA.ToString();
+		} else {
+			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = this.GetComponent<LocalDataHolder> ().enemyObject.enemyName.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + this.GetComponent<LocalDataHolder> ().enemyObject.health.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "PA = " + this.GetComponent<LocalDataHolder> ().enemyObject.pa.ToString();
+		}
+
+		UpdateLife ();
+	}
+
+	public void UpdateUiOrderOrder (bool trig) {
+		UiOrderObject.transform.Find ("BouleVerte").GetComponent<Image> ().enabled = trig;
 	}
 	
 	public void UpdateLife(){
@@ -69,6 +94,7 @@ public class LocalDataHolder : MonoBehaviour {
 		}
 
 		transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
+		UiOrderObject.transform.Find("PVOrderDisplay").GetComponent<Image> ().fillAmount = health / maxHealth;
 	}
 
 	public void AttackEnemy(){
