@@ -52,8 +52,8 @@ public class PostCombatController : MonoBehaviour {
 
     public void EndBattle()
     {
-        CleanEndBattle();
-        CombatUIController.Instance.SwitchStartVisual();
+        //CleanEndBattle();
+        //CombatUIController.Instance.SwitchStartVisual();
 
 		GameObject.Find("FightRoomUI").transform.Find("ScriptManagerFightRoomUI").GetComponent<CombatGestion>().FinishedCombat();
     }

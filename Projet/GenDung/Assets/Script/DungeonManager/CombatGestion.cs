@@ -82,21 +82,21 @@ public class CombatGestion : MonoBehaviour {
 
 	public void FinishedCombat () {
 
-		instantiateCombatGrid = false;
+		//instantiateCombatGrid = false;
 		//GameObject.FindGameObjectWithTag ("Unit").SetActive (false);
 
 		EF.CleanFinishedFightRoom ();
 
-		PostCombatController.Instance.CleanEndBattle();
+		//PostCombatController.Instance.CleanEndBattle();
 
-		canvasTemp.GetComponent<Canvas> ().enabled = true;
+		//canvasTemp.GetComponent<Canvas> ().enabled = true;
 		//combat_grid.SetActive (false);
 
 		//GameObject.FindGameObjectWithTag ("GridCanvas").SetActive (false);
         //Destroy(GameObject.Find("GridCanvas(Clone)").gameObject);
         //Destroy(GameObject.Find("CombatGridPrefab(Clone)").gameObject);
 
-        GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = false;
+        //GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().InstantiatedCombatModule = false;
 
 		
 
@@ -106,8 +106,8 @@ public class CombatGestion : MonoBehaviour {
         //    GameObject.Find("CharacterShadow").GetComponent<Image>().enabled = true;
         //}
 
-        GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
-        GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
+        //GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 0;
+        //GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 0;
     }
 
     public static CombatGestion Instance
