@@ -23,7 +23,7 @@ public class LocalDataHolder : MonoBehaviour {
 	public GameObject UiOrderObject;
 
 	// Use this for initialization
-	void Start () {
+	public void Initialize () {
 
 		//if at the start and the enemyObject and the character Object are empty, it means we are not been selected by the holy church.
 		//you need to die.
@@ -62,7 +62,33 @@ public class LocalDataHolder : MonoBehaviour {
         {
 			health -= pv;
 		}
-		UpdateLife ();
+
+		if (health <= 0) {
+
+			health = 0;
+
+			dead = true;
+
+			if(player)
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [localIndex].died = true;
+
+			//can't interact with me anymore no attacks, no clicking + visual to show i'm dead
+			this.gameObject.GetComponent<Button> ().enabled = false;
+			this.gameObject.GetComponent<Image> ().color = Color.gray;
+
+			if (player) {
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfPlayerLeft--;
+				if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfPlayerLeft <= 0)
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
+
+			} else {
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfEnemiesLeft--;
+				if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfEnemiesLeft <= 0)
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllMonsterDead();
+			}
+		}
+
+		SetupUiOrderObject ();
 	}
 
 	public void SetupUiOrderObject () 
@@ -70,13 +96,13 @@ public class LocalDataHolder : MonoBehaviour {
 		if(player){
 			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = this.GetComponent<LocalDataHolder> ().characterObject.Name.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + this.GetComponent<LocalDataHolder> ().characterObject.Health_PV.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "PA = " + this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + health.ToString() + " / " + this.GetComponent<LocalDataHolder> ().characterObject.Health_PV.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "PA = " + actionPointPlayer.ToString() + " / " + this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA.ToString();
 		} else {
 			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = this.GetComponent<LocalDataHolder> ().enemyObject.enemyName.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + this.GetComponent<LocalDataHolder> ().enemyObject.health.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "PA = " + this.GetComponent<LocalDataHolder> ().enemyObject.pa.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + health.ToString() + " / " + this.GetComponent<LocalDataHolder> ().enemyObject.health.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().enabled = false;
 		}
 
 		UpdateLife ();
@@ -87,30 +113,14 @@ public class LocalDataHolder : MonoBehaviour {
 		UiOrderObject.transform.Find ("Scripts").GetComponent<UIOrderBattle> ().Selected (trig);
 	}
 	
-	public void UpdateLife(){
-		
-		if (health <= 0) {
-			
-			dead = true;
-
-			//can't interact with me anymore no attacks, no clicking + visual to show i'm dead
-			this.gameObject.GetComponent<Button> ().enabled = false;
-			this.gameObject.GetComponent<Image> ().color = Color.gray;
-
-			if (player) {
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfPlayerLeft--;
-                if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfPlayerLeft <= 0)
-                    GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
-
-            } else {
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfEnemiesLeft--;
-                if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfEnemiesLeft <= 0)
-                    GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllMonsterDead();
-            }
-		}
-
+	public void UpdateLife()
+	{
 		transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 		UiOrderObject.transform.Find("PVOrderDisplay").GetComponent<Image> ().fillAmount = health / maxHealth;
+
+		if (player) {
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [localIndex].tempHealth = health;
+		}
 	}
 
 	public void AttackEnemy(){

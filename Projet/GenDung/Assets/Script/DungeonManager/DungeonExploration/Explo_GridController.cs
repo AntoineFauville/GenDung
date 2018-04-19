@@ -336,6 +336,11 @@ public class Explo_GridController : MonoBehaviour {
     {
 		int fightRoomAmount = Random.Range(1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].fightRoomAmount);
 
+		//send info to dungeon controller data
+
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.amountOfFightRoomsInData = fightRoomAmount;
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().SoftStart ();
+
 		//logT.AddLogLine ("Fight room : 0 / " + fightRoomAmount);
 
         for (int f = 0; f < fightRoomAmount; f++)

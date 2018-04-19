@@ -28,7 +28,7 @@ public class BattleSystem : MonoBehaviour {
 	public bool attackMode;
 
 	// keep it because of data holder delay as awake
-	void Awake () {
+	public void FreshStart () {
 		SetupPlayers ();
 		SetupEnemies ();
 		SetFighterIndex ();
@@ -71,13 +71,10 @@ public class BattleSystem : MonoBehaviour {
 
 			int dungeon = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ().dungeonIndex;
 
-			amountOfEnemies = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemyMax);
-
-		} else {
-			
-			amountOfEnemies = 4;
-			amountOfEnemiesLeft = amountOfEnemies;
+			amountOfEnemies = Random.Range (1, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemyMax);
 		}
+			
+		amountOfEnemiesLeft = amountOfEnemies;
 
 		for (int i = 0; i < amountOfEnemies; i++) {
 			//add the enemies in the gamefight list
@@ -118,7 +115,13 @@ public class BattleSystem : MonoBehaviour {
 
 			FighterList [i].GetComponent<LocalDataHolder> ().UiOrderObject = UiBattleDisplay;
 
-			//FighterList [i].GetComponent<LocalDataHolder> ().SetupUiOrderObject();
+
+		}
+
+		//hide the others and make the initializer work
+		for (int i = 0; i < 4; i++) {
+			GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().Initialize();
+			GameObject.Find	(playerString + i).GetComponent<LocalDataHolder> ().Initialize();
 		}
 	}
 
@@ -185,10 +188,14 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	void SetSpellLinks () {
+		
 		for (int i = 0; i < 3; i++)
         {
 			GameObject.Find ("Button_Spell_" + i).GetComponent<Image> ().sprite = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList [i].spellIcon;
 			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().spellObject = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList[i];
+
+
+			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().StartPersoUpdate ();
 		}
 	}
 
@@ -229,10 +236,16 @@ public class BattleSystem : MonoBehaviour {
 
 	public void EndBattleAllPlayerDead () {
 		//UnityEditor.EditorApplication.isPlaying = false;
+
+		attackMode = false;
+
 		SceneManager.LoadScene ("Map");
 	}
 
 	public void EndBattleAllMonsterDead () {
+
+		attackMode = false;
+
 		if (SceneManager.GetActiveScene ().name != "NewCombatTest") {
 			GameObject.Find ("ExploGridPrefab").GetComponent<Explo_FightRoom> ().CleanFinishedFightRoom ();
 		} else {
