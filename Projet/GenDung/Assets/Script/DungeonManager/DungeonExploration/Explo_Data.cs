@@ -12,13 +12,21 @@ public class Explo_Data : MonoBehaviour {
 
 	public int amountOfFightRoom;
 
-	// Use this for initialization
-	public void SoftStart () {
+	public int amountOfPlayerLeft; //pour que le montant de départ des joueurs soit toujours bien initialisé au début de chaque combat
 
+	public int roomImOn; // sended by the tile when walked to know which room i walked on
+
+	// Use this for initialization
+	public void StartEverything () {
+
+
+		//returns the amount of fight room in the dungeon.
 		amountOfFightRoom = dungeonData.amountOfFightRoomsInData;
 
 		print ("total amount of rooms : " + amountOfFightRoom);
 
+
+		//initialise the data value for the dungeon.
 		for (int i = 0; i < amountOfFightRoom; i++) {
 
 			dungeonData.RoomData.Add (new RoomData());
@@ -36,9 +44,22 @@ public class Explo_Data : MonoBehaviour {
 			}
 		}
 
+
+
+	}
+
+
+	public void SoftStart () {
+
+		StartEverything ();
+
 		//start a french linking battle system
 		ClearDataTemporaryCharacter();
-		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FreshStart ();
+
+	}
+
+	public void LaunchFightFreshStart(){
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().ResetFightStart (roomImOn);
 	}
 
 	void GetRandEnemies (int i, int dungeon)

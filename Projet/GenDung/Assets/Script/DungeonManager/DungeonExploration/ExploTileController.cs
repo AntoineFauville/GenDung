@@ -8,6 +8,8 @@ public class ExploTileController : MonoBehaviour {
 
     private int x, y, s = 99; // x et y pour la position de la tile; s pour le numéro du sort.
 
+	public int indexLocalOfFightRoom; // check for the explo data which fight room referencing this is
+
     private bool clicked = false; // vérifie si on vient de cliquer sur la tile.
     private bool checkMouse = false;
     private ExploUnitController playerOnTile;

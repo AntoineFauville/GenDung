@@ -131,6 +131,20 @@ public class ExploUnitController : MonoBehaviour {
     {
         Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].State = Explo_Tile.Explo_TileState.Discovered;
         GameObject.Find("ExploGridCanvas").transform.Find("PanelGrid/Tile_" + this.tileX + "_" + this.tileY).GetComponent<ExploTileController>().UpdateTileUI();
+
+		if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
+		{
+			switch (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type)
+			{
+			case Explo_Tile.Explo_TileType.Fight:
+				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) {
+
+					GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().roomImOn = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().indexLocalOfFightRoom;
+					GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().LaunchFightFreshStart ();
+				}
+				break;
+			}
+		}
     }
 
     public void ResetMovement()
@@ -189,6 +203,7 @@ public class ExploUnitController : MonoBehaviour {
 				{
 					yield return new WaitForSeconds(1.5f); 
 					fightRoom.LinkToRoom ();
+
 					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;
 				}
 

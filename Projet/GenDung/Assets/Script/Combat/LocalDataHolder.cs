@@ -41,14 +41,14 @@ public class LocalDataHolder : MonoBehaviour {
 
 				this.GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
 				maxHealth = this.GetComponent<LocalDataHolder> ().enemyObject.health;
+				health = maxHealth;
 			} else {
-				maxHealth = this.GetComponent<LocalDataHolder> ().characterObject.Health_PV;
+				maxHealth = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [localIndex].Health_PV;
+				health = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [localIndex].tempHealth;
 				this.GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
 				maxActionPointPlayer = this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA;
 				actionPointPlayer = maxActionPointPlayer;
 			}
-
-			health = maxHealth;
 
 			transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 
@@ -78,6 +78,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 			if (player) {
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfPlayerLeft--;
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().amountOfPlayerLeft--; //renvoie a l'explo data qu'un est mort pour l'initialization lors du deuxieme combat.
 				if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfPlayerLeft <= 0)
 					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
 

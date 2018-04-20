@@ -353,6 +353,7 @@ public class Explo_GridController : MonoBehaviour {
             fightRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
             GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
+			GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().indexLocalOfFightRoom = f;
         }
     }
 
