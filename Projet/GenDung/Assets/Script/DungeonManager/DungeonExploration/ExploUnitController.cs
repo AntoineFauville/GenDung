@@ -201,7 +201,7 @@ public class ExploUnitController : MonoBehaviour {
 
 				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) 
 				{
-					yield return new WaitForSeconds(1.5f); 
+					yield return new WaitForSeconds(0.75f); 
 					fightRoom.LinkToRoom ();
 
 					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;

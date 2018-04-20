@@ -30,6 +30,7 @@ public class BattleSystem : MonoBehaviour {
 
 	// first time you launch a battle
 	public void ResetFightStart (int roomImIn) {
+		HideShowNext (true);
 		SetupPlayers ();
 		SetupEnemies (roomImIn);
 		SetFighterIndex ();
@@ -305,6 +306,8 @@ public class BattleSystem : MonoBehaviour {
 		amountOfEnemiesLeft = amountOfEnemies;
 
 		UnOrderedFighterList.Clear();
+
+		HideShowNext (false);
 
 		for (int i = 0; i < FighterList.Count; i++) {
 			GameObject.Find ("UIBattleOrderDisplay(Clone)").SetActive (false);

@@ -59,12 +59,7 @@ public class Explo_FightRoom : MonoBehaviour
 
     public void LinkToRoom()
     {
-        // Check if already done.
-        // ! 
         combatCanvas.GetComponent<Canvas>().sortingOrder = 79;// Pass the fightCanvas 
-        // Gérer Effet Pop-Up
-        // Combat Module Loading
-        // End of Combat 
     }
 
     public void SetFightRoom()
@@ -98,8 +93,9 @@ public class Explo_FightRoom : MonoBehaviour
 		battleSystemUI.GetComponent<Canvas>().sortingOrder -= 40;
 
 		combatUI.GetComponent<Canvas>().sortingOrder -= 40;
-        combatCanvas.GetComponent<Canvas>().sortingOrder = 0;
         combatRoom.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder -= 40;
+		combatCanvas.GetComponent<Canvas>().sortingOrder = 39;
+
 
         exploUnit.GetComponent<Canvas>().sortingOrder += 40;
         exploGrid.GetComponent<Canvas>().sortingOrder += 40;
