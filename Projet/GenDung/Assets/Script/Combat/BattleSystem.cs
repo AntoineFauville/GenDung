@@ -72,6 +72,10 @@ public class BattleSystem : MonoBehaviour {
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().player = true;
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().localIndex = i;
+
+				if (GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
+					GameObject.Find (playerString + i).transform.Find("PersoBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
+				}
 			}
 
 			IsItFirstFight = true;
@@ -91,6 +95,10 @@ public class BattleSystem : MonoBehaviour {
 
 				//if he died well update him.
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().dead = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [i].died;
+
+				if (GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
+					GameObject.Find (playerString + i).transform.Find("PersoBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
+				}
 			}
 		}
 	}
@@ -144,6 +152,10 @@ public class BattleSystem : MonoBehaviour {
 			}
 
 			GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().localIndex = i;
+
+			if (GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject.hasAnimation) {
+				GameObject.Find (enemyString + i).transform.Find("EnemyBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject.enemyAnimator;
+			}
 		}
 	}
 
@@ -180,7 +192,7 @@ public class BattleSystem : MonoBehaviour {
 		GameObject.Find ("Pastille").GetComponent<Image> ().sprite = arrow;
 
 		Vector3 actualPosition = FighterList [actuallyPlaying].GetComponent<RectTransform> ().position;
-		GameObject.Find ("Pastille").GetComponent<RectTransform>().position = actualPosition + new Vector3(0,32,0);
+		GameObject.Find ("Pastille").GetComponent<RectTransform>().position = actualPosition + new Vector3(-50,0,0);
 
 		for (int i = 0; i < FighterList.Count; i++) {
 			FighterList [i].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (false);
@@ -219,20 +231,20 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetupFighterPanel () {
 		if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-			SetSpellLinks ();
+			SetSpellLinks (true);
 		}
 	}
 
 	void UpdateFighterPanel () {
 		if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder> ().player){
 			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().sizeDelta.x,0,0);
-			SetSpellLinks ();
+			SetSpellLinks (true);
 		} else {
 			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (-GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().sizeDelta.x,0,0);
 		}
 	}
 
-	void SetSpellLinks () {
+	void SetSpellLinks (bool onOrOff) {
 		
 		for (int i = 0; i < 3; i++)
         {
@@ -240,7 +252,7 @@ public class BattleSystem : MonoBehaviour {
 			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().spellObject = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList[i];
 
 
-			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().StartPersoUpdate ();
+			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().StartPersoUpdate (onOrOff);
 		}
 	}
 
@@ -256,9 +268,8 @@ public class BattleSystem : MonoBehaviour {
 	void EnemyTurn () {
 		//attack enemy
 		if (amountOfPlayerLeft > 0) {
-			checkEnemyToAttack ();
 
-			FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().looseLife (FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().enemyObject.atk);
+			EnemyAttack ();
 
 			//hide next button
 			HideShowNext(false);
@@ -270,6 +281,12 @@ public class BattleSystem : MonoBehaviour {
 		{
 			EndBattleAllPlayerDead ();
 		}
+	}
+
+	void EnemyAttack () {
+		checkEnemyToAttack ();
+
+		StartCoroutine(waitForEnemyAttack());
 	}
 
 	void HideShowNext (bool hide){
@@ -309,14 +326,17 @@ public class BattleSystem : MonoBehaviour {
 
 		HideShowNext (false);
 
-		for (int i = 0; i < FighterList.Count; i++) {
-			GameObject.Find ("UIBattleOrderDisplay(Clone)").SetActive (false);
+		SetSpellLinks (false);
 
-			if (FighterList [i].GetComponent<LocalDataHolder> ().player == false) {
-				FighterList [i].GetComponent<LocalDataHolder> ().dead = false;
-				FighterList [i].gameObject.GetComponent<Button> ().enabled = true;
-				FighterList [i].gameObject.GetComponent<Image> ().color = Color.white;
-			}
+		for (int i = 0; i < FighterList.Count; i++) {
+
+			GameObject.Find ("UIBattleOrderDisplay(Clone)").SetActive (false);
+		}
+		//clean enemy and reset them
+		for (int i = 0; i < 4; i++) {
+			GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().dead = false;
+			GameObject.Find (enemyString + i).transform.Find("EnemyBackground").GetComponent<Button> ().enabled = true;
+			GameObject.Find (enemyString + i).transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.white;
 		}
 	}
 
@@ -325,12 +345,35 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	IEnumerator slowEnemyTurn(){
-		yield return new WaitForSeconds (0.8f);
+		yield return new WaitForSeconds (1.5f);
 		NextTurn();
 	}
 
+	IEnumerator waitForEnemyAttack(){
+		FighterList [actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator> ().Play ("attackMonster");
+
+		yield return new WaitForSeconds (1.0f);
+
+		if (FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().player) {
+			if (FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
+				FighterList [rndAttackEnemy].transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
+			}
+		}
+
+		yield return new WaitForSeconds (0.3f);
+
+		if (FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().player) {
+			if (FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
+				FighterList [rndAttackEnemy].transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
+			}
+		}
+
+		FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().looseLife (FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().enemyObject.atk);
+
+	}
+
 	IEnumerator waitForStarting(){
-		yield return new WaitForSeconds (0.5f);
+		yield return new WaitForSeconds (1f);
 
 		UpdateFighterPanel();
 

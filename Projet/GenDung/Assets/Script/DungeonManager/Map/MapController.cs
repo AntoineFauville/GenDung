@@ -159,6 +159,8 @@ public class MapController : MonoBehaviour {
 
     public void UnlockNextDungeon()
     {
+		dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
+
         if (dungeonLoader.dungeonUnlockedIndex < dungeonOnTheMap.Length)
         {
             dungeonLoader.dungeonUnlockedIndex++;
@@ -167,6 +169,8 @@ public class MapController : MonoBehaviour {
 
     public void DecreaseUnlockDungeonIndex()
     {
+		dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
+
         if (dungeonLoader.dungeonUnlockedIndex > 1)
         {
             dungeonLoader.dungeonUnlockedIndex--;
@@ -175,6 +179,8 @@ public class MapController : MonoBehaviour {
 
     public void ResetUnlockDungeonIndex()
     {
+		dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
+
         dungeonLoader.dungeonUnlockedIndex = 1;
     }
 

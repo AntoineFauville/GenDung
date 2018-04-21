@@ -12,6 +12,8 @@ public class EnemyObject : ScriptableObject {
     public RuntimeAnimatorController enemyAnimator;
     public SpellRangeObject enemyRange;
 
+	public bool hasAnimation;
+
     public int 
         health,
         pa,

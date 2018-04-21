@@ -29,8 +29,8 @@ public class SpellPropreties : MonoBehaviour {
 		AttackMode (false);
 	}
 
-	public void StartPersoUpdate () {
-		StartCoroutine (UpdateSpells ());
+	public void StartPersoUpdate (bool onOrOff) {
+		StartCoroutine (UpdateSpells (onOrOff));
 	}
 
 	void InteractableSpell (bool interact){
@@ -43,22 +43,26 @@ public class SpellPropreties : MonoBehaviour {
 
 	}
 
-	IEnumerator UpdateSpells () {
+	IEnumerator UpdateSpells (bool onOrOff) {
 		yield return new WaitForSeconds (0.1f);
 
-		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().player
-			&& GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer > 0) {
-			InteractableSpell (true);
-		} else {
-			InteractableSpell (false);
-		}
-
-		if (spellObject != null) {
-			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer < spellObject.spellCost) {
+		if (onOrOff) {
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().player
+			    && GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer > 0) {
+				InteractableSpell (true);
+			} else {
 				InteractableSpell (false);
 			}
-		}
 
-		StartCoroutine (UpdateSpells ());
+			if (spellObject != null) {
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer < spellObject.spellCost) {
+					InteractableSpell (false);
+				}
+			}
+			StartCoroutine (UpdateSpells (true));
+		} else {
+			StartCoroutine (UpdateSpells ());
+		}
+			
 	}
 }
