@@ -64,8 +64,8 @@ public class Explo_FightRoom : MonoBehaviour
 
     public void SetFightRoom()
     {
-		GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
-		GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
+		//GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
+		//GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
 
 		logT.AddLogLine ("Let the fight begin");
 

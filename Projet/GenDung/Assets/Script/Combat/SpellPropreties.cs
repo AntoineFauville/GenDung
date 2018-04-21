@@ -61,7 +61,7 @@ public class SpellPropreties : MonoBehaviour {
 			}
 			StartCoroutine (UpdateSpells (true));
 		} else {
-			StartCoroutine (UpdateSpells ());
+			StartCoroutine (UpdateSpells (false));
 		}
 			
 	}

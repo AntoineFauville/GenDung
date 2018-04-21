@@ -192,7 +192,7 @@ public class BattleSystem : MonoBehaviour {
 		GameObject.Find ("Pastille").GetComponent<Image> ().sprite = arrow;
 
 		Vector3 actualPosition = FighterList [actuallyPlaying].GetComponent<RectTransform> ().position;
-		GameObject.Find ("Pastille").GetComponent<RectTransform>().position = actualPosition + new Vector3(-50,0,0);
+		GameObject.Find ("Pastille").GetComponent<RectTransform>().position = actualPosition + new Vector3(0,-50,0);
 
 		for (int i = 0; i < FighterList.Count; i++) {
 			FighterList [i].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (false);
@@ -237,10 +237,10 @@ public class BattleSystem : MonoBehaviour {
 
 	void UpdateFighterPanel () {
 		if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder> ().player){
-			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().sizeDelta.x,0,0);
+			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (350,-200,0);
 			SetSpellLinks (true);
 		} else {
-			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (-GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().sizeDelta.x,0,0);
+			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (0,-500,0);
 		}
 	}
 
