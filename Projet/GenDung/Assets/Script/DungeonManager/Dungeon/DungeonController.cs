@@ -50,7 +50,7 @@ public class DungeonController : MonoBehaviour {
         //GameObject.Find("ActualPlayerImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ICON;
 
         // For Loop for multiple Characters (Stats links)
-        if (dungeonLoader.InstantiatedCombatModule)
+        /*if (dungeonLoader.InstantiatedCombatModule)
         {
             if (GameObject.Find("CombatGridPrefab(Clone)").GetComponent<PreCombatController>().CombatStarted)
             {
@@ -60,10 +60,10 @@ public class DungeonController : MonoBehaviour {
         }
         else
         {
-//            GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
-//            GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
-//            GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
-        }
+           GameObject.Find("DisplayActualPlayerPV").GetComponent<Text>().text = "PV : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].Health_PV.ToString();
+           GameObject.Find("DisplayActualPlayerPA").GetComponent<Text>().text = "PA : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].ActionPoints_PA.ToString();
+            GameObject.Find("DisplayActualPlayerPM").GetComponent<Text>().text = "PM : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[actualPlayer].MovementPoints_PM.ToString();
+        }*/
 
         //permet de charger la salle room
         LoadRoom ();
@@ -107,7 +107,7 @@ public class DungeonController : MonoBehaviour {
         }
     }
 
-    public void GoDeeperInTheDungeon()
+    /*public void GoDeeperInTheDungeon()
     {
         if (!loadOnce3)
         {
@@ -170,6 +170,7 @@ public class DungeonController : MonoBehaviour {
             }
         }
     }
+*/
 
     //charge la porte suivante et ses données
     // With new Dungeon Map Sytem, Doors will diseappear.
@@ -292,12 +293,12 @@ public class DungeonController : MonoBehaviour {
         }
     }
     */
-
+	/*
     public void UnlockRoom()
     {
         roomIsLocked = false;
         GameObject.FindGameObjectWithTag("canvasInDungeon").SetActive(false);
-    }
+    }*/
 
 	/*
     public void AddRewards()
@@ -351,21 +352,21 @@ public class DungeonController : MonoBehaviour {
     }
 	*/
 
-    //attend que la salle soit bien chargée
+    //attend que la salle soit bien chargée/*
     public IEnumerator LoadWaitRoom()
     {
         yield return new WaitForSeconds(0.03f);
         loadOnceDoor = false;
     }
 
-    //coroutine qui attend pour ne pas spammer le bouton de porte
-    public IEnumerator WaitLagForClicking()
+    //coroutine qui attend pour ne pas spammer le bouton de porte*/
+    /*public IEnumerator WaitLagForClicking()
     {
         yield return new WaitForSeconds(0.03f);
         loadOnce3 = false;
-    }
+    }*/
 
-    /* Accessors Method */
+    /* Accessors Method *//*
     public static DungeonController Instance
     {
         get
@@ -387,5 +388,5 @@ public class DungeonController : MonoBehaviour {
         {
             roomIsLocked = value;
         }
-    }
+    }*/
 }

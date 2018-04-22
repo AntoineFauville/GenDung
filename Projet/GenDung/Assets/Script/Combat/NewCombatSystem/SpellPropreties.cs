@@ -13,19 +13,34 @@ public class SpellPropreties : MonoBehaviour {
 		//let only interactable object (monsters, or player if heal)
 		AttackMode (true);
 
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject = spellObject;
+
 		//activate for all the enemies the pastille to show where you can click
 		for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) 
 		{
-			if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) 
-			{
-				if(!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().dead)
-				{
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellType == SpellObject.SpellType.Enemy) {
+				if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().dead) {
+						//you can see where you click on the enemies
+						GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+					}
 				}
+			} 
+			else if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellType == SpellObject.SpellType.Ally) 
+			{
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().dead) {
+						//you can see where you click on the allies
+						//GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+					}
+				}
+			} 
+			else if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellType == SpellObject.SpellType.Self) 
+			{
+				//you can see where you click on yourself
+				//GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
 			}
 		}
-
-		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject = spellObject;
 	}
 
 	void AttackMode (bool attackMod){
@@ -39,6 +54,13 @@ public class SpellPropreties : MonoBehaviour {
 
 	public void clickAway(){
 		AttackMode (false);
+
+		//make sure for the enemies to not show if they are not dead the fact that you can click on them
+		for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) {
+			if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) {
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = false;
+			}
+		}
 	}
 
 	public void StartPersoUpdate (bool onOrOff) {

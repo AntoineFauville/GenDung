@@ -378,7 +378,7 @@ public class BattleSystem : MonoBehaviour {
 			}
 		}
 
-		FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().looseLife (FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().enemyObject.atk);
+		FighterList [rndAttackEnemy].GetComponent<LocalDataHolder> ().looseLife (-FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().enemyObject.atk);
 
 	}
 

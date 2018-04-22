@@ -15,7 +15,7 @@ public class SpellObject : ScriptableObject {
 
     public float SpellCastAnimationTime = 1;
 
-    public enum SpellType { CaC, Distance, Self };
+    public enum SpellType { Enemy, Ally, Self };
     public SpellType spellType;
 
     public GameObject spellPrefab;

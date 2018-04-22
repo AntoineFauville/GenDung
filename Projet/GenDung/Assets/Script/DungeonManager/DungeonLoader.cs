@@ -203,7 +203,7 @@ public class DungeonLoader : MonoBehaviour {
             //previousScene = "";
 
             //réinitialise les données
-            DungeonController.Instance.ResetBoolDungeon();
+           // DungeonController.Instance.ResetBoolDungeon();
 
             MapController.Instance.Loadbutton = false; // Map Controller
 			loadbutton2 = false;

@@ -38,7 +38,6 @@ public class LocalDataHolder : MonoBehaviour {
 			
 			if(!player){
 				this.gameObject.transform.SetParent(GameObject.Find("EnemyPanelPlacement").transform);
-
 				this.transform.Find("EnemyBackground").GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
 				maxHealth = this.GetComponent<LocalDataHolder> ().enemyObject.health;
 				health = maxHealth;
@@ -46,6 +45,8 @@ public class LocalDataHolder : MonoBehaviour {
 				maxHealth = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [localIndex].Health_PV;
 				health = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [localIndex].tempHealth;
 				this.transform.Find("PersoBackground").GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
+				this.transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, 0);
+
 				maxActionPointPlayer = this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA;
 				actionPointPlayer = maxActionPointPlayer;
 			}
@@ -60,7 +61,7 @@ public class LocalDataHolder : MonoBehaviour {
     {
 		if(health > 0)
         {
-			health -= pv;
+			health += pv;
 		}
 
 		if (health <= 0) {
@@ -132,19 +133,45 @@ public class LocalDataHolder : MonoBehaviour {
 	}
 
 	public void AttackEnemy(){
-		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().attackMode) {
-			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer > 0) {
-				Damage ();
-			} else {
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().attackMode = false;
-			}
-
-			//make sure for the enemies to not show if they are not dead the fact that you can click on them
-			for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) 
+		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().attackMode) 
+		{
+			if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [fighterIndex].GetComponent<LocalDataHolder> ().player) 
 			{
-				if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) 
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellType == SpellObject.SpellType.Enemy) 
 				{
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = false;
+					if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer > 0) {
+						Damage ();
+					} else {
+						GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().attackMode = false;
+					}
+
+					//make sure for the enemies to not show if they are not dead the fact that you can click on them
+					for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) {
+						if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = false;
+						}
+					}
+				}
+			} 
+			else 
+			{
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellType == SpellObject.SpellType.Ally) 
+				{
+					if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer > 0) {
+						//do something to ally
+					} else {
+						GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().attackMode = false;
+					}
+				} 
+				else if(GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellType == SpellObject.SpellType.Self)
+				{
+					if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().fighterIndex == fighterIndex) {
+						if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer > 0) {
+							SelfHeal ();
+						} else {
+							GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().attackMode = false;
+						}
+					}
 				}
 			}
 		} 
@@ -160,6 +187,13 @@ public class LocalDataHolder : MonoBehaviour {
 		StartCoroutine (waitForAnimToProc());
 	}
 
+	void SelfHeal(){
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList[GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder>().actionPointPlayer -= GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellCost;
+	
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellAnimator.ToString());
+	
+		StartCoroutine (waitForSelfEffect());
+	}
 
 	void AddEnemyKilled(EnemyObject enemy){
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().EnemyCalculEndDungeon (enemy);
@@ -174,6 +208,21 @@ public class LocalDataHolder : MonoBehaviour {
 
 		this.transform.Find("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 
-		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList[fighterIndex].GetComponent<LocalDataHolder> ().looseLife (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellDamage);
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList[fighterIndex].GetComponent<LocalDataHolder> ().looseLife (-GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellDamage);
+	}
+
+	IEnumerator waitForSelfEffect() {
+
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, 1);
+
+		yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime);
+
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList[GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellDamage);
+
+		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, 0);
+
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
 	}
 }
