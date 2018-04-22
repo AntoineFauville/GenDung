@@ -13,6 +13,18 @@ public class SpellPropreties : MonoBehaviour {
 		//let only interactable object (monsters, or player if heal)
 		AttackMode (true);
 
+		//activate for all the enemies the pastille to show where you can click
+		for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) 
+		{
+			if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) 
+			{
+				if(!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().dead)
+				{
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+				}
+			}
+		}
+
 		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject = spellObject;
 	}
 

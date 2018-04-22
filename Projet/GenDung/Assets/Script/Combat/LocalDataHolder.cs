@@ -138,6 +138,15 @@ public class LocalDataHolder : MonoBehaviour {
 			} else {
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().attackMode = false;
 			}
+
+			//make sure for the enemies to not show if they are not dead the fact that you can click on them
+			for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) 
+			{
+				if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) 
+				{
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = false;
+				}
+			}
 		} 
 	}
 

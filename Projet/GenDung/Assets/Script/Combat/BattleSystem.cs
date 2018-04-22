@@ -180,6 +180,15 @@ public class BattleSystem : MonoBehaviour {
 			GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().Initialize();
 			GameObject.Find	(playerString + i).GetComponent<LocalDataHolder> ().Initialize();
 		}
+
+		//make sure for the enemies to not show if they are not dead the fact that you can click on them
+		for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) 
+		{
+			if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) 
+			{
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = false;
+			}
+		}
 	}
 
 	void SetupFirstTurnAsEnemy () {
@@ -191,8 +200,9 @@ public class BattleSystem : MonoBehaviour {
 
 		GameObject.Find ("Pastille").GetComponent<Image> ().sprite = arrow;
 
-		Vector3 actualPosition = FighterList [actuallyPlaying].GetComponent<RectTransform> ().position;
-		GameObject.Find ("Pastille").GetComponent<RectTransform>().position = actualPosition + new Vector3(0,-50,0);
+		Vector3 actualPosition = new Vector3 (0,0,0);
+		GameObject.Find ("Pastille").GetComponent<RectTransform> ().SetParent (FighterList [actuallyPlaying].transform.Find("Shadow"));
+		GameObject.Find ("Pastille").GetComponent<RectTransform> ().localPosition = actualPosition;
 
 		for (int i = 0; i < FighterList.Count; i++) {
 			FighterList [i].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (false);
