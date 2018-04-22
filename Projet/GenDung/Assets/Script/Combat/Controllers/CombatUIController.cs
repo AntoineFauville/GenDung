@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CombatUIController : MonoBehaviour {
-
+	/*
     private static CombatUIController instance;
 
     private Button btnStartGame, btnSpell1, btnSpell2, btnSpell3, btnNextTurn;
@@ -26,11 +26,11 @@ public class CombatUIController : MonoBehaviour {
         linkButtons();
         SetButtonsActions();
 
-        /* Get Specific Sprite from Multiple Sprites */
+        /* Get Specific Sprite from Multiple Sprites *//*
         Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/IconeBearClaw");
         defaultIcon = sprites[4];
         /**/
-
+	/*
         SetStartVisual();
 	}
 
@@ -156,5 +156,5 @@ public class CombatUIController : MonoBehaviour {
         {
             instance = value;
         }
-    }
+    }*/
 }

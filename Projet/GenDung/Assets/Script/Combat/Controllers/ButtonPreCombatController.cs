@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ButtonPreCombatController : MonoBehaviour {
 
-    public void SendIndex(int index)
-    {
-        GameObject.Find("CombatGridPrefab(Clone)").GetComponent<PreCombatController>().SelectionSwitch(index);
-    }
+//    public void SendIndex(int index)
+//    {
+//        GameObject.Find("CombatGridPrefab(Clone)").GetComponent<PreCombatController>().SelectionSwitch(index);
+//    }
 }
