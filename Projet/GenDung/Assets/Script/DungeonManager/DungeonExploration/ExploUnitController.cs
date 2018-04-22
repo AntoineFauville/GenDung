@@ -190,7 +190,7 @@ public class ExploUnitController : MonoBehaviour {
 
     public IEnumerator WaitForFlipAnim()
 	{
-		yield return new WaitForSecondsRealtime(1f); // 0.3f is perfect for waiting between movement.
+		yield return new WaitForSecondsRealtime(1f); 
 
 		if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
 		{

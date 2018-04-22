@@ -59,11 +59,33 @@ public class Explo_FightRoom : MonoBehaviour
 
     public void LinkToRoom()
     {
+		print ("heyheyhey");
+
         combatCanvas.GetComponent<Canvas>().sortingOrder = 79;// Pass the fightCanvas 
-    }
+
+		for (int i = 0; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().roomImOn].enemyInRoom.Count; i++) {
+			
+			GameObject enemyPanelUI;
+
+			enemyPanelUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI"), GameObject.Find ("FightRoomUI/PanelBackground/PanelBackground2/FightPresentationsUI/PanelEnemies").transform) as GameObject;
+
+			enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Image> ().sprite = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().roomImOn].enemyInRoom [i].enemyIcon;
+
+			if (GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().roomImOn].enemyInRoom [i].hasAnimation) 
+			{
+				enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().roomImOn].enemyInRoom [i].enemyAnimator;
+			}
+		}
+	}
 
     public void SetFightRoom()
     {
+
+		for (int i = 0; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().roomImOn].enemyInRoom.Count; i++) {
+
+			GameObject.Find ("EnemiesPanelUI(Clone)").SetActive (false);
+		}
+
 		//GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
 		//GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
 

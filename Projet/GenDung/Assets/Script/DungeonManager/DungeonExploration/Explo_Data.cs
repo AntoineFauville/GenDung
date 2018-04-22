@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Explo_Data : MonoBehaviour {
 
@@ -43,9 +44,6 @@ public class Explo_Data : MonoBehaviour {
 				print ("room " + i + " and contains the enemy : " + GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand]);
 			}
 		}
-
-
-
 	}
 
 
@@ -83,5 +81,20 @@ public class Explo_Data : MonoBehaviour {
 		for (int i = 0; i < 4; i++) {
 			dungeonData.characterObject [i].died = false;
 		}
+	}
+
+	public void EnemyCalculEndDungeon(EnemyObject enemy){
+		
+		GameObject enemyPanelUI;
+
+		enemyPanelUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI"), GameObject.Find ("CanvasEndExplo/PanelEnemiesEnd").transform) as GameObject;
+
+		enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Image> ().sprite = enemy.enemyIcon;
+
+		if (enemy.hasAnimation) {
+			enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Animator> ().runtimeAnimatorController = enemy.enemyAnimator;
+		}
+
+		ModifyGold (enemy.enemyGoldValue);
 	}
 }

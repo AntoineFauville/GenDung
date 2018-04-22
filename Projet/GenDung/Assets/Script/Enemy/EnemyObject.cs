@@ -20,4 +20,6 @@ public class EnemyObject : ScriptableObject {
         pm,
         atk,
         initiative;
+
+	public int enemyGoldValue;
 }

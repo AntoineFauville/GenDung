@@ -87,6 +87,9 @@ public class LocalDataHolder : MonoBehaviour {
 					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
 
 			} else {
+				
+				AddEnemyKilled (enemyObject);
+
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfEnemiesLeft--;
 				if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfEnemiesLeft <= 0)
 					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllMonsterDead();
@@ -146,6 +149,11 @@ public class LocalDataHolder : MonoBehaviour {
 		GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellAnimator.ToString());
 
 		StartCoroutine (waitForAnimToProc());
+	}
+
+
+	void AddEnemyKilled(EnemyObject enemy){
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().EnemyCalculEndDungeon (enemy);
 	}
 
 	IEnumerator waitForAnimToProc() {
