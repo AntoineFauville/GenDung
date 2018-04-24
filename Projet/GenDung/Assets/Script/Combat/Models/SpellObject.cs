@@ -1,29 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Spell", menuName = "SpellRelated/Spell", order =1)]
 public class SpellObject : ScriptableObject {
+    
+    [Header("Generals")]
+    [Space(5)]
 
     public string spellName = "New Spell";
-
     public int spellID;
 
     public Sprite spellIcon;
-
     public SpellRangeObject range;
 
-    public float SpellCastAnimationTime = 1;
+    public int spellCost = 1;
+    public int spellDamage = 1;
 
-    public enum SpellType { Enemy, Ally, Self };
+    public enum SpellType { Enemy, Ally, Self }; //to define who you can click on to activate the spell
     public SpellType spellType;
-
-    public GameObject spellPrefab;
-
-    public enum SpellAnimator { Attack_1, Attack_2 , Attack_3 };
+    
+    public enum SpellAnimator { Attack_1, Attack_2 , Attack_3 }; //launch player animation
     public SpellAnimator spellAnimator;
 
-    public int spellCost = 1;
+    public float SpellCastAnimationTime = 1; //time of casting player animation
+    
+    public enum SpellTargetType { EnemySingle, EnemyAll, PlayerSingle, PlayerAll }; // to know who it is affecting
+    public SpellTargetType spellTargetType;
 
-	public int spellDamage = 1;
+    public GameObject spellPrefab; // extra effect on the mob
+    
+    public enum SpellLogicType { Damage, Heal, Buff, Debuff }; // to how it affect the stats
+    public SpellLogicType spellLogicType;
+    
+    public enum SpellOccurenceType { One_Turn, Two_Turn, Three_Turn }; // to know the occurence
+    public SpellOccurenceType spellOccurenceType;
+    
+    // to what's the extra effect of the spell
+    public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced }; 
+    public SpellTargetFeedbackAnimationType spellTargetFeedbackAnimationType;
 }
