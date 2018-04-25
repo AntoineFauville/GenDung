@@ -55,6 +55,18 @@ public class Explo_Tile
         }
     }
 
+    public Explo_Room Room
+    {
+        get
+        {
+            return room;
+        }
+        set
+        {
+            room = value;
+        }
+    }
+
     public Explo_TileType Type
     {
         get
