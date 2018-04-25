@@ -8,4 +8,6 @@ public class TempCharacter : ScriptableObject {
 	public float tempHealth;
 
 	public bool died;
+
+    public List<PlayerStatus> playerStatus = new List<PlayerStatus>();
 }
