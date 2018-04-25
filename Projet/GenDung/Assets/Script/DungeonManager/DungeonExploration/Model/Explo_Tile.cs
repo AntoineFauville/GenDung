@@ -13,11 +13,12 @@ public class Explo_Tile
         Discovered, Undiscovered, ToBeOrNotToBeDiscovered
     }
 
-    Explo_TileType type = Explo_TileType.Wall;
-    Explo_TileState state = Explo_TileState.Undiscovered;
+    Explo_TileType type = Explo_TileType.Wall; // Default Type of Tile is Wall.
+    Explo_TileState state = Explo_TileState.Undiscovered; // Default State of Tile is Undiscovered.
     public int x;
     public int y;
     Explo_Grid grid;
+    Explo_Room room;
 
     public Explo_Tile(Explo_Grid _dungeon, int _x, int _y)
     {
