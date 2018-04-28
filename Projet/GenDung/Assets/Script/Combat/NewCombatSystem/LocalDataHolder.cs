@@ -25,6 +25,8 @@ public class LocalDataHolder : MonoBehaviour {
 
 	public bool AttackContinue;
 
+	private Status status;
+
 	// Use this for initialization
 	public void Initialize () {
 
@@ -228,10 +230,19 @@ public class LocalDataHolder : MonoBehaviour {
 	}
 
 	void AssignEffect(int index){
+
+		status = new Status ();
+
+		status.statusName = GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ().AllStatus [index].statusName;
+		status.statusDamage = GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ().AllStatus [index].statusDamage;
+		status.statusTurnLeft = (int)GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType;
+
+		print (status.statusName + " " + status.statusDamage + " " + " " + status.statusTurnLeft);
+
 		if (player) {
-			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex].playerStatus.Add (GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ().AllStatus [index]);
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex].playerStatus.Add (status);
 		} else {
-			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].playerStatus.Add (GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ().AllStatus [index]);
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].playerStatus.Add (status);
 		}
 	}
 
@@ -240,7 +251,12 @@ public class LocalDataHolder : MonoBehaviour {
         {
 			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Healing");
 
-			AssignEffect (0);
+			//DOTS
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+			} else {
+				AssignEffect (0); //0 = healing
+			}
 
         } else if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect)
         {
@@ -248,7 +264,13 @@ public class LocalDataHolder : MonoBehaviour {
             GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Poisonned");
             //GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
 
-			AssignEffect (1);
+			//DOTS
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+				
+			} else {
+				AssignEffect (1); //1 = poisoning
+			}
+
         }
         else if (!playEffect) {
             GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");

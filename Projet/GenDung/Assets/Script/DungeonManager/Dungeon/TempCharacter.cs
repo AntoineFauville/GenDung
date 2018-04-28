@@ -9,5 +9,5 @@ public class TempCharacter : ScriptableObject {
 
 	public bool died;
 
-    public List<PlayerStatus> playerStatus = new List<PlayerStatus>();
+	public List<Status> playerStatus = new List<Status>();
 }

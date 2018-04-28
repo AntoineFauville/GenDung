@@ -29,7 +29,7 @@ public class BattleSystem : MonoBehaviour {
 	public bool attackMode;
 	public bool effectEnded;
 
-	public PlayerStatus PS;
+	public Status PS;
 
 	// first time you launch a battle
 	public void ResetFightStart (int roomImIn) {
@@ -245,15 +245,18 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	void ManageStatusEffects (){
-		int max;
+		
 		//define all the amount of effect for the player
+		int maxEffects;
+		//check if it's a player
 		if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-			max = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.Count;
+			//max
+			maxEffects = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.Count;
 		} else {
-			max = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.Count;
+			maxEffects = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.Count;
 		}
-		if (max != 0) {
-			StartCoroutine (waitForEffectEndedStartOfTurn (max));
+		if (maxEffects != 0) {
+			StartCoroutine (waitForEffectEndedStartOfTurn (maxEffects));
 		}
 	}
 
@@ -414,38 +417,71 @@ public class BattleSystem : MonoBehaviour {
 		SetArrow();
 	}
 
-	IEnumerator waitForEffectEndedStartOfTurn(int max){
+	IEnumerator waitForEffectEndedStartOfTurn(int index){
 
+		//get the status from the player, the one we'll be working with so far.
 		if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player){
-			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus[max-1];
+			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus[index-1];
 		} else {
-			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex+4].playerStatus[max-1];
+			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex+4].playerStatus[index-1];
 		}
 
-		if(PS.spellTargetFeedbackAnimationType == PlayerStatus.SpellTargetFeedbackTempType.Poisonned){
-			//play animation
-			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Poisonned");
-			GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+		//now that we have a status lets check some stuff out.
+		//1. how much turn left my status does have ?
+		if(PS.statusTurnLeft > 0){
 
-			if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player){
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus.RemoveAt(max-1);
-			} else {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex+4].playerStatus.RemoveAt(max-1);
-			}
+			//check from what type of status it is
+			if(PS.statusType == Status.StatusType.Poisonned)
+			{
+				//2.play animation
+				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Poisonned");
 
-		} else if(PS.spellTargetFeedbackAnimationType == PlayerStatus.SpellTargetFeedbackTempType.Healed){
-			//play animation
-			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Healing");
-			GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
+				//do the reaction for the damage for the fighter
+				yield return new WaitForSeconds (0.3f);
 
-			if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player){
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus.RemoveAt(max-1);
-			} else {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex+4].playerStatus.RemoveAt(max-1);
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
+				} else {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("DamageMonster");
+				}
+
+				yield return new WaitForSeconds (0.3f);
+
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
+				} else {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("IdleMonster");
+				}
+
+				//do the damages to the one affected by the effect, which is the guy playing in this case.
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				PS.statusTurnLeft--;
+
+				//check from what type of status it is
+			} 
+			else if(PS.statusType == Status.StatusType.Healed)
+			{
+				//play animation
+				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Healing");
+
+				yield return new WaitForSeconds (0.3f);
+
+				//do the damages to the one affected by the effect, which is the guy playing in this case.
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
+				PS.statusTurnLeft--;
 			}
 		}
 
-		yield return new WaitForSeconds (0.7f);
+		//remove the effect if this one is expired
+		if (PS.statusTurnLeft <= 0) {
+			if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.RemoveAt (index - 1);
+			} else {
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.RemoveAt (index - 1);
+			}
+		}
+
+		yield return new WaitForSeconds (0.3f);
 
 		//wait for effect to attack player
 		GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
@@ -453,13 +489,13 @@ public class BattleSystem : MonoBehaviour {
 
 
 		//reduce maximum of effect to deal with start of the turn.
-		max -= 1;
+		index -= 1;
 
 		//do damages or heal depending on dot
 
 		//redo for the next dot that the player has
-		if (max > 0) {
-				StartCoroutine (waitForEffectEndedStartOfTurn (max));
+		if (index > 0) {
+			StartCoroutine (waitForEffectEndedStartOfTurn (index));
 		}
 	}
 }
