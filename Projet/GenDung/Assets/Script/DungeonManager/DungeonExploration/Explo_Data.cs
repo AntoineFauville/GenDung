@@ -79,7 +79,7 @@ public class Explo_Data : MonoBehaviour {
 
 	void ClearDataTemporaryCharacter(){
 		for (int i = 0; i < 4; i++) {
-			dungeonData.characterObject [i].died = false;
+			dungeonData.TempFighterObject [i].died = false;
 		}
 	}
 

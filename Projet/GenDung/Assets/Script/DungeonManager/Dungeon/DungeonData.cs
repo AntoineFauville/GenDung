@@ -9,6 +9,6 @@ public class DungeonData : ScriptableObject {
 
 	public int amountOfFightRoomsInData;
 
-	public List<TempCharacter> characterObject = new List<TempCharacter>();
+	public List<TempCharacter> TempFighterObject = new List<TempCharacter>();
 
 }
