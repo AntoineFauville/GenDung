@@ -38,6 +38,6 @@ public class SpellObject : ScriptableObject {
     public SpellOccurenceType spellOccurenceType;
     
     // to what's the extra effect of the spell
-    public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced }; 
+    public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike }; 
     public SpellTargetFeedbackAnimationType spellTargetFeedbackAnimationType;
 }

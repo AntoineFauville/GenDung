@@ -85,6 +85,7 @@ public class LocalDataHolder : MonoBehaviour {
 				this.transform.Find("PersoBackground").GetComponent<Button> ().enabled = false;
 				this.transform.Find("PersoBackground").GetComponent<Image> ().color = Color.gray;
 			} else {
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].died = true;
 				this.transform.Find("EnemyBackground").GetComponent<Button> ().enabled = false;
 				this.transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.gray;
 			}
@@ -245,6 +246,8 @@ public class LocalDataHolder : MonoBehaviour {
 			status.statusType = Status.StatusType.Healed;
 		} else if(index == 1) {
 			status.statusType = Status.StatusType.Poisonned;
+		}else if(index == 2) {
+			status.statusType = Status.StatusType.Spike;
 		}
 
 		if (player) {
@@ -281,7 +284,20 @@ public class LocalDataHolder : MonoBehaviour {
 				AssignEffect (1); //1 = poisoning
 			}
 
-        }
+		} else if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect)
+		{
+
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+			//GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+			//DOTS
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+			} else {
+				AssignEffect (2); //1 = poisoning
+			}
+
+		}
         else if (!playEffect) {
             GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
        }
@@ -354,7 +370,7 @@ public class LocalDataHolder : MonoBehaviour {
 			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetFeedbackAnimationType != SpellObject.SpellTargetFeedbackAnimationType.None) {
 				//wait for anim Feedback Animation on target
 				CheckExtraEffect (true);
-				yield return new WaitForSeconds (1.0f);
+				yield return new WaitForSeconds (0.8f);
 				CheckExtraEffect (false);
 			}
 		} else {

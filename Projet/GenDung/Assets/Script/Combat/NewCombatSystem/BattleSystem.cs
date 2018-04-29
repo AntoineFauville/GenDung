@@ -213,12 +213,18 @@ public class BattleSystem : MonoBehaviour {
 		FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (true);
 	}
 
+
+
 	public void NextTurn()
     {
+		HideShowNext(false);
+
 		actuallyPlaying++;
 		if (actuallyPlaying >= FighterList.Count) {
 			actuallyPlaying = 0;
 		}
+
+	
 
 		if(FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().dead)
 		{
@@ -226,26 +232,30 @@ public class BattleSystem : MonoBehaviour {
 		}
         else
         {
-            UpdateFighterPanel();
-
-            if (!FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player)
-            {
-                EnemyTurn();
-            }
-            else
-            {
-                HideShowNext(true);
-            }
-
-            resetActionPoint(actuallyPlaying);
-            SetArrow();
-
+			SetArrow();
+			resetActionPoint(actuallyPlaying);
 			ManageStatusEffects ();
+			//gere les effets et ensuite lance le reste de la fight
+			UpdateFighterPanel();
         }
 	}
 
+	void ContinueFightAfterEffect(){
+
+		if (!FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player)
+		{
+			EnemyTurn();
+		}
+		else
+		{
+			HideShowNext(true);
+		}
+	}
+
 	void ManageStatusEffects (){
-		
+
+		HideShowNext (false);
+
 		//define all the amount of effect for the player
 		int maxEffects;
 		//check if it's a player
@@ -259,6 +269,8 @@ public class BattleSystem : MonoBehaviour {
 		}
 		if (maxEffects > 0) {
 			StartCoroutine (waitForEffectEndedStartOfTurn (maxEffects));
+		}else {
+			ContinueFightAfterEffect ();
 		}
 	}
 
@@ -281,9 +293,10 @@ public class BattleSystem : MonoBehaviour {
 		
 		for (int i = 0; i < 3; i++)
         {
-			GameObject.Find ("Button_Spell_" + i).GetComponent<Image> ().sprite = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList [i].spellIcon;
-			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().spellObject = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList[i];
-
+			if (onOrOff) {
+				GameObject.Find ("Button_Spell_" + i).GetComponent<Image> ().sprite = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList [i].spellIcon;
+				GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().spellObject = FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().characterObject.SpellList [i];
+			}
 
 			GameObject.Find ("Button_Spell_" + i).GetComponent<SpellPropreties> ().StartPersoUpdate (onOrOff);
 		}
@@ -483,32 +496,72 @@ public class BattleSystem : MonoBehaviour {
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
 				PS.statusTurnLeft--;
 			}
-		}
+			else if(PS.statusType == Status.StatusType.Spike)
+			{
+				print ("i'm spanking you");
 
-		//remove the effect if this one is expired
-		if (PS.statusTurnLeft <= 0) {
-			if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.RemoveAt (index - 1);
-			} else {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.RemoveAt (index - 1);
+				//play animation
+				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+
+				//do the reaction for the damage for the fighter
+				yield return new WaitForSeconds (1.0f);
+
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
+				} else {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("DamageMonster");
+				}
+
+				yield return new WaitForSeconds (1.0f);
+
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
+				} else {
+					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("IdleMonster");
+				}
+
+				//do the damages to the one affected by the effect, which is the guy playing in this case.
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				PS.statusTurnLeft--;
 			}
 		}
 
-		yield return new WaitForSeconds (1.0f);
+		//si l'enemi ou le joueur meurt d'un effet.
+		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().health <= 0) {
+			GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_None");
+			NextTurn ();
+		} else {
 
-		//wait for effect to attack player
-		GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+			//remove the effect if this one is expired
+			if (PS.statusTurnLeft <= 0) {
+				if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.RemoveAt (index - 1);
+					print ("removed effect : " + PS.statusName);
+				} else {
+					GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.RemoveAt (index - 1);
+					print ("removed effect : " + PS.statusName);
+				}
+			}
+
+			yield return new WaitForSeconds (1.0f);
+
+			//wait for effect to attack player
+			GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_None");
 
 
 
-		//reduce maximum of effect to deal with start of the turn.
-		index -= 1;
+			//reduce maximum of effect to deal with start of the turn.
+			index -= 1;
+			print ("effect left : " + index);
 
-		//do damages or heal depending on dot
+			//do damages or heal depending on dot
 
-		//redo for the next dot that the player has
-		if (index > 0) {
-			StartCoroutine (waitForEffectEndedStartOfTurn (index));
+			//redo for the next dot that the player has
+			if (index > 0) {
+				StartCoroutine (waitForEffectEndedStartOfTurn (index));
+			} else {
+				ContinueFightAfterEffect ();
+			}
 		}
 	}
 }
