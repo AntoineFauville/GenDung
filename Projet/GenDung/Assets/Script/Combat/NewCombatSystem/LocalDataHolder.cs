@@ -239,11 +239,21 @@ public class LocalDataHolder : MonoBehaviour {
 
 		print (status.statusName + " " + status.statusDamage + " " + " " + status.statusTurnLeft);
 
+		//assign effect type
+
+		if (index == 0) {
+			status.statusType = Status.StatusType.Healed;
+		} else if(index == 1) {
+			status.statusType = Status.StatusType.Poisonned;
+		}
+
 		if (player) {
 			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex].playerStatus.Add (status);
 		} else {
 			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].playerStatus.Add (status);
 		}
+
+
 	}
 
 	void CheckExtraEffect(bool playEffect){

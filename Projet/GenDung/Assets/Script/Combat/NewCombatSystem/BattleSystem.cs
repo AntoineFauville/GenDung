@@ -252,10 +252,12 @@ public class BattleSystem : MonoBehaviour {
 		if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
 			//max
 			maxEffects = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.Count;
+			print (maxEffects);
 		} else {
 			maxEffects = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.Count;
+			print (maxEffects);
 		}
-		if (maxEffects != 0) {
+		if (maxEffects > 0) {
 			StartCoroutine (waitForEffectEndedStartOfTurn (maxEffects));
 		}
 	}
@@ -421,23 +423,32 @@ public class BattleSystem : MonoBehaviour {
 
 		//get the status from the player, the one we'll be working with so far.
 		if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player){
-			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus[index-1];
+			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus[index-1];//max = 2 so items in the list are 0 and 1.
 		} else {
 			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex+4].playerStatus[index-1];
 		}
+
+		print ("we'll be working with effect : " + PS.statusName);
+		print (PS.statusName + " has still " + PS.statusTurnLeft + " turn left");
+		print (PS.statusName + " does " + PS.statusDamage + " damage");
+		print (PS.statusName + " is of type " + PS.statusType);
 
 		//now that we have a status lets check some stuff out.
 		//1. how much turn left my status does have ?
 		if(PS.statusTurnLeft > 0){
 
+			print ("still have enought");
+
 			//check from what type of status it is
 			if(PS.statusType == Status.StatusType.Poisonned)
 			{
+				print ("i'm poisoning you");
+
 				//2.play animation
 				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Poisonned");
 
 				//do the reaction for the damage for the fighter
-				yield return new WaitForSeconds (0.3f);
+				yield return new WaitForSeconds (1.0f);
 
 				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
 					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
@@ -445,7 +456,7 @@ public class BattleSystem : MonoBehaviour {
 					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("DamageMonster");
 				}
 
-				yield return new WaitForSeconds (0.3f);
+				yield return new WaitForSeconds (1.0f);
 
 				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
 					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
@@ -461,10 +472,12 @@ public class BattleSystem : MonoBehaviour {
 			} 
 			else if(PS.statusType == Status.StatusType.Healed)
 			{
+				print ("i'm healing you");
+
 				//play animation
 				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Healing");
 
-				yield return new WaitForSeconds (0.3f);
+				yield return new WaitForSeconds (1.0f);
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
@@ -481,7 +494,7 @@ public class BattleSystem : MonoBehaviour {
 			}
 		}
 
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (1.0f);
 
 		//wait for effect to attack player
 		GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
