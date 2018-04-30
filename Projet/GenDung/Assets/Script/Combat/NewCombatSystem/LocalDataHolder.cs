@@ -259,6 +259,22 @@ public class LocalDataHolder : MonoBehaviour {
 
 	}
 
+	void CheckDuringCombatEffect(bool playEffect){
+		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Spike && playEffect) 
+		{
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+		}
+		else if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Roots && playEffect)
+		{
+
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Rooted");
+		}
+		else if (!playEffect) 
+		{
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+		}
+	}
+
 	void CheckExtraEffect(bool playEffect){
         if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect)
         {
@@ -346,7 +362,20 @@ public class LocalDataHolder : MonoBehaviour {
 		PlayerAnimationPropreties();
 
 		//Wait for anim player to finish depending on time of spell anim time
-		yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime);
+		//if it contains a reaction or a spell invocation at the enemy's place we need to instantiate or play an effect on the enemy
+		if(GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.EffectAppearingDuringPlayerAnim){
+			yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime/2);
+
+			CheckDuringCombatEffect (true);
+
+			yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime/2);
+
+			CheckDuringCombatEffect(false);
+		}
+		else
+		{
+			yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime);
+		}
 
 		//calculate the chances to hit or crit == Calculate if "missed" or "critical chance" or "regular spell effect"
 		CalculChances ();

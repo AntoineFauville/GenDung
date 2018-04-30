@@ -40,4 +40,9 @@ public class SpellObject : ScriptableObject {
     // to what's the extra effect of the spell
     public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike }; 
     public SpellTargetFeedbackAnimationType spellTargetFeedbackAnimationType;
+
+	public bool EffectAppearingDuringPlayerAnim;
+
+	public enum SpellTargetEffectAppearing { None, Spike, Roots }; 
+	public SpellTargetEffectAppearing spellTargetEffectAppearing;
 }
