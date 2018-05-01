@@ -453,28 +453,27 @@ public class BattleSystem : MonoBehaviour {
 			print ("still have enought");
 
 			//check from what type of status it is
-			if(PS.statusType == Status.StatusType.Poisonned)
-			{
+			if (PS.statusType == Status.StatusType.Poisonned) {
 				print ("i'm poisoning you");
 
 				//2.play animation
-				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Poisonned");
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_Poisonned");
 
 				//do the reaction for the damage for the fighter
 				yield return new WaitForSeconds (1.0f);
 
 				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
 				} else {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("DamageMonster");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
 				}
 
 				yield return new WaitForSeconds (1.0f);
 
 				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
 				} else {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("IdleMonster");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 				}
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
@@ -482,45 +481,44 @@ public class BattleSystem : MonoBehaviour {
 				PS.statusTurnLeft--;
 
 				//check from what type of status it is
-			} 
-			else if(PS.statusType == Status.StatusType.Healed)
-			{
+			} else if (PS.statusType == Status.StatusType.Healed) {
 				print ("i'm healing you");
 
 				//play animation
-				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Healing");
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_Healing");
 
 				yield return new WaitForSeconds (1.0f);
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
 				PS.statusTurnLeft--;
-			}
-			else if(PS.statusType == Status.StatusType.Spike)
-			{
+			} else if (PS.statusType == Status.StatusType.Spike) {
 				print ("i'm spanking you");
 
 				//play animation
-				GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_Spikey");
 
 				//do the reaction for the damage for the fighter
 				yield return new WaitForSeconds (1.0f);
 
 				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
 				} else {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("DamageMonster");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
 				}
 
 				yield return new WaitForSeconds (1.0f);
 
 				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
 				} else {
-					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[actuallyPlaying].transform.Find("EnemyBackground").GetComponent<Animator>().Play("IdleMonster");
+					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 				}
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
+				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				PS.statusTurnLeft--;
+			} else if (PS.statusType == Status.StatusType.TemporaryLifed) {
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
 				PS.statusTurnLeft--;
 			}

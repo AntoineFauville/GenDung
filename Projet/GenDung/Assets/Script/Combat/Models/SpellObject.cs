@@ -43,6 +43,6 @@ public class SpellObject : ScriptableObject {
 
 	public bool EffectAppearingDuringPlayerAnim;
 
-	public enum SpellTargetEffectAppearing { None, Spike, Roots }; 
+	public enum SpellTargetEffectAppearing { None, Spike, Roots, ProjectileVic }; 
 	public SpellTargetEffectAppearing spellTargetEffectAppearing;
 }

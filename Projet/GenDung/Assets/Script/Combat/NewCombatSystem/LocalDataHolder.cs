@@ -87,7 +87,8 @@ public class LocalDataHolder : MonoBehaviour {
 			} else {
 				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].died = true;
 				this.transform.Find("EnemyBackground").GetComponent<Button> ().enabled = false;
-				this.transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.gray;
+				this.transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("Death");
+				//this.transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.gray;
 			}
 
 
@@ -248,6 +249,8 @@ public class LocalDataHolder : MonoBehaviour {
 			status.statusType = Status.StatusType.Poisonned;
 		}else if(index == 2) {
 			status.statusType = Status.StatusType.Spike;
+		}else if(index == 3) {
+			status.statusType = Status.StatusType.TemporaryLifed;
 		}
 
 		if (player) {
@@ -263,11 +266,15 @@ public class LocalDataHolder : MonoBehaviour {
 		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Spike && playEffect) 
 		{
 			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+
 		}
 		else if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Roots && playEffect)
 		{
-
 			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Rooted");
+		}
+		else if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.ProjectileVic && playEffect)
+		{
+			GameObject.Find ("ScriptBattle").GetComponent<ProjectileManager> ().LaunchProjectile (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].transform,GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform);
 		}
 		else if (!playEffect) 
 		{
@@ -302,7 +309,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 		} else if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect)
 		{
-
+			
 			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
 			//GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
 
@@ -311,6 +318,23 @@ public class LocalDataHolder : MonoBehaviour {
 
 			} else {
 				AssignEffect (2); //1 = poisoning
+			}
+
+		}else if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.TemporaryLifed && playEffect)
+		{
+
+			//GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+			//GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+			//DOTS
+			if (health >= maxHealth) {
+				
+			}else{
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+				} else {
+					AssignEffect (3); 
+				}
 			}
 
 		}
