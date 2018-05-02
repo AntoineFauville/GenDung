@@ -5,6 +5,7 @@ using UnityEngine;
 public class Explo_Room {
 
     Explo_Tile tile;
+    int index;
 
     public enum roomType { Empty, Fight, Treasure };
 
