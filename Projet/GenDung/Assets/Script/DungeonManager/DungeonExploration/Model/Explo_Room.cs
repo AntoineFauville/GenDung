@@ -6,6 +6,8 @@ public class Explo_Room {
 
     Explo_Tile tile;
 
+    public enum roomType { Empty, Fight, Treasure };
+
     public Explo_Room()
     {
 

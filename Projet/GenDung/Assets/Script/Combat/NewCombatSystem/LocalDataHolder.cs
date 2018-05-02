@@ -48,7 +48,7 @@ public class LocalDataHolder : MonoBehaviour {
                 this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
             } else {
 				maxHealth = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [localIndex].Health_PV;
-				health = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [localIndex].tempHealth;
+				health = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.characterObject [localIndex].tempHealth;
 				this.transform.Find("PersoBackground").GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
                 //this.transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, 0);
                 this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
@@ -79,7 +79,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 			//can't interact with me anymore no attacks, no clicking + visual to show i'm dead
 			if(player) {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [localIndex].died = true;
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.characterObject [localIndex].died = true;
 				this.transform.Find("PersoBackground").GetComponent<Button> ().enabled = false;
 				this.transform.Find("PersoBackground").GetComponent<Image> ().color = Color.gray;
 			} else {
@@ -90,7 +90,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 			if (player) {
 				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().amountOfPlayerLeft--;
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().amountOfPlayerLeft--; //renvoie a l'explo data qu'un est mort pour l'initialization lors du deuxieme combat.
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().amountOfPlayerLeft--; //renvoie a l'explo data qu'un est mort pour l'initialization lors du deuxieme combat.
 				if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().amountOfPlayerLeft <= 0)
 					GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
 
@@ -135,7 +135,7 @@ public class LocalDataHolder : MonoBehaviour {
 		UiOrderObject.transform.Find("PVOrderDisplay").GetComponent<Image> ().fillAmount = health / maxHealth;
 
 		if (player) {
-			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.characterObject [localIndex].tempHealth = health;
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.characterObject [localIndex].tempHealth = health;
 		}
 	}
 
@@ -196,7 +196,7 @@ public class LocalDataHolder : MonoBehaviour {
 	}
 
 	void AddEnemyKilled(EnemyObject enemy){
-		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().EnemyCalculEndDungeon (enemy);
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().EnemyCalculEndDungeon (enemy);
 	}
 
 	void CalculDamageDone (SpellObject.SpellLogicType spellLogicType) {
