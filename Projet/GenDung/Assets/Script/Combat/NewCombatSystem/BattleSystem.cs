@@ -31,8 +31,18 @@ public class BattleSystem : MonoBehaviour {
 
 	public Status PS;
 
+	SavingSystem saveSystem;
+	Explo_Data explo_Data;
+	MapController map_Controller;
+	EffectController effect_Controller;
+
+	GameObject indicator_Battle;
+	GameObject fighter_Panel;
+	GameObject next_Button;
+
 	// first time you launch a battle
 	public void ResetFightStart (int roomImIn) {
+		Links ();
 		HideShowNext (true);
 		SetupPlayers ();
 		SetupEnemies (roomImIn);
@@ -40,6 +50,17 @@ public class BattleSystem : MonoBehaviour {
 		SetArrow ();
 		SetupFighterPanel ();
 		SetupFirstTurnAsEnemy ();
+	}
+
+	void Links(){
+		saveSystem = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ();
+		explo_Data = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ();
+		map_Controller = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ();
+		effect_Controller = GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ();
+
+		indicator_Battle = GameObject.Find ("Pastille");
+		fighter_Panel = GameObject.Find ("FighterPanel");
+		next_Button = GameObject.Find ("NextPanel");
 	}
 
 	void Update ()
@@ -55,24 +76,24 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetupPlayers()
 	{
-		initialAmountOfPlayer = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam;
+		initialAmountOfPlayer = saveSystem.gameData.SavedSizeOfTheTeam;
 
 		if (!IsItFirstFight) {
 
 			amountOfPlayerLeft = initialAmountOfPlayer;
-			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().amountOfPlayerLeft = initialAmountOfPlayer;
+			explo_Data.amountOfPlayerLeft = initialAmountOfPlayer;
 
 			//par contre ici pour éviter de n'avoir que 3 joueurs afficher on doit prendre 4 qui correspond a initialAmount.
 			for (int i = 0; i < initialAmountOfPlayer; i++) {
 
 				//for each player in game reset the temporary data
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data>().dungeonData.TempFighterObject[i].died = false;
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data>().dungeonData.TempFighterObject[i].tempHealth = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV;
+				explo_Data.dungeonData.TempFighterObject[i].died = false;
+				explo_Data.dungeonData.TempFighterObject[i].tempHealth = saveSystem.gameData.SavedCharacterList[i].Health_PV;
 
 				//add the players in the gamefight list
-				UnOrderedFighterList.Add (GameObject.Find (playerString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i].Initiative);
+				UnOrderedFighterList.Add (GameObject.Find (playerString + i), saveSystem.gameData.SavedCharacterList [i].Initiative);
 
-				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
+				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject = saveSystem.gameData.SavedCharacterList [i];
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().player = true;
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().localIndex = i;
 
@@ -85,19 +106,19 @@ public class BattleSystem : MonoBehaviour {
 
 		} else {
 
-			amountOfPlayerLeft = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().amountOfPlayerLeft;
+			amountOfPlayerLeft = explo_Data.amountOfPlayerLeft;
 
 			//par contre ici pour éviter de n'avoir que 3 joueurs afficher on doit prendre 4 qui correspond a initialAmount.
 			for (int i = 0; i < initialAmountOfPlayer; i++) {
 				//add the players in the gamefight list
-				UnOrderedFighterList.Add (GameObject.Find (playerString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i].Initiative);
+				UnOrderedFighterList.Add (GameObject.Find (playerString + i), saveSystem.gameData.SavedCharacterList [i].Initiative);
 
-				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [i];
+				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject = saveSystem.gameData.SavedCharacterList [i];
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().player = true;
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().localIndex = i;
 
 				//if he died well update him.
-				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().dead = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [i].died;
+				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().dead = explo_Data.dungeonData.TempFighterObject [i].died;
 
 				if (GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
 					GameObject.Find (playerString + i).transform.Find("PersoBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
@@ -109,48 +130,24 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetupEnemies(int roomNumber)
 	{
-		amountOfEnemies =  GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data>().dungeonData.RoomData[roomNumber].enemyInRoom.Count;
-
+		amountOfEnemies =  explo_Data.dungeonData.RoomData[roomNumber].enemyInRoom.Count;
 		amountOfEnemiesLeft = amountOfEnemies;
 
 		print (amountOfEnemiesLeft + " est le montant d'enemi left et " + amountOfEnemies + " le montant d'enemi"); 
 
 		for (int i = 0; i < amountOfEnemies; i++) {
-			//add the enemies in the gamefight list
 
 			if (SceneManager.GetActiveScene ().name != "NewCombatTest") 
 			{
-				int dungeon = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ().dungeonIndex;
-
-				//int enemyRand = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList.Count);
-
-				//int enemy = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [roomNumber].enemyInRoom [i];
-				EnemyObject enemy = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [roomNumber].enemyInRoom [i];
-
-				//UnOrderedFighterList.Add (GameObject.Find (enemyString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemy].initiative);
-
+				int dungeon = map_Controller.dungeonIndex;
+				EnemyObject enemy = explo_Data.dungeonData.RoomData [roomNumber].enemyInRoom [i];
 				UnOrderedFighterList.Add (GameObject.Find (enemyString + i), enemy.initiative);
-
-				//load their image depending on the list
-				//GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemy];
-
 				GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = enemy;
 			} 
 			else 
 			{
-				//int enemyRand = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList.Count);
-
-				//int enemy = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [roomNumber].enemyInRoom [i];
-
-				EnemyObject enemy = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.RoomData [roomNumber].enemyInRoom [i];
-
-				//UnOrderedFighterList.Add (GameObject.Find (enemyString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList [enemy].initiative);
-
+				EnemyObject enemy = explo_Data.dungeonData.RoomData [roomNumber].enemyInRoom [i];
 				UnOrderedFighterList.Add (GameObject.Find (enemyString + i), enemy.initiative);
-
-				//load their image depending on the list
-				//GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList [enemy];
-
 				GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = enemy;
 			}
 
@@ -185,11 +182,11 @@ public class BattleSystem : MonoBehaviour {
 		}
 
 		//make sure for the enemies to not show if they are not dead the fact that you can click on them
-		for (int i = 0; i < GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList.Count; i++) 
+		for (int i = 0; i < FighterList.Count; i++) 
 		{
-			if (!GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].GetComponent<LocalDataHolder> ().player) 
+			if (!FighterList [i].GetComponent<LocalDataHolder> ().player) 
 			{
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = false;
+				FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = false;
 			}
 		}
 	}
@@ -201,11 +198,11 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetArrow () {
 
-		GameObject.Find ("Pastille").GetComponent<Image> ().sprite = arrow;
+		indicator_Battle.GetComponent<Image> ().sprite = arrow;
 
 		Vector3 actualPosition = new Vector3 (0,0,0);
-		GameObject.Find ("Pastille").GetComponent<RectTransform> ().SetParent (FighterList [actuallyPlaying].transform.Find("Shadow"));
-		GameObject.Find ("Pastille").GetComponent<RectTransform> ().localPosition = actualPosition;
+		indicator_Battle.GetComponent<RectTransform> ().SetParent (FighterList [actuallyPlaying].transform.Find("Shadow"));
+		indicator_Battle.GetComponent<RectTransform> ().localPosition = actualPosition;
 
 		for (int i = 0; i < FighterList.Count; i++) {
 			FighterList [i].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (false);
@@ -261,10 +258,10 @@ public class BattleSystem : MonoBehaviour {
 		//check if it's a player
 		if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
 			//max
-			maxEffects = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.Count;
+			maxEffects = explo_Data.dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.Count;
 			print (maxEffects);
 		} else {
-			maxEffects = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.Count;
+			maxEffects = explo_Data.dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.Count;
 			print (maxEffects);
 		}
 		if (maxEffects > 0) {
@@ -282,10 +279,10 @@ public class BattleSystem : MonoBehaviour {
 
 	void UpdateFighterPanel () {
 		if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder> ().player){
-			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (350,-200,0);
+			fighter_Panel.GetComponent<RectTransform> ().localPosition = new Vector3 (350,-200,0);
 			SetSpellLinks (true);
 		} else {
-			GameObject.Find ("FighterPanel").GetComponent<RectTransform> ().localPosition = new Vector3 (0,-500,0);
+			fighter_Panel.GetComponent<RectTransform> ().localPosition = new Vector3 (0,-500,0);
 		}
 	}
 
@@ -336,9 +333,9 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	void HideShowNext (bool hide){
-		GameObject.Find ("NextPanel").GetComponent<Image> ().enabled = hide;
-		GameObject.Find ("NextPanel").GetComponent<Button> ().interactable = hide;
-		GameObject.Find ("NextPanel").GetComponent<Button> ().enabled = hide;
+		next_Button.GetComponent<Image> ().enabled = hide;
+		next_Button.GetComponent<Button> ().interactable = hide;
+		next_Button.GetComponent<Button> ().enabled = hide;
 		GameObject.Find ("NextPanel/NextText").GetComponent<Text> ().enabled = hide;
 	}
 
@@ -436,9 +433,9 @@ public class BattleSystem : MonoBehaviour {
 
 		//get the status from the player, the one we'll be working with so far.
 		if(FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player){
-			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus[index-1];//max = 2 so items in the list are 0 and 1.
+			PS = explo_Data.dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus[index-1];//max = 2 so items in the list are 0 and 1.
 		} else {
-			PS = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex+4].playerStatus[index-1];
+			PS = explo_Data.dungeonData.TempFighterObject [FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().localIndex+4].playerStatus[index-1];
 		}
 
 		print ("we'll be working with effect : " + PS.statusName);
@@ -457,27 +454,27 @@ public class BattleSystem : MonoBehaviour {
 				print ("i'm poisoning you");
 
 				//2.play animation
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_Poisonned");
+				FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play (effect_Controller.effect_List[2]); //poisonned
 
 				//do the reaction for the damage for the fighter
 				yield return new WaitForSeconds (1.0f);
 
-				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
+				if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
 				} else {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
+					FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
 				}
 
 				yield return new WaitForSeconds (1.0f);
 
-				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
+				if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
 				} else {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
+					FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 				}
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
 				PS.statusTurnLeft--;
 
 				//check from what type of status it is
@@ -485,58 +482,58 @@ public class BattleSystem : MonoBehaviour {
 				print ("i'm healing you");
 
 				//play animation
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_Healing");
+				FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play (effect_Controller.effect_List[1]); //healing
 
 				yield return new WaitForSeconds (1.0f);
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
+				FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
 				PS.statusTurnLeft--;
 			} else if (PS.statusType == Status.StatusType.Spike) {
 				print ("i'm spanking you");
 
 				//play animation
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_Spikey");
+				FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play (effect_Controller.effect_List[3]);
 
 				//do the reaction for the damage for the fighter
 				yield return new WaitForSeconds (1.0f);
 
-				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
+				if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
 				} else {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
+					FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
 				}
 
 				yield return new WaitForSeconds (1.0f);
 
-				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
+				if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+					FighterList [actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
 				} else {
-					GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
+					FighterList [actuallyPlaying].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 				}
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
 				PS.statusTurnLeft--;
 			} else if (PS.statusType == Status.StatusType.TemporaryLifed) {
-				GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
 				PS.statusTurnLeft--;
 			}
 		}
 
 		//si l'enemi ou le joueur meurt d'un effet.
-		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().health <= 0) {
-			GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_None");
+		if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().health <= 0) {
+			FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play (effect_Controller.effect_List[0]);
 			NextTurn ();
 		} else {
 
 			//remove the effect if this one is expired
 			if (PS.statusTurnLeft <= 0) {
 				if (FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-					GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.RemoveAt (index - 1);
+					explo_Data.dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.RemoveAt (index - 1);
 					print ("removed effect : " + PS.statusName);
 				} else {
-					GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.RemoveAt (index - 1);
+					explo_Data.dungeonData.TempFighterObject [FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.RemoveAt (index - 1);
 					print ("removed effect : " + PS.statusName);
 				}
 			}
@@ -544,7 +541,7 @@ public class BattleSystem : MonoBehaviour {
 			yield return new WaitForSeconds (1.0f);
 
 			//wait for effect to attack player
-			GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play ("Effect_None");
+			FighterList [actuallyPlaying].transform.Find ("EffectLayer").GetComponent<Animator> ().Play (effect_Controller.effect_List[0]);
 
 
 
