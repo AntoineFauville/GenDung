@@ -290,7 +290,6 @@ public class Explo_GridController : MonoBehaviour {
         for (int x = 0; x < movementTilesNumber; x++)
         {
             Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles[x];
-            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Room = new Explo_Room(Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)]);
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Empty;
             emptyTilesList.Add(tile);
             GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
@@ -350,7 +349,6 @@ public class Explo_GridController : MonoBehaviour {
             int rnd = Random.Range(0, emptyTilesCount);
 
             Vector2 tile = emptyTilesList[rnd];
-            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Room = new Explo_Room_Fight(Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)]);
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Fight;
             fightRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
