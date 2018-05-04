@@ -4,23 +4,38 @@ using UnityEngine;
 
 public class Explo_Room_Fight : Explo_Room
 {
-    private int monstersAmount;
-    private bool boss;
-    private bool overPowered;
+    int monstersAmount;
+    //liste monstres
+    bool boss;
+    bool overPowered;
 
     public Explo_Room_Fight()
     {
 
     }
 
-    public Explo_Room_Fight(Explo_Tile _tile)
+    public Explo_Room_Fight(bool _boss, bool _overPowered)
     {
-        this.Tile = _tile;
+        this.boss = _boss;
+        this.overPowered = _overPowered;
     }
 
-    public Explo_Room_Fight(Explo_Tile _tile, bool _boss, bool _overPowered)
+    private void LoadRoomPreset(string _preset)
     {
-        this.Tile = _tile;
-        this.boss = _boss;
+        Debug.Log("Loading Room preset");
+        // Do shit here
+        Debug.Log("Room preset has been loaded");
+    }
+
+    public int MonstersAmount
+    {
+        get
+        {
+            return monstersAmount;
+        }
+        set
+        {
+            monstersAmount = value;
+        }
     }
 }
