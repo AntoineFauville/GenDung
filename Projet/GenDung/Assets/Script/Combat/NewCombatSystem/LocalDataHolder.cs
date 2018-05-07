@@ -5,25 +5,25 @@ using UnityEngine.UI;
 
 public class LocalDataHolder : MonoBehaviour {
 
-    public bool player; // Automatise with the new Model Approach.
-    public bool amIPlaying;
-    public bool dead; // Already Added To Model.
+	public bool player;
+	public bool amIPlaying;
+	public bool dead;
 
-	public EnemyObject enemyObject; // Automatise with the new Model Approach.
+	public EnemyObject enemyObject;
 
-    public Character characterObject; // Automatise with the new Model Approach.
+	public Character characterObject;
 
-	public float maxHealth; // Already Added To Model.
-    public float health; // Already Added To Model.
+	public float maxHealth;
+	public float health;
 
-    public int fighterIndex;
+	public int fighterIndex;
 	public int localIndex;
 	public int indexFighterToAttack;
 
-	public int maxActionPointPlayer; // Already Added To Model.
-    public int actionPointPlayer; // Already Added To Model.
+	public int maxActionPointPlayer;
+	public int actionPointPlayer;
 
-    public GameObject UiOrderObject;
+	public GameObject UiOrderObject;
 
 	public bool AttackContinue;
 
@@ -52,7 +52,7 @@ public class LocalDataHolder : MonoBehaviour {
                 this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
             } else {
 				maxHealth = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedCharacterList [localIndex].Health_PV;
-				health = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.characterObject [localIndex].tempHealth;
+				health = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.TempFighterObject [localIndex].tempHealth;
 				this.transform.Find("PersoBackground").GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().characterObject.ICON;
                 //this.transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, 0);
                 this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
@@ -83,11 +83,11 @@ public class LocalDataHolder : MonoBehaviour {
 
 			//can't interact with me anymore no attacks, no clicking + visual to show i'm dead
 			if(player) {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex].died = true;
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.TempFighterObject [localIndex].died = true;
 				this.transform.Find("PersoBackground").GetComponent<Button> ().enabled = false;
 				this.transform.Find("PersoBackground").GetComponent<Image> ().color = Color.gray;
 			} else {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].died = true;
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.TempFighterObject [localIndex+4].died = true;
 				this.transform.Find("EnemyBackground").GetComponent<Button> ().enabled = false;
 				this.transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("Death");
 				//this.transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.gray;
@@ -141,7 +141,7 @@ public class LocalDataHolder : MonoBehaviour {
 		UiOrderObject.transform.Find("PVOrderDisplay").GetComponent<Image> ().fillAmount = health / maxHealth;
 
 		if (player) {
-			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.characterObject [localIndex].tempHealth = health;
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.TempFighterObject [localIndex].tempHealth = health;
 		}
 	}
 
@@ -256,9 +256,9 @@ public class LocalDataHolder : MonoBehaviour {
 		}
 
 		if (player) {
-			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex].playerStatus.Add (status);
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.TempFighterObject [localIndex].playerStatus.Add (status);
 		} else {
-			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].playerStatus.Add (status);
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.TempFighterObject [localIndex+4].playerStatus.Add (status);
 		}
 
 

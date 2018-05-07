@@ -32,7 +32,7 @@ public class BattleSystem : MonoBehaviour {
 	public Status PS;
 
 	SavingSystem saveSystem;
-	Explo_Data explo_Data;
+	Explo_DataController explo_Data;
 	MapController map_Controller;
 	EffectController effect_Controller;
 
@@ -54,7 +54,7 @@ public class BattleSystem : MonoBehaviour {
 
 	void Links(){
 		saveSystem = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ();
-		explo_Data = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ();
+		explo_Data = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ();
 		map_Controller = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ();
 		effect_Controller = GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ();
 
@@ -81,23 +81,18 @@ public class BattleSystem : MonoBehaviour {
 		if (!IsItFirstFight) {
 
 			amountOfPlayerLeft = initialAmountOfPlayer;
-<<<<<<< HEAD
 			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().amountOfPlayerLeft = initialAmountOfPlayer;
-=======
+
 			explo_Data.amountOfPlayerLeft = initialAmountOfPlayer;
->>>>>>> 91e901ea9484ad63bc14a4cdf36618a096c48243
 
 			//par contre ici pour éviter de n'avoir que 3 joueurs afficher on doit prendre 4 qui correspond a initialAmount.
 			for (int i = 0; i < initialAmountOfPlayer; i++) {
 
 				//for each player in game reset the temporary data
-<<<<<<< HEAD
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.characterObject[i].died = false;
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.characterObject[i].tempHealth = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV;
-=======
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.TempFighterObject[i].died = false;
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.TempFighterObject[i].tempHealth = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].Health_PV;
 				explo_Data.dungeonData.TempFighterObject[i].died = false;
 				explo_Data.dungeonData.TempFighterObject[i].tempHealth = saveSystem.gameData.SavedCharacterList[i].Health_PV;
->>>>>>> 91e901ea9484ad63bc14a4cdf36618a096c48243
 
 				//add the players in the gamefight list
 				UnOrderedFighterList.Add (GameObject.Find (playerString + i), saveSystem.gameData.SavedCharacterList [i].Initiative);
@@ -115,11 +110,8 @@ public class BattleSystem : MonoBehaviour {
 
 		} else {
 
-<<<<<<< HEAD
 			amountOfPlayerLeft = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().amountOfPlayerLeft;
-=======
 			amountOfPlayerLeft = explo_Data.amountOfPlayerLeft;
->>>>>>> 91e901ea9484ad63bc14a4cdf36618a096c48243
 
 			//par contre ici pour éviter de n'avoir que 3 joueurs afficher on doit prendre 4 qui correspond a initialAmount.
 			for (int i = 0; i < initialAmountOfPlayer; i++) {
@@ -131,11 +123,8 @@ public class BattleSystem : MonoBehaviour {
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().localIndex = i;
 
 				//if he died well update him.
-<<<<<<< HEAD
-				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().dead = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.characterObject [i].died;
-=======
+				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().dead = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.TempFighterObject [i].died;
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().dead = explo_Data.dungeonData.TempFighterObject [i].died;
->>>>>>> 91e901ea9484ad63bc14a4cdf36618a096c48243
 
 				if (GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
 					GameObject.Find (playerString + i).transform.Find("PersoBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
@@ -147,12 +136,9 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetupEnemies(int roomNumber)
 	{
-<<<<<<< HEAD
 		amountOfEnemies =  GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.RoomData[roomNumber].enemyInRoom.Count;
 
-=======
 		amountOfEnemies =  explo_Data.dungeonData.RoomData[roomNumber].enemyInRoom.Count;
->>>>>>> 91e901ea9484ad63bc14a4cdf36618a096c48243
 		amountOfEnemiesLeft = amountOfEnemies;
 
 		print (amountOfEnemiesLeft + " est le montant d'enemi left et " + amountOfEnemies + " le montant d'enemi"); 
@@ -161,7 +147,6 @@ public class BattleSystem : MonoBehaviour {
 
 			if (SceneManager.GetActiveScene ().name != "NewCombatTest") 
 			{
-<<<<<<< HEAD
 				int dungeon = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ().dungeonIndex;
 
 				//int enemyRand = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList.Count);
@@ -171,16 +156,13 @@ public class BattleSystem : MonoBehaviour {
 
 				//UnOrderedFighterList.Add (GameObject.Find (enemyString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemy].initiative);
 
-=======
-				int dungeon = map_Controller.dungeonIndex;
-				EnemyObject enemy = explo_Data.dungeonData.RoomData [roomNumber].enemyInRoom [i];
->>>>>>> 91e901ea9484ad63bc14a4cdf36618a096c48243
+				dungeon = map_Controller.dungeonIndex;
+				enemy = explo_Data.dungeonData.RoomData [roomNumber].enemyInRoom [i];
 				UnOrderedFighterList.Add (GameObject.Find (enemyString + i), enemy.initiative);
 				GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = enemy;
 			} 
 			else 
 			{
-<<<<<<< HEAD
 				//int enemyRand = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList.Count);
 
 				//int enemy = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [roomNumber].enemyInRoom [i];
@@ -189,9 +171,7 @@ public class BattleSystem : MonoBehaviour {
 
 				//UnOrderedFighterList.Add (GameObject.Find (enemyString + i), GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [0].enemiesList [enemy].initiative);
 
-=======
-				EnemyObject enemy = explo_Data.dungeonData.RoomData [roomNumber].enemyInRoom [i];
->>>>>>> 91e901ea9484ad63bc14a4cdf36618a096c48243
+				enemy = explo_Data.dungeonData.RoomData [roomNumber].enemyInRoom [i];
 				UnOrderedFighterList.Add (GameObject.Find (enemyString + i), enemy.initiative);
 				GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject = enemy;
 			}
