@@ -91,6 +91,9 @@ public class Explo_GridController : MonoBehaviour {
         }
         c.transform.Find("PanelGrid").transform.localScale = new Vector3(0.95f, 1, 1f);
         c.transform.Find("PanelGrid").transform.localPosition = new Vector3(-Screen.currentResolution.width / 3.732f, -Screen.currentResolution.width / 7.3f, 0);
+
+        Explo_DungeonController dng = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
+        dng.Dungeon.Grid = grid;
         /* */
     }
 

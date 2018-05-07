@@ -7,6 +7,11 @@ public class Explo_Dungeon {
     Explo_Grid grid;
     Explo_Data data;
 
+    public Explo_Dungeon()
+    {
+
+    }
+
     public Explo_Dungeon(Explo_Grid _grid, Explo_Data _data)
     {
         this.grid = _grid;
