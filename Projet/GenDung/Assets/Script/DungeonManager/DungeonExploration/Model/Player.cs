@@ -23,6 +23,7 @@ public class Player : Entities {
         // Check if all players are dead. if yes, Launch method for ending combat.
 
         base.DeathOfEntities(); // Need to check if it's an obligation or if it will work without calling it.
+
     }
 
     public int MaxActionPoint

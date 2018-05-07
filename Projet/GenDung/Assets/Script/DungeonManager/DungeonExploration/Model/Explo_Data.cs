@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Explo_Data
 {
-    // Liste d'ennemis tués
-    // Liste Personnages
+    int roomAmount;
+    List<Foe> deadFoes = new List<Foe>();
+    List<Player> players = new List<Player>();
     List<Explo_Room> rooms = new List<Explo_Room>();
 
     public Explo_Data()

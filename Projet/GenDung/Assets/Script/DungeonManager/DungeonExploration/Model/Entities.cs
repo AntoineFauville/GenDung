@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Entities {
 
+    // 
     float maxHealth;
     float health;
     bool dead;
+    //
+    GameObject entitiesGO;
+    Animator entitiesAnimator;
 
     public Entities()
     {
@@ -36,7 +41,9 @@ public class Entities {
     public virtual void DeathOfEntities()
     {
         //De-activate Button
+        entitiesGO.GetComponent<Button>().enabled = false;
         //Change color to Color.gray
+        entitiesGO.GetComponent<Image>().color = Color.gray;
     }
 
     public float MaxHealth
@@ -75,6 +82,32 @@ public class Entities {
         set
         {
             dead = value;
+        }
+    }
+
+    public GameObject EntitiesGO
+    {
+        get
+        {
+            return entitiesGO;
+        }
+
+        set
+        {
+            entitiesGO = value;
+        }
+    }
+
+    public Animator EntitiesAnimator
+    {
+        get
+        {
+            return entitiesAnimator;
+        }
+
+        set
+        {
+            entitiesAnimator = value;
         }
     }
 }
