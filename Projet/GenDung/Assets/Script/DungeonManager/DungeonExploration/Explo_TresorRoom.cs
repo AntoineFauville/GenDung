@@ -83,7 +83,7 @@ public class Explo_TresorRoom : MonoBehaviour {
 		int randGold = Random.Range (1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].chestGoldRewardMax);
 
 		logT.AddLogLine("You gained : " + randGold + " Gold !");
-        GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().ModifyGold(randGold);
+        GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().ModifyGold(randGold);
 	}
 
 	public void ClosingTab()

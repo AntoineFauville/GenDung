@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Explo_Data : MonoBehaviour {
+public class Explo_DataController : MonoBehaviour {
 
     public int exploGold = 0;
 	public DungeonData dungeonData;
@@ -65,6 +65,7 @@ public class Explo_Data : MonoBehaviour {
 		enemyRand = Random.Range (0, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList.Count);
 
 		dungeonData.RoomData [i].enemyInRoom.Add (GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand]);
+
 	}
 
     public void ModifyGold(int value)

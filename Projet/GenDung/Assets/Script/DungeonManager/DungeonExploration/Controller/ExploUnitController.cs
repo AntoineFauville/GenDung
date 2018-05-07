@@ -139,8 +139,8 @@ public class ExploUnitController : MonoBehaviour {
 			case Explo_Tile.Explo_TileType.Fight:
 				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) {
 
-					GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().roomImOn = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().indexLocalOfFightRoom;
-					GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_Data>().LaunchFightFreshStart ();
+					GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn = GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().indexLocalOfFightRoom;
+					GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().LaunchFightFreshStart ();
 				}
 				break;
 			}
