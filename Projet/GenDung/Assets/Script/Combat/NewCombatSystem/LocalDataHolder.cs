@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class LocalDataHolder : MonoBehaviour {
 
-	public bool player, amIPlaying, dead;
+	public bool player;
+	public bool amIPlaying;
+	public bool dead;
 
 	public EnemyObject enemyObject;
 
