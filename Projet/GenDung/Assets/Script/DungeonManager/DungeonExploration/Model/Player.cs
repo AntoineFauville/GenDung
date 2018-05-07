@@ -2,20 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player {
+public class Player : Entities {
 
-    float maxHealth;
-    float health;
     int maxActionPoint;
     int actionPoint;
-    bool dead;
 
-    public Player(float _maxHealth, int _maxActionPoint)
+    public Player(float _maxHealth, int _maxActionsPoint)
     {
-        this.maxHealth = _maxHealth;
-        this.maxActionPoint = _maxActionPoint;
-        health = this.maxHealth;
-        actionPoint = this.maxActionPoint;
-        dead = false;
+        base.MaxHealth = _maxHealth;
+        base.Health = MaxHealth;
+        base.Dead = false;
+        maxActionPoint = _maxActionsPoint;
+        actionPoint = maxActionPoint;
+    }
+
+    public int MaxActionPoint
+    {
+        get
+        {
+            return maxActionPoint;
+        }
+
+        set
+        {
+            maxActionPoint = value;
+        }
+    }
+
+    public int ActionPoint
+    {
+        get
+        {
+            return actionPoint;
+        }
+
+        set
+        {
+            actionPoint = value;
+        }
     }
 }
