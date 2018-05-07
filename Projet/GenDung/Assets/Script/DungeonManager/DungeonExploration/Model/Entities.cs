@@ -29,6 +29,14 @@ public class Entities {
             health = 0; // Setting health to Zero to avoid negative value.
             dead = true; // Setting player as dead.
         }
+
+        // Here, we should call a Update on UI for Health and/or Death of an Entities.
+    }
+
+    public virtual void DeathOfEntities()
+    {
+        //De-activate Button
+        //Change color to Color.gray
     }
 
     public float MaxHealth

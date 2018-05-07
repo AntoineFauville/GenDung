@@ -5,23 +5,25 @@ using UnityEngine.UI;
 
 public class LocalDataHolder : MonoBehaviour {
 
-	public bool player, amIPlaying, dead;
+    public bool player; // Automatise with the new Model Approach.
+    public bool amIPlaying;
+    public bool dead; // Already Added To Model.
 
-	public EnemyObject enemyObject;
+	public EnemyObject enemyObject; // Automatise with the new Model Approach.
 
-	public Character characterObject;
+    public Character characterObject; // Automatise with the new Model Approach.
 
-	public float maxHealth;
-	public float health;
+	public float maxHealth; // Already Added To Model.
+    public float health; // Already Added To Model.
 
-	public int fighterIndex;
+    public int fighterIndex;
 	public int localIndex;
 	public int indexFighterToAttack;
 
-	public int maxActionPointPlayer;
-	public int actionPointPlayer;
+	public int maxActionPointPlayer; // Already Added To Model.
+    public int actionPointPlayer; // Already Added To Model.
 
-	public GameObject UiOrderObject;
+    public GameObject UiOrderObject;
 
 	public bool AttackContinue;
 
