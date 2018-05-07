@@ -34,10 +34,15 @@ public class SpellObject : ScriptableObject {
     public enum SpellLogicType { Damage, Heal, Buff, Debuff }; // to how it affect the stats
     public SpellLogicType spellLogicType;
     
-    public enum SpellOccurenceType { One_Turn, Two_Turn, Three_Turn }; // to know the occurence
+    public enum SpellOccurenceType { NoTurn = 0, One_Turn = 1, Two_Turn = 2, Three_Turn = 3 }; // to know the occurence
     public SpellOccurenceType spellOccurenceType;
     
     // to what's the extra effect of the spell
-    public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced }; 
+    public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike }; 
     public SpellTargetFeedbackAnimationType spellTargetFeedbackAnimationType;
+
+	public bool EffectAppearingDuringPlayerAnim;
+
+	public enum SpellTargetEffectAppearing { None, Spike, Roots, ProjectileVic }; 
+	public SpellTargetEffectAppearing spellTargetEffectAppearing;
 }

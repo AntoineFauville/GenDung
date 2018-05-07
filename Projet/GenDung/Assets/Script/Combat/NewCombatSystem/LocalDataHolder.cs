@@ -27,6 +27,8 @@ public class LocalDataHolder : MonoBehaviour {
 
 	public bool AttackContinue;
 
+	private Status status;
+
 	// Use this for initialization
 	public void Initialize () {
 
@@ -81,12 +83,14 @@ public class LocalDataHolder : MonoBehaviour {
 
 			//can't interact with me anymore no attacks, no clicking + visual to show i'm dead
 			if(player) {
-				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.characterObject [localIndex].died = true;
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex].died = true;
 				this.transform.Find("PersoBackground").GetComponent<Button> ().enabled = false;
 				this.transform.Find("PersoBackground").GetComponent<Image> ().color = Color.gray;
 			} else {
+				GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].died = true;
 				this.transform.Find("EnemyBackground").GetComponent<Button> ().enabled = false;
-				this.transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.gray;
+				this.transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("Death");
+				//this.transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.gray;
 			}
 
 
@@ -229,18 +233,113 @@ public class LocalDataHolder : MonoBehaviour {
 		}
 	}
 
+	void AssignEffect(int index){
+
+		status = new Status ();
+
+		status.statusName = GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ().AllStatus [index].statusName;
+		status.statusDamage = GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ().AllStatus [index].statusDamage;
+		status.statusTurnLeft = (int)GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType;
+
+		print (status.statusName + " " + status.statusDamage + " " + " " + status.statusTurnLeft);
+
+		//assign effect type
+
+		if (index == 0) {
+			status.statusType = Status.StatusType.Healed;
+		} else if(index == 1) {
+			status.statusType = Status.StatusType.Poisonned;
+		}else if(index == 2) {
+			status.statusType = Status.StatusType.Spike;
+		}else if(index == 3) {
+			status.statusType = Status.StatusType.TemporaryLifed;
+		}
+
+		if (player) {
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex].playerStatus.Add (status);
+		} else {
+			GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_Data> ().dungeonData.TempFighterObject [localIndex+4].playerStatus.Add (status);
+		}
+
+
+	}
+
+	void CheckDuringCombatEffect(bool playEffect){
+		if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Spike && playEffect) 
+		{
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+
+		}
+		else if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Roots && playEffect)
+		{
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Rooted");
+		}
+		else if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.ProjectileVic && playEffect)
+		{
+			GameObject.Find ("ScriptBattle").GetComponent<ProjectileManager> ().LaunchProjectile (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().actuallyPlaying].transform,GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform);
+		}
+		else if (!playEffect) 
+		{
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+		}
+	}
+
 	void CheckExtraEffect(bool playEffect){
         if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect)
         {
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Healing");
 
-            GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Healing");
-            //GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+			//DOTS
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+			} else {
+				AssignEffect (0); //0 = healing
+			}
+
         } else if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect)
         {
 
             GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Poisonned");
             //GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
-        }
+
+			//DOTS
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+				
+			} else {
+				AssignEffect (1); //1 = poisoning
+			}
+
+		} else if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect)
+		{
+			
+			GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+			//GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+			//DOTS
+			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+			} else {
+				AssignEffect (2); //1 = poisoning
+			}
+
+		}else if (GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.TemporaryLifed && playEffect)
+		{
+
+			//GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_Spikey");
+			//GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+			//DOTS
+			if (health >= maxHealth) {
+				
+			}else{
+				if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+				} else {
+					AssignEffect (3); 
+				}
+			}
+
+		}
         else if (!playEffect) {
             GameObject.Find("ScriptBattle").GetComponent<BattleSystem>().FighterList[indexFighterToAttack].transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
        }
@@ -289,7 +388,20 @@ public class LocalDataHolder : MonoBehaviour {
 		PlayerAnimationPropreties();
 
 		//Wait for anim player to finish depending on time of spell anim time
-		yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime);
+		//if it contains a reaction or a spell invocation at the enemy's place we need to instantiate or play an effect on the enemy
+		if(GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.EffectAppearingDuringPlayerAnim){
+			yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime/2);
+
+			CheckDuringCombatEffect (true);
+
+			yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime/2);
+
+			CheckDuringCombatEffect(false);
+		}
+		else
+		{
+			yield return new WaitForSeconds (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.SpellCastAnimationTime);
+		}
 
 		//calculate the chances to hit or crit == Calculate if "missed" or "critical chance" or "regular spell effect"
 		CalculChances ();
@@ -313,7 +425,7 @@ public class LocalDataHolder : MonoBehaviour {
 			if (GameObject.Find ("ScriptBattle").GetComponent<BattleSystem> ().SelectedSpellObject.spellTargetFeedbackAnimationType != SpellObject.SpellTargetFeedbackAnimationType.None) {
 				//wait for anim Feedback Animation on target
 				CheckExtraEffect (true);
-				yield return new WaitForSeconds (1.0f);
+				yield return new WaitForSeconds (0.8f);
 				CheckExtraEffect (false);
 			}
 		} else {
