@@ -7,11 +7,12 @@ public class Player : Entities {
     int maxActionPoint;
     int actionPoint;
 
-    public Player(float _maxHealth, int _maxActionsPoint)
+    public Player(float _maxHealth, int _maxActionsPoint, string _name)
     {
         base.MaxHealth = _maxHealth;
         base.Health = MaxHealth;
         base.Dead = false;
+        base.Name = _name;
         maxActionPoint = _maxActionsPoint;
         actionPoint = maxActionPoint;
     }
