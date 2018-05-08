@@ -362,7 +362,14 @@ public class Explo_GridController : MonoBehaviour {
             fightRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
 
-            // Create a Explo_Room_Fight and pass parameters.
+            // Create a Explo_Room_Fight.
+            Explo_Room_Fight roomFight = new Explo_Room_Fight(f);
+
+            // Calculate number of Foes in this room between 1 and MaxAmountFoes value.
+            int roomFoesAmount = Random.Range(1, explo_Dungeon.Dungeon.Data.MaxAmountFoes);
+            roomFight.PopulateFoesList(explo_Dungeon.Dungeon.Data.Ennemies, roomFoesAmount);
+            // Add the new created Room into Explo_Data.
+            explo_Dungeon.Dungeon.Data.Rooms.Add(roomFight);
 
             GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
 			GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().indexLocalOfFightRoom = f;

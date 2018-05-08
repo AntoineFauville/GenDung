@@ -5,13 +5,13 @@ using UnityEngine;
 public class Explo_Room_Fight : Explo_Room
 {
     int monstersAmount;
-    //liste monstres
+    List<Foe> foesList = new List<Foe>();
     bool boss;
     bool overPowered;
 
-    public Explo_Room_Fight()
+    public Explo_Room_Fight(int _index)
     {
-
+        base.Index = _index;
     }
 
     public Explo_Room_Fight(bool _boss, bool _overPowered)
@@ -20,11 +20,20 @@ public class Explo_Room_Fight : Explo_Room
         this.overPowered = _overPowered;
     }
 
-    private void LoadRoomPreset(string _preset)
+    public void PopulateFoesList(List<EnemyObject> foesPreset, int foesAmount)
     {
-        Debug.Log("Loading Room preset");
-        // Do shit here
-        Debug.Log("Room preset has been loaded");
+        Debug.Log("Populating of foesList for room number " + base.Index + " has started");
+
+        for (int i = 0; i < foesAmount; i++)
+        {
+            EnemyObject selectedFoePreset = foesPreset[Random.Range(0, foesPreset.Count)];
+            Foe createdFoe = new Foe(selectedFoePreset.health,selectedFoePreset.name);
+            foesList.Add(createdFoe);
+            Debug.Log("Foe Created: " + createdFoe.Name);
+        }
+
+        Debug.Log("Populating of foesList has finished for room number " + base.Index + ", Thanks for waiting");
+
     }
 
     public int MonstersAmount
@@ -36,6 +45,19 @@ public class Explo_Room_Fight : Explo_Room
         set
         {
             monstersAmount = value;
+        }
+    }
+
+    public List<Foe> FoesList
+    {
+        get
+        {
+            return foesList;
+        }
+
+        set
+        {
+            foesList = value;
         }
     }
 }

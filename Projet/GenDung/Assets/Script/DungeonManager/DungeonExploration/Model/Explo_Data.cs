@@ -141,4 +141,17 @@ public class Explo_Data
             eeTiles = value;
         }
     }
+
+    public List<Explo_Room> Rooms
+    {
+        get
+        {
+            return rooms;
+        }
+
+        set
+        {
+            rooms = value;
+        }
+    }
 }

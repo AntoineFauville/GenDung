@@ -9,8 +9,10 @@ public class Entities {
     float maxHealth;
     float health;
     bool dead;
+    string name;
     //
     GameObject entitiesGO;
+    Sprite entitiesSprite;
     Animator entitiesAnimator;
 
     public Entities()
@@ -18,11 +20,13 @@ public class Entities {
 
     }
 
-    public Entities(float _maxHealth)
+    public Entities(float _maxHealth, string _name, Sprite _entitiesSprite)
     {
         this.maxHealth = _maxHealth;
         health = maxHealth;
         dead = false;
+        this.name = _name;
+        this.entitiesSprite = _entitiesSprite;
     }
 
     public void ChangeHealth(float value) // Damage will be negative value and heal will be positive value.
@@ -108,6 +112,32 @@ public class Entities {
         set
         {
             entitiesAnimator = value;
+        }
+    }
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            name = value;
+        }
+    }
+
+    public Sprite EntitiesSprite
+    {
+        get
+        {
+            return entitiesSprite;
+        }
+
+        set
+        {
+            entitiesSprite = value;
         }
     }
 }
