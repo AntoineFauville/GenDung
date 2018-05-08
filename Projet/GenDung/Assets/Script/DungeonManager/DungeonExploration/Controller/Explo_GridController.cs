@@ -394,7 +394,12 @@ public class Explo_GridController : MonoBehaviour {
             treasureRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
 
-            // Create an Explo_Room_Treasure and pass parameters.
+            // Create an Explo_Room_Treasure.
+            Explo_Room_Treasure roomTreasure = new Explo_Room_Treasure();
+            // Define if this room is a Trap or a Treasure.
+            roomTreasure.DefineTrap(explo_Dungeon.Dungeon.Data.TrapPercentage);
+            // Add the newly created Room into Explo_Data.
+            explo_Dungeon.Dungeon.Data.Rooms.Add(roomTreasure);
 
             GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
