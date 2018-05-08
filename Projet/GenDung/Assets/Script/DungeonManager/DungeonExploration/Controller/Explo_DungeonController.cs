@@ -10,7 +10,7 @@ public class Explo_DungeonController : MonoBehaviour {
     ExploMap presetDungeon;
 
     Explo_Data dungeonData;
-    Explo_Dungeon dungeon;
+    Explo_Dungeon dungeon = new Explo_Dungeon();
 
     public void Start()
     {
@@ -20,8 +20,6 @@ public class Explo_DungeonController : MonoBehaviour {
         presetDungeon = dngLoader.exploDungeonList.explorationDungeons[map.dungeonIndex];
 
         dungeonData = new Explo_Data(presetDungeon.fightRoomAmount, presetDungeon.enemyMax, presetDungeon.enemiesList, presetDungeon.treasureRoomAmount, presetDungeon.chestGoldRewardMax, presetDungeon.percentage, presetDungeon.movTiles, presetDungeon.eeTiles);
-        dungeon = new Explo_Dungeon();
-
         dungeon.Data = dungeonData;
 
         Debug.Log("Dungeon has been created " + dungeonData.TrapPercentage);

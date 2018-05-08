@@ -11,6 +11,7 @@ public class Explo_GridController : MonoBehaviour {
     private Explo_Grid grid;
     private Node[,] graph;
     private ExploUnitController unit;
+    Explo_DungeonController explo_Dungeon;
     private Vector3 worldPosTemp;
     private List<Vector2> emptyTilesList = new List<Vector2>();
     private List<Vector2> eeTilesList = new List<Vector2>();
@@ -92,8 +93,8 @@ public class Explo_GridController : MonoBehaviour {
         c.transform.Find("PanelGrid").transform.localScale = new Vector3(0.95f, 1, 1f);
         c.transform.Find("PanelGrid").transform.localPosition = new Vector3(-Screen.currentResolution.width / 3.732f, -Screen.currentResolution.width / 7.3f, 0);
 
-        Explo_DungeonController dng = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
-        dng.Dungeon.Grid = grid;
+        explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
+        explo_Dungeon.Dungeon.Grid = grid;
         /* */
     }
 
@@ -289,10 +290,13 @@ public class Explo_GridController : MonoBehaviour {
     /* Indique aux Tiles concernées qu'elles sont des Zones vides */
     public void SetMovementTiles()
     {
-        int movementTilesNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles.Count;
+        //int movementTilesNumber = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles.Count;
+        int movementTilesNumber = explo_Dungeon.Dungeon.Data.MovTiles.Count;
+
         for (int x = 0; x < movementTilesNumber; x++)
         {
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles[x];
+            //Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].movTiles[x];
+            Vector2 tile = explo_Dungeon.Dungeon.Data.MovTiles[x];
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Empty;
             emptyTilesList.Add(tile);
             GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
@@ -304,11 +308,12 @@ public class Explo_GridController : MonoBehaviour {
     public void SetEETiles()
     {
         // Amount of Possibilities for Entrance-Exit Tiles.
-        int spawnPossibilitiesAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles.Count;
-
+        //int spawnPossibilitiesAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles.Count;
+        int spawnPossibilitiesAmount = explo_Dungeon.Dungeon.Data.EeTiles.Count;
         for (int y = 0; y < spawnPossibilitiesAmount; y++) // Adding every possible tiles in eeTilesList.
         {
-            Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[y];
+            //Vector2 tile = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].eeTiles[y];
+            Vector2 tile = explo_Dungeon.Dungeon.Data.EeTiles[y];
             eeTilesList.Add(tile);
             if (SceneManager.GetActiveScene().name == "ExploEditor")
             {
@@ -337,7 +342,8 @@ public class Explo_GridController : MonoBehaviour {
 
     public void SetRandomFightTiles()
     {
-		int fightRoomAmount = Random.Range(1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].fightRoomAmount);
+        //int fightRoomAmount = Random.Range(1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].fightRoomAmount);
+        int fightRoomAmount = Random.Range(1, explo_Dungeon.Dungeon.Data.FightRoomAmount);
 
 		//send info to dungeon controller data
 
@@ -355,6 +361,9 @@ public class Explo_GridController : MonoBehaviour {
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Fight;
             fightRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
+
+            // Create a Explo_Room_Fight and pass parameters.
+
             GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
 			GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().indexLocalOfFightRoom = f;
         }
@@ -362,8 +371,9 @@ public class Explo_GridController : MonoBehaviour {
 
     public void SetRandomTreasureTiles()
     {
-		//int treasureRoomAmount = Random.Range(1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount);
-		int treasureRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount;
+        //int treasureRoomAmount = Random.Range(1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount);
+        //int treasureRoomAmount = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].treasureRoomAmount;
+        int treasureRoomAmount = explo_Dungeon.Dungeon.Data.TreasureRoomAmount;
 
 		//logT.AddLogLine ("Treasure room : 0 / " + treasureRoomAmount);
 
@@ -376,6 +386,9 @@ public class Explo_GridController : MonoBehaviour {
             Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Type = Explo_Tile.Explo_TileType.Treasure; // This is a FUCKING TREASURE MAN
             treasureRoomList.Add(tile);
             emptyTilesList.RemoveAt(rnd);
+
+            // Create an Explo_Room_Treasure and pass parameters.
+
             GameObject.Find("ExploGridCanvas/PanelGrid/Tile_" + tile.x + "_" + tile.y).GetComponent<ExploTileController>().UpdateTileUI();
         }
     }
