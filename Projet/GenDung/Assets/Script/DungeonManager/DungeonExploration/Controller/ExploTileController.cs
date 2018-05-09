@@ -94,6 +94,7 @@ public class ExploTileController : MonoBehaviour {
 					    logT.AddLogLine ("Clicked on a Fight Room");
 				Debug.Log ("Clicked on a Fight Room");
                     //fightRoom.LinkToRoom();
+                    GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_FightController>().Explo_Room_Fight = (Explo_Room_Fight)Explo_GridController.Instance.Grid.ExploTiles[x, y].Room;
                     break;
 
 			case Explo_Tile.Explo_TileType.Treasure:

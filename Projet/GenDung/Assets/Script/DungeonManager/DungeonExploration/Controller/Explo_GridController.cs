@@ -364,10 +364,11 @@ public class Explo_GridController : MonoBehaviour {
 
             // Create a Explo_Room_Fight.
             Explo_Room_Fight roomFight = new Explo_Room_Fight(f, explo_Dungeon.Dungeon);
-
             // Calculate number of Foes in this room between 1 and MaxAmountFoes value.
             int roomFoesAmount = Random.Range(1, explo_Dungeon.Dungeon.Data.MaxAmountFoes);
             roomFight.PopulateFoesList(explo_Dungeon.Dungeon.Data.Ennemies, roomFoesAmount);
+            // Reference to this Explo_room_Fight to the Explo_tile.
+            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Room = roomFight;
             // Add the new created Room into Explo_Data.
             explo_Dungeon.Dungeon.Data.Rooms.Add(roomFight);
 
@@ -398,6 +399,8 @@ public class Explo_GridController : MonoBehaviour {
             Explo_Room_Treasure roomTreasure = new Explo_Room_Treasure(explo_Dungeon.Dungeon);
             // Define if this room is a Trap or a Treasure.
             roomTreasure.DefineTrap(explo_Dungeon.Dungeon.Data.TrapPercentage);
+            // Reference to this Explo_room_Treasure to the Explo_tile.
+            Grid.ExploTiles[Mathf.RoundToInt(tile.x), Mathf.RoundToInt(tile.y)].Room = roomTreasure;
             // Add the newly created Room into Explo_Data.
             explo_Dungeon.Dungeon.Data.Rooms.Add(roomTreasure);
 

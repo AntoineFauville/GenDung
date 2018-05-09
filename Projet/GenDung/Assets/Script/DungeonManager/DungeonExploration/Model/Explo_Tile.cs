@@ -18,6 +18,7 @@ public class Explo_Tile
     public int x;
     public int y;
     Explo_Grid grid;
+    Explo_Room room;
 
     public Explo_Tile(Explo_Grid _dungeon, int _x, int _y)
     {
@@ -75,6 +76,19 @@ public class Explo_Tile
         set
         {
             state = value;
+        }
+    }
+
+    public Explo_Room Room
+    {
+        get
+        {
+            return room;
+        }
+
+        set
+        {
+            room = value;
         }
     }
     /* */
