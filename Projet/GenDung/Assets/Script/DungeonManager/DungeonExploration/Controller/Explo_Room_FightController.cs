@@ -64,7 +64,9 @@ public class Explo_Room_FightController : MonoBehaviour
 
         combatCanvas.GetComponent<Canvas>().sortingOrder = 79;// Pass the fightCanvas 
 
-		for (int i = 0; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom.Count; i++) {
+        Debug.Log(explo_Room_Fight.FoesList.Count);
+
+		for (int i = 0; i < explo_Room_Fight.FoesList.Count/*GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom.Count*/; i++) {
 			
 			GameObject enemyPanelUI;
 
@@ -74,17 +76,17 @@ public class Explo_Room_FightController : MonoBehaviour
 
             enemyPanelUI.transform.Find("IconMask/Icon").GetComponent<Image>().sprite = explo_Room_Fight.FoesList[i].EntitiesSprite;
 
-            if (GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].hasAnimation) 
-			{
-				enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].enemyAnimator;
-			}
+            //if (GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].hasAnimation) 
+			//{
+			//	enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].enemyAnimator;
+			//}
 		}
 	}
 
     public void SetFightRoom()
     {
 
-		for (int i = 0; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom.Count; i++) {
+		for (int i = 0; i < explo_Room_Fight.FoesList.Count /*GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom.Count*/; i++) {
 
 			GameObject.Find ("EnemiesPanelUI(Clone)").SetActive (false);
 		}

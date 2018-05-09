@@ -107,7 +107,9 @@ public class ExploTileController : MonoBehaviour {
                         }
 				    }
 				Debug.Log ("Clicked on a Treasure Room");
-					break;
+                    //GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_TreasureController>().Explo_Room_Treasure = (Explo_Room_Treasure)Explo_GridController.Instance.Grid.ExploTiles[x, y].Room;
+
+                    break;
 
 			case Explo_Tile.Explo_TileType.Entrance:
 					//gT.AddLogLine ("Clicked on Entrance Room");

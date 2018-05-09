@@ -24,6 +24,7 @@ public class Explo_Room_Fight : Explo_Room
     public void PopulateFoesList(List<EnemyObject> foesPreset, int foesAmount)
     {
         Debug.Log("Populating of foesList for room number " + base.Index + " has started");
+        monstersAmount = foesAmount;
 
         for (int i = 0; i < foesAmount; i++)
         {
