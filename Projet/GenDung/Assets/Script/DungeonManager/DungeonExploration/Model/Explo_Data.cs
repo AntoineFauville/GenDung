@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Explo_Data
 {
+    // [Room]
+    List<Sprite> backgrounds = new List<Sprite>();
     // [Fight]
     int fightRoomAmount;
     int maxAmountFoes;
@@ -27,11 +29,12 @@ public class Explo_Data
 
     }
 
-    public Explo_Data(int fightRoomAmount, int maxAmountFoes, List<EnemyObject> ennemies, int treasureRoomAmount, int maxChestGoldReward, int trapPercentage, List<Vector2> movTiles, List<Vector2> eeTiles)
+    public Explo_Data(int fightRoomAmount, int maxAmountFoes, List<EnemyObject> ennemies, List<Sprite> backgrounds , int treasureRoomAmount, int maxChestGoldReward, int trapPercentage, List<Vector2> movTiles, List<Vector2> eeTiles)
     {
         this.fightRoomAmount = fightRoomAmount;
         this.maxAmountFoes = maxAmountFoes;
         this.ennemies = ennemies;
+        this.backgrounds = backgrounds;
         this.treasureRoomAmount = treasureRoomAmount;
         this.maxChestGoldReward = maxChestGoldReward;
         this.trapPercentage = trapPercentage;
@@ -166,6 +169,32 @@ public class Explo_Data
         set
         {
             players = value;
+        }
+    }
+
+    public List<Sprite> Backgrounds
+    {
+        get
+        {
+            return backgrounds;
+        }
+
+        set
+        {
+            backgrounds = value;
+        }
+    }
+
+    public int GoldGained
+    {
+        get
+        {
+            return goldGained;
+        }
+
+        set
+        {
+            goldGained = value;
         }
     }
 }

@@ -64,41 +64,32 @@ public class Explo_Room_FightController : MonoBehaviour
 
         combatCanvas.GetComponent<Canvas>().sortingOrder = 79;// Pass the fightCanvas 
 
-        Debug.Log(explo_Room_Fight.FoesList.Count);
-
-		for (int i = 0; i < explo_Room_Fight.FoesList.Count/*GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom.Count*/; i++) {
+		for (int i = 0; i < explo_Room_Fight.FoesList.Count; i++) {
 			
 			GameObject enemyPanelUI;
 
 			enemyPanelUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI"), GameObject.Find ("FightRoomUI/PanelBackground/PanelBackground2/FightPresentationsUI/PanelEnemies").transform) as GameObject;
 
-            //enemyPanelUI.transform.Find("IconMask/Icon").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.RoomData[GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom[i].enemyIcon;
-
             enemyPanelUI.transform.Find("IconMask/Icon").GetComponent<Image>().sprite = explo_Room_Fight.FoesList[i].EntitiesSprite;
 
-            //if (GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].hasAnimation) 
-			//{
-			//	enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].enemyAnimator;
-			//}
-		}
+            if (explo_Room_Fight.FoesList[i].EntitiesAnimator != null)
+                enemyPanelUI.transform.Find("IconMask/Icon").GetComponent<Animator>().runtimeAnimatorController = explo_Room_Fight.FoesList[i].EntitiesAnimator;
+
+        }
 	}
 
     public void SetFightRoom()
     {
 
-		for (int i = 0; i < explo_Room_Fight.FoesList.Count /*GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom.Count*/; i++) {
+		for (int i = 0; i < explo_Room_Fight.FoesList.Count ; i++) {
 
 			GameObject.Find ("EnemiesPanelUI(Clone)").SetActive (false);
 		}
-
-		//GameObject.Find("CanvasUIDungeon/Panel/Panel/ActualPlayerPanel").GetComponent<CanvasGroup>().alpha = 1;
-		//GameObject.Find("CanvasUIDungeon/Panel/Panel/Spells").GetComponent<CanvasGroup>().alpha = 1;
 
 		logT.AddLogLine ("Let the fight begin");
 
 		battleSystemUI.GetComponent<Canvas>().sortingOrder += 40;
 
-        //print ("le room rand est de " + roomRand);
         combatUI.GetComponent<Canvas>().sortingOrder += 40;
         combatRoom.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder += 40;
         combatCanvas.GetComponent<Canvas>().sortingOrder -= 40;
@@ -107,10 +98,8 @@ public class Explo_Room_FightController : MonoBehaviour
         exploGrid.GetComponent<Canvas>().sortingOrder -= 40;
 		exploUI.GetComponent<Canvas>().sortingOrder -= 40;
 
-        roomRand = Random.Range(0, GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms.Count);
-		//print ("le room rand est de " + roomRand);
-		actualFightRoom = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].rooms[roomRand];
-        combatRoom.transform.Find("Canvas/Panel/background of the room").GetComponent<Image>().sprite = actualFightRoom.back;
+        roomRand = Random.Range(0, explo_Room_Fight.Dungeon.Data.Rooms.Count);
+        combatRoom.transform.Find("Canvas/Panel/background of the room").GetComponent<Image>().sprite = explo_Room_Fight.Background;
     }
 
 	public void CleanFinishedFightRoom () {

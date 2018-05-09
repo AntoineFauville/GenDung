@@ -29,7 +29,8 @@ public class Explo_Room_Fight : Explo_Room
         for (int i = 0; i < foesAmount; i++)
         {
             EnemyObject selectedFoePreset = foesPreset[Random.Range(0, foesPreset.Count)];
-            Foe createdFoe = new Foe(selectedFoePreset.health,selectedFoePreset.name, selectedFoePreset.enemyIcon);
+
+            Foe createdFoe = new Foe(selectedFoePreset.health,selectedFoePreset.name, selectedFoePreset.enemyIcon, selectedFoePreset.enemyAnimator);
             foesList.Add(createdFoe);
             Debug.Log("Foe Created: " + createdFoe.Name);
         }

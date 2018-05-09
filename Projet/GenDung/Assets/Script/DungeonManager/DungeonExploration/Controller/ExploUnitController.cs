@@ -13,8 +13,8 @@ public class ExploUnitController : MonoBehaviour {
 
     private Explo_Range unitRange;
     private Explo_Room_FightController fightRoom;
-	private Explo_ExitRoom exitRoom;
-	private Explo_TresorRoom treasorRoom;
+	private Explo_Room_ExitController exitRoom;
+	private Explo_Room_TreasureController treasorRoom;
 
 	//private bool updatePosCube;
 
@@ -25,8 +25,8 @@ public class ExploUnitController : MonoBehaviour {
 		if (SceneManager.GetActiveScene().name != "ExploEditor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
 		{
         fightRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_FightController>();
-		exitRoom = GameObject.Find("EndExploScripts").GetComponent<Explo_ExitRoom>();
-		treasorRoom = GameObject.Find("ExploScriptsTreasure").GetComponent<Explo_TresorRoom>();
+		exitRoom = GameObject.Find("EndExploScripts").GetComponent<Explo_Room_ExitController>();
+		treasorRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_TreasureController>();
 		}
     }
 
@@ -190,14 +190,14 @@ public class ExploUnitController : MonoBehaviour {
 
     public IEnumerator WaitForFlipAnim()
 	{
-		yield return new WaitForSecondsRealtime(1f); 
+		yield return new WaitForSeconds(1f); 
 
 		if (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type != Explo_Tile.Explo_TileType.Wall)
 		{
 			switch (Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].Type)
 			{
 			case Explo_Tile.Explo_TileType.Fight:
-				Debug.Log ("Character Entered a Treasure Room");
+				Debug.Log ("Character Entered a Fight Room");
 
 				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) 
 				{

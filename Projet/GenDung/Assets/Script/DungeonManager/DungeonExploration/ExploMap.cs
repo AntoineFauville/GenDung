@@ -27,6 +27,7 @@ public class ExploMap : ScriptableObject {
 	[Space(10)]
 
     public List<RoomObject> rooms = new List<RoomObject>();
+    public List<Sprite> roomsBackground = new List<Sprite>();
 
 	[Space(10)]
 	[Header("Rewards")]

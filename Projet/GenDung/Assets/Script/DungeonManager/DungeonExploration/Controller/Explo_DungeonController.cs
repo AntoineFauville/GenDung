@@ -21,7 +21,7 @@ public class Explo_DungeonController : MonoBehaviour {
         presetDungeon = dngLoader.exploDungeonList.explorationDungeons[map.dungeonIndex]; // Actual preset for the DungeonIndex.
         saveData = dontDestroyOnLoad.GetComponent<SavingSystem>().gameData; // reference to the GameData Object contain in SavingSystem.
         // Populating Explo_Data model with previously loaded preset.
-        dungeonData = new Explo_Data(presetDungeon.fightRoomAmount, presetDungeon.enemyMax, presetDungeon.enemiesList, presetDungeon.treasureRoomAmount, presetDungeon.chestGoldRewardMax, presetDungeon.percentage, presetDungeon.movTiles, presetDungeon.eeTiles);
+        dungeonData = new Explo_Data(presetDungeon.fightRoomAmount, presetDungeon.enemyMax, presetDungeon.enemiesList, presetDungeon.roomsBackground, presetDungeon.treasureRoomAmount, presetDungeon.chestGoldRewardMax, presetDungeon.percentage, presetDungeon.movTiles, presetDungeon.eeTiles);
         dungeon.Data = dungeonData; // Linking the Explo_dungeon and the Explo_data Models.
         GatherPlayers();
     }

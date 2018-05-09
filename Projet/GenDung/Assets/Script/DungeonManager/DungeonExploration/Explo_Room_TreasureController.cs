@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explo_TresorRoom : MonoBehaviour {
+public class Explo_Room_TreasureController : MonoBehaviour {
 
-	private static Explo_TresorRoom instance;
+	private static Explo_Room_TreasureController instance;
 	private GameObject tresorCanvas;
-
-	private Animator animTresorImageAnimator;
+    Explo_Room_Treasure explo_Room_Treasure;
+    private Animator animTresorImageAnimator;
 
 	LogGestionTool logT;
 
@@ -44,7 +44,11 @@ public class Explo_TresorRoom : MonoBehaviour {
 	public void OpenTreasure()
 	{
 		if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) {
-			RandomPicker ();
+            //RandomPicker ();
+            if (explo_Room_Treasure.Trap)
+                Itsatrap();
+            else
+                OpenChest();
 			animTresorImageAnimator.Play ("Highlighted");
 			GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [X, Y].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;
 		}
@@ -65,26 +69,29 @@ public class Explo_TresorRoom : MonoBehaviour {
 		}
 	}
 
-	public void Itsatrap()
+	public void Itsatrap() // Status Effect 
 	{
 		//if not locked
 		logT.AddLogLine("It's a trap");
+        int playerTouched = Random.Range(0, 3);
+
+        while (explo_Room_Treasure.Dungeon.Data.Players[playerTouched].Dead)
+        {
+            playerTouched = Random.Range(0, 3);
+        }
+
+        explo_Room_Treasure.Dungeon.Data.Players[playerTouched].ChangeHealth(5);
+        logT.AddLogLine(explo_Room_Treasure.Dungeon.Data.Players[playerTouched].Name + " has lost 5 HP");
 	}
 
 	public void OpenChest()
 	{
 		//if not locked
 		logT.AddLogLine ("Chest Opened !");
-		GenerateGoldRand ();
-	}
-
-	public void GenerateGoldRand()
-	{
-		int randGold = Random.Range (1,GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().exploDungeonList.explorationDungeons[MapController.Instance.DungeonIndex].chestGoldRewardMax);
-
-		logT.AddLogLine("You gained : " + randGold + " Gold !");
-        GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().ModifyGold(randGold);
-	}
+        //GenerateGoldRand ();
+        logT.AddLogLine("You gained : " + explo_Room_Treasure.GoldAmount + " Gold !");
+        GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().ModifyGold(explo_Room_Treasure.GoldAmount);
+    }
 
 	public void ClosingTab()
 	{
@@ -93,7 +100,7 @@ public class Explo_TresorRoom : MonoBehaviour {
         //lock local closing to not trigger IF locked
     }
 
-	public static Explo_TresorRoom Instance
+	public static Explo_Room_TreasureController Instance
 	{
 		get
 		{
@@ -105,4 +112,17 @@ public class Explo_TresorRoom : MonoBehaviour {
 			instance = value;
 		}
 	}
+
+    public Explo_Room_Treasure Explo_Room_Treasure
+    {
+        get
+        {
+            return explo_Room_Treasure;
+        }
+
+        set
+        {
+            explo_Room_Treasure = value;
+        }
+    }
 }

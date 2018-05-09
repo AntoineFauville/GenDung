@@ -7,6 +7,7 @@ public class Explo_DataController : MonoBehaviour {
 
     public int exploGold = 0;
 	public DungeonData dungeonData;
+    Explo_DungeonController explo_Dungeon;
 
 	int randOfEnemies;
 	int enemyRand;
@@ -17,12 +18,19 @@ public class Explo_DataController : MonoBehaviour {
 
 	public int roomImOn; // sended by the tile when walked to know which room i walked on
 
+    public void Start()
+    {
+    }
+
 	// Use this for initialization
 	public void StartEverything () {
 
+        explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
 
-		//returns the amount of fight room in the dungeon.
-		amountOfFightRoom = dungeonData.amountOfFightRoomsInData;
+
+        //returns the amount of fight room in the dungeon.
+        //amountOfFightRoom = dungeonData.amountOfFightRoomsInData;
+        amountOfFightRoom = explo_Dungeon.Dungeon.Data.FightRoomAmount;
 
 		print ("total amount of rooms : " + amountOfFightRoom);
 
@@ -70,15 +78,16 @@ public class Explo_DataController : MonoBehaviour {
 
     public void ModifyGold(int value)
     {
-        exploGold += value;
+        explo_Dungeon.Dungeon.Data.GoldGained += value;
+
     }
 
     public void SendToSave()
     {
-        GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney += exploGold;
+        GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney += explo_Dungeon.Dungeon.Data.GoldGained;
     }
 
-	void ClearDataTemporaryCharacter(){
+	void ClearDataTemporaryCharacter(){ // After BattleSystem Remake, can disappear
 		for (int i = 0; i < 4; i++) {
 			dungeonData.TempFighterObject [i].died = false;
 		}

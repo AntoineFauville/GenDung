@@ -13,20 +13,21 @@ public class Entities {
     //
     GameObject entitiesGO;
     Sprite entitiesSprite;
-    Animator entitiesAnimator;
+    RuntimeAnimatorController entitiesAnimator;
 
     public Entities()
     {
 
     }
 
-    public Entities(float _maxHealth, string _name, Sprite _entitiesSprite)
+    public Entities(float _maxHealth, string _name, Sprite _entitiesSprite, RuntimeAnimatorController _entitiesAnimator)
     {
         this.maxHealth = _maxHealth;
         health = maxHealth;
         dead = false;
         this.name = _name;
         this.entitiesSprite = _entitiesSprite;
+        this.entitiesAnimator = _entitiesAnimator;
     }
 
     public void ChangeHealth(float value) // Damage will be negative value and heal will be positive value.
@@ -102,7 +103,7 @@ public class Entities {
         }
     }
 
-    public Animator EntitiesAnimator
+    public RuntimeAnimatorController EntitiesAnimator
     {
         get
         {

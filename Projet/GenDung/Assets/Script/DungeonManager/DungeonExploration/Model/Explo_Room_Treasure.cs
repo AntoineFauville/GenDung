@@ -6,15 +6,15 @@ public class Explo_Room_Treasure : Explo_Room {
 
     int goldAmount;
     bool trap;
-    int randomTarget;
 
     public Explo_Room_Treasure(Explo_Dungeon _dungeon)
     {
         base.Dungeon = _dungeon;
     }
 
-    public Explo_Room_Treasure (int _goldAmount)
+    public Explo_Room_Treasure (Explo_Dungeon _dungeon, int _goldAmount)
     {
+        base.Dungeon = _dungeon;
         this.goldAmount = _goldAmount;
         this.trap = false;
     }
@@ -28,8 +28,37 @@ public class Explo_Room_Treasure : Explo_Room {
             // It's a Trap, someone gonna get hurt.
             // Indicate that the room is actually a Trap;
             trap = true;
-            // Taking a random target for damage.
-            randomTarget = Random.Range(0, 3);
+        }
+    }
+
+    public void DefineReward(int _maxReward)
+    {
+        goldAmount = Random.Range(1, _maxReward);
+    }
+
+    public bool Trap
+    {
+        get
+        {
+            return trap;
+        }
+
+        set
+        {
+            trap = value;
+        }
+    }
+
+    public int GoldAmount
+    {
+        get
+        {
+            return goldAmount;
+        }
+
+        set
+        {
+            goldAmount = value;
         }
     }
 }

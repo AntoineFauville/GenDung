@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Foe : Entities {
 
-	public Foe(float _maxHealth, string _name, Sprite _sprite)
+	public Foe(float _maxHealth, string _name, Sprite _sprite, RuntimeAnimatorController _animator)
     {
         base.MaxHealth = _maxHealth;
         base.Health = MaxHealth;
         base.Dead = false;
         base.Name = _name;
         base.EntitiesSprite = _sprite;
+        base.EntitiesAnimator = _animator;
     }
 
     public override void DeathOfEntities()

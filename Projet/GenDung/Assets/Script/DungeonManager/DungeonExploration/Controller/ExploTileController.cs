@@ -93,7 +93,6 @@ public class ExploTileController : MonoBehaviour {
 				if (!isAlreadyDiscovered)
 					    logT.AddLogLine ("Clicked on a Fight Room");
 				Debug.Log ("Clicked on a Fight Room");
-                    //fightRoom.LinkToRoom();
                     GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_FightController>().Explo_Room_Fight = (Explo_Room_Fight)Explo_GridController.Instance.Grid.ExploTiles[x, y].Room;
                     break;
 
@@ -107,7 +106,7 @@ public class ExploTileController : MonoBehaviour {
                         }
 				    }
 				Debug.Log ("Clicked on a Treasure Room");
-                    //GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_TreasureController>().Explo_Room_Treasure = (Explo_Room_Treasure)Explo_GridController.Instance.Grid.ExploTiles[x, y].Room;
+                    GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_TreasureController>().Explo_Room_Treasure = (Explo_Room_Treasure)Explo_GridController.Instance.Grid.ExploTiles[x, y].Room;
 
                     break;
 

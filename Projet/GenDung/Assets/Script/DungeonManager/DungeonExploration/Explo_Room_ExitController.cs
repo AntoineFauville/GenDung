@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Explo_ExitRoom : MonoBehaviour {
+public class Explo_Room_ExitController : MonoBehaviour {
 
-	private static Explo_ExitRoom instance;
+	private static Explo_Room_ExitController instance;
 	private GameObject endCanvas;
+    Explo_DungeonController explo_Dungeon;
 
 	LogGestionTool logT;
 
@@ -25,14 +26,15 @@ public class Explo_ExitRoom : MonoBehaviour {
 		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
 		endCanvas = GameObject.Find("CanvasEndExplo");
 		endCanvas.GetComponent<Canvas>().sortingOrder = 38;
-	}
+        explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
+    }
 
 	public void LinkToRoom()
 	{
 		endCanvas.GetComponent<Canvas>().sortingOrder += 40;// Pass the fightCanvas 
 		logT.AddLogLine("Leaving already ?");
 
-		GameObject.Find("TextEndDungeon").GetComponent<Text>().text = "You reached the end of the dungeon ! "+ '\n' + '\n' +  "You found nearby the end a treasure containing : " + GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().exploGold + " gold." + '\n' + '\n' + "What do you want to do now that you found the treasure ? ";
+		GameObject.Find("TextEndDungeon").GetComponent<Text>().text = "You reached the end of the dungeon ! "+ '\n' + '\n' +  "You found nearby the end a treasure containing : " + explo_Dungeon.Dungeon.Data.GoldGained + " gold." + '\n' + '\n' + "What do you want to do now that you found the treasure ? ";
 	}
 
 	public void ContinueExploration()
@@ -57,7 +59,7 @@ public class Explo_ExitRoom : MonoBehaviour {
         SceneManager.LoadScene("Map"); // load map
     }
 
-	public static Explo_ExitRoom Instance
+	public static Explo_Room_ExitController Instance
 	{
 		get
 		{

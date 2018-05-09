@@ -5,6 +5,7 @@ using UnityEngine;
 public class Explo_Room {
 
     int index;
+    Sprite background;
     Explo_Dungeon dungeon;
 
     public Explo_Room()
@@ -35,6 +36,19 @@ public class Explo_Room {
         set
         {
             dungeon = value;
+        }
+    }
+
+    public Sprite Background
+    {
+        get
+        {
+            return background;
+        }
+
+        set
+        {
+            background = value;
         }
     }
 }
