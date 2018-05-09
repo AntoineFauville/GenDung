@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Explo_FightRoom : MonoBehaviour
+public class Explo_Room_FightController : MonoBehaviour
 {
-    private static Explo_FightRoom instance;
+    private static Explo_Room_FightController instance;
 	private int roomRand;
     private GameObject combatCanvas;
     private GameObject combatUI;
@@ -69,9 +69,9 @@ public class Explo_FightRoom : MonoBehaviour
 
 			enemyPanelUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI"), GameObject.Find ("FightRoomUI/PanelBackground/PanelBackground2/FightPresentationsUI/PanelEnemies").transform) as GameObject;
 
-			enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Image> ().sprite = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].enemyIcon;
+            enemyPanelUI.transform.Find("IconMask/Icon").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.RoomData[GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>().roomImOn].enemyInRoom[i].enemyIcon;
 
-			if (GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].hasAnimation) 
+            if (GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].hasAnimation) 
 			{
 				enemyPanelUI.transform.Find ("IconMask/Icon").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.RoomData [GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().roomImOn].enemyInRoom [i].enemyAnimator;
 			}
@@ -128,7 +128,7 @@ public class Explo_FightRoom : MonoBehaviour
 
     /* Accessors Methods */
 
-    public static Explo_FightRoom Instance
+    public static Explo_Room_FightController Instance
     {
         get
         {

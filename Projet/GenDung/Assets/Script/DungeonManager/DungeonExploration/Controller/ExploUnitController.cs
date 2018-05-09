@@ -12,7 +12,7 @@ public class ExploUnitController : MonoBehaviour {
     private float remainingMovement = 1;
 
     private Explo_Range unitRange;
-    private Explo_FightRoom fightRoom;
+    private Explo_Room_FightController fightRoom;
 	private Explo_ExitRoom exitRoom;
 	private Explo_TresorRoom treasorRoom;
 
@@ -24,7 +24,7 @@ public class ExploUnitController : MonoBehaviour {
 
 		if (SceneManager.GetActiveScene().name != "ExploEditor") // On vérifie que la scene n'est pas l'editeur et que le placement pré-combat a été réalisé.
 		{
-        fightRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_FightRoom>();
+        fightRoom = GameObject.Find("ExploGridPrefab").GetComponent<Explo_Room_FightController>();
 		exitRoom = GameObject.Find("EndExploScripts").GetComponent<Explo_ExitRoom>();
 		treasorRoom = GameObject.Find("ExploScriptsTreasure").GetComponent<Explo_TresorRoom>();
 		}

@@ -9,9 +9,10 @@ public class Explo_Room_Fight : Explo_Room
     bool boss;
     bool overPowered;
 
-    public Explo_Room_Fight(int _index)
+    public Explo_Room_Fight(int _index, Explo_Dungeon _dungeon)
     {
         base.Index = _index;
+        base.Dungeon = _dungeon;
     }
 
     public Explo_Room_Fight(bool _boss, bool _overPowered)
@@ -27,7 +28,7 @@ public class Explo_Room_Fight : Explo_Room
         for (int i = 0; i < foesAmount; i++)
         {
             EnemyObject selectedFoePreset = foesPreset[Random.Range(0, foesPreset.Count)];
-            Foe createdFoe = new Foe(selectedFoePreset.health,selectedFoePreset.name);
+            Foe createdFoe = new Foe(selectedFoePreset.health,selectedFoePreset.name, selectedFoePreset.enemyIcon);
             foesList.Add(createdFoe);
             Debug.Log("Foe Created: " + createdFoe.Name);
         }

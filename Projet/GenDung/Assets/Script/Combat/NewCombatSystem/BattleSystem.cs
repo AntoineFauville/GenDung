@@ -377,7 +377,7 @@ public class BattleSystem : MonoBehaviour {
 		attackMode = false;
 
 		if (SceneManager.GetActiveScene ().name != "NewCombatTest") {
-			GameObject.Find ("ExploGridPrefab").GetComponent<Explo_FightRoom> ().CleanFinishedFightRoom ();
+			GameObject.Find ("ExploGridPrefab").GetComponent<Explo_Room_FightController> ().CleanFinishedFightRoom ();
 		} else {
 			SceneManager.LoadScene ("Init");
 		}

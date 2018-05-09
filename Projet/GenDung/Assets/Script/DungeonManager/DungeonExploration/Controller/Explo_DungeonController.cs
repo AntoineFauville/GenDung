@@ -19,7 +19,7 @@ public class Explo_DungeonController : MonoBehaviour {
         map = dontDestroyOnLoad.GetComponent<MapController>(); // reference to the MapController for DungeonIndex.
         dngLoader = dontDestroyOnLoad.GetComponent<DungeonLoader>(); // reference to the DungeonLoader for DungeonPreset.
         presetDungeon = dngLoader.exploDungeonList.explorationDungeons[map.dungeonIndex]; // Actual preset for the DungeonIndex.
-        saveData = dontDestroyOnLoad.GetComponent<SavingSystem>().gameData ;
+        saveData = dontDestroyOnLoad.GetComponent<SavingSystem>().gameData; // reference to the GameData Object contain in SavingSystem.
         // Populating Explo_Data model with previously loaded preset.
         dungeonData = new Explo_Data(presetDungeon.fightRoomAmount, presetDungeon.enemyMax, presetDungeon.enemiesList, presetDungeon.treasureRoomAmount, presetDungeon.chestGoldRewardMax, presetDungeon.percentage, presetDungeon.movTiles, presetDungeon.eeTiles);
         dungeon.Data = dungeonData; // Linking the Explo_dungeon and the Explo_data Models.
@@ -32,7 +32,7 @@ public class Explo_DungeonController : MonoBehaviour {
         {
             Player createdPlayer = new Player(saveData.SavedCharacterList[i].Health_PV,saveData.SavedCharacterList[i].ActionPoints_PA,saveData.SavedCharacterList[i].Name);
             dungeon.Data.Players.Add(createdPlayer);
-            Debug.Log("Created Player : " + Dungeon.Data.Players[i].Name + " with " + Dungeon.Data.Players[i].Health + " and " + Dungeon.Data.Players[i].ActionPoint);
+            Debug.Log("Created Player : " + Dungeon.Data.Players[i].Name + " with " + Dungeon.Data.Players[i].Health + " HP and " + Dungeon.Data.Players[i].ActionPoint + " PA ");
         }
     }
 

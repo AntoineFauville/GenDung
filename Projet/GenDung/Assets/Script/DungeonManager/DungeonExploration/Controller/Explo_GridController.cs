@@ -363,7 +363,7 @@ public class Explo_GridController : MonoBehaviour {
             emptyTilesList.RemoveAt(rnd);
 
             // Create a Explo_Room_Fight.
-            Explo_Room_Fight roomFight = new Explo_Room_Fight(f);
+            Explo_Room_Fight roomFight = new Explo_Room_Fight(f, explo_Dungeon.Dungeon);
 
             // Calculate number of Foes in this room between 1 and MaxAmountFoes value.
             int roomFoesAmount = Random.Range(1, explo_Dungeon.Dungeon.Data.MaxAmountFoes);
@@ -395,7 +395,7 @@ public class Explo_GridController : MonoBehaviour {
             emptyTilesList.RemoveAt(rnd);
 
             // Create an Explo_Room_Treasure.
-            Explo_Room_Treasure roomTreasure = new Explo_Room_Treasure();
+            Explo_Room_Treasure roomTreasure = new Explo_Room_Treasure(explo_Dungeon.Dungeon);
             // Define if this room is a Trap or a Treasure.
             roomTreasure.DefineTrap(explo_Dungeon.Dungeon.Data.TrapPercentage);
             // Add the newly created Room into Explo_Data.

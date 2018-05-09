@@ -8,9 +8,9 @@ public class Explo_Room_Treasure : Explo_Room {
     bool trap;
     int randomTarget;
 
-    public Explo_Room_Treasure()
+    public Explo_Room_Treasure(Explo_Dungeon _dungeon)
     {
-
+        base.Dungeon = _dungeon;
     }
 
     public Explo_Room_Treasure (int _goldAmount)
