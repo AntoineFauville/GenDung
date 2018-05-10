@@ -46,18 +46,25 @@ public class TavernController : MonoBehaviour {
         }
 
         //montre le nombre de gold que possede le joueur pour l'achat de upgrade
-        GameObject.Find("GoldTotalPlayerUp").GetComponent<Text>().text = "Your Gold : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
+        //GameObject.Find("GoldTotalPlayerUp").GetComponent<Text>().text = "Your Gold : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();
 
         //a faire ajouter l'index par rapport a la liste des personnages qu'on a selectionner
         //affiche l'image dans le panel en fonction du personnage selectionner avec le bouton
-        GameObject.Find("CharDisImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].TempSprite;
-        GameObject.Find("HistoryText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].story;
+        //GameObject.Find("CharDisImage").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].TempSprite;
+       // GameObject.Find("HistoryText").GetComponent<Text>().text = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].story;
 
 
 
 
         if (!DungeonLoader.Instance.DoOnceAllRelatedToUpgradeTavernPanel)
         {
+			//ajoute autour du feu les membres de l'équipe
+			for (int i = 0; i < GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam; i++) {
+				GameObject.Find("PersoTeamTaverne" + i).GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].TempSprite;
+				// + animator
+				GameObject.Find("PersoTeamTaverne" + i).GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i].persoAnimator;
+			}
+			/*
             //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement
             healthTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].Health_PV;
             actionTemp = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].ActionPoints_PA;
@@ -76,12 +83,9 @@ public class TavernController : MonoBehaviour {
             }
 
             //a ajouter pour chaque membre de l'équipe
-            //ajoute autour du feu les membres de l'équipe
-            GameObject.Find("PersoTeamTaverne1").GetComponent<Image>().sprite = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].TempSprite;
-            // + animator
-            GameObject.Find("PersoTeamTaverne1").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[0].persoAnimator;
+           */
         }
-
+		/*
         //stoque les valeurs du fichier de sauvegarde au niveau de la vie etc pour les modifiers localement
         //PV
         GameObject.Find("HealthText").GetComponent<Text>().text = "Character Health : " + healthTemp.ToString();
@@ -94,6 +98,7 @@ public class TavernController : MonoBehaviour {
 
         //Dist
         GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + distTemp.ToString();
+		*/
     }
 
     /* Accessors Method */
