@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class Explo_DataController : MonoBehaviour {
 
-    public int exploGold = 0;
+	public int exploGold = 0;
 	public DungeonData dungeonData;
-    Explo_DungeonController explo_Dungeon;
+	Explo_DungeonController explo_Dungeon;
 
 	int randOfEnemies;
 	int enemyRand;
@@ -18,21 +18,21 @@ public class Explo_DataController : MonoBehaviour {
 
 	public int roomImOn; // sended by the tile when walked to know which room i walked on
 
-    public void Start()
-    {
-    }
+	public void Start()
+	{
+	}
 
 	// Use this for initialization
-	public void StartEverything () { // This is done into the Explo_Room_FightController 
+	public void StartEverything () {
 
-        explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
+		explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
 
 
-        //returns the amount of fight room in the dungeon.
-        //amountOfFightRoom = dungeonData.amountOfFightRoomsInData;
-        amountOfFightRoom = explo_Dungeon.Dungeon.Data.FightRoomAmount;
+		//returns the amount of fight room in the dungeon.
+		//amountOfFightRoom = dungeonData.amountOfFightRoomsInData;
+		amountOfFightRoom = explo_Dungeon.Dungeon.Data.FightRoomAmount;
 
-		//print ("total amount of rooms : " + amountOfFightRoom);
+		print ("total amount of rooms : " + amountOfFightRoom);
 
 
 		//initialise the data value for the dungeon.
@@ -43,13 +43,13 @@ public class Explo_DataController : MonoBehaviour {
 			int dungeon = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ().dungeonIndex;
 			randOfEnemies = Random.Range (1, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemyMax);
 
-			//print ("room " + i + " has " + randOfEnemies + " enemies");
+			print ("room " + i + " has " + randOfEnemies + " enemies");
 
 			for (int j = 0; j < randOfEnemies; j++) {
 
 				GetRandEnemies (i, dungeon);
 
-				//print ("room " + i + " and contains the enemy : " + GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand]);
+				print ("room " + i + " and contains the enemy : " + GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand]);
 			}
 		}
 	}
@@ -76,16 +76,16 @@ public class Explo_DataController : MonoBehaviour {
 
 	}
 
-    public void ModifyGold(int value)
-    {
-        explo_Dungeon.Dungeon.Data.GoldGained += value;
+	public void ModifyGold(int value)
+	{
+		explo_Dungeon.Dungeon.Data.GoldGained += value;
 
-    }
+	}
 
-    public void SendToSave()
-    {
-        GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney += explo_Dungeon.Dungeon.Data.GoldGained;
-    }
+	public void SendToSave()
+	{
+		GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney += explo_Dungeon.Dungeon.Data.GoldGained;
+	}
 
 	void ClearDataTemporaryCharacter(){ // After BattleSystem Remake, can disappear
 		for (int i = 0; i < 4; i++) {
@@ -94,7 +94,7 @@ public class Explo_DataController : MonoBehaviour {
 	}
 
 	public void EnemyCalculEndDungeon(EnemyObject enemy){
-		
+
 		GameObject enemyPanelUI;
 
 		enemyPanelUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI"), GameObject.Find ("CanvasEndExplo/PanelEnemiesEnd").transform) as GameObject;

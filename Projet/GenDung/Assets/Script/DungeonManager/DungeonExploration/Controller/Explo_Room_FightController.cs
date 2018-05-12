@@ -176,7 +176,7 @@ public class Explo_Room_FightController : MonoBehaviour
         }
     }
 
-    public void SetFoes()
+    /*public void SetFoes()
     {
         for (int i = 0; i < explo_Room_Fight.MonstersAmount; i++)
         {
@@ -191,7 +191,7 @@ public class Explo_Room_FightController : MonoBehaviour
                 GameObject.Find(enemyString + i).transform.Find("EnemyBackground").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator;
             }
         }
-    }
+    }*/
 
    public void SetFighterIndex()
     {

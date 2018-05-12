@@ -10,7 +10,6 @@ public class LocalDataHolder : MonoBehaviour {
 	public bool dead;
 
 	public EnemyObject enemyObject;
-    Foe foe;
 
 	public Character characterObject;
 
@@ -40,21 +39,8 @@ public class LocalDataHolder : MonoBehaviour {
 	GameObject dontDestroyOnLoad;
 	Transform Background;
 
-    public Foe Foe
-    {
-        get
-        {
-            return foe;
-        }
-
-        set
-        {
-            foe = value;
-        }
-    }
-
-    // Use this for initialization
-    public void Initialize () {
+	// Use this for initialization
+	public void Initialize () {
 
 		scriptBattleHolder = GameObject.Find ("BattleSystem/ScriptBattle");
 		dontDestroyOnLoad = GameObject.Find ("DontDestroyOnLoad");
@@ -75,29 +61,29 @@ public class LocalDataHolder : MonoBehaviour {
 		//if at the start and the enemyObject and the character Object are empty, it means we are not been selected by the holy church.
 		//you need to die.
 
-		if (foe == null && characterObject == null) {
+		if (enemyObject == null && characterObject == null) {
 
 			print (this.gameObject.name + " has died, sorry");
 
 			this.gameObject.transform.SetParent (GameObject.Find("BackupInvocationsEnemies").transform);
 
 		} else {
-			
+
 			if(!player){
 				this.gameObject.transform.SetParent(GameObject.Find("EnemyPanelPlacement").transform);
 				Background.GetComponent<Image> ().sprite = enemyObject.enemyIcon;
 				maxHealth = enemyObject.health;
 				health = maxHealth;
 
-                this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
-            } else {
+				this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+			} else {
 				maxHealth = saveSystem.gameData.SavedCharacterList [localIndex].Health_PV;
 				health = explo_Data.dungeonData.TempFighterObject [localIndex].tempHealth;
 				Background.GetComponent<Image> ().sprite = characterObject.ICON;
-                this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+				this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
 
 
-                maxActionPointPlayer = characterObject.ActionPoints_PA;
+				maxActionPointPlayer = characterObject.ActionPoints_PA;
 				actionPointPlayer = maxActionPointPlayer;
 			}
 
@@ -108,9 +94,9 @@ public class LocalDataHolder : MonoBehaviour {
 	}
 
 	public void looseLife(int pv)
-    {
+	{
 		if(health > 0)
-        {
+		{
 			health += pv;
 		}
 
@@ -139,7 +125,7 @@ public class LocalDataHolder : MonoBehaviour {
 					BS.EndBattleAllPlayerDead();
 
 			} else {
-				
+
 				AddEnemyKilled (enemyObject);
 
 				BS.amountOfEnemiesLeft--;
@@ -172,7 +158,7 @@ public class LocalDataHolder : MonoBehaviour {
 		UiOrderObject.transform.Find ("BouleVerte").GetComponent<Image> ().enabled = trig;
 		UiOrderObject.transform.Find ("Scripts").GetComponent<UIOrderBattle> ().Selected (trig);
 	}
-	
+
 	public void UpdateLife()
 	{
 		transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
@@ -184,7 +170,7 @@ public class LocalDataHolder : MonoBehaviour {
 	}
 
 	public void AttackEnemy(){
-		
+
 		if (BS.attackMode) 
 		{
 			if (!BS.FighterList [fighterIndex].GetComponent<LocalDataHolder> ().player) 
@@ -263,7 +249,7 @@ public class LocalDataHolder : MonoBehaviour {
 	}
 
 	void DefineTargetIndex(SpellObject.SpellTargetType spellTargetType){
-		
+
 		if (spellTargetType == SpellObject.SpellTargetType.EnemySingle) {
 			indexFighterToAttack = fighterIndex;
 		} else if (spellTargetType == SpellObject.SpellTargetType.PlayerSingle) {
@@ -331,8 +317,8 @@ public class LocalDataHolder : MonoBehaviour {
 		Animator animExtra;
 		animExtra = BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Animator> ();
 
-        if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect)
-        {
+		if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect)
+		{
 			animExtra.Play(effect_Controller.effect_List[1]);
 
 			//DOTS
@@ -342,22 +328,22 @@ public class LocalDataHolder : MonoBehaviour {
 				AssignEffect (0); //0 = healing
 			}
 
-        } else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect)
-        {
+		} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect)
+		{
 
 			animExtra.Play(effect_Controller.effect_List[2]);
-            //BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+			//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
 
 			//DOTS
 			if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
-				
+
 			} else {
 				AssignEffect (1); //1 = poisoning
 			}
 
 		} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect)
 		{
-			
+
 			animExtra.Play(effect_Controller.effect_List[3]);
 			//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
 
@@ -370,10 +356,10 @@ public class LocalDataHolder : MonoBehaviour {
 
 		}else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.TemporaryLifed && playEffect)
 		{
-			
+
 			//DOTS
 			if (health >= maxHealth) {
-				
+
 			}else{
 				if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
 
@@ -383,10 +369,10 @@ public class LocalDataHolder : MonoBehaviour {
 			}
 
 		}
-        else if (!playEffect) {
+		else if (!playEffect) {
 			animExtra.Play(effect_Controller.effect_List[0]);
-       }
-    }
+		}
+	}
 
 	void ReduceFromActionPoint(){
 		BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().actionPointPlayer -= BS.SelectedSpellObject.spellCost;
