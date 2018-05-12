@@ -92,15 +92,15 @@ public class Explo_Room_FightController : MonoBehaviour
 		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
 
         /*[Others] */
-        saveSystem = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>();
-        explo_Data = GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>();
-        explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
-        map_Controller = GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>();
-        effect_Controller = GameObject.Find("DontDestroyOnLoad").GetComponent<EffectController>();
+        //saveSystem = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>();
+       // explo_Data = GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>();
+        //explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
+       // map_Controller = GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>();
+        //effect_Controller = GameObject.Find("DontDestroyOnLoad").GetComponent<EffectController>();
 
-        indicator_Battle = GameObject.Find("Pastille");
-        fighter_Panel = GameObject.Find("FighterPanel");
-        next_Button = GameObject.Find("NextPanel");
+        //indicator_Battle = GameObject.Find("Pastille");
+        //fighter_Panel = GameObject.Find("FighterPanel");
+       // next_Button = GameObject.Find("NextPanel");
 
     }
 
@@ -110,7 +110,7 @@ public class Explo_Room_FightController : MonoBehaviour
 
         combatCanvas.GetComponent<Canvas>().sortingOrder = 79;// Pass the fightCanvas 
 
-		for (int i = 0; i < explo_Room_Fight.FoesList.Count; i++) {
+		/*for (int i = 0; i < explo_Room_Fight.FoesList.Count; i++) {
 			
 			GameObject enemyPanelUI;
 
@@ -121,16 +121,16 @@ public class Explo_Room_FightController : MonoBehaviour
             if (explo_Room_Fight.FoesList[i].EntitiesAnimator != null)
                 enemyPanelUI.transform.Find("IconMask/Icon").GetComponent<Animator>().runtimeAnimatorController = explo_Room_Fight.FoesList[i].EntitiesAnimator;
 
-        }
+        }*/
 	}
 
     public void SetFightRoom()
     {
 
-		for (int i = 0; i < explo_Room_Fight.FoesList.Count ; i++) {
+		/*for (int i = 0; i < explo_Room_Fight.FoesList.Count ; i++) {
 
 			GameObject.Find ("EnemiesPanelUI(Clone)").SetActive (false);
-		}
+		}*/
 
 		logT.AddLogLine ("Let the fight begin");
 
@@ -147,14 +147,14 @@ public class Explo_Room_FightController : MonoBehaviour
         roomRand = Random.Range(0, explo_Room_Fight.Dungeon.Data.Rooms.Count);
         combatRoom.transform.Find("Canvas/Panel/background of the room").GetComponent<Image>().sprite = explo_Room_Fight.Background;
 
-        SetPlayers();
-        SetFoes();
-        SetFighterIndex();
-        SetArrow();
+       // SetPlayers();
+       // SetFoes();
+       // SetFighterIndex();
+       // SetArrow();
 
     }
 
-    public void SetPlayers()
+   public void SetPlayers()
     {
         for (int i = 0; i < explo_dungeon.Dungeon.Data.Players.Count; i++)
         {
@@ -193,7 +193,7 @@ public class Explo_Room_FightController : MonoBehaviour
         }
     }
 
-    public void SetFighterIndex()
+   public void SetFighterIndex()
     {
         FighterList = UnOrderedFighterList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
 

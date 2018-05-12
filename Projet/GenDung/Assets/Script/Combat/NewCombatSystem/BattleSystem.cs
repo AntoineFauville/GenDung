@@ -7,7 +7,6 @@ using System.Linq;
 
 public class BattleSystem : MonoBehaviour {
 
-
 	public int initialAmountOfPlayer;
 	public int amountOfPlayerLeft;
 	public SpellObject SelectedSpellObject;
@@ -55,9 +54,9 @@ public class BattleSystem : MonoBehaviour {
 	}
 
 	void Update ()
-    {
+	{
 		if (SelectedSpellObject != null)
-        {
+		{
 			if (SelectedSpellObject.spellCost > FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer && FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
 				attackMode = false;
 			}

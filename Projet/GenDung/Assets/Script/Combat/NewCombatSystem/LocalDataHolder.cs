@@ -101,7 +101,7 @@ public class LocalDataHolder : MonoBehaviour {
 				actionPointPlayer = maxActionPointPlayer;
 			}
 
-			transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
+			transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 
 			SetupUiOrderObject ();
 		}
@@ -175,7 +175,7 @@ public class LocalDataHolder : MonoBehaviour {
 	
 	public void UpdateLife()
 	{
-		transform.Find ("LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
+		transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 		UiOrderObject.transform.Find("PVOrderDisplay").GetComponent<Image> ().fillAmount = health / maxHealth;
 
 		if (player) {

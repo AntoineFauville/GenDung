@@ -37,11 +37,11 @@ public class Explo_Room_Fight : Explo_Room
             Debug.Log("Foe Created: " + createdFoe.Name);
         }
 
-        for (int i = 4; i > monstersAmount; i--)
+		/*for (int i = 4; i > foesAmount; i--)
         {
             GameObject foe_GO = GameObject.Find("BattleSystem/BattleSystem/EnemyPanelPlacement/Enemy " + i);
             foe_GO.transform.SetParent(GameObject.Find("BattleSystem/BattleSystem/BackupInvocationsEnemies").transform);
-        }
+        }*/
 
         Debug.Log("Populating of foesList has finished for room number " + base.Index + ", Thanks for waiting");
 
