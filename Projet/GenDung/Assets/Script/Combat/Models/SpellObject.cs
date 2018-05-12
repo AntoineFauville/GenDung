@@ -10,6 +10,7 @@ public class SpellObject : ScriptableObject {
     [Space(5)]
 
     public string spellName = "New Spell";
+	public string spellDescription;
     public int spellID;
 
     public Sprite spellIcon;

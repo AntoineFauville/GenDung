@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3914f40778436f344b5312d6c9386519
-timeCreated: 1525964536
+timeCreated: 1526139002
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -19,6 +19,8 @@ TextureImporter:
     21300024: Ecran Menu De droite donjon_12
     21300026: Ecran Menu De droite donjon_13
     21300028: Ecran Menu De droite donjon_14
+    21300030: Ecran Menu De droite donjon_15
+    21300032: Ecran Menu De droite donjon_16
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -301,6 +303,32 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 184, y: 156, z: 188, w: 157}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Ecran Menu De droite donjon_15
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 1485
+        width: 386
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Ecran Menu De droite donjon_16
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 1407
+        width: 390
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     outline: []
