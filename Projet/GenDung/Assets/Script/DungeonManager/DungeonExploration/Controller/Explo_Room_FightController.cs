@@ -208,7 +208,6 @@ public class Explo_Room_FightController : MonoBehaviour
         //hide the others and make the initializer work
         for (int i = 0; i < 4; i++)
         {
-            //GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Initialize();
             GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().Initialize();
         }
 

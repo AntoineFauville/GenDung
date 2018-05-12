@@ -34,6 +34,7 @@ public class LocalDataHolder : MonoBehaviour {
 	Explo_DataController explo_Data;
 	EffectController effect_Controller;
 	ProjectileManager projectile_Manager;
+	TextLooseLife_Controller tLL_Controller;
 
 	GameObject scriptBattleHolder;
 	GameObject dontDestroyOnLoad;
@@ -51,6 +52,8 @@ public class LocalDataHolder : MonoBehaviour {
 		BS = scriptBattleHolder.GetComponent<BattleSystem> ();
 		effect_Controller = dontDestroyOnLoad.GetComponent<EffectController> ();
 		projectile_Manager = scriptBattleHolder.GetComponent<ProjectileManager> ();
+
+		tLL_Controller = this.GetComponent<TextLooseLife_Controller> ();
 
 		if (!player) {
 			Background = this.transform.Find ("EnemyBackground");
@@ -135,6 +138,8 @@ public class LocalDataHolder : MonoBehaviour {
 		}
 
 		SetupUiOrderObject ();
+
+		tLL_Controller.lifeTextUp (pv);
 	}
 
 	public void SetupUiOrderObject () 
