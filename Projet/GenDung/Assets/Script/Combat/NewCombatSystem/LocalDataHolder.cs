@@ -59,7 +59,6 @@ public class LocalDataHolder : MonoBehaviour {
 			
 			if(!player){
 				this.gameObject.transform.SetParent(GameObject.Find("EnemyPanelPlacement").transform);
-                Debug.Log(this.GetComponent<LocalDataHolder>().foe.EntitiesSprite);
 				this.transform.Find("EnemyBackground").GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().foe.EntitiesSprite;
 				maxHealth = this.GetComponent<LocalDataHolder> ().foe.MaxHealth;
 				health = maxHealth;

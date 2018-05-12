@@ -23,7 +23,7 @@ public class Explo_Grid {
             }
         }
 
-        Debug.Log("Map has been created with " + (Width * Height) + " tiles.");
+        //Debug.Log("Map has been created with " + (Width * Height) + " tiles.");
     }
 
     public Explo_Tile GetTileAt(int _x, int _y)

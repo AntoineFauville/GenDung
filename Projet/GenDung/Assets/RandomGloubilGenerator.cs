@@ -32,7 +32,7 @@ public class RandomGloubilGenerator : MonoBehaviour {
 
 		gloubil = Random.Range (0, 16);
 
-		print (Gloubils[gloubil].ToString());
+		//print (Gloubils[gloubil].ToString());
 
 	}
 

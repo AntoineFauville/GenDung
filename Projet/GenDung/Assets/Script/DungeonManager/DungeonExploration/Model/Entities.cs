@@ -21,13 +21,14 @@ public class Entities {
 
     }
 
-    public Entities(float _maxHealth,int _initiative, string _name, Sprite _entitiesSprite, RuntimeAnimatorController _entitiesAnimator)
+    public Entities(float _maxHealth,int _initiative, string _name, GameObject _entitiesGO, Sprite _entitiesSprite, RuntimeAnimatorController _entitiesAnimator)
     {
         this.maxHealth = _maxHealth;
         health = maxHealth;
         this.initiative = _initiative;
         dead = false;
         this.name = _name;
+        this.entitiesGO = _entitiesGO;
         this.entitiesSprite = _entitiesSprite;
         this.entitiesAnimator = _entitiesAnimator;
     }
