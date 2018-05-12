@@ -23,7 +23,7 @@ public class Explo_DataController : MonoBehaviour {
     }
 
 	// Use this for initialization
-	public void StartEverything () {
+	public void StartEverything () { // This is done into the Explo_Room_FightController 
 
         explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
 
@@ -32,7 +32,7 @@ public class Explo_DataController : MonoBehaviour {
         //amountOfFightRoom = dungeonData.amountOfFightRoomsInData;
         amountOfFightRoom = explo_Dungeon.Dungeon.Data.FightRoomAmount;
 
-		print ("total amount of rooms : " + amountOfFightRoom);
+		//print ("total amount of rooms : " + amountOfFightRoom);
 
 
 		//initialise the data value for the dungeon.
@@ -43,13 +43,13 @@ public class Explo_DataController : MonoBehaviour {
 			int dungeon = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ().dungeonIndex;
 			randOfEnemies = Random.Range (1, GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemyMax);
 
-			print ("room " + i + " has " + randOfEnemies + " enemies");
+			//print ("room " + i + " has " + randOfEnemies + " enemies");
 
 			for (int j = 0; j < randOfEnemies; j++) {
 
 				GetRandEnemies (i, dungeon);
 
-				print ("room " + i + " and contains the enemy : " + GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand]);
+				//print ("room " + i + " and contains the enemy : " + GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().exploDungeonList.explorationDungeons [dungeon].enemiesList [enemyRand]);
 			}
 		}
 	}

@@ -7,6 +7,7 @@ using System.Linq;
 
 public class BattleSystem : MonoBehaviour {
 
+
 	public int initialAmountOfPlayer;
 	public int amountOfPlayerLeft;
 	public SpellObject SelectedSpellObject;

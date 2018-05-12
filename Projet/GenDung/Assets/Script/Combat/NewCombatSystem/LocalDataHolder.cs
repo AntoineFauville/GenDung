@@ -10,6 +10,7 @@ public class LocalDataHolder : MonoBehaviour {
 	public bool dead;
 
 	public EnemyObject enemyObject;
+    Foe foe;
 
 	public Character characterObject;
 
@@ -39,8 +40,21 @@ public class LocalDataHolder : MonoBehaviour {
 	GameObject dontDestroyOnLoad;
 	Transform Background;
 
-	// Use this for initialization
-	public void Initialize () {
+    public Foe Foe
+    {
+        get
+        {
+            return foe;
+        }
+
+        set
+        {
+            foe = value;
+        }
+    }
+
+    // Use this for initialization
+    public void Initialize () {
 
 		scriptBattleHolder = GameObject.Find ("BattleSystem/ScriptBattle");
 		dontDestroyOnLoad = GameObject.Find ("DontDestroyOnLoad");
@@ -61,7 +75,7 @@ public class LocalDataHolder : MonoBehaviour {
 		//if at the start and the enemyObject and the character Object are empty, it means we are not been selected by the holy church.
 		//you need to die.
 
-		if (enemyObject == null && characterObject == null) {
+		if (foe == null && characterObject == null) {
 
 			print (this.gameObject.name + " has died, sorry");
 
