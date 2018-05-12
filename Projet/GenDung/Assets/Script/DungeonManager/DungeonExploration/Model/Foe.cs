@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Foe : Entities {
 
-	public Foe(float _maxHealth, string _name, Sprite _sprite, RuntimeAnimatorController _animator)
+	public Foe(float _maxHealth, int _initiative, string _name, Sprite _sprite, RuntimeAnimatorController _animator)
     {
         base.MaxHealth = _maxHealth;
         base.Health = MaxHealth;
+        base.Initiative = _initiative;
         base.Dead = false;
         base.Name = _name;
         base.EntitiesSprite = _sprite;

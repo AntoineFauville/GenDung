@@ -23,7 +23,7 @@ public class Explo_DataController : MonoBehaviour {
     }
 
 	// Use this for initialization
-	public void StartEverything () {
+	public void StartEverything () { // This is done into the Explo_Room_FightController 
 
         explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
 

@@ -33,7 +33,8 @@ public class BattleSystem : MonoBehaviour {
 
 	SavingSystem saveSystem;
 	Explo_DataController explo_Data;
-	MapController map_Controller;
+    Explo_DungeonController explo_Dungeon;
+    MapController map_Controller;
 	EffectController effect_Controller;
 
 	GameObject indicator_Battle;
@@ -44,17 +45,18 @@ public class BattleSystem : MonoBehaviour {
 	public void ResetFightStart (int roomImIn) {
 		Links ();
 		HideShowNext (true);
-		SetupPlayers ();
-		SetupEnemies (roomImIn);
-		SetFighterIndex ();
-		SetArrow ();
-		SetupFighterPanel ();
-		SetupFirstTurnAsEnemy ();
+		//SetupPlayers ();
+		//SetupEnemies (roomImIn);
+		//SetFighterIndex ();
+		//SetArrow ();
+		//SetupFighterPanel ();
+		//SetupFirstTurnAsEnemy ();
 	}
 
 	void Links(){
 		saveSystem = GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ();
 		explo_Data = GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ();
+        explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
 		map_Controller = GameObject.Find ("DontDestroyOnLoad").GetComponent<MapController> ();
 		effect_Controller = GameObject.Find ("DontDestroyOnLoad").GetComponent<EffectController> ();
 
@@ -136,7 +138,7 @@ public class BattleSystem : MonoBehaviour {
 
 	void SetupEnemies(int roomNumber)
 	{
-		amountOfEnemies =  GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.RoomData[roomNumber].enemyInRoom.Count;
+		//amountOfEnemies =  GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController>().dungeonData.RoomData[roomNumber].enemyInRoom.Count;
 
 		amountOfEnemies =  explo_Data.dungeonData.RoomData[roomNumber].enemyInRoom.Count;
 		amountOfEnemiesLeft = amountOfEnemies;

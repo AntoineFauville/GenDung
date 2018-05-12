@@ -348,7 +348,7 @@ public class Explo_GridController : MonoBehaviour {
 		//send info to dungeon controller data
 
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().dungeonData.amountOfFightRoomsInData = fightRoomAmount;
-		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().SoftStart ();
+		GameObject.Find ("DontDestroyOnLoad").GetComponent<Explo_DataController> ().SoftStart (); // Antoine's way to link Explo_Fight_Room
 
 		//logT.AddLogLine ("Fight room : 0 / " + fightRoomAmount);
 

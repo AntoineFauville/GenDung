@@ -10,6 +10,7 @@ public class LocalDataHolder : MonoBehaviour {
 	public bool dead;
 
 	public EnemyObject enemyObject;
+    Foe foe;
 
 	public Character characterObject;
 
@@ -29,13 +30,26 @@ public class LocalDataHolder : MonoBehaviour {
 
 	private Status status;
 
-	// Use this for initialization
-	public void Initialize () {
+    public Foe Foe
+    {
+        get
+        {
+            return foe;
+        }
+
+        set
+        {
+            foe = value;
+        }
+    }
+
+    // Use this for initialization
+    public void Initialize () {
 
 		//if at the start and the enemyObject and the character Object are empty, it means we are not been selected by the holy church.
 		//you need to die.
 
-		if (enemyObject == null && characterObject == null) {
+		if (foe == null && characterObject == null) {
 
 			print (this.gameObject.name + " has died, sorry");
 
@@ -45,8 +59,9 @@ public class LocalDataHolder : MonoBehaviour {
 			
 			if(!player){
 				this.gameObject.transform.SetParent(GameObject.Find("EnemyPanelPlacement").transform);
-				this.transform.Find("EnemyBackground").GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
-				maxHealth = this.GetComponent<LocalDataHolder> ().enemyObject.health;
+                Debug.Log(this.GetComponent<LocalDataHolder>().foe.EntitiesSprite);
+				this.transform.Find("EnemyBackground").GetComponent<Image> ().sprite = this.GetComponent<LocalDataHolder> ().foe.EntitiesSprite;
+				maxHealth = this.GetComponent<LocalDataHolder> ().foe.MaxHealth;
 				health = maxHealth;
 
                 this.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
@@ -121,9 +136,9 @@ public class LocalDataHolder : MonoBehaviour {
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + health.ToString() + " / " + this.GetComponent<LocalDataHolder> ().characterObject.Health_PV.ToString();
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "PA = " + actionPointPlayer.ToString() + " / " + this.GetComponent<LocalDataHolder> ().characterObject.ActionPoints_PA.ToString();
 		} else {
-			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = this.GetComponent<LocalDataHolder> ().enemyObject.enemyIcon;
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = this.GetComponent<LocalDataHolder> ().enemyObject.enemyName.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + health.ToString() + " / " + this.GetComponent<LocalDataHolder> ().enemyObject.health.ToString();
+			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = this.GetComponent<LocalDataHolder> ().foe.EntitiesSprite;
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = this.GetComponent<LocalDataHolder> ().foe.Name.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + health.ToString() + " / " + this.GetComponent<LocalDataHolder> ().foe.Health.ToString();
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().enabled = false;
 		}
 
