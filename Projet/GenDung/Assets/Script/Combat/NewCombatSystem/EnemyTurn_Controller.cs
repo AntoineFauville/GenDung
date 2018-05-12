@@ -15,6 +15,9 @@ public class EnemyTurn_Controller : MonoBehaviour {
 	GameObject actualEnemyPlaying;
 	GameObject fighterToAttack;
 
+	int criticalChances = 10;
+	bool critic;
+
 	// Use this for initialization
 	void Start () {
 		scriptBattleHolder = GameObject.Find ("BattleSystem/ScriptBattle");
@@ -89,8 +92,13 @@ public class EnemyTurn_Controller : MonoBehaviour {
 			}
 		}
 
-		fighterToAttack.GetComponent<LocalDataHolder> ().looseLife (-actualEnemyPlaying.GetComponent<LocalDataHolder>().enemyObject.atk);
+		int chances = Random.Range (0, 100);
 
+		if (criticalChances >= chances) {
+			fighterToAttack.GetComponent<LocalDataHolder> ().looseLife (-actualEnemyPlaying.GetComponent<LocalDataHolder> ().enemyObject.atk * 1.5f, true);
+		} else {
+			fighterToAttack.GetComponent<LocalDataHolder> ().looseLife (-actualEnemyPlaying.GetComponent<LocalDataHolder> ().enemyObject.atk, false);
+		}
 	}
 
 	public IEnumerator slowEnemyTurn(){

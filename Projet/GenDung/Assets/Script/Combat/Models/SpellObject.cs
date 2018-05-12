@@ -46,4 +46,7 @@ public class SpellObject : ScriptableObject {
 
 	public enum SpellTargetEffectAppearing { None, Spike, Roots, ProjectileVic }; 
 	public SpellTargetEffectAppearing spellTargetEffectAppearing;
+
+	public int chancesOfMiss = 10;
+	public int chancesOfCrit = 20;
 }

@@ -23,23 +23,30 @@ public class LifeBar_Controller : MonoBehaviour {
 
 	float minX, maxX, minY, maxY;
 
+	public bool IsThisUIBattleOrderDisplay;
+
 	void start(){
-		this.GetComponent<RectTransform>().anchoredPosition = new Vector2 (initialX,initialY);
+		if(!IsThisUIBattleOrderDisplay)
+			this.GetComponent<RectTransform>().anchoredPosition = new Vector2 (initialX,initialY);
 	}
 
 	void Update(){
 		lifeAmount = LifeBar.GetComponent<Image> ().fillAmount;
 
 		if (lifeAmount < lifeYellowAmount && !updating) {
-			GetRandomShake ();
+			if (!IsThisUIBattleOrderDisplay) {
+				GetRandomShake ();
+			}
 			StartCoroutine (updateLifeBar());
 		}
 
 		if (lifeYellowAmount < lifeAmount) {
 			lifeYellowAmount = lifeAmount;
 			updating = false;
-			shake = false;
-			this.GetComponent<RectTransform>().anchoredPosition = new Vector2 (initialX,initialY);
+			if (!IsThisUIBattleOrderDisplay) {
+				shake = false;
+				this.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (initialX, initialY);
+			}
 		}
 
 		if (updating) {

@@ -25,6 +25,30 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 		explo_Data = dontDestroyOnLoad.GetComponent<Explo_DataController> ();
 		effect_Controller = dontDestroyOnLoad.GetComponent<EffectController> ();
 	}
+
+	public void DisplayUIToolTip(){
+
+		int amountOfEffectsToDisplay;
+
+		BS.FighterList [BS.actuallyPlaying].GetComponent<ToolTipStatus_Controller> ().RemoveEffect ();
+
+		if (BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+			//max
+			amountOfEffectsToDisplay = explo_Data.dungeonData.TempFighterObject [BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus.Count;
+		} else {
+			amountOfEffectsToDisplay = explo_Data.dungeonData.TempFighterObject [BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus.Count;
+		}
+		for (int i = 0; i < amountOfEffectsToDisplay; i++) 
+		{
+			if (BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().player) 
+			{
+				BS.FighterList [BS.actuallyPlaying].GetComponent<ToolTipStatus_Controller> ().AddEffectToUI (explo_Data.dungeonData.TempFighterObject [BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex].playerStatus [i]);
+			} else {
+				BS.FighterList [BS.actuallyPlaying].GetComponent<ToolTipStatus_Controller> ().AddEffectToUI (explo_Data.dungeonData.TempFighterObject [BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().localIndex + 4].playerStatus [i]);
+			}
+		}
+
+	}
 	
 	public void ManageStatusEffects (){
 
@@ -45,6 +69,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 			StartCoroutine (waitForEffectEndedStartOfTurn (maxEffects));
 		}else {
 			BS.ContinueFightAfterEffect ();
+			DisplayUIToolTip ();
 		}
 	}
 
@@ -95,7 +120,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				}
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
-				actualFighter.GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				actualFighter.GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage, false);
 				PS.statusTurnLeft--;
 
 				//check from what type of status it is
@@ -108,7 +133,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				yield return new WaitForSeconds (1.0f);
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
-				actualFighter.GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage);
+				actualFighter.GetComponent<LocalDataHolder> ().looseLife (PS.statusDamage, false);
 				PS.statusTurnLeft--;
 			} else if (PS.statusType == Status.StatusType.Spike) {
 				print ("i'm spanking you");
@@ -134,10 +159,10 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				}
 
 				//do the damages to the one affected by the effect, which is the guy playing in this case.
-				actualFighter.GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				actualFighter.GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage, false);
 				PS.statusTurnLeft--;
 			} else if (PS.statusType == Status.StatusType.TemporaryLifed) {
-				actualFighter.GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage);
+				actualFighter.GetComponent<LocalDataHolder> ().looseLife (-PS.statusDamage, false);
 				PS.statusTurnLeft--;
 			}
 		}
@@ -177,6 +202,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				StartCoroutine (waitForEffectEndedStartOfTurn (index));
 			} else {
 				BS.ContinueFightAfterEffect ();
+				DisplayUIToolTip ();
 			}
 		}
 	}

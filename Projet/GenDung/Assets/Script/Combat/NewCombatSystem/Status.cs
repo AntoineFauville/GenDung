@@ -11,4 +11,6 @@ public class Status {
 	public StatusType statusType;
 
 	public int statusTurnLeft;
+
+	public Sprite Icon;
 }

@@ -13,9 +13,16 @@ public class LifeShower_Controller : MonoBehaviour {
 
 	}
 
+	public void ExtraScaleForCrit(bool crit){
+		if (crit) {
+			min = 5.0f;
+			this.GetComponent<RectTransform> ().localScale = new Vector3 (min,min,1.0f);
+		}
+	}
+
 	void Update () {
 		if (min > 1) {
-			min -= 0.05f;
+			min -= 0.03f;
 		} else {
 			min = 1.0f;
 		}

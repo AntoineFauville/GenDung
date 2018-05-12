@@ -10,4 +10,6 @@ public class PlayerStatus : ScriptableObject {
 
     public string statusName;
     public int statusDamage;
+
+	public Sprite Icon;
 }

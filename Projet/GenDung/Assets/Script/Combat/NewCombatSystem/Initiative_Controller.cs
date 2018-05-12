@@ -36,6 +36,7 @@ public class Initiative_Controller : MonoBehaviour {
 			UiBattleDisplay = Instantiate(Resources.Load("UI_Interface/UIBattleOrderDisplay"), GameObject.Find ("OrderBattlePanel").transform) as GameObject;
 
 			BS.FighterList [i].GetComponent<LocalDataHolder> ().UiOrderObject = UiBattleDisplay;
+			BS.FighterList [i].GetComponent<ToolTipStatus_Controller> ().start ();
 		}
 
 		//hide the others and make the initializer work

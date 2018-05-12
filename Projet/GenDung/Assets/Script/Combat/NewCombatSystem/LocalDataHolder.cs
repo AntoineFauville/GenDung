@@ -26,6 +26,7 @@ public class LocalDataHolder : MonoBehaviour {
 	public GameObject UiOrderObject;
 
 	public bool AttackContinue;
+	public bool criticalHit;
 
 	private Status status;
 
@@ -53,7 +54,9 @@ public class LocalDataHolder : MonoBehaviour {
 		effect_Controller = dontDestroyOnLoad.GetComponent<EffectController> ();
 		projectile_Manager = scriptBattleHolder.GetComponent<ProjectileManager> ();
 
+
 		tLL_Controller = this.GetComponent<TextLooseLife_Controller> ();
+
 
 		if (!player) {
 			Background = this.transform.Find ("EnemyBackground");
@@ -96,11 +99,14 @@ public class LocalDataHolder : MonoBehaviour {
 		}
 	}
 
-	public void looseLife(int pv)
+	public void looseLife(float pv, bool crit)
 	{
+		int HP;
+		HP = (int)Mathf.Round (pv);
+
 		if(health > 0)
 		{
-			health += pv;
+			health += HP;
 		}
 
 		if (health <= 0) {
@@ -139,7 +145,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 		SetupUiOrderObject ();
 
-		tLL_Controller.lifeTextUp (pv);
+		tLL_Controller.lifeTextUp (HP, crit);
 	}
 
 	public void SetupUiOrderObject () 
@@ -147,12 +153,12 @@ public class LocalDataHolder : MonoBehaviour {
 		if(player){
 			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = characterObject.ICON;
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = characterObject.Name.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + health.ToString() + " / " + characterObject.Health_PV.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "PA = " + actionPointPlayer.ToString() + " / " + characterObject.ActionPoints_PA.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + characterObject.Health_PV.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "AP = " + actionPointPlayer.ToString() + " / " + characterObject.ActionPoints_PA.ToString();
 		} else {
 			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = enemyObject.enemyIcon;
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = enemyObject.enemyName.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "PV = " + health.ToString() + " / " + enemyObject.health.ToString();
+			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + enemyObject.health.ToString();
 			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().enabled = false;
 		}
 
@@ -167,7 +173,7 @@ public class LocalDataHolder : MonoBehaviour {
 	public void UpdateLife()
 	{
 		transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
-		UiOrderObject.transform.Find("PVOrderDisplay").GetComponent<Image> ().fillAmount = health / maxHealth;
+		UiOrderObject.transform.Find("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 
 		if (player) {
 			explo_Data.dungeonData.TempFighterObject [localIndex].tempHealth = health;
@@ -239,11 +245,19 @@ public class LocalDataHolder : MonoBehaviour {
 		print (spellLogicType);
 
 		if (spellLogicType == SpellObject.SpellLogicType.Damage) {
-			BS.FighterList[indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage);
+			if (criticalHit) {
+				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage * 1.5f, true);
+			} else {
+				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage, false);
+			}
 		}
 
 		else if (spellLogicType == SpellObject.SpellLogicType.Heal) {
-			BS.FighterList[indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage);
+			if (criticalHit) {
+				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage * 1.5f, true);
+			} else {
+				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage, false);
+			}
 		}
 
 
@@ -251,6 +265,8 @@ public class LocalDataHolder : MonoBehaviour {
 		if (health > maxHealth) {
 			health = maxHealth;
 		}
+
+		criticalHit = false;
 	}
 
 	void DefineTargetIndex(SpellObject.SpellTargetType spellTargetType){
@@ -269,6 +285,7 @@ public class LocalDataHolder : MonoBehaviour {
 		status.statusName = effect_Controller.AllStatus [index].statusName;
 		status.statusDamage = effect_Controller.AllStatus [index].statusDamage;
 		status.statusTurnLeft = (int)BS.SelectedSpellObject.spellOccurenceType;
+		status.Icon = effect_Controller.AllStatus [index].Icon;
 
 		print (status.statusName + " " + status.statusDamage + " " + " " + status.statusTurnLeft);
 
@@ -289,6 +306,8 @@ public class LocalDataHolder : MonoBehaviour {
 		} else {
 			explo_Data.dungeonData.TempFighterObject [localIndex+4].playerStatus.Add (status);
 		}
+
+		BS.FighterList [indexFighterToAttack].GetComponent<ToolTipStatus_Controller> ().AddEffectToUI (status);
 
 
 	}
@@ -381,14 +400,18 @@ public class LocalDataHolder : MonoBehaviour {
 
 	void ReduceFromActionPoint(){
 		BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().actionPointPlayer -= BS.SelectedSpellObject.spellCost;
-
+		BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().SetupUiOrderObject ();
 	}
 
 	void CalculChances(){
 
 		int randChancesToHit = Random.Range (0, 100);
+		int randChancesToCrit = Random.Range (0, 100);
 
-		if (randChancesToHit >= 10) {
+		if (randChancesToHit >= BS.SelectedSpellObject.chancesOfMiss) {
+			if (randChancesToCrit <= BS.SelectedSpellObject.chancesOfCrit) {
+				criticalHit = true;
+			}
 			AttackContinue = true;
 		} else {
 			print ("missed");
