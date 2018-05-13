@@ -31,7 +31,7 @@ public class AnimatedText : MonoBehaviour
 	public void ResetText(){
 		if (!AnimDone) {
 			AnimDone = true;
-			textComp.text = "";
+			textComp.text = null;
 			StartCoroutine (TypeText ());
 		}	
 	}
