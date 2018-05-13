@@ -18,6 +18,19 @@ public class SpellPropreties : MonoBehaviour {
 		spellHolder_Controller = scriptBattleHolder.GetComponent<SpellHolder_Controller> ();
 	}
 
+	public void IndicatorIndex(int index){
+		for (int i = 0; i < 3; i++) {
+			GameObject.Find ("IndicatorSpell" + i).GetComponent<Animator> ().Play ("SpellIndicatorRotationIdle");
+		}
+		GameObject.Find ("IndicatorSpell" + index).GetComponent<Animator> ().Play ("SpellIndicatorRotation");
+	}
+
+	public void HideIndicator(){
+		for (int i = 0; i < 3; i++) {
+			GameObject.Find ("IndicatorSpell" + i).GetComponent<Animator> ().Play ("SpellIndicatorRotationIdle");
+		}
+	}
+
 	public void attackEnemy(){
 		print ("I'll be attacking with spell " + spellObject.spellName);
 
@@ -71,6 +84,8 @@ public class SpellPropreties : MonoBehaviour {
 
 	public void clickAway(){
 		AttackMode (false);
+
+		HideIndicator ();
 
 		//make sure for the enemies to not show if they are not dead the fact that you can click on them
 		for (int i = 0; i < BS.FighterList.Count; i++) {

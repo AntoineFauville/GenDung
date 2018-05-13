@@ -61,6 +61,7 @@ public class EnemySetup_Controller : MonoBehaviour {
 
 			if (GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject.hasAnimation) {
 				GameObject.Find (enemyString + i).transform.Find("EnemyBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (enemyString + i).GetComponent<LocalDataHolder> ().enemyObject.enemyAnimator;
+				GameObject.Find (enemyString + i).transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 			}
 		}
 	}
