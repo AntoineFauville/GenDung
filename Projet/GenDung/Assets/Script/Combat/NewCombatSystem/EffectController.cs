@@ -16,5 +16,6 @@ public class EffectController : MonoBehaviour {
 		effect_List.Add ("Effect_Spikey"); //3
 		effect_List.Add ("Effect_Rooted"); //4 
 		effect_List.Add ("Effect_Projectile"); //5
+		effect_List.Add ("Effect_Blood");//6
 	}
 }

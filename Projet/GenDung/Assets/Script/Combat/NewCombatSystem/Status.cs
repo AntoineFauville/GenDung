@@ -7,7 +7,7 @@ public class Status {
 	public string statusName;
 	public int statusDamage;
 
-	public enum StatusType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike };
+	public enum StatusType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike, blood1 };
 	public StatusType statusType;
 
 	public int statusTurnLeft;

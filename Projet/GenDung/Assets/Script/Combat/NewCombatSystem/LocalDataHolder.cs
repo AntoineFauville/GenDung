@@ -330,6 +330,10 @@ public class LocalDataHolder : MonoBehaviour {
 		{
 			projectile_Manager.LaunchProjectile (BS.FighterList[BS.actuallyPlaying].transform,BS.FighterList[indexFighterToAttack].transform);
 		}
+		else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Blood1 && playEffect)
+		{
+			anim.Play(effect_Controller.effect_List[6]);
+		}
 		else if (!playEffect) 
 		{
 			anim.Play(effect_Controller.effect_List[0]);
