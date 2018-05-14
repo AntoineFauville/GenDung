@@ -79,14 +79,18 @@ public class BattleSystem : MonoBehaviour {
 
 		attackMode = false;
 
-		SceneManager.LoadScene ("Map");
+        SelectedSpellObject = null;
+
+        SceneManager.LoadScene ("Map");
 	}
 
 	public void EndBattleAllMonsterDead () {
 
 		attackMode = false;
 
-		if (SceneManager.GetActiveScene ().name != "NewCombatTest") {
+        SelectedSpellObject = null;
+
+        if (SceneManager.GetActiveScene ().name != "NewCombatTest") {
 			GameObject.Find ("ExploGridPrefab").GetComponent<Explo_Room_FightController> ().CleanFinishedFightRoom ();
 		} else {
 			SceneManager.LoadScene ("Init");
