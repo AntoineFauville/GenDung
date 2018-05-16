@@ -429,13 +429,25 @@ public class LocalDataHolder : MonoBehaviour {
 
 	void AnimFeedbackEnemy(SpellObject.SpellTargetType spellTarget, bool on){
 
-		Animator EnemyAnimator = this.transform.Find ("EnemyBackground").GetComponent<Animator> ();
+		if (player) {
+			Animator EnemyAnimator = Background.GetComponent<Animator> ();
 
-		if (spellTarget == SpellObject.SpellTargetType.EnemySingle) {
-			if (on) {
-				EnemyAnimator.Play ("DamageMonster");
-			} else {
-				EnemyAnimator.Play ("IdleMonster");
+			if (spellTarget == SpellObject.SpellTargetType.EnemySingle) {
+				if (on) {
+					EnemyAnimator.Play ("Attacked");
+				} else {
+					EnemyAnimator.Play ("Idle");
+				}
+			}
+		} else {
+			Animator EnemyAnimator = Background.GetComponent<Animator> ();
+
+			if (spellTarget == SpellObject.SpellTargetType.EnemySingle) {
+				if (on) {
+					EnemyAnimator.Play ("DamageMonster");
+				} else {
+					EnemyAnimator.Play ("IdleMonster");
+				}
 			}
 		}
 	}
