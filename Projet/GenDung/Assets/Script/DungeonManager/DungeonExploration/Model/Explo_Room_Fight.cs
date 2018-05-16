@@ -32,6 +32,7 @@ public class Explo_Room_Fight : Explo_Room
             GameObject foe_GO = GameObject.Find("BattleSystem/BattleSystem/EnemyPanelPlacement/Enemy " + i);
 
             Foe createdFoe = new Foe(selectedFoePreset.health, selectedFoePreset.initiative, selectedFoePreset.name, foe_GO, selectedFoePreset.enemyIcon, selectedFoePreset.enemyAnimator);
+
             createdFoe.InitializeVisual();
             foesList.Add(createdFoe);
             Debug.Log("Foe Created: " + createdFoe.Name);

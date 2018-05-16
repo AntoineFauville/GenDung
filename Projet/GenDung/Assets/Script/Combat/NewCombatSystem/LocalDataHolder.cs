@@ -10,7 +10,7 @@ public class LocalDataHolder : MonoBehaviour {
 	public bool dead;
 
 	public EnemyObject enemyObject;
-
+    Foe foe;
 	public Character characterObject;
 
 	public float maxHealth;
@@ -41,8 +41,8 @@ public class LocalDataHolder : MonoBehaviour {
 	GameObject dontDestroyOnLoad;
 	Transform Background;
 
-	// Use this for initialization
-	public void Initialize () {
+    // Use this for initialization
+    public void Initialize () {
 
 		scriptBattleHolder = GameObject.Find ("BattleSystem/ScriptBattle");
 		dontDestroyOnLoad = GameObject.Find ("DontDestroyOnLoad");
@@ -497,4 +497,17 @@ public class LocalDataHolder : MonoBehaviour {
 			yield return new WaitForSeconds (0.5f);
 		}
 	}
+
+    public Foe Foe
+    {
+        get
+        {
+            return foe;
+        }
+
+        set
+        {
+            foe = value;
+        }
+    }
 }
