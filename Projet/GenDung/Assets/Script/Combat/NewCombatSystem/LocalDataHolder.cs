@@ -12,6 +12,7 @@ public class LocalDataHolder : MonoBehaviour {
 	public EnemyObject enemyObject;
     Foe foe;
 	public Character characterObject;
+    Player playerModel;
 
 	public float maxHealth;
 	public float health;
@@ -150,30 +151,30 @@ public class LocalDataHolder : MonoBehaviour {
 
 	public void SetupUiOrderObject () 
 	{
-		if(player){
-			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = characterObject.ICON;
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = characterObject.Name.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + characterObject.Health_PV.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "AP = " + actionPointPlayer.ToString() + " / " + characterObject.ActionPoints_PA.ToString();
-		} else {
-			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = enemyObject.enemyIcon;
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = enemyObject.enemyName.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + enemyObject.health.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().enabled = false;
-		}
+		//if(player){
+		//	UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = characterObject.ICON;
+		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = characterObject.Name.ToString();
+		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + characterObject.Health_PV.ToString();
+		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "AP = " + actionPointPlayer.ToString() + " / " + characterObject.ActionPoints_PA.ToString();
+		//} else {
+		//	UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = enemyObject.enemyIcon;
+		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = enemyObject.enemyName.ToString();
+		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + enemyObject.health.ToString();
+		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().enabled = false;
+		//}
 
 		UpdateLife ();
 	}
 
 	public void UpdateUiOrderOrder (bool trig) {
-		UiOrderObject.transform.Find ("BouleVerte").GetComponent<Image> ().enabled = trig;
-		UiOrderObject.transform.Find ("Scripts").GetComponent<UIOrderBattle> ().Selected (trig);
+		//UiOrderObject.transform.Find ("BouleVerte").GetComponent<Image> ().enabled = trig;
+		//UiOrderObject.transform.Find ("Scripts").GetComponent<UIOrderBattle> ().Selected (trig);
 	}
 
 	public void UpdateLife()
 	{
 		transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
-		UiOrderObject.transform.Find("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
+		//UiOrderObject.transform.Find("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 
 		if (player) {
 			explo_Data.dungeonData.TempFighterObject [localIndex].tempHealth = health;
@@ -508,6 +509,19 @@ public class LocalDataHolder : MonoBehaviour {
         set
         {
             foe = value;
+        }
+    }
+
+    public Player PlayerModel
+    {
+        get
+        {
+            return playerModel;
+        }
+
+        set
+        {
+            playerModel = value;
         }
     }
 }

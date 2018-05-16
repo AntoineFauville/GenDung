@@ -27,8 +27,7 @@ public class Foe : Entities {
 
     public void InitializeVisual()
     {
-        //base.EntitiesGO.transform.SetParent(GameObject.Find("BattleSystem/BattleSystem/EnemyPanelPlacement").transform);
-        //base.EntitiesGO.transform.Find("EnemyBackground").GetComponent<Image>().sprite = EntitiesSprite;
-        //base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+        base.EntitiesGO.transform.Find("EnemyBackground").GetComponent<Image>().sprite = EntitiesSprite;
+        base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
     }
 }

@@ -175,6 +175,13 @@ public class Explo_Room_FightController : MonoBehaviour
             {
                 GameObject.Find(playerString + i).transform.Find("PersoBackground").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().characterObject.persoAnimator;
             }
+            explo_dungeon.Dungeon.Data.Players[i].CreateUI();
+
+            // Set UI Order Panel with Player Data
+            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = explo_Dungeon.Dungeon.Data.Players[i].EntitiesSprite;
+            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = explo_Dungeon.Dungeon.Data.Players[i].Name.ToString();
+            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "HP = " + explo_Dungeon.Dungeon.Data.Players[i].MaxHealth.ToString() + " / " + explo_Dungeon.Dungeon.Data.Players[i].MaxHealth.ToString();
+            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().enabled = false;
         }
     }
 
@@ -186,6 +193,11 @@ public class Explo_Room_FightController : MonoBehaviour
             GameObject instantiatedFoe = Instantiate(Resources.Load("Prefab/Explo_Foe") as GameObject, GameObject.Find("BattleSystem/BattleSystem/EnemyPanelPlacement").transform);
             instantiatedFoe.name = enemyString + i;
 
+            // Set EntitiesGO to the Actual Foe Model and Initialize is Visuals.
+            explo_Room_Fight.FoesList[i].EntitiesGO = instantiatedFoe;
+            explo_Room_Fight.FoesList[i].InitializeVisual();
+
+            // Add the actual Foe to the UnOrdered List of fighter for Initiative .
             UnOrderedFighterList.Add(GameObject.Find(enemyString+i), explo_Room_Fight.FoesList[i].Initiative);
 
             // Old Code From Antoine's 'BattleSystem' ==> SetupEnemies
@@ -196,6 +208,14 @@ public class Explo_Room_FightController : MonoBehaviour
             {
                 GameObject.Find(enemyString + i).transform.Find("EnemyBackground").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator;
             }
+
+            explo_Room_Fight.FoesList[i].CreateUI();
+
+            // Set UI Order Panel with Foe Data
+            explo_Room_Fight.FoesList[i].EntitiesUIOrder.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = explo_Room_Fight.FoesList[i].EntitiesSprite;
+            explo_Room_Fight.FoesList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = explo_Room_Fight.FoesList[i].Name.ToString();
+            explo_Room_Fight.FoesList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "HP = " + explo_Room_Fight.FoesList[i].MaxHealth.ToString() + " / " + explo_Room_Fight.FoesList[i].MaxHealth.ToString();
+            explo_Room_Fight.FoesList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().enabled = false;
         }
     }
 
@@ -206,9 +226,9 @@ public class Explo_Room_FightController : MonoBehaviour
         for (int i = 0; i < FighterList.Count; i++)
         {
             FighterList[i].GetComponent<LocalDataHolder>().fighterIndex = i;
-            GameObject UiBattleDisplay;
-            UiBattleDisplay = Instantiate(Resources.Load("UI_Interface/UIBattleOrderDisplay"), GameObject.Find("OrderBattlePanel").transform) as GameObject;
-            FighterList[i].GetComponent<LocalDataHolder>().UiOrderObject = UiBattleDisplay;
+            //GameObject UiBattleDisplay;
+            //UiBattleDisplay = Instantiate(Resources.Load("UI_Interface/UIBattleOrderDisplay"), GameObject.Find("OrderBattlePanel").transform) as GameObject;
+            //FighterList[i].GetComponent<LocalDataHolder>().UiOrderObject = UiBattleDisplay;
         }
 
         //hide the others and make the initializer work

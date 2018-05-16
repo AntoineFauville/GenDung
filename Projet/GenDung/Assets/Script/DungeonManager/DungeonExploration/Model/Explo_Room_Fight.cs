@@ -32,17 +32,9 @@ public class Explo_Room_Fight : Explo_Room
             GameObject foe_GO = GameObject.Find("BattleSystem/BattleSystem/EnemyPanelPlacement/Enemy " + i);
 
             Foe createdFoe = new Foe(selectedFoePreset.health, selectedFoePreset.initiative, selectedFoePreset.name, foe_GO, selectedFoePreset.enemyIcon, selectedFoePreset.enemyAnimator);
-
-            createdFoe.InitializeVisual();
             foesList.Add(createdFoe);
             Debug.Log("Foe Created: " + createdFoe.Name);
         }
-
-		/*for (int i = 4; i > foesAmount; i--)
-        {
-            GameObject foe_GO = GameObject.Find("BattleSystem/BattleSystem/EnemyPanelPlacement/Enemy " + i);
-            foe_GO.transform.SetParent(GameObject.Find("BattleSystem/BattleSystem/BackupInvocationsEnemies").transform);
-        }*/
 
         Debug.Log("Populating of foesList has finished for room number " + base.Index + ", Thanks for waiting");
 

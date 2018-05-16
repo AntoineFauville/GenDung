@@ -14,6 +14,7 @@ public class Entities {
     //
     GameObject entitiesGO;
     Sprite entitiesSprite;
+    GameObject entitiesUIOrder;
     RuntimeAnimatorController entitiesAnimator;
 
     public Entities()
@@ -21,7 +22,7 @@ public class Entities {
 
     }
 
-    public Entities(float _maxHealth,int _initiative, string _name, GameObject _entitiesGO, Sprite _entitiesSprite, RuntimeAnimatorController _entitiesAnimator)
+    public Entities(float _maxHealth,int _initiative, string _name, GameObject _entitiesGO, Sprite _entitiesSprite, GameObject _entitiesUIOrder, RuntimeAnimatorController _entitiesAnimator)
     {
         this.maxHealth = _maxHealth;
         health = maxHealth;
@@ -30,6 +31,7 @@ public class Entities {
         this.name = _name;
         this.entitiesGO = _entitiesGO;
         this.entitiesSprite = _entitiesSprite;
+        this.entitiesUIOrder = _entitiesUIOrder;
         this.entitiesAnimator = _entitiesAnimator;
     }
 
@@ -44,6 +46,13 @@ public class Entities {
         }
 
         // Here, we should call a Update on UI for Health and/or Death of an Entities.
+    }
+
+    public void CreateUI()
+    {
+        GameObject UiBattleDisplay;
+        UiBattleDisplay = MonoBehaviour.Instantiate(Resources.Load("UI_Interface/UIBattleOrderDisplay"), GameObject.Find("OrderBattlePanel").transform) as GameObject;
+        this.entitiesUIOrder = UiBattleDisplay;
     }
 
     public virtual void DeathOfEntities()
@@ -103,6 +112,18 @@ public class Entities {
         set
         {
             entitiesGO = value;
+        }
+    }
+
+    public GameObject EntitiesUIOrder
+    {
+        get
+        {
+            return entitiesUIOrder;
+        }
+        set
+        {
+            entitiesUIOrder = value;
         }
     }
 
