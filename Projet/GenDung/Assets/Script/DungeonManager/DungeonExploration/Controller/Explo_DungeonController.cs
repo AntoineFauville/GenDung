@@ -30,7 +30,7 @@ public class Explo_DungeonController : MonoBehaviour {
     {
         for (int i = 0; i < saveData.SavedSizeOfTheTeam; i++)
         {
-            Player createdPlayer = new Player(saveData.SavedCharacterList[i].Health_PV, saveData.SavedCharacterList[i].ActionPoints_PA, saveData.SavedCharacterList[i].Initiative, saveData.SavedCharacterList[i].Name);
+            Player createdPlayer = new Player(saveData.SavedCharacterList[i].Health_PV, saveData.SavedCharacterList[i].ActionPoints_PA, saveData.SavedCharacterList[i].Initiative, saveData.SavedCharacterList[i].Name, saveData.SavedCharacterList[i].ICON);
             dungeon.Data.Players.Add(createdPlayer);
             Debug.Log("Created Player : " + Dungeon.Data.Players[i].Name + " with " + Dungeon.Data.Players[i].Health + " HP and " + Dungeon.Data.Players[i].ActionPoint + " PA ");
         }

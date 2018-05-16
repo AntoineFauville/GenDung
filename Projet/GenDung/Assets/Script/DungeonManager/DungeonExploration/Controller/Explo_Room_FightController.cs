@@ -181,7 +181,7 @@ public class Explo_Room_FightController : MonoBehaviour
             explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = explo_Dungeon.Dungeon.Data.Players[i].EntitiesSprite;
             explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = explo_Dungeon.Dungeon.Data.Players[i].Name.ToString();
             explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "HP = " + explo_Dungeon.Dungeon.Data.Players[i].MaxHealth.ToString() + " / " + explo_Dungeon.Dungeon.Data.Players[i].MaxHealth.ToString();
-            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().enabled = false;
+            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "AP = " + explo_Dungeon.Dungeon.Data.Players[i].MaxActionPoint.ToString() + " / " + explo_Dungeon.Dungeon.Data.Players[i].MaxActionPoint.ToString();
         }
     }
 
@@ -234,7 +234,7 @@ public class Explo_Room_FightController : MonoBehaviour
         //hide the others and make the initializer work
         for (int i = 0; i < 4; i++)
         {
-            GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().Initialize();
+            //GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().Initialize();
         }
 
         //make sure for the enemies to not show if they are not dead the fact that you can click on them
