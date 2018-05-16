@@ -152,7 +152,9 @@ public class Explo_Room_FightController : MonoBehaviour
         SetFoes();
         SetFighterIndex();
         InitializeArrow();
-        InitializeFighterPanel();
+        InitializeSpellPanel();
+
+        GameObject.Find("BattleSystem/ScriptBattle").GetComponent<Explo_FightController>().FightCtrl = this;
     }
 
    public void SetPlayers()
@@ -179,8 +181,8 @@ public class Explo_Room_FightController : MonoBehaviour
             // Set UI Order Panel with Player Data
             explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = explo_Dungeon.Dungeon.Data.Players[i].EntitiesSprite;
             explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = explo_Dungeon.Dungeon.Data.Players[i].Name.ToString();
-            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "HP = " + explo_Dungeon.Dungeon.Data.Players[i].MaxHealth.ToString() + " / " + explo_Dungeon.Dungeon.Data.Players[i].MaxHealth.ToString();
-            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "AP = " + explo_Dungeon.Dungeon.Data.Players[i].MaxActionPoint.ToString() + " / " + explo_Dungeon.Dungeon.Data.Players[i].MaxActionPoint.ToString();
+            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "HP = " + explo_Dungeon.Dungeon.Data.Players[i].Health.ToString() + " / " + explo_Dungeon.Dungeon.Data.Players[i].MaxHealth.ToString();
+            explo_Dungeon.Dungeon.Data.Players[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "AP = " + explo_Dungeon.Dungeon.Data.Players[i].ActionPoint.ToString() + " / " + explo_Dungeon.Dungeon.Data.Players[i].MaxActionPoint.ToString();
         }
     }
 
@@ -205,7 +207,7 @@ public class Explo_Room_FightController : MonoBehaviour
             GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe = explo_Room_Fight.FoesList[i];
             if (GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator)
             {
-                GameObject.Find(enemyString + i).transform.Find("EnemyBackground").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator;
+                GameObject.Find(enemyString + i).transform.Find("Background").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator;
             }
 
             explo_Room_Fight.FoesList[i].CreateUI();
@@ -244,7 +246,7 @@ public class Explo_Room_FightController : MonoBehaviour
         FighterList[0].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(true);
     }
 
-    public void InitializeFighterPanel()
+    public void InitializeSpellPanel()
     {
         for (int i = 0; i < 3; i++)
         {

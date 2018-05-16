@@ -24,7 +24,7 @@ public class NextTurn_Controller : MonoBehaviour {
 		next_Button = GameObject.Find ("NextPanel");
 	}
 
-	public void NextTurn()
+	public void NextTurn() // Call by the "Next" (BattleSystem/Panel/NextPanel) Button into the Scene.
 	{
 		HideShowNext(false);
 

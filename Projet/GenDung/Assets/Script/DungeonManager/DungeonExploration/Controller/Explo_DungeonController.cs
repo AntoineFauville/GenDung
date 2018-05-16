@@ -37,6 +37,8 @@ public class Explo_DungeonController : MonoBehaviour {
             dungeon.Data.Players.Add(createdPlayer);
             Debug.Log("Created Player : " + Dungeon.Data.Players[i].Name + " with " + Dungeon.Data.Players[i].Health + " HP and " + Dungeon.Data.Players[i].ActionPoint + " PA ");
         }
+
+        Dungeon.Data.PlayersLeft = 4; // Setting the number of Players left to 4
     }
 
     public Explo_Dungeon Dungeon

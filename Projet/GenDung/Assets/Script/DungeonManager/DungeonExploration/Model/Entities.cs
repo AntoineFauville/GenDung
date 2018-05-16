@@ -9,6 +9,9 @@ public class Entities {
     float maxHealth;
     float health;
     int initiative;
+    int attack;
+    int maxActionPoint;
+    int actionPoint;
     bool dead;
     string name;
     SpellObject[] entitiesSpells = new SpellObject[3];
@@ -37,17 +40,24 @@ public class Entities {
         this.entitiesAnimator = _entitiesAnimator;
     }
 
-    public void ChangeHealth(float value) // Damage will be negative value and heal will be positive value.
+    public void ChangeHealth(float value, bool crit) // Damage will be negative value and heal will be positive value.
     {
+        int roundedHP;
+        roundedHP = Mathf.RoundToInt(value);
+
         health += value;
 
         if (health <= 0)
         {
             health = 0; // Setting health to Zero to avoid negative value.
             dead = true; // Setting player as dead.
+            DeathOfEntities();
         }
+    }
 
-        // Here, we should call a Update on UI for Health and/or Death of an Entities.
+    public virtual void ResetActionPoints()
+    {
+
     }
 
     public void CreateUI()
@@ -191,6 +201,45 @@ public class Entities {
         set
         {
             entitiesSpells = value;
+        }
+    }
+
+    public int Attack
+    {
+        get
+        {
+            return attack;
+        }
+
+        set
+        {
+            attack = value;
+        }
+    }
+
+    public int MaxActionPoint
+    {
+        get
+        {
+            return maxActionPoint;
+        }
+
+        set
+        {
+            maxActionPoint = value;
+        }
+    }
+
+    public int ActionPoint
+    {
+        get
+        {
+            return actionPoint;
+        }
+
+        set
+        {
+            actionPoint = value;
         }
     }
 }

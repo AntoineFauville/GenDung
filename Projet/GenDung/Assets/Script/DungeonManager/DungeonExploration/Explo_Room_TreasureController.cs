@@ -80,7 +80,7 @@ public class Explo_Room_TreasureController : MonoBehaviour {
             playerTouched = Random.Range(0, 3);
         }
 
-        explo_Room_Treasure.Dungeon.Data.Players[playerTouched].ChangeHealth(5);
+        explo_Room_Treasure.Dungeon.Data.Players[playerTouched].ChangeHealth(-5, false);
         logT.AddLogLine(explo_Room_Treasure.Dungeon.Data.Players[playerTouched].Name + " has lost 5 HP");
 	}
 

@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class Player : Entities {
 
-    int maxActionPoint;
-    int actionPoint;
-
     public Player(float _maxHealth, int _maxActionsPoint, int _initiative, string _name, SpellObject[] _entitiesSpells, GameObject _entitiesGO, Sprite _entitiesSprite)
     {
         base.MaxHealth = _maxHealth;
@@ -18,8 +15,14 @@ public class Player : Entities {
         base.EntitiesSpells = _entitiesSpells;
         base.EntitiesGO = _entitiesGO;
         base.EntitiesSprite = _entitiesSprite;
-        maxActionPoint = _maxActionsPoint;
-        actionPoint = maxActionPoint;
+        base.MaxActionPoint = _maxActionsPoint;
+        base.ActionPoint = MaxActionPoint;
+    }
+
+    public override void ResetActionPoints()
+    {
+        Debug.Log("My Action Points has been fully restored");
+        base.ActionPoint = this.MaxActionPoint;
     }
 
     public override void DeathOfEntities ()
@@ -29,37 +32,13 @@ public class Player : Entities {
         // Check if all players are dead. if yes, Launch method for ending combat.
 
         base.DeathOfEntities(); // Need to check if it's an obligation or if it will work without calling it.
+
+
     }
 
     public void InitializeVisual()
     {
         base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
         base.EntitiesGO.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = Health / MaxHealth;
-    }
-
-    public int MaxActionPoint
-    {
-        get
-        {
-            return maxActionPoint;
-        }
-
-        set
-        {
-            maxActionPoint = value;
-        }
-    }
-
-    public int ActionPoint
-    {
-        get
-        {
-            return actionPoint;
-        }
-
-        set
-        {
-            actionPoint = value;
-        }
     }
 }

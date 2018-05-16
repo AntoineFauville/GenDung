@@ -31,7 +31,7 @@ public class Explo_Room_Fight : Explo_Room
             EnemyObject selectedFoePreset = foesPreset[Random.Range(0, foesPreset.Count)];
             GameObject foe_GO = GameObject.Find("BattleSystem/BattleSystem/EnemyPanelPlacement/Enemy " + i);
 
-            Foe createdFoe = new Foe(selectedFoePreset.health, selectedFoePreset.initiative, selectedFoePreset.name, foe_GO, selectedFoePreset.enemyIcon, selectedFoePreset.enemyAnimator);
+            Foe createdFoe = new Foe(selectedFoePreset.health, selectedFoePreset.initiative, selectedFoePreset.atk, selectedFoePreset.name, foe_GO, selectedFoePreset.enemyIcon, selectedFoePreset.enemyAnimator);
             foesList.Add(createdFoe);
             Debug.Log("Foe Created: " + createdFoe.Name);
         }
