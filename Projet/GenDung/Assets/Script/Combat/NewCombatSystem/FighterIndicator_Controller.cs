@@ -13,15 +13,15 @@ public class FighterIndicator_Controller : MonoBehaviour {
 		indicator_Battle = GameObject.Find ("Pastille");
 	}
 
-	public void SetArrow () {
+	//public void SetArrow () {
 
-		Vector3 actualPosition = new Vector3 (0,0,0);
-		indicator_Battle.GetComponent<RectTransform> ().SetParent (BS.FighterList [BS.actuallyPlaying].transform.Find("Shadow"));
-		indicator_Battle.GetComponent<RectTransform> ().localPosition = actualPosition;
+		//Vector3 actualPosition = new Vector3 (0,0,0);
+		//indicator_Battle.GetComponent<RectTransform> ().SetParent (BS.FighterList [BS.actuallyPlaying].transform.Find("Shadow"));
+		//indicator_Battle.GetComponent<RectTransform> ().localPosition = actualPosition;
 
-		for (int i = 0; i < BS.FighterList.Count; i++) {
-			BS.FighterList [i].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (false);
-		}
-		BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (true);
-	}
+		//for (int i = 0; i < BS.FighterList.Count; i++) {
+		//	BS.FighterList [i].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (false);
+		//}
+		//BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().UpdateUiOrderOrder (true);
+	//}
 }

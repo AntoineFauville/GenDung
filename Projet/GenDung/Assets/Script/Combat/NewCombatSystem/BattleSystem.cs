@@ -34,11 +34,6 @@ public class BattleSystem : MonoBehaviour {
 	public void ResetFightStart (int roomImIn) {
 		Links ();
 		//nextTurn_Controller.HideShowNext (true);
-		//playerSetup_Controller.SetupPlayers ();
-		////enemySetup_Controller.SetupEnemies (roomImIn);
-		//initiative_Controller.SetFighterIndex ();
-		//indicator_Controller.SetArrow ();
-		//spell_Controller.SetupFighterPanel ();
 		//enemyTurn_Controller.SetupFirstTurnAsEnemy ();
 	}
 

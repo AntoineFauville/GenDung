@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Foe : Entities {
 
-	public Foe(float _maxHealth, int _initiative, string _name,GameObject _gameObject, Sprite _sprite, RuntimeAnimatorController _animator)
+	public Foe(float _maxHealth, int _initiative, string _name, GameObject _gameObject, Sprite _sprite, RuntimeAnimatorController _animator)
     {
         base.MaxHealth = _maxHealth;
         base.Health = MaxHealth;
@@ -29,5 +29,7 @@ public class Foe : Entities {
     {
         base.EntitiesGO.transform.Find("EnemyBackground").GetComponent<Image>().sprite = EntitiesSprite;
         base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+        base.EntitiesGO.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = Health / MaxHealth;
+        base.EntitiesGO.transform.Find("Shadow/Pastille2").GetComponent<Image>().enabled = false;
     }
 }

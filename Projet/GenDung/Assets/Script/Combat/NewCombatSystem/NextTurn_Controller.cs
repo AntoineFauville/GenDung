@@ -41,7 +41,7 @@ public class NextTurn_Controller : MonoBehaviour {
 		}
 		else
 		{
-			indicator_Controller.SetArrow();
+			//indicator_Controller.SetArrow();
 			BS.resetActionPoint(BS.actuallyPlaying);
 			startTurnEffect_Controller.ManageStatusEffects ();
 			//gere les effets et ensuite lance le reste de la fight

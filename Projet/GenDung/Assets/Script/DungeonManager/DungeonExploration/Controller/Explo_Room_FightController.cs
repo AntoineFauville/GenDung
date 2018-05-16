@@ -151,7 +151,8 @@ public class Explo_Room_FightController : MonoBehaviour
         SetPlayers();
         SetFoes();
         SetFighterIndex();
-
+        InitializeArrow();
+        InitializeFighterPanel();
     }
 
    public void SetPlayers()
@@ -225,6 +226,30 @@ public class Explo_Room_FightController : MonoBehaviour
         for (int i = 0; i < FighterList.Count; i++)
         {
             FighterList[i].EntitiesUIOrder.transform.SetSiblingIndex(i);
+        }
+    }
+
+    public void InitializeArrow()
+    {
+        Vector3 actualPosition = new Vector3(0, 0, 0);
+        indicator_Battle.GetComponent<RectTransform>().SetParent(FighterList[0].EntitiesGO.transform.Find("Shadow"));
+        indicator_Battle.GetComponent<RectTransform>().localPosition = actualPosition;
+
+        for (int i = 0; i < FighterList.Count; i++)
+        {
+            FighterList[i].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = false;
+            FighterList[i].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(false);
+        }
+        FighterList[0].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = true;
+        FighterList[0].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(true);
+    }
+
+    public void InitializeFighterPanel()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject.Find("Button_Spell_" + i).GetComponent<Image>().sprite = FighterList[0].EntitiesSpells[i].spellIcon;
+            GameObject.Find("Button_Spell_" + i).GetComponent<SpellPropreties>().spellObject = FighterList[0].EntitiesSpells[i];
         }
     }
 

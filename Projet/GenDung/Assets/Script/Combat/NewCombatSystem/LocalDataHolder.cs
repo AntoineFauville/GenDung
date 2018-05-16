@@ -96,7 +96,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 			transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 
-			SetupUiOrderObject ();
+			//SetupUiOrderObject ();
 		}
 	}
 
@@ -144,13 +144,13 @@ public class LocalDataHolder : MonoBehaviour {
 			}
 		}
 
-		SetupUiOrderObject ();
+		//SetupUiOrderObject ();
 
 		tLL_Controller.lifeTextUp (HP, crit);
 	}
 
-	public void SetupUiOrderObject () 
-	{
+	//public void SetupUiOrderObject () 
+	//{
 		//if(player){
 		//	UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = characterObject.ICON;
 		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = characterObject.Name.ToString();
@@ -163,13 +163,13 @@ public class LocalDataHolder : MonoBehaviour {
 		//	UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().enabled = false;
 		//}
 
-		UpdateLife ();
-	}
+		//UpdateLife ();
+	//}
 
-	public void UpdateUiOrderOrder (bool trig) {
+	//public void UpdateUiOrderOrder (bool trig) {
 		//UiOrderObject.transform.Find ("BouleVerte").GetComponent<Image> ().enabled = trig;
 		//UiOrderObject.transform.Find ("Scripts").GetComponent<UIOrderBattle> ().Selected (trig);
-	}
+	//}
 
 	public void UpdateLife()
 	{
@@ -405,7 +405,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 	void ReduceFromActionPoint(){
 		BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().actionPointPlayer -= BS.SelectedSpellObject.spellCost;
-		BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().SetupUiOrderObject ();
+		//BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().SetupUiOrderObject ();
 	}
 
 	void CalculChances(){

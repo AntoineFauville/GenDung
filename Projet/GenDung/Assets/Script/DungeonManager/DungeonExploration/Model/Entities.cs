@@ -11,6 +11,7 @@ public class Entities {
     int initiative;
     bool dead;
     string name;
+    SpellObject[] entitiesSpells = new SpellObject[3];
     //
     GameObject entitiesGO;
     Sprite entitiesSprite;
@@ -22,13 +23,14 @@ public class Entities {
 
     }
 
-    public Entities(float _maxHealth,int _initiative, string _name, GameObject _entitiesGO, Sprite _entitiesSprite, GameObject _entitiesUIOrder, RuntimeAnimatorController _entitiesAnimator)
+    public Entities(float _maxHealth,int _initiative, string _name, SpellObject[] _entitiesSpells, GameObject _entitiesGO, Sprite _entitiesSprite, GameObject _entitiesUIOrder, RuntimeAnimatorController _entitiesAnimator)
     {
         this.maxHealth = _maxHealth;
         health = maxHealth;
         this.initiative = _initiative;
         dead = false;
         this.name = _name;
+        this.entitiesSpells = _entitiesSpells;
         this.entitiesGO = _entitiesGO;
         this.entitiesSprite = _entitiesSprite;
         this.entitiesUIOrder = _entitiesUIOrder;
@@ -176,6 +178,19 @@ public class Entities {
         set
         {
             initiative = value;
+        }
+    }
+
+    public SpellObject[] EntitiesSpells
+    {
+        get
+        {
+            return entitiesSpells;
+        }
+
+        set
+        {
+            entitiesSpells = value;
         }
     }
 }
