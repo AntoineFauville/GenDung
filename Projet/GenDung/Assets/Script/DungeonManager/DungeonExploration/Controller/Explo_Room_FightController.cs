@@ -29,8 +29,8 @@ public class Explo_Room_FightController : MonoBehaviour
 
     // [Fight]
     /* [Initiative] */
-    private Dictionary<GameObject, int> UnOrderedFighterList = new Dictionary<GameObject, int>();
-    public List<GameObject> FighterList = new List<GameObject>();
+    private Dictionary<Entities, int> UnOrderedFighterList = new Dictionary<Entities, int>();
+    public List<Entities> FighterList = new List<Entities>();
     public Sprite arrow;
     public int actuallyPlaying;
     /* [Players] */
@@ -151,8 +151,6 @@ public class Explo_Room_FightController : MonoBehaviour
         SetPlayers();
         SetFoes();
         SetFighterIndex();
-        SetArrow();
-
 
     }
 
@@ -160,7 +158,7 @@ public class Explo_Room_FightController : MonoBehaviour
     {
         for (int i = 0; i < explo_dungeon.Dungeon.Data.Players.Count; i++) // Using Data from Creation for number of Players.
         {
-            UnOrderedFighterList.Add(GameObject.Find(playerString + i), explo_dungeon.Dungeon.Data.Players[i].Initiative);
+            UnOrderedFighterList.Add(explo_Dungeon.Dungeon.Data.Players[i], explo_dungeon.Dungeon.Data.Players[i].Initiative);
 
             // Old Code From Antoine's 'BattleSystem' ==> SetupPlayers
             GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().characterObject = saveSystem.gameData.SavedCharacterList[i];
@@ -198,7 +196,7 @@ public class Explo_Room_FightController : MonoBehaviour
             explo_Room_Fight.FoesList[i].InitializeVisual();
 
             // Add the actual Foe to the UnOrdered List of fighter for Initiative .
-            UnOrderedFighterList.Add(GameObject.Find(enemyString+i), explo_Room_Fight.FoesList[i].Initiative);
+            UnOrderedFighterList.Add(explo_Room_Fight.FoesList[i], explo_Room_Fight.FoesList[i].Initiative);
 
             // Old Code From Antoine's 'BattleSystem' ==> SetupEnemies
             GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().localIndex = i;
@@ -221,66 +219,12 @@ public class Explo_Room_FightController : MonoBehaviour
 
    public void SetFighterIndex()
     {
+        // Use Linq to order the FighterList with Initiative value from each Entities.
         FighterList = UnOrderedFighterList.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
-
+        // For Statement to set The UI Order in the Real Order of Fighter.
         for (int i = 0; i < FighterList.Count; i++)
         {
-            FighterList[i].GetComponent<LocalDataHolder>().fighterIndex = i;
-            //GameObject UiBattleDisplay;
-            //UiBattleDisplay = Instantiate(Resources.Load("UI_Interface/UIBattleOrderDisplay"), GameObject.Find("OrderBattlePanel").transform) as GameObject;
-            //FighterList[i].GetComponent<LocalDataHolder>().UiOrderObject = UiBattleDisplay;
-        }
-
-        //hide the others and make the initializer work
-        for (int i = 0; i < 4; i++)
-        {
-            //GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().Initialize();
-        }
-
-        //make sure for the enemies to not show if they are not dead the fact that you can click on them
-        for (int i = 0; i < FighterList.Count; i++)
-        {
-            if (!FighterList[i].GetComponent<LocalDataHolder>().player)
-            {
-                FighterList[i].transform.Find("Shadow/Pastille2").GetComponent<Image>().enabled = false;
-            }
-        }
-    }
-
-    void SetArrow()
-    {
-        indicator_Battle.GetComponent<Image>().sprite = arrow;
-        Vector3 actualPosition = new Vector3(0, 0, 0);
-        indicator_Battle.GetComponent<RectTransform>().SetParent(FighterList[actuallyPlaying].transform.Find("Shadow"));
-        indicator_Battle.GetComponent<RectTransform>().localPosition = actualPosition;
-
-        for (int i = 0; i < FighterList.Count; i++)
-        {
-            FighterList[i].GetComponent<LocalDataHolder>().UpdateUiOrderOrder(false);
-        }
-        FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().UpdateUiOrderOrder(true);
-    }
-
-    void SetupFighterPanel()
-    {
-        if (FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().player)
-        {
-            SetSpellLinks(true);
-        }
-    }
-
-    void SetSpellLinks(bool onOrOff)
-    {
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (onOrOff)
-            {
-                GameObject.Find("Button_Spell_" + i).GetComponent<Image>().sprite = FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().characterObject.SpellList[i].spellIcon;
-                GameObject.Find("Button_Spell_" + i).GetComponent<SpellPropreties>().spellObject = FighterList[actuallyPlaying].GetComponent<LocalDataHolder>().characterObject.SpellList[i];
-            }
-
-            GameObject.Find("Button_Spell_" + i).GetComponent<SpellPropreties>().StartPersoUpdate(onOrOff);
+            FighterList[i].EntitiesUIOrder.transform.SetSiblingIndex(i);
         }
     }
 
