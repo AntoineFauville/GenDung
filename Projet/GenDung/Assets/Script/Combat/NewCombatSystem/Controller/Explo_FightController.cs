@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class Explo_FightController : MonoBehaviour {
 
     int entitiesIndex = 0;
+    int targetIndex;
     int rndAttackEnemy;
+    bool attackMode;
     Entities fighterToAttack;
     GameObject next_Button;
     Explo_DungeonController explo_Dungeon;
@@ -139,6 +141,71 @@ public class Explo_FightController : MonoBehaviour {
         }
     }
 
+    public void SetTarget(int _target)
+    {
+        Debug.Log("Targer has been set to fight Index N° : " + _target);
+        this.targetIndex = _target;
+    }
+
+    //public void AttackEnemy()
+    //{
+
+    //    if (attackMode)
+    //    {
+    //        if (fightCtrl.FighterList[targetIndex] is Foe)
+    //        {
+    //            //check to know on who I can click.
+    //            if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Enemy)
+    //            {
+    //                //check if the actual player that wants to do the spell can launch the spell
+    //                if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
+    //                {
+    //                    //StartCoroutine(waitForSpellEffect());
+    //                    //Damage ();
+    //                }
+    //                else
+    //                {
+    //                    attackMode = false;
+    //                }
+
+    //                GetRidOfIndicatorToSeeWhichEnemyICanClickOn();
+
+    //            }
+    //        }
+    //        else
+    //        {
+    //            //check to know on who I can click.
+    //            if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Ally)
+    //            {
+    //                if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
+    //                {
+    //                    //do something to all the allies
+    //                    //StartCoroutine(waitForSpellEffect());
+    //                }
+    //                else
+    //                {
+    //                    attackMode = false;
+    //                }
+    //            }
+    //            else if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Self)
+    //            {
+    //                if (entitiesIndex == targetIndex)
+    //                {
+    //                    if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
+    //                    {
+    //                        //SelfHeal ();
+    //                        //StartCoroutine(waitForSpellEffect());
+    //                    }
+    //                    else
+    //                    {
+    //                        attackMode = false;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+
     public void EnemyAttack()
     {
         do
@@ -172,6 +239,67 @@ public class Explo_FightController : MonoBehaviour {
         else
         {
             lifeUp.transform.GetChild(0).GetComponent<Text>().text = "+" + amount.ToString();
+        }
+    }
+
+    public void IndicatorIndex(int index)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject.Find("IndicatorSpell" + i).GetComponent<Animator>().Play("SpellIndicatorRotationIdle");
+        }
+        GameObject.Find("IndicatorSpell" + index).GetComponent<Animator>().Play("SpellIndicatorRotation");
+    }
+
+    public void IndicatorAttackUI()
+    {
+        print("I'll be attacking with spell " + spellObject.spellName);
+
+        for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+        {
+            if (fightCtrl.FighterList[i] is Foe)
+            {
+                fightCtrl.FighterList[i].EntitiesGO.transform.Find("Shadow/Pastille2").GetComponent<Image>().enabled = false;
+            }
+        }
+
+        //let only interactable object (monsters, or player if heal)
+        attackMode = true;
+        HideShowNext(!attackMode);
+
+
+        BS.SelectedSpellObject = spellObject;
+
+        //activate for all the enemies the pastille to show where you can click
+        for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+        {
+            if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Enemy)
+            {
+                if (fightCtrl.FighterList[i] is Foe)
+                {
+                    if (!fightCtrl.FighterList[i].Dead)
+                    {
+                        //you can see where you click on the enemies
+                        fightCtrl.FighterList[i].EntitiesGO.transform.Find("Shadow/Pastille2").GetComponent<Image>().enabled = true;
+                    }
+                }
+            }
+            else if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Ally)
+            {
+                if (fightCtrl.FighterList[i] is Player)
+                {
+                    if (!fightCtrl.FighterList[i].Dead)
+                    {
+                        //you can see where you click on the allies
+                        //BS.FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+                    }
+                }
+            }
+            else if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Self)
+            {
+                //you can see where you click on yourself
+                //BS.FighterList [BS.actuallyPlaying].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+            }
         }
     }
 

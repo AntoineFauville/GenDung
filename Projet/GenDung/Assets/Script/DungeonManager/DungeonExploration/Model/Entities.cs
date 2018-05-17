@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Entities {
 
     // 
+    int fightIndex;
     float maxHealth;
     float health;
     int initiative;
@@ -240,6 +241,18 @@ public class Entities {
         set
         {
             actionPoint = value;
+        }
+    }
+
+    public int FightIndex
+    {
+        get
+        {
+            return fightIndex;
+        }
+        set
+        {
+            fightIndex = value;
         }
     }
 }

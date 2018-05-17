@@ -50,12 +50,12 @@ public class BattleSystem : MonoBehaviour {
 
 	void Update ()
 	{
-		if (SelectedSpellObject != null)
-		{
-			if (SelectedSpellObject.spellCost > FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer && FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-				attackMode = false;
-			}
-		}
+		//if (SelectedSpellObject != null)
+		//{
+		//	if (SelectedSpellObject.spellCost > FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer && FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+		//		attackMode = false;
+		//	}
+		//}
 	}
 
 	public void ContinueFightAfterEffect(){
@@ -117,8 +117,8 @@ public class BattleSystem : MonoBehaviour {
 		}
 	}
 
-	public void resetActionPoint(int index){
-		FighterList [index].GetComponent<LocalDataHolder> ().actionPointPlayer = FighterList [index].GetComponent<LocalDataHolder> ().maxActionPointPlayer;
-	}
+	//public void resetActionPoint(int index){
+	//	FighterList [index].GetComponent<LocalDataHolder> ().actionPointPlayer = FighterList [index].GetComponent<LocalDataHolder> ().maxActionPointPlayer;
+	//}
 }
 

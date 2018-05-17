@@ -116,7 +116,7 @@ public class EnemyTurn_Controller : MonoBehaviour {
 			EnemyTurn();
 		}
 
-		BS.resetActionPoint(BS.actuallyPlaying);
+		//BS.resetActionPoint(BS.actuallyPlaying);
 		//indicator_Controller.SetArrow();
 	}
 }

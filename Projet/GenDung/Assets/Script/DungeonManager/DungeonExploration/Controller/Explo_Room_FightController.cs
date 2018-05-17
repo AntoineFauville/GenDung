@@ -174,7 +174,7 @@ public class Explo_Room_FightController : MonoBehaviour
 
             if (GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().characterObject.hasAnimations)
             {
-                GameObject.Find(playerString + i).transform.Find("PersoBackground").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().characterObject.persoAnimator;
+                GameObject.Find(playerString + i).transform.Find("Background").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(playerString + i).GetComponent<LocalDataHolder>().characterObject.persoAnimator;
             }
             explo_dungeon.Dungeon.Data.Players[i].CreateUI();
 
@@ -228,6 +228,8 @@ public class Explo_Room_FightController : MonoBehaviour
         for (int i = 0; i < FighterList.Count; i++)
         {
             FighterList[i].EntitiesUIOrder.transform.SetSiblingIndex(i);
+            FighterList[i].FightIndex = i;
+            FighterList[i].EntitiesGO.transform.Find("Background").GetComponent<Explo_IndexController>().FightIndex = i;
         }
     }
 
