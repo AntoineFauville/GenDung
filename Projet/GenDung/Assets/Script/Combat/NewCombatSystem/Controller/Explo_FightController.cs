@@ -27,7 +27,11 @@ public class Explo_FightController : MonoBehaviour {
             entitiesIndex = 0;
 
         if (fightCtrl.FighterList[entitiesIndex].Dead) // If the entitie is dead, it will not play. Seems legit, No ?
+        {
+            CleanPreviousArrow();
+            SetNextdeadArrow();
             NextTurn();
+        }
         else
         {
             fightCtrl.FighterList[entitiesIndex].ResetActionPoints();
@@ -75,17 +79,30 @@ public class Explo_FightController : MonoBehaviour {
         GameObject.Find("Pastille").GetComponent<RectTransform>().SetParent(fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform.Find("Shadow"));
         GameObject.Find("Pastille").GetComponent<RectTransform>().localPosition = actualPosition;
 
-        int index;
-        if (entitiesIndex == 0)
-            index = (fightCtrl.FighterList.Count - 1);
-        else
-            index = entitiesIndex - 1;
-
-        fightCtrl.FighterList[index].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = false;
-        fightCtrl.FighterList[index].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(false);
+        CleanPreviousArrow();
 
         fightCtrl.FighterList[entitiesIndex].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = true;
         fightCtrl.FighterList[entitiesIndex].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(true);
+    }
+
+    public void CleanPreviousArrow()
+    {
+        for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+        {
+            fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = false;
+            fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(false);
+        }
+    }
+
+    public void SetNextdeadArrow()
+    {
+        int index;
+        index = entitiesIndex + 1;
+        if (index >= fightCtrl.FighterList.Count) // if we match the count of fighters, we set it back to 0 for looping.
+            index = 0;
+
+        fightCtrl.FighterList[index].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = true;
+        fightCtrl.FighterList[index].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(true);
     }
 
     public void UpdateSpellPanel()

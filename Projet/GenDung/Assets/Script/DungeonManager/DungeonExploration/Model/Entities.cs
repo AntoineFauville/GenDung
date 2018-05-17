@@ -70,9 +70,9 @@ public class Entities {
     public virtual void DeathOfEntities()
     {
         //De-activate Button
-        entitiesGO.GetComponent<Button>().enabled = false;
+        entitiesGO.transform.Find("PersoBackground").GetComponent<Button>().enabled = false;
         //Change color to Color.gray
-        entitiesGO.GetComponent<Image>().color = Color.gray;
+        entitiesGO.transform.Find("PersoBackground").GetComponent<Image>().color = Color.gray;
     }
 
     public float MaxHealth
