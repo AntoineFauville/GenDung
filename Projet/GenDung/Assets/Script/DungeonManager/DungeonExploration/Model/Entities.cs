@@ -61,6 +61,11 @@ public class Entities {
 
     }
 
+    public virtual void ChangeActionPoints(int _points)
+    {
+
+    }
+
     public void CreateUI()
     {
         GameObject UiBattleDisplay;

@@ -9,6 +9,8 @@ public class Explo_FightController : MonoBehaviour {
     int targetIndex;
     int rndAttackEnemy;
     bool attackMode;
+    bool critHit;
+    bool attackContinue;
     Entities fighterToAttack;
     GameObject next_Button;
     SpellObject selectedSpellObject;
@@ -144,68 +146,67 @@ public class Explo_FightController : MonoBehaviour {
 
     public void SetTarget(int _target)
     {
-        Debug.Log("Targer has been set to fight Index N° : " + _target);
         this.targetIndex = _target;
+        AttackEnemy();
     }
 
-    //public void AttackEnemy()
-    //{
+    public void AttackEnemy()
+    {
+        if (attackMode)
+        {
+            if (fightCtrl.FighterList[targetIndex] is Foe)
+            {
+                //check to know on who I can click.
+                if (selectedSpellObject.spellType == SpellObject.SpellType.Enemy)
+                {
+                    //check if the actual player that wants to do the spell can launch the spell
+                    if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
+                    {
+                        StartCoroutine(WaitForSpellEffect());
+                        //Damage ();
+                    }
+                    else
+                    {
+                        attackMode = false;
+                    }
 
-    //    if (attackMode)
-    //    {
-    //        if (fightCtrl.FighterList[targetIndex] is Foe)
-    //        {
-    //            //check to know on who I can click.
-    //            if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Enemy)
-    //            {
-    //                //check if the actual player that wants to do the spell can launch the spell
-    //                if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
-    //                {
-    //                    //StartCoroutine(waitForSpellEffect());
-    //                    //Damage ();
-    //                }
-    //                else
-    //                {
-    //                    attackMode = false;
-    //                }
+                    //GetRidOfIndicatorToSeeWhichEnemyICanClickOn();
 
-    //                GetRidOfIndicatorToSeeWhichEnemyICanClickOn();
-
-    //            }
-    //        }
-    //        else
-    //        {
-    //            //check to know on who I can click.
-    //            if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Ally)
-    //            {
-    //                if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
-    //                {
-    //                    //do something to all the allies
-    //                    //StartCoroutine(waitForSpellEffect());
-    //                }
-    //                else
-    //                {
-    //                    attackMode = false;
-    //                }
-    //            }
-    //            else if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Self)
-    //            {
-    //                if (entitiesIndex == targetIndex)
-    //                {
-    //                    if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
-    //                    {
-    //                        //SelfHeal ();
-    //                        //StartCoroutine(waitForSpellEffect());
-    //                    }
-    //                    else
-    //                    {
-    //                        attackMode = false;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+                }
+            }
+            else
+            {
+                //check to know on who I can click.
+                if (selectedSpellObject.spellType == SpellObject.SpellType.Ally)
+                {
+                    if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
+                    {
+                        //do something to all the allies
+                        StartCoroutine(WaitForSpellEffect());
+                    }
+                    else
+                    {
+                        attackMode = false;
+                    }
+                }
+                else if (selectedSpellObject.spellType == SpellObject.SpellType.Self)
+                {
+                    if (entitiesIndex == targetIndex)
+                    {
+                        if (fightCtrl.FighterList[entitiesIndex].ActionPoint > 0)
+                        {
+                            //SelfHeal ();
+                            StartCoroutine(WaitForSpellEffect());
+                        }
+                        else
+                        {
+                            attackMode = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public void EnemyAttack()
     {
@@ -309,6 +310,65 @@ public class Explo_FightController : MonoBehaviour {
         }
     }
 
+    void CalculChances()
+    {
+
+        int randChancesToHit = Random.Range(0, 100);
+        int randChancesToCrit = Random.Range(0, 100);
+
+        if (randChancesToHit >= selectedSpellObject.chancesOfMiss)
+        {
+            if (randChancesToCrit <= selectedSpellObject.chancesOfCrit)
+            {
+                critHit = true;
+            }
+            attackContinue = true;
+        }
+        else
+        {
+            print("missed");
+        }
+    }
+
+    void CalculDamageDone(SpellObject.SpellLogicType spellLogicType)
+    {
+
+        print(spellLogicType);
+
+        if (spellLogicType == SpellObject.SpellLogicType.Damage)
+        {
+            if (critHit)
+            {
+                fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, true);
+            }
+            else
+            {
+                fightCtrl.FighterList[targetIndex].ChangeHealth(-selectedSpellObject.spellDamage, false);
+            }
+        }
+
+        else if (spellLogicType == SpellObject.SpellLogicType.Heal)
+        {
+            if (critHit)
+            {
+                fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, true);
+            }
+            else
+            {
+                fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage, false);
+            }
+        }
+
+
+
+        if (fightCtrl.FighterList[targetIndex].Health > fightCtrl.FighterList[targetIndex].MaxHealth)
+        {
+            fightCtrl.FighterList[targetIndex].Health = fightCtrl.FighterList[targetIndex].MaxHealth;
+        }
+
+        critHit = false;
+    }
+
     public void ManageStatusEffects()
     {
         HideShowNext(false);
@@ -398,6 +458,70 @@ public class Explo_FightController : MonoBehaviour {
         //{
         //    fighterToAttack.GetComponent<LocalDataHolder>().looseLife(-actualEnemyPlaying.GetComponent<LocalDataHolder>().enemyObject.atk, false);
         //}
+    }
+
+    IEnumerator WaitForSpellEffect()
+    {
+        //define the index of who'll be attacking
+        //DefineTargetIndex(BS.SelectedSpellObject.spellTargetType);
+
+        //check the action point of the player
+        fightCtrl.FighterList[entitiesIndex].ChangeActionPoints(selectedSpellObject.spellCost);
+
+        //play player animation
+        //PlayerAnimationPropreties();
+
+        //Wait for anim player to finish depending on time of spell anim time
+        //if it contains a reaction or a spell invocation at the enemy's place we need to instantiate or play an effect on the enemy
+        if (selectedSpellObject.EffectAppearingDuringPlayerAnim)
+        {
+            yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
+
+            //CheckDuringCombatEffect(true);
+
+            yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
+
+            //CheckDuringCombatEffect(false);
+        }
+        else
+        {
+            yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime);
+        }
+
+        //calculate the chances to hit or crit == Calculate if "missed" or "critical chance" or "regular spell effect"
+        CalculChances();
+        //depending on the result, throw here an inidactor to know if we continue the attack or not.
+
+        if (attackContinue)
+        {
+
+            if (selectedSpellObject.spellLogicType == SpellObject.SpellLogicType.Damage)
+            {
+                //if it's damage make the fighter react to taking damages
+                //AnimFeedbackEnemy(BS.SelectedSpellObject.spellTargetType, true);
+
+                // wait for anim enemy reaction to spell. (Constant of 1 sec for exemple) + Launched Hit or Critical animation
+                yield return new WaitForSeconds(1.0f);
+
+                //AnimFeedbackEnemy(BS.SelectedSpellObject.spellTargetType, false);
+            }
+            //do the damage on the target (healing included)
+            CalculDamageDone(selectedSpellObject.spellLogicType);
+
+            //check if the extra effect is != none, so then we need to make an animation for that.
+            if (selectedSpellObject.spellTargetFeedbackAnimationType != SpellObject.SpellTargetFeedbackAnimationType.None)
+            {
+                //wait for anim Feedback Animation on target
+                //CheckExtraEffect(true);
+                yield return new WaitForSeconds(0.8f);
+                //CheckExtraEffect(false);
+            }
+        }
+        else
+        {
+            // wait for anim enemy reaction to spell. + launch MISSED animation
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     public Explo_Room_FightController FightCtrl

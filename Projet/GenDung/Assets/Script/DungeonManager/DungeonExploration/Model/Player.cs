@@ -25,6 +25,11 @@ public class Player : Entities {
         base.ActionPoint = this.MaxActionPoint;
     }
 
+    public override void ChangeActionPoints(int _points)
+    {
+        base.ActionPoint -= -_points;
+    }
+
     public override void DeathOfEntities ()
     {
         // Indicate to Explo_Data that this player is dead for the actual dungeon.
