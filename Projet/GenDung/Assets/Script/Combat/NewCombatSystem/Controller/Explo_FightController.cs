@@ -11,6 +11,7 @@ public class Explo_FightController : MonoBehaviour {
     bool attackMode;
     Entities fighterToAttack;
     GameObject next_Button;
+    SpellObject selectedSpellObject;
     Explo_DungeonController explo_Dungeon;
     Explo_Room_FightController fightCtrl;
 
@@ -244,16 +245,21 @@ public class Explo_FightController : MonoBehaviour {
 
     public void IndicatorIndex(int index)
     {
+        HideIndicator();
+        GameObject.Find("IndicatorSpell" + index).GetComponent<Animator>().Play("SpellIndicatorRotation");
+    }
+
+    public void HideIndicator()
+    {
         for (int i = 0; i < 3; i++)
         {
             GameObject.Find("IndicatorSpell" + i).GetComponent<Animator>().Play("SpellIndicatorRotationIdle");
         }
-        GameObject.Find("IndicatorSpell" + index).GetComponent<Animator>().Play("SpellIndicatorRotation");
     }
 
-    public void IndicatorAttackUI()
+    public void IndicatorAttackUI(int _spellIndex)
     {
-        print("I'll be attacking with spell " + spellObject.spellName);
+        print("I'll be attacking with spell " + fightCtrl.FighterList[entitiesIndex].EntitiesSpells[_spellIndex].spellName);
 
         for (int i = 0; i < fightCtrl.FighterList.Count; i++)
         {
@@ -268,12 +274,12 @@ public class Explo_FightController : MonoBehaviour {
         HideShowNext(!attackMode);
 
 
-        BS.SelectedSpellObject = spellObject;
+        selectedSpellObject = fightCtrl.FighterList[entitiesIndex].EntitiesSpells[_spellIndex];
 
         //activate for all the enemies the pastille to show where you can click
         for (int i = 0; i < fightCtrl.FighterList.Count; i++)
         {
-            if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Enemy)
+            if (selectedSpellObject.spellType == SpellObject.SpellType.Enemy)
             {
                 if (fightCtrl.FighterList[i] is Foe)
                 {
@@ -284,7 +290,7 @@ public class Explo_FightController : MonoBehaviour {
                     }
                 }
             }
-            else if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Ally)
+            else if (selectedSpellObject.spellType == SpellObject.SpellType.Ally)
             {
                 if (fightCtrl.FighterList[i] is Player)
                 {
@@ -295,7 +301,7 @@ public class Explo_FightController : MonoBehaviour {
                     }
                 }
             }
-            else if (BS.SelectedSpellObject.spellType == SpellObject.SpellType.Self)
+            else if (selectedSpellObject.spellType == SpellObject.SpellType.Self)
             {
                 //you can see where you click on yourself
                 //BS.FighterList [BS.actuallyPlaying].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
@@ -404,6 +410,19 @@ public class Explo_FightController : MonoBehaviour {
         set
         {
             fightCtrl = value;
+        }
+    }
+
+    public bool AttackMode
+    {
+        get
+        {
+            return attackMode;
+        }
+
+        set
+        {
+            attackMode = value;
         }
     }
 }

@@ -18,11 +18,10 @@ public class SpellPropreties : MonoBehaviour {
 		spellHolder_Controller = scriptBattleHolder.GetComponent<SpellHolder_Controller> ();
 	}
 
-	public void IndicatorIndex(int index){
-		for (int i = 0; i < 3; i++) {
-			GameObject.Find ("IndicatorSpell" + i).GetComponent<Animator> ().Play ("SpellIndicatorRotationIdle");
-		}
-		GameObject.Find ("IndicatorSpell" + index).GetComponent<Animator> ().Play ("SpellIndicatorRotation");
+	public void IndicatorIndex(int index)
+    {
+        HideIndicator();
+        GameObject.Find ("IndicatorSpell" + index).GetComponent<Animator> ().Play ("SpellIndicatorRotation");
 	}
 
 	public void HideIndicator(){
