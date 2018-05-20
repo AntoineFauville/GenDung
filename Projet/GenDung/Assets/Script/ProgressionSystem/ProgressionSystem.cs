@@ -144,8 +144,6 @@ public class ProgressionSystem : MonoBehaviour {
 			Debug.Log ("keep grinding");
 			debugLogMessage = "Keep grinding";
 		}
-
-
 	}
 
 	IEnumerator autoRefresh(){
