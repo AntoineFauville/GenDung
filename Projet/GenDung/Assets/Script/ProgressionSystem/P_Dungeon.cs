@@ -8,6 +8,7 @@ public class P_Dungeon {
 
 	public int index;
 
-	public int power_difficulty = 1;
-	public int dungeon_Reward = 1;
+	public IValueSystem difficulty = new ValueSystem();
+
+	public IValueSystem rewards = new ValueSystem();
 }

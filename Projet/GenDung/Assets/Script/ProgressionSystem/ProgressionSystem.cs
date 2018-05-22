@@ -19,10 +19,10 @@ public class ProgressionSystem : MonoBehaviour {
 	//Players
 	public int amountOfPlayer = 1;
 	public List<GameObject> all_Players = new List<GameObject> ();
-	public int combinedPower;
+	public float combinedPower;
 
 	//Gold
-	public int gold = 1;
+	public IValueSystem money = new ValueSystem();
 
 	//LogTool
 	string debugLogMessage = "";
@@ -47,13 +47,15 @@ public class ProgressionSystem : MonoBehaviour {
 			P_Dungeon p_Dungeon = new P_Dungeon();
 
 			p_Dungeon.name = "Dungeon_" + i;
-			p_Dungeon.power_difficulty = i*i*2;
-			p_Dungeon.dungeon_Reward = i*2;
 			p_Dungeon.index = i-1;
+
+			p_Dungeon.difficulty.SetValueTo (i*i*2);
+			p_Dungeon.rewards.SetValueTo (i*2);
+			print(p_Dungeon.rewards.value);
 
 			all_Dungeons.Add(p_Dungeon);
 
-			dungeon.transform.Find ("Dungeon_Description/Dungeon_Description_Text").GetComponent<Text> ().text = dungeon.name + " Difficulty " + p_Dungeon.power_difficulty + " Reward : " + p_Dungeon.dungeon_Reward;
+			dungeon.transform.Find ("Dungeon_Description/Dungeon_Description_Text").GetComponent<Text> ().text = dungeon.name + " Difficulty " + p_Dungeon.difficulty.value + " Reward : " + p_Dungeon.rewards.value;
 			dungeon.transform.Find ("Dungeon_Button").GetComponent<Dungeon_Button_Controller> ().p_Dungeon = p_Dungeon;
 		}
 	}
@@ -69,12 +71,13 @@ public class ProgressionSystem : MonoBehaviour {
 			P_Player p_Player = new P_Player ();
 
 			p_Player.name = "Player_" + i;
-			p_Player.power = 1;
+			p_Player.playerPower.SetValueTo(1);
+			p_Player.upgradeCost.SetValueTo (1);
 			p_Player.localIndex = i-1;
 
 			all_Players.Add (player);
 
-			player.transform.Find ("Player_Description/Player_Description_Text").GetComponent<Text> ().text = player.name + " Power : " + p_Player.power + " Upgrade Cost : " + p_Player.upgradeCost;
+			player.transform.Find ("Player_Description/Player_Description_Text").GetComponent<Text> ().text = player.name + " Power : " + p_Player.playerPower.value + " Upgrade Cost : " + p_Player.upgradeCost.value;
 			player.transform.Find ("Player_Upgrade_Button").GetComponent<Player_Button_Controller> ().p_Player = p_Player;
 		}
 
@@ -85,26 +88,26 @@ public class ProgressionSystem : MonoBehaviour {
 		combinedPower = 0;
 
 		for (int i = 0; i < all_Players.Count; i++) {
-			combinedPower += all_Players [i].transform.Find ("Player_Upgrade_Button").GetComponent<Player_Button_Controller> ().p_Player.power;
+			combinedPower += all_Players [i].transform.Find ("Player_Upgrade_Button").GetComponent<Player_Button_Controller> ().p_Player.playerPower.value;
 		}
 	}
 
-	public void AddPower(int power){
+	public void AddPower(float power){
 		combinedPower += power;
 	}
 
-	public void ModifyGold(int earnedGold){
-		gold += earnedGold;
+	public void ModifyGold(float earnedGold){
+		money.ModifyValue (earnedGold);
 	}
 
 	public void UpgradePlayer(P_Player p_PlayerUp){
 
-		if (gold >= p_PlayerUp.upgradeCost) {
+		if (money.value >= p_PlayerUp.upgradeCost.value) {
 
-			ModifyGold (-p_PlayerUp.upgradeCost);
+			ModifyGold (-p_PlayerUp.upgradeCost.value);
 
-			p_PlayerUp.power += 1;
-			p_PlayerUp.upgradeCost += p_PlayerUp.upgradeCost/2;
+			p_PlayerUp.playerPower.ModifyValue(1);
+			p_PlayerUp.upgradeCost.ValuePowered(2);
 
 			UpdatePlayerDescription (p_PlayerUp);
 			CalculateOverallPower ();
@@ -119,21 +122,21 @@ public class ProgressionSystem : MonoBehaviour {
 
 	public void UpdatePlayerDescription(P_Player p_Player){
 		for (int i = 0; i < all_Players.Count; i++) {
-			all_Players [p_Player.localIndex].transform.Find ("Player_Description/Player_Description_Text").GetComponent<Text> ().text = p_Player.name + " Power : " + p_Player.power + " Upgrade Cost : " + p_Player.upgradeCost;
+			all_Players [p_Player.localIndex].transform.Find ("Player_Description/Player_Description_Text").GetComponent<Text> ().text = p_Player.name + " Power : " + p_Player.playerPower.value + " Upgrade Cost : " + p_Player.upgradeCost.value;
 		}
 	}
 
 	void UpdateDisplayHeader(){
 		GameObject.Find ("Power_Text_Amount").GetComponent<Text> ().text = combinedPower.ToString ();
-		GameObject.Find ("Gold_Text_Amount").GetComponent<Text> ().text = gold.ToString ();
+		GameObject.Find ("Gold_Text_Amount").GetComponent<Text> ().text = money.value.ToString ();
 
 		GameObject.Find ("Debug_Message_Text").GetComponent<Text> ().text = debugLogMessage;
 	}
 
 	public void ExploreDung(P_Dungeon p_dung){
-		if (p_dung.power_difficulty <= combinedPower) {
+		if (p_dung.difficulty.value <= combinedPower) {
 			//yepee
-			ModifyGold (p_dung.dungeon_Reward);
+			ModifyGold (p_dung.rewards.value);
 
 			debugLogMessage = "Exploration SuccessFull !";
 

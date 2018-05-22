@@ -8,6 +8,8 @@ public class P_Player {
 
 	public int localIndex;
 
-	public int power = 1;
-	public int upgradeCost = 2;
+	public IValueSystem playerPower = new ValueSystem();
+
+	// define the cost for the players upgrade
+	public IValueSystem upgradeCost = new ValueSystem();
 }
