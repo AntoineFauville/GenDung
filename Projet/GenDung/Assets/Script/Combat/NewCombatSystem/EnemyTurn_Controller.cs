@@ -80,7 +80,7 @@ public class EnemyTurn_Controller : MonoBehaviour {
 
 		if (fighterToAttack.GetComponent<LocalDataHolder> ().player) {
 			if (fighterToAttack.GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
-				fighterToAttack.transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
+				fighterToAttack.transform.Find("Background").GetComponent<Animator>().Play("Attacked");
 			}
 		}
 
@@ -88,7 +88,7 @@ public class EnemyTurn_Controller : MonoBehaviour {
 
 		if (fighterToAttack.GetComponent<LocalDataHolder> ().player) {
 			if (fighterToAttack.GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
-				fighterToAttack.transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
+				fighterToAttack.transform.Find("Background").GetComponent<Animator>().Play("Idle");
 			}
 		}
 

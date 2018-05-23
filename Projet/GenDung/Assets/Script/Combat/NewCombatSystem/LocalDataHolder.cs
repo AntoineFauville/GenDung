@@ -62,7 +62,7 @@ public class LocalDataHolder : MonoBehaviour {
 		if (!player) {
 			Background = this.transform.Find ("EnemyBackground");
 		} else {
-			Background = this.transform.Find("PersoBackground");
+			Background = this.transform.Find("Background");
 		}
 
 		//if at the start and the enemyObject and the character Object are empty, it means we are not been selected by the holy church.
@@ -389,7 +389,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 	void PlayerAnimationPropreties(){
 		//what if we throw a fire ball, we need to say find distance and make the path for the fireball
-		BS.FighterList [BS.actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play (BS.SelectedSpellObject.spellAnimator.ToString());
+		BS.FighterList [BS.actuallyPlaying].transform.Find ("Background").GetComponent<Animator> ().Play (BS.SelectedSpellObject.spellAnimator.ToString());
 	}
 
 	void AnimFeedbackEnemy(SpellObject.SpellTargetType spellTarget, bool on){

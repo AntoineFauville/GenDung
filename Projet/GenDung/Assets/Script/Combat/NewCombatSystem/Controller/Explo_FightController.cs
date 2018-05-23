@@ -62,7 +62,7 @@ public class Explo_FightController : MonoBehaviour {
             HideShowNext(false);
 
             //next turn
-            StartCoroutine(slowEnemyTurn());
+            StartCoroutine(SlowEnemyTurn());
         }
         else
         {
@@ -217,10 +217,10 @@ public class Explo_FightController : MonoBehaviour {
         }
         while (fighterToAttack.Dead || fighterToAttack is Foe);
 
-        StartCoroutine(waitForEnemyAttack());
+        StartCoroutine(WaitForEnemyAttack());
     }
 
-    public void lifeTextUp(int amount, bool crit)
+    public void LifeTextUp(int amount, bool crit)
     {
 
         Transform t;
@@ -411,13 +411,31 @@ public class Explo_FightController : MonoBehaviour {
         }
     }
 
-    public IEnumerator slowEnemyTurn()
+    void AnimFeedbackEnemy(SpellObject.SpellTargetType spellTarget, bool on)
+    {
+
+        Animator EnemyAnimator = fightCtrl.FighterList[targetIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
+
+        if (spellTarget == SpellObject.SpellTargetType.EnemySingle)
+        {
+            if (on)
+            {
+                EnemyAnimator.Play("DamageMonster");
+            }
+            else
+            {
+                EnemyAnimator.Play("IdleMonster");
+            }
+        }
+    }
+
+    public IEnumerator SlowEnemyTurn()
     {
         yield return new WaitForSeconds(1.5f);
         NextTurn();
     }
 
-    public IEnumerator waitForEnemyAttack()
+    public IEnumerator WaitForEnemyAttack()
     {
         fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("attackMonster");
         //actualEnemyPlaying.transform.Find("EnemyBackground").GetComponent<Animator>().Play("attackMonster");
@@ -428,8 +446,8 @@ public class Explo_FightController : MonoBehaviour {
         {
             if (fighterToAttack.EntitiesAnimator)
             {
-                fighterToAttack.EntitiesGO.transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
-                //fighterToAttack.transform.Find("PersoBackground").GetComponent<Animator>().Play("Attacked");
+                fighterToAttack.EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("Attacked");
+                //fighterToAttack.transform.Find("Background").GetComponent<Animator>().Play("Attacked");
             }
         }
 
@@ -439,16 +457,17 @@ public class Explo_FightController : MonoBehaviour {
         {
             if (fighterToAttack.EntitiesAnimator)
             {
-                fighterToAttack.EntitiesGO.transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
-                //fighterToAttack.transform.Find("PersoBackground").GetComponent<Animator>().Play("Idle");
+                fighterToAttack.EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("Idle");
+                //fighterToAttack.transform.Find("Background").GetComponent<Animator>().Play("Idle");
             }
         }
 
         int chances = Random.Range(0, 100);
 
+
         fighterToAttack.ChangeHealth(-fightCtrl.FighterList[entitiesIndex].Attack, false);
         UpdateUIOrder();
-        lifeTextUp(-fightCtrl.FighterList[entitiesIndex].Attack, false);
+        LifeTextUp(-fightCtrl.FighterList[entitiesIndex].Attack, false);
 
         //if (criticalChances >= chances)
         //{
@@ -498,12 +517,12 @@ public class Explo_FightController : MonoBehaviour {
             if (selectedSpellObject.spellLogicType == SpellObject.SpellLogicType.Damage)
             {
                 //if it's damage make the fighter react to taking damages
-                //AnimFeedbackEnemy(BS.SelectedSpellObject.spellTargetType, true);
+                AnimFeedbackEnemy(selectedSpellObject.spellTargetType, true);
 
                 // wait for anim enemy reaction to spell. (Constant of 1 sec for exemple) + Launched Hit or Critical animation
                 yield return new WaitForSeconds(1.0f);
 
-                //AnimFeedbackEnemy(BS.SelectedSpellObject.spellTargetType, false);
+                AnimFeedbackEnemy(selectedSpellObject.spellTargetType, false);
             }
             //do the damage on the target (healing included)
             CalculDamageDone(selectedSpellObject.spellLogicType);

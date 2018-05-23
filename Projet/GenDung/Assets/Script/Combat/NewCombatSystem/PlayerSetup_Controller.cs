@@ -52,7 +52,7 @@ public class PlayerSetup_Controller : MonoBehaviour {
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().localIndex = i;
 
 				if (GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
-					GameObject.Find (playerString + i).transform.Find("PersoBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
+					GameObject.Find (playerString + i).transform.Find("Background").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
 				}
 			}
 
@@ -75,7 +75,7 @@ public class PlayerSetup_Controller : MonoBehaviour {
 				GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().dead = explo_Data.dungeonData.TempFighterObject [i].died;
 
 				if (GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.hasAnimations) {
-					GameObject.Find (playerString + i).transform.Find("PersoBackground").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
+					GameObject.Find (playerString + i).transform.Find("Background").GetComponent<Animator> ().runtimeAnimatorController = GameObject.Find (playerString + i).GetComponent<LocalDataHolder> ().characterObject.persoAnimator;
 				}
 			}
 		}

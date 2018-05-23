@@ -48,6 +48,8 @@ public class Entities {
 
         health += value;
 
+        Debug.Log("I've been hit, I lost " + roundedHP);
+
         if (health <= 0)
         {
             health = 0; // Setting health to Zero to avoid negative value.
@@ -75,10 +77,11 @@ public class Entities {
 
     public virtual void DeathOfEntities()
     {
+        Debug.Log("I'm Actually Dead");
         //De-activate Button
-        entitiesGO.transform.Find("PersoBackground").GetComponent<Button>().enabled = false;
+        entitiesGO.transform.Find("Background").GetComponent<Button>().enabled = false;
         //Change color to Color.gray
-        entitiesGO.transform.Find("PersoBackground").GetComponent<Image>().color = Color.gray;
+        entitiesGO.transform.Find("Background").GetComponent<Image>().color = Color.gray;
     }
 
     public float MaxHealth

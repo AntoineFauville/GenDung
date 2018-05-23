@@ -106,7 +106,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				yield return new WaitForSeconds (1.0f);
 
 				if (actualFighter.GetComponent<LocalDataHolder> ().player) {
-					actualFighter.transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
+					actualFighter.transform.Find ("Background").GetComponent<Animator> ().Play ("Attacked");
 				} else {
 					actualFighter.transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
 				}
@@ -114,7 +114,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				yield return new WaitForSeconds (1.0f);
 
 				if (actualFighter.GetComponent<LocalDataHolder> ().player) {
-					actualFighter.transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
+					actualFighter.transform.Find ("Background").GetComponent<Animator> ().Play ("Idle");
 				} else {
 					actualFighter.transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 				}
@@ -145,7 +145,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				yield return new WaitForSeconds (1.0f);
 
 				if (actualFighter.GetComponent<LocalDataHolder> ().player) {
-					actualFighter.transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
+					actualFighter.transform.Find ("Background").GetComponent<Animator> ().Play ("Attacked");
 				} else {
 					actualFighter.transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
 				}
@@ -153,7 +153,7 @@ public class StartTurnEffect_Controller : MonoBehaviour {
 				yield return new WaitForSeconds (1.0f);
 
 				if (actualFighter.GetComponent<LocalDataHolder> ().player) {
-					actualFighter.transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
+					actualFighter.transform.Find ("Background").GetComponent<Animator> ().Play ("Idle");
 				} else {
 					actualFighter.transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
 				}
