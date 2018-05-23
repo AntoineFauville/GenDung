@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class ValueSystem : IValueSystem {
 
-	public float value2;
+	public float Value2;
 
-	public float value {
+	public float Value {
 		get {
-			return Mathf.Round(value2);
+			return Mathf.Round(Value2);
 		}
 	}
 
 	public void ModifyValue (float modifiedValue){
-		value2 += modifiedValue;
+	    Value2 += modifiedValue;
 	}
 
 	public void SetValueTo (float valueAmount)
 	{
-		value2 = valueAmount;
+	    Value2 = valueAmount;
 	}
 
 	public void ValuePowered (float factor){
-		value2 += value2 / factor;
+	    Value2 += Value2 / factor;
 	}
+
+    public void ValuePowered(float dividedByFactor, float amountToAdd)
+    {
+        Value2 += amountToAdd / dividedByFactor;
+    }
 }

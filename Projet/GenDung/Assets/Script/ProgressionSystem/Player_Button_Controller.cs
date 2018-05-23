@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Player_Button_Controller : MonoBehaviour {
 
-	ProgressionSystem PS;
+	ProgressionSystem progressionSystem;
 
-	public P_Player p_Player;
+	public Pplayer pPlayer;
 
 	// Use this for initialization
 	void Start () {
-		PS = GameObject.FindObjectOfType<ProgressionSystem> ();
+		progressionSystem = GameObject.FindObjectOfType<ProgressionSystem> ();
 	}
 
 	public void UpgradePlayerPower(){
 		
-		PS.CalculateOverallPower ();
+		progressionSystem.CalculateOverallPower ();
 
-		PS.UpgradePlayer (p_Player);
+		progressionSystem.UpgradePlayer (pPlayer);
 	}
 }

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class P_Dungeon {
+public class Pdungeon {
 
-	public string name;
+	public string Name;
 
-	public int index;
+	public int Index;
 
-	public IValueSystem difficulty = new ValueSystem();
+	public IValueSystem Difficulty = new ValueSystem();
 
-	public IValueSystem rewards = new ValueSystem();
+	public IValueSystem Rewards = new ValueSystem();
 }

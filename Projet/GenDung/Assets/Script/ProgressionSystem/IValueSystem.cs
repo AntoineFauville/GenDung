@@ -4,11 +4,13 @@ using UnityEngine;
 
 public interface IValueSystem {
 
-	float value {	get; }
+	float Value {	get; }
 
 	void ModifyValue (float modifiedValue);
 
 	void SetValueTo (float valueAmount);
 
 	void ValuePowered (float factor);
+
+    void ValuePowered(float dividedByFactor, float amountToAdd);
 }

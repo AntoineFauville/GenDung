@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class P_Player {
+public class Pplayer {
 
-	public string name;
+	public string Name;
 
-	public int localIndex;
+	public int LocalIndex;
 
-	public IValueSystem playerPower = new ValueSystem();
+	public IValueSystem PlayerPower = new ValueSystem();
 
 	// define the cost for the players upgrade
-	public IValueSystem upgradeCost = new ValueSystem();
+	public IValueSystem UpgradeCost = new ValueSystem();
 }

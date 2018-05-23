@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Dungeon_Button_Controller : MonoBehaviour {
 
-	ProgressionSystem PS;
+	ProgressionSystem progressionSystem;
 
-	public P_Dungeon p_Dungeon;
+	public Pdungeon pDungeon;
 
 	// Use this for initialization
 	void Start () {
-		PS = GameObject.FindObjectOfType<ProgressionSystem> ();
+		progressionSystem = GameObject.FindObjectOfType<ProgressionSystem> ();
 	}
 
 	public void ExploreDungeon(){
 
-		PS.CalculateOverallPower ();		
-		PS.ExploreDung (p_Dungeon);
+		progressionSystem.CalculateOverallPower ();		
+		progressionSystem.ExploreDung (pDungeon);
 	}
 
 }
