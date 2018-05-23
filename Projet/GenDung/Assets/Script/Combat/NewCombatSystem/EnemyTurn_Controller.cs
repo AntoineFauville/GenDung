@@ -109,7 +109,7 @@ public class EnemyTurn_Controller : MonoBehaviour {
 	public IEnumerator waitForStarting(){
 		yield return new WaitForSeconds (1f);
 
-		spellHolder_Controller.UpdateFighterPanel();
+		//spellHolder_Controller.UpdateFighterPanel();
 
 		if (!BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
 

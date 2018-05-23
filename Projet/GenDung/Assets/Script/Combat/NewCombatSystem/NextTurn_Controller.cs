@@ -45,7 +45,7 @@ public class NextTurn_Controller : MonoBehaviour {
 			//BS.resetActionPoint(BS.actuallyPlaying);
 			startTurnEffect_Controller.ManageStatusEffects ();
 			//gere les effets et ensuite lance le reste de la fight
-			spellHolder_Controller.UpdateFighterPanel();
+			//spellHolder_Controller.UpdateFighterPanel();
 		}
 	}
 

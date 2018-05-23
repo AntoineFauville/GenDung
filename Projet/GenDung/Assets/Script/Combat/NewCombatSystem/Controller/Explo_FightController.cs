@@ -171,6 +171,14 @@ public class Explo_FightController : MonoBehaviour {
                     }
 
                     //GetRidOfIndicatorToSeeWhichEnemyICanClickOn();
+                    //make sure for the enemies to not show if they are not dead the fact that you can click on them
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe)
+                        {
+                            fightCtrl.FighterList[i].EntitiesGO.transform.Find("Shadow/Pastille2").GetComponent<Image>().enabled = false;
+                        }
+                    }
 
                 }
             }
@@ -298,14 +306,14 @@ public class Explo_FightController : MonoBehaviour {
                     if (!fightCtrl.FighterList[i].Dead)
                     {
                         //you can see where you click on the allies
-                        //BS.FighterList [i].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+                        fightCtrl.FighterList [i].EntitiesGO.transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
                     }
                 }
             }
             else if (selectedSpellObject.spellType == SpellObject.SpellType.Self)
             {
                 //you can see where you click on yourself
-                //BS.FighterList [BS.actuallyPlaying].transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+                fightCtrl.FighterList [entitiesIndex].EntitiesGO.transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
             }
         }
     }
@@ -438,7 +446,6 @@ public class Explo_FightController : MonoBehaviour {
     public IEnumerator WaitForEnemyAttack()
     {
         fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("attackMonster");
-        //actualEnemyPlaying.transform.Find("EnemyBackground").GetComponent<Animator>().Play("attackMonster");
 
         yield return new WaitForSeconds(1.0f);
 
@@ -447,7 +454,6 @@ public class Explo_FightController : MonoBehaviour {
             if (fighterToAttack.EntitiesAnimator)
             {
                 fighterToAttack.EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("Attacked");
-                //fighterToAttack.transform.Find("Background").GetComponent<Animator>().Play("Attacked");
             }
         }
 
@@ -458,7 +464,6 @@ public class Explo_FightController : MonoBehaviour {
             if (fighterToAttack.EntitiesAnimator)
             {
                 fighterToAttack.EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("Idle");
-                //fighterToAttack.transform.Find("Background").GetComponent<Animator>().Play("Idle");
             }
         }
 
@@ -488,6 +493,7 @@ public class Explo_FightController : MonoBehaviour {
         fightCtrl.FighterList[entitiesIndex].ChangeActionPoints(selectedSpellObject.spellCost);
 
         //play player animation
+        fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play(selectedSpellObject.spellAnimator.ToString());
         //PlayerAnimationPropreties();
 
         //Wait for anim player to finish depending on time of spell anim time
@@ -541,6 +547,10 @@ public class Explo_FightController : MonoBehaviour {
             // wait for anim enemy reaction to spell. + launch MISSED animation
             yield return new WaitForSeconds(0.5f);
         }
+
+        HideIndicator();
+        attackMode = false;
+        HideShowNext(true);
     }
 
     public Explo_Room_FightController FightCtrl
@@ -566,6 +576,19 @@ public class Explo_FightController : MonoBehaviour {
         set
         {
             attackMode = value;
+        }
+    }
+
+    public int EntitiesIndex
+    {
+        get
+        {
+            return entitiesIndex;
+        }
+
+        set
+        {
+            entitiesIndex = value;
         }
     }
 }
