@@ -8,7 +8,7 @@ public class Pdungeon {
 
 	public int Index;
 
-	public IValueSystem Difficulty = new ValueSystem();
+	public ValueSystem Difficulty = new ValueSystem();
 
-	public IValueSystem Rewards = new ValueSystem();
+	public ValueSystem Rewards = new ValueSystem();
 }

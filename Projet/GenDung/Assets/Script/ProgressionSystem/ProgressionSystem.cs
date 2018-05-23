@@ -22,7 +22,7 @@ public class ProgressionSystem : MonoBehaviour {
 	public float combinedPower;
 
 	//Gold
-	public IValueSystem Money = new ValueSystem();
+	public ValueSystem Money = new ValueSystem();
 
 	//LogTool
 	string debugLogMessage = "";
@@ -96,15 +96,11 @@ public class ProgressionSystem : MonoBehaviour {
 		combinedPower += power;
 	}
 
-	public void ModifyGold(float earnedGold){
-		Money.ModifyValue (earnedGold);
-	}
-
 	public void UpgradePlayer(Pplayer pplayerUp){
 
 		if (Money.Value >= pplayerUp.UpgradeCost.Value) {
 
-			ModifyGold (-pplayerUp.UpgradeCost.Value);
+			Money.ModifyValue (-pplayerUp.UpgradeCost.Value);
 
 		    pplayerUp.PlayerPower.ModifyValue(1);
 		    pplayerUp.UpgradeCost.ValuePowered(2);
@@ -136,7 +132,7 @@ public class ProgressionSystem : MonoBehaviour {
 	public void ExploreDung(Pdungeon pdung){
 		if (pdung.Difficulty.Value <= combinedPower) {
 			//yepee
-			ModifyGold (pdung.Rewards.Value);
+			Money.ModifyValue (pdung.Rewards.Value);
 
 			debugLogMessage = "Exploration SuccessFull !";
 
