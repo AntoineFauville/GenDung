@@ -5,90 +5,39 @@ using UnityEngine.UI;
 
 public class ProgressionSystem : MonoBehaviour {
 
-	//prefabs
-	public GameObject prefabPlayer; 
-	public GameObject prefabDungeon;
-
-	public Transform dungeon_Container;
-	public Transform player_Container;
-
 	//dungeons
-	public int amountOfDungeon = 1;
-	public List<Pdungeon> all_Dungeons = new List<Pdungeon> ();
+	public ProgressionSetUpDungeon ProgressionSetUpDungeon;
+	public List<DungeonButtonController> all_Dungeons_Controllers = new List<DungeonButtonController> ();
 
 	//Players
-	public int amountOfPlayer = 1;
-	public List<GameObject> all_Players = new List<GameObject> ();
-	public float combinedPower;
+	public ProgressionSetUpPlayer ProgressionSetUpPlayer;
+	public List<PlayerButtonController> all_Players_Controllers = new List<PlayerButtonController> ();
+	float combinedPower;
 
 	//Gold
 	public ValueSystem Money = new ValueSystem();
 
 	//LogTool
 	string debugLogMessage = "";
+	public Text Power_Text_Amount;
+	public Text Gold_Text_Amount;
+	public Text Debug_Message_Text;
+
 
 	private void Start(){
-		InitializeDungeon ();
-		InitializePlayer ();
+		ProgressionSetUpDungeon.InitializeDungeon (this);
+		ProgressionSetUpPlayer.InitializePlayer (this);
+
 		UpdateDisplayHeader ();
 
 		StartCoroutine (autoRefresh());
 	}
 
-	void InitializeDungeon(){
-		for (int i = 1; i < amountOfDungeon+1; i++) {
-
-			GameObject dungeon;
-
-			dungeon = Instantiate (prefabDungeon, dungeon_Container) as GameObject;
-			dungeon.transform.SetParent (dungeon_Container);
-			dungeon.name = "Dungeon_" + i;
-
-		    Pdungeon pDungeon = new Pdungeon();
-
-			pDungeon.Name = "Dungeon_" + i;
-			pDungeon.Index = i-1;
-
-			pDungeon.Difficulty.SetValueTo (i*i*2);
-			pDungeon.Rewards.SetValueTo (i*2);
-			print(pDungeon.Rewards.Value);
-
-			all_Dungeons.Add(pDungeon);
-
-			dungeon.transform.Find ("Dungeon_Description/Dungeon_Description_Text").GetComponent<Text> ().text = dungeon.name + " Difficulty " + pDungeon.Difficulty.Value + " Reward : " + pDungeon.Rewards.Value;
-			dungeon.transform.Find ("Dungeon_Button").GetComponent<Dungeon_Button_Controller> ().pDungeon = pDungeon;
-		}
-	}
-
-	void InitializePlayer(){
-		for (int i = 1; i < amountOfPlayer+1; i++) {
-
-			GameObject player;
-
-			player = Instantiate (prefabPlayer, player_Container) as GameObject;
-			player.name = "Player_" + i;
-
-			Pplayer pPlayer = new Pplayer();
-
-			pPlayer.Name = "Player_" + i;
-			pPlayer.PlayerPower.SetValueTo(1);
-			pPlayer.UpgradeCost.SetValueTo (1);
-			pPlayer.LocalIndex = i-1;
-
-			all_Players.Add (player);
-
-			player.transform.Find ("Player_Description/Player_Description_Text").GetComponent<Text> ().text = player.name + " Power : " + pPlayer.PlayerPower.Value + " Upgrade Cost : " + pPlayer.UpgradeCost.Value;
-			player.transform.Find ("Player_Upgrade_Button").GetComponent<Player_Button_Controller> ().pPlayer = pPlayer;
-		}
-
-		CalculateOverallPower ();
-	}
-
 	public void CalculateOverallPower(){
 		combinedPower = 0;
 
-		for (int i = 0; i < all_Players.Count; i++) {
-			combinedPower += all_Players [i].transform.Find ("Player_Upgrade_Button").GetComponent<Player_Button_Controller> ().pPlayer.PlayerPower.Value;
+		for (int i = 0; i < all_Players_Controllers.Count; i++) {
+			combinedPower += all_Players_Controllers [i].LocalPPlayer.PlayerPower.Value;
 		}
 	}
 
@@ -96,16 +45,16 @@ public class ProgressionSystem : MonoBehaviour {
 		combinedPower += power;
 	}
 
-	public void UpgradePlayer(Pplayer pplayerUp){
+	public void UpgradePlayer(Pplayer pPlayerUp){
 
-		if (Money.Value >= pplayerUp.UpgradeCost.Value) {
+		if (Money.Value >= pPlayerUp.UpgradeCost.Value) {
 
-			Money.ModifyValue (-pplayerUp.UpgradeCost.Value);
+			Money.ModifyValue (-pPlayerUp.UpgradeCost.Value);
 
-		    pplayerUp.PlayerPower.ModifyValue(1);
-		    pplayerUp.UpgradeCost.ValuePowered(2);
+			pPlayerUp.PlayerPower.ModifyValue(1);
+			pPlayerUp.UpgradeCost.ValuePowered(2);
 
-			UpdatePlayerDescription (pplayerUp);
+			UpdatePlayerDescription (pPlayerUp);
 			CalculateOverallPower ();
 
 			debugLogMessage = "Upgrade SuccessFull !";
@@ -116,17 +65,16 @@ public class ProgressionSystem : MonoBehaviour {
 		}
 	}
 
-	public void UpdatePlayerDescription(Pplayer pplayer){
-		for (int i = 0; i < all_Players.Count; i++) {
-			all_Players [pplayer.LocalIndex].transform.Find ("Player_Description/Player_Description_Text").GetComponent<Text> ().text = pplayer.Name + " Power : " + pplayer.PlayerPower.Value + " Upgrade Cost : " + pplayer.UpgradeCost.Value;
+	public void UpdatePlayerDescription(Pplayer pPlayer){
+		for (int i = 0; i < all_Players_Controllers.Count; i++) {
+			all_Players_Controllers [pPlayer.LocalIndex].PlayerDescriptionText.text = pPlayer.Name + " Power : " + pPlayer.PlayerPower.Value + " Upgrade Cost : " + pPlayer.UpgradeCost.Value;
 		}
 	}
 
 	void UpdateDisplayHeader(){
-		GameObject.Find ("Power_Text_Amount").GetComponent<Text> ().text = combinedPower.ToString ();
-		GameObject.Find ("Gold_Text_Amount").GetComponent<Text> ().text = Money.Value.ToString ();
-
-		GameObject.Find ("Debug_Message_Text").GetComponent<Text> ().text = debugLogMessage;
+		Power_Text_Amount.text = combinedPower.ToString ();
+		Gold_Text_Amount.text = Money.Value.ToString ();
+		Debug_Message_Text.text = debugLogMessage;
 	}
 
 	public void ExploreDung(Pdungeon pdung){
@@ -136,7 +84,7 @@ public class ProgressionSystem : MonoBehaviour {
 
 			debugLogMessage = "Exploration SuccessFull !";
 
-			if (pdung.Index+1 == all_Dungeons.Count) {
+			if (pdung.Index+1 == all_Dungeons_Controllers.Count) {
 				debugLogMessage = "You Won !!";
 			}
 		} else {
