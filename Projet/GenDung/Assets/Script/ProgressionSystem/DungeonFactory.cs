@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class DungeonFactory : MonoBehaviour {
 
-	public Pdungeon CreateDungeon(int dungeonType){
-		
-		if (dungeonType.Equals (0)){
-            return new PDungeonForest();
-		} else if (dungeonType.Equals (1)) {
-			return new PDungeonDesert ();
-		} else
-			return null;
+	public Pdungeon CreateDungeon(int dungeonType)
+	{
+	    switch (dungeonType)
+	    {
+	        case 0:
+	            return new PDungeonForest();
+	        case 1:
+	            return new PDungeonDesert ();
+	        default:
+	            return null;
+	    }
 	}
 }
