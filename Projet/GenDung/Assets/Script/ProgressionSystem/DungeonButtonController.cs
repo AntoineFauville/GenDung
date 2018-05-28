@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DungeonButtonController : MonoBehaviour {
 
-	public ProgressionSystem progressionSystem;
+	public ProgressionSystem ProgressionSystem;
 
 	public Pdungeon LocalPDungeon;
 
@@ -14,8 +14,8 @@ public class DungeonButtonController : MonoBehaviour {
 
 	public void ExploreDungeon(){
 
-		progressionSystem.CalculateOverallPower ();		
-		progressionSystem.ExploreDung (LocalPDungeon);
+		ProgressionSystem.CalculateOverallPower ();		
+		ProgressionSystem.ExploreDung (LocalPDungeon);
 	}
 
 }

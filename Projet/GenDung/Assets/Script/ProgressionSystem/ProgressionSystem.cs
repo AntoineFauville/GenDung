@@ -7,21 +7,21 @@ public class ProgressionSystem : MonoBehaviour {
 
 	//dungeons
 	public ProgressionSetUpDungeon ProgressionSetUpDungeon;
-	public List<DungeonButtonController> all_Dungeons_Controllers = new List<DungeonButtonController> ();
+	public List<DungeonButtonController> AllDungeonsControllers = new List<DungeonButtonController> ();
 
 	//Players
 	public ProgressionSetUpPlayer ProgressionSetUpPlayer;
-	public List<PlayerButtonController> all_Players_Controllers = new List<PlayerButtonController> ();
-	float combinedPower;
+	public List<PlayerButtonController> AllPlayersControllers = new List<PlayerButtonController> ();
+	float _combinedPower;
 
 	//Gold
 	public ValueSystem Money = new ValueSystem();
 
 	//LogTool
-	string debugLogMessage = "";
-	public Text Power_Text_Amount;
-	public Text Gold_Text_Amount;
-	public Text Debug_Message_Text;
+	string _debugLogMessage = "";
+	public Text PowerTextAmount;
+	public Text GoldTextAmount;
+	public Text DebugMessageText;
 
 
 	private void Start(){
@@ -34,15 +34,15 @@ public class ProgressionSystem : MonoBehaviour {
 	}
 
 	public void CalculateOverallPower(){
-		combinedPower = 0;
+		_combinedPower = 0;
 
-		for (int i = 0; i < all_Players_Controllers.Count; i++) {
-			combinedPower += all_Players_Controllers [i].LocalPPlayer.PlayerPower.Value;
+		for (int i = 0; i < AllPlayersControllers.Count; i++) {
+			_combinedPower += AllPlayersControllers [i].LocalPPlayer.PlayerPower.Value;
 		}
 	}
 
 	public void AddPower(float power){
-		combinedPower += power;
+		_combinedPower += power;
 	}
 
 	public void UpgradePlayer(Pplayer pPlayerUp){
@@ -57,39 +57,39 @@ public class ProgressionSystem : MonoBehaviour {
 			UpdatePlayerDescription (pPlayerUp);
 			CalculateOverallPower ();
 
-			debugLogMessage = "Upgrade SuccessFull !";
+			_debugLogMessage = "Upgrade SuccessFull !";
 
 		} else {
 			Debug.Log ("Grind for upgrades");
-			debugLogMessage = "Grind for upgrades";
+			_debugLogMessage = "Grind for upgrades";
 		}
 	}
 
 	public void UpdatePlayerDescription(Pplayer pPlayer){
-		for (int i = 0; i < all_Players_Controllers.Count; i++) {
-			all_Players_Controllers [pPlayer.LocalIndex].PlayerDescriptionText.text = pPlayer.Name + " Power : " + pPlayer.PlayerPower.Value + " Upgrade Cost : " + pPlayer.UpgradeCost.Value;
+		for (int i = 0; i < AllPlayersControllers.Count; i++) {
+			AllPlayersControllers [pPlayer.LocalIndex].PlayerDescriptionText.text = pPlayer.Name + " Power : " + pPlayer.PlayerPower.Value + " Upgrade Cost : " + pPlayer.UpgradeCost.Value;
 		}
 	}
 
 	void UpdateDisplayHeader(){
-		Power_Text_Amount.text = combinedPower.ToString ();
-		Gold_Text_Amount.text = Money.Value.ToString ();
-		Debug_Message_Text.text = debugLogMessage;
+		PowerTextAmount.text = _combinedPower.ToString ();
+		GoldTextAmount.text = Money.Value.ToString ();
+		DebugMessageText.text = _debugLogMessage;
 	}
 
 	public void ExploreDung(Pdungeon pdung){
-		if (pdung.Difficulty.Value <= combinedPower) {
+		if (pdung.Difficulty.Value <= _combinedPower) {
 			//yepee
 			Money.ModifyValue (pdung.Rewards.Value);
 
-			debugLogMessage = "Exploration SuccessFull !";
+			_debugLogMessage = "Exploration SuccessFull !";
 
-			if (pdung.Index+1 == all_Dungeons_Controllers.Count) {
-				debugLogMessage = "You Won !!";
+			if (pdung.Index+1 == AllDungeonsControllers.Count) {
+				_debugLogMessage = "You Won !!";
 			}
 		} else {
 			Debug.Log ("keep grinding");
-			debugLogMessage = "Keep grinding";
+			_debugLogMessage = "Keep grinding";
 		}
 	}
 

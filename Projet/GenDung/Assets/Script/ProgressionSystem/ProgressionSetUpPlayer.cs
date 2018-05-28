@@ -18,7 +18,7 @@ public class ProgressionSetUpPlayer : MonoBehaviour {
 
 			player = Instantiate (prefabPlayer, player_Container);
 			player.name = "Player_" + i;
-			player.progressionSystem = ProgressionSystem;
+			player.ProgressionSystem = ProgressionSystem;
 
 			Pplayer pPlayer = new Pplayer();
 
@@ -27,7 +27,7 @@ public class ProgressionSetUpPlayer : MonoBehaviour {
 			pPlayer.UpgradeCost.SetValueTo (1);
 			pPlayer.LocalIndex = i-1;
 
-			ProgressionSystem.all_Players_Controllers.Add (player);
+			ProgressionSystem.AllPlayersControllers.Add (player);
 
 			player.PlayerDescriptionText.text = player.name + " Power : " + pPlayer.PlayerPower.Value + " Upgrade Cost : " + pPlayer.UpgradeCost.Value;
 			player.LocalPPlayer = pPlayer;

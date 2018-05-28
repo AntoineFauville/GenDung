@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerButtonController : MonoBehaviour {
 
-	public ProgressionSystem progressionSystem;
+	public ProgressionSystem ProgressionSystem;
 
 	public Pplayer LocalPPlayer;
 
@@ -14,8 +14,8 @@ public class PlayerButtonController : MonoBehaviour {
 
 	public void UpgradePlayerPower(){
 		
-		progressionSystem.CalculateOverallPower ();
+		ProgressionSystem.CalculateOverallPower ();
 
-		progressionSystem.UpgradePlayer (LocalPPlayer);
+		ProgressionSystem.UpgradePlayer (LocalPPlayer);
 	}
 }
