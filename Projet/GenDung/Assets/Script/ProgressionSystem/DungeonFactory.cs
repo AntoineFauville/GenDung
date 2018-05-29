@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class DungeonFactory : MonoBehaviour {
 
-	public Pdungeon CreateDungeon(int dungeonType)
-	{
-	    switch (dungeonType)
-	    {
-	        case 0:
-	            return new PDungeonForest();
-	        case 1:
-	            return new PDungeonDesert ();
-	        default:
-	            return null;
-	    }
-	}
+    public ProgressionDungeon CreateDungeon(PDungeonData data)
+    {
+        return new ProgressionDungeon(data.Name, data.Index, data.Difficulty, data.GoldReward);
+    }
 }

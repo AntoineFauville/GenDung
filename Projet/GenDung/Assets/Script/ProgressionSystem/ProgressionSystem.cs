@@ -77,7 +77,7 @@ public class ProgressionSystem : MonoBehaviour {
 		DebugMessageText.text = _debugLogMessage;
 	}
 
-	public void ExploreDung(Pdungeon pdung){
+	public void ExploreDung(ProgressionDungeon pdung){
 		if (pdung.Difficulty.Value <= _combinedPower) {
 			//yepee
 			Money.ModifyValue (pdung.Rewards.Value);

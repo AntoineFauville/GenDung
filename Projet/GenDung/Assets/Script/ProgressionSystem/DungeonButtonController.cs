@@ -7,7 +7,7 @@ public class DungeonButtonController : MonoBehaviour {
 
 	public ProgressionSystem ProgressionSystem;
 
-	public Pdungeon LocalPDungeon;
+	public ProgressionDungeon LocalPDungeon;
 
 	public Text DungeonDescriptionText;
 	public GameObject DungeonButton;

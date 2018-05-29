@@ -23,4 +23,9 @@ public class ValueSystem {
     {
 		Value += amountToAdd / dividedByFactor;
     }
+
+    public ValueSystem(float value = 0)
+    {
+        Value = value;
+    }
 }
