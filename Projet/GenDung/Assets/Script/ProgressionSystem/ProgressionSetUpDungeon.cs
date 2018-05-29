@@ -11,11 +11,11 @@ public class ProgressionSetUpDungeon : MonoBehaviour {
 
 	ProgressionSystem ProgressionSystem;
 
-	public PGameData PGameData;
+	public ProgressionGameData PGameData;
 
 	public DungeonFactory DungeonFactory;
 
-    public PDungeonData[] ProgressionDatas;
+    public ProgressionDungeonData[] ProgressionDatas;
 
     public void InitializeDungeon(ProgressionSystem ProgressionSystem){
 
@@ -28,13 +28,6 @@ public class ProgressionSetUpDungeon : MonoBehaviour {
 			dungeon.ProgressionSystem = ProgressionSystem;
 
 			dungeon.LocalPDungeon = DungeonFactory.CreateDungeon (ProgressionDatas[Random.Range (0, ProgressionDatas.Length)]);
-            
-            //dungeon.LocalPDungeon.Name = "Dungeon_" + i;
-		    //dungeon.LocalPDungeon.Index = i-1;
-
-		    //dungeon.LocalPDungeon.Difficulty.SetValueTo (1);
-		    //dungeon.LocalPDungeon.Rewards.SetValueTo (i*2);
-			//print(pDungeon.Rewards.Value);
 
 			ProgressionSystem.AllDungeonsControllers.Add(dungeon);
 

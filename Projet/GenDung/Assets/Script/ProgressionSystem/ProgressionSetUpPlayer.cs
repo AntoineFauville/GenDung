@@ -9,7 +9,7 @@ public class ProgressionSetUpPlayer : MonoBehaviour {
 	public Transform player_Container;
 
 
-	public PGameData PGameData;
+	public ProgressionGameData PGameData;
 
 	public void InitializePlayer(ProgressionSystem ProgressionSystem){
 		for (int i = 1; i <= PGameData.AmountOfPlayer; i++) {

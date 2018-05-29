@@ -83,10 +83,7 @@ public class ProgressionSystem : MonoBehaviour {
 			Money.ModifyValue (pdung.Rewards.Value);
 
 			_debugLogMessage = "Exploration SuccessFull !";
-
-			if (pdung.Index+1 == AllDungeonsControllers.Count) {
-				_debugLogMessage = "You Won !!";
-			}
+            
 		} else {
 			Debug.Log ("keep grinding");
 			_debugLogMessage = "Keep grinding";

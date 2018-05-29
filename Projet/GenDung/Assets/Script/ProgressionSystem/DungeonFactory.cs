@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DungeonFactory : MonoBehaviour {
 
-    public ProgressionDungeon CreateDungeon(PDungeonData data)
+    public ProgressionDungeon CreateDungeon(ProgressionDungeonData data)
     {
-        return new ProgressionDungeon(data.Name, data.Index, data.Difficulty, data.GoldReward);
+        return new ProgressionDungeon(data.Name, data.Difficulty, data.GoldReward);
     }
 }
