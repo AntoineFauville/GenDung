@@ -43,7 +43,8 @@ public class Player : Entities {
 
     public void InitializeVisual()
     {
-        base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+        base.EntitiesEffectAnimator = base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>();
+        base.EntitiesEffectAnimator.Play("Effect_None");
         base.EntitiesGO.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = Health / MaxHealth;
     }
 }

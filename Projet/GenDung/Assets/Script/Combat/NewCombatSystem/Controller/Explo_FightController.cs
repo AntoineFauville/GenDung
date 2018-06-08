@@ -16,6 +16,7 @@ public class Explo_FightController : MonoBehaviour {
     SpellObject selectedSpellObject;
     Explo_DungeonController explo_Dungeon;
     Explo_Room_FightController fightCtrl;
+    Explo_Status exploStatus;
 
     public void Start()
     {
@@ -228,6 +229,67 @@ public class Explo_FightController : MonoBehaviour {
         StartCoroutine(WaitForEnemyAttack());
     }
 
+    public void StatusAssignement()
+    {
+        if(selectedSpellObject.spellStatus == SpellObject.SpellStatus.None )
+        {
+            return;
+        }
+
+        switch(selectedSpellObject.spellStatus)
+        {
+            case SpellObject.SpellStatus.Poisoned:
+                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
+            default:
+                Debug.Log("Ow ow ow MotherFucker !!!");
+                break;
+        }
+
+        //status = new Status();
+
+        //status.statusName = effect_Controller.AllStatus[index].statusName;
+        //status.statusDamage = effect_Controller.AllStatus[index].statusDamage;
+        //status.statusTurnLeft = (int)BS.SelectedSpellObject.spellOccurenceType;
+        //status.Icon = effect_Controller.AllStatus[index].Icon;
+
+        //print(status.statusName + " " + status.statusDamage + " " + " " + status.statusTurnLeft);
+
+        ////assign effect type
+
+        //if (index == 0)
+        //{
+        //    status.statusType = Status.StatusType.Healed;
+        //}
+        //else if (index == 1)
+        //{
+        //    status.statusType = Status.StatusType.Poisonned;
+        //}
+        //else if (index == 2)
+        //{
+        //    status.statusType = Status.StatusType.Spike;
+        //}
+        //else if (index == 3)
+        //{
+        //    status.statusType = Status.StatusType.TemporaryLifed;
+        //}
+
+        //if (player)
+        //{
+        //    explo_Data.dungeonData.TempFighterObject[localIndex].playerStatus.Add(status);
+        //}
+        //else
+        //{
+        //    explo_Data.dungeonData.TempFighterObject[localIndex + 4].playerStatus.Add(status);
+        //}
+
+        //BS.FighterList[indexFighterToAttack].GetComponent<ToolTipStatus_Controller>().AddEffectToUI(status);
+
+
+    }
+
     public void LifeTextUp(int amount, bool crit)
     {
 
@@ -381,6 +443,14 @@ public class Explo_FightController : MonoBehaviour {
     {
         HideShowNext(false);
 
+        if (fightCtrl.FighterList[entitiesIndex].EntitiesStatus.Count == 0)
+        {
+            ContinueFightAfterEffect();
+            return;
+        }
+
+        StartCoroutine(WaitForEffectToBeAppliedAtTurnStart());
+
         ////define all the amount of effect for the player
         //int maxEffects;
         ////check if it's a player
@@ -401,7 +471,6 @@ public class Explo_FightController : MonoBehaviour {
         //}
         //else
         //{
-        ContinueFightAfterEffect();
         //    DisplayUIToolTip();
         //}
     }
@@ -541,6 +610,10 @@ public class Explo_FightController : MonoBehaviour {
                 yield return new WaitForSeconds(0.8f);
                 //CheckExtraEffect(false);
             }
+
+            StatusAssignement();
+            yield return new WaitForSeconds(exploStatus.AnimationDuration);
+            exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
         }
         else
         {
@@ -551,6 +624,17 @@ public class Explo_FightController : MonoBehaviour {
         HideIndicator();
         attackMode = false;
         HideShowNext(true);
+    }
+
+    public IEnumerator WaitForEffectToBeAppliedAtTurnStart()
+    {
+        for (int i = 0; i < fightCtrl.FighterList[entitiesIndex].EntitiesStatus.Count; i++)
+        {
+            fightCtrl.FighterList[entitiesIndex].EntitiesStatus[i].DoSomething(i);
+            yield return new WaitForSeconds(fightCtrl.FighterList[targetIndex].EntitiesStatus[i].AnimationDuration);
+            fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_None");
+        }
+        ContinueFightAfterEffect();
     }
 
     public Explo_Room_FightController FightCtrl

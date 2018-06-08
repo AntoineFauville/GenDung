@@ -29,8 +29,9 @@ public class Foe : Entities {
 
     public void InitializeVisual()
     {
+        base.EntitiesEffectAnimator = base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>();
         base.EntitiesGO.transform.Find("Background").GetComponent<Image>().sprite = EntitiesSprite;
-        base.EntitiesGO.transform.Find("EffectLayer").GetComponent<Animator>().Play("Effect_None");
+        base.EntitiesEffectAnimator.Play("Effect_None");
         base.EntitiesGO.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = Health / MaxHealth;
         base.EntitiesGO.transform.Find("Shadow/Pastille2").GetComponent<Image>().enabled = false;
     }

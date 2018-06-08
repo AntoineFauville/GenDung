@@ -16,11 +16,13 @@ public class Entities {
     bool dead;
     string name;
     SpellObject[] entitiesSpells = new SpellObject[3];
+    List<Explo_Status> entitiesStatus = new List<Explo_Status>();
     //
     GameObject entitiesGO;
     Sprite entitiesSprite;
     GameObject entitiesUIOrder;
     RuntimeAnimatorController entitiesAnimator;
+    Animator entitiesEffectAnimator;
 
     public Entities()
     {
@@ -261,6 +263,32 @@ public class Entities {
         set
         {
             fightIndex = value;
+        }
+    }
+
+    public List<Explo_Status> EntitiesStatus
+    {
+        get
+        {
+            return entitiesStatus;
+        }
+
+        set
+        {
+            entitiesStatus = value;
+        }
+    }
+
+    public Animator EntitiesEffectAnimator
+    {
+        get
+        {
+            return entitiesEffectAnimator;
+        }
+
+        set
+        {
+            entitiesEffectAnimator = value;
         }
     }
 }
