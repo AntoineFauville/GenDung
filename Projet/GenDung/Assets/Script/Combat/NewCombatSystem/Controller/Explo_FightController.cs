@@ -243,6 +243,41 @@ public class Explo_FightController : MonoBehaviour {
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
+            case SpellObject.SpellStatus.Healed:
+                exploStatus = new Explo_Status_Healed(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
+            case SpellObject.SpellStatus.Sheilded:
+                exploStatus = new Explo_Status_Shielded(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
+            case SpellObject.SpellStatus.TemporaryLifed:
+                exploStatus = new Explo_Status_TemporaryLife(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
+            case SpellObject.SpellStatus.Cursed:
+                exploStatus = new Explo_Status_Cursed(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
+            case SpellObject.SpellStatus.ResistanceReduced:
+                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
+            case SpellObject.SpellStatus.AvoidanceReduced:
+                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
+            case SpellObject.SpellStatus.Spike:
+                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                break;
+
             default:
                 Debug.Log("Ow ow ow MotherFucker !!!");
                 break;
