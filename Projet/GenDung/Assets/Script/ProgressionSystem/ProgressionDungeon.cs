@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ProgressionDungeon
+﻿public class ProgressionDungeon
 {
     public string Name;
     public ValueSystem Difficulty;

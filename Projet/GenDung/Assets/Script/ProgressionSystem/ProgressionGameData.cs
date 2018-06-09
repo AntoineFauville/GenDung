@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "ProgressionSystem", menuName = "ProgressionSystem/ProgressionGameData", order = 1)]
 public class ProgressionGameData : ScriptableObject {
