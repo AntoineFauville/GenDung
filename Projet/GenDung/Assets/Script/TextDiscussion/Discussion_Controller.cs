@@ -7,27 +7,27 @@ public class Discussion_Controller : MonoBehaviour {
 
 	public DiscussionTemplate DT;
 	AnimatedText AT;
-	int rnd = 0;
+	int TextIndex = 0;
 
     public bool AreWeLooping;
 
 	void Start(){
 		AT = this.GetComponent<AnimatedText> ();
-		rnd --;
+		TextIndex --;
 	}
 
 	public void SendToAnimText(){
 
         if (!AT.AnimDone)
         {
-            rnd++;
+            TextIndex++;
 
-            if (rnd < DT.Messages.Length)
+            if (TextIndex < DT.Messages.Length)
             {
 
-                //rnd = Random.Range (0,DT.Messages.Length);
+                //TextIndex = Random.Range (0,DT.Messages.Length);
 
-                AT.message = DT.Messages[rnd];
+                AT.message = DT.Messages[TextIndex];
 
                 AT.ResetText();
             }
@@ -37,7 +37,7 @@ public class Discussion_Controller : MonoBehaviour {
                 AT.ResetText();
             }
 
-            if (rnd == DT.Messages.Length)
+            if (TextIndex == DT.Messages.Length)
             {
                 LoopConversation();
             }
@@ -53,7 +53,7 @@ public class Discussion_Controller : MonoBehaviour {
 
     IEnumerator loopwait() {
         yield return new WaitForSeconds(2.0f);
-        rnd = 0;
+        TextIndex = 0;
     }
 
 }
