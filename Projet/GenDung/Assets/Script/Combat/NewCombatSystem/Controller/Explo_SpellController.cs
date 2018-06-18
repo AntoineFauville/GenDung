@@ -7,11 +7,13 @@ public class Explo_SpellController : MonoBehaviour {
 
     Explo_FightController explo_Fight;
     int index;
+    private bool isUiDisplayed = false;
 
     public void Start()
     {
         explo_Fight = GameObject.Find("BattleSystem/ScriptBattle").GetComponent<Explo_FightController>();
         GameObject.Find("BattleSystem/ClickAway").GetComponent<Button>().onClick.AddListener(() => ClickAway());
+        ToolTipShow(false);
     }
 
     public void SetSpell(int _index)
@@ -22,10 +24,18 @@ public class Explo_SpellController : MonoBehaviour {
 
     public void ToolTipShow(bool show)
     {
-        if (!show)
+        isUiDisplayed = show;
+
+        if (!isUiDisplayed)
+        {
             GameObject.Find("ToolTipSpell").GetComponent<CanvasGroup>().alpha = 0;
+            Debug.Log("Spell Ui is set to " + isUiDisplayed + " normally and should'nt appear");
+        }
         else
+        {
             GameObject.Find("ToolTipSpell").GetComponent<CanvasGroup>().alpha = 1;
+            Debug.Log("Spell Ui is set to " + isUiDisplayed + " normally and should be appearing");
+        }
     }
 
     public void UpdateToolTip(int _index)
@@ -49,18 +59,7 @@ public class Explo_SpellController : MonoBehaviour {
                     + "." + '\n' + "Place " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellTargetFeedbackAnimationType.ToString() + " on target for " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellOccurenceType.ToString();
             }
             GameObject.Find("ToolTipSpell").transform.Find("ToolTipSpellExplanation").GetComponent<Text>().text = explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellDescription.ToString();
-            StartCoroutine(waitABit());
         }
-        else
-        {
-            StartCoroutine(waitABit());
-        }
-    }
-
-    IEnumerator waitABit()
-    {
-        yield return new WaitForSeconds(0.1f);
-        UpdateToolTip(index);
     }
 
     public void ClickAway()
