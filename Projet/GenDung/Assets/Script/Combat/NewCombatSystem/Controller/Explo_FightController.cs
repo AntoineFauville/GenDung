@@ -264,17 +264,17 @@ public class Explo_FightController : MonoBehaviour {
                 break;
 
             case SpellObject.SpellStatus.ResistanceReduced:
-                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                exploStatus = new Explo_Status_ResistanceReduced(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.AvoidanceReduced:
-                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                exploStatus = new Explo_Status_AvoidanceReduced(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.Spike:
-                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                exploStatus = new Explo_Status_Spike(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
@@ -288,7 +288,7 @@ public class Explo_FightController : MonoBehaviour {
     {
 
         Transform t;
-        t = fighterToAttack.EntitiesGO.transform.GetChild(0).transform.GetChild(3);
+        t = fighterToAttack.EntitiesTextLifeDisplayTransform;
 
         GameObject lifeUp;
 

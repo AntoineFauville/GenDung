@@ -24,6 +24,7 @@ public class Entities {
     Image entitiesIndicator;
     RuntimeAnimatorController entitiesAnimator;
     Animator entitiesEffectAnimator;
+    Transform entitiesTextLifeDisplayTransform;
 
     public Entities()
     {
@@ -77,6 +78,7 @@ public class Entities {
         UiBattleDisplay = MonoBehaviour.Instantiate(Resources.Load("UI_Interface/UIBattleOrderDisplay"), GameObject.Find("OrderBattlePanel").transform) as GameObject;
         this.entitiesUIOrder = UiBattleDisplay;
         this.entitiesIndicator = entitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>();
+        this.entitiesTextLifeDisplayTransform = EntitiesGO.transform.GetChild(0).transform.GetChild(3);
     }
 
     public virtual void DeathOfEntities()
@@ -304,6 +306,19 @@ public class Entities {
         set
         {
             entitiesIndicator = value;
+        }
+    }
+
+    public Transform EntitiesTextLifeDisplayTransform
+    {
+        get
+        {
+            return entitiesTextLifeDisplayTransform;
+        }
+
+        set
+        {
+            entitiesTextLifeDisplayTransform = value;
         }
     }
 }
