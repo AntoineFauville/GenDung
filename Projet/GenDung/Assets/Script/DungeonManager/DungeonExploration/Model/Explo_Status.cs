@@ -13,14 +13,13 @@ public class Explo_Status {
 
     public Explo_Status()
     {
-  
     }
 
     public void DoSomething(int statusIndex)
     {
-        Debug.Log(entity.Name + " has been affected by " + effectAnim + " for a duration of" + duration + " turns");
+        Debug.Log(entity.Name + " has been affected by " + effectAnim + " for a duration of " + duration + " turns");
 
-        if (CheckDuration( statusIndex))
+        if (CheckDuration(statusIndex))
         {
             EffectLayerAnimation();
             entity.ChangeHealth(tickValue,false);
@@ -29,7 +28,7 @@ public class Explo_Status {
         }
     }
 
-    public bool CheckDuration( int statusIndex)
+    public bool CheckDuration(int statusIndex)
     {
         if (duration <= 0)
         {
@@ -46,12 +45,6 @@ public class Explo_Status {
     public void EffectLayerAnimation()
     {
         entity.EntitiesEffectAnimator.Play(EffectAnim);
-    }
-
-    IEnumerator WaitForSwitchBackAnimation()
-    {
-        yield return new WaitForSeconds(animationDuration);
-        entity.EntitiesEffectAnimator.Play("Effect_None");
     }
 
     public int MaxDuration

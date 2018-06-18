@@ -44,7 +44,6 @@ public class Explo_FightController : MonoBehaviour {
 
             SetArrow();
             ManageStatusEffects();
-            ////gere les effets et ensuite lance le reste de la fight
             UpdateSpellPanel();
         }
     }
@@ -87,7 +86,7 @@ public class Explo_FightController : MonoBehaviour {
 
         CleanPreviousArrow();
 
-        fightCtrl.FighterList[entitiesIndex].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = true;
+        fightCtrl.FighterList[entitiesIndex].EntitiesIndicator.enabled = true;
         fightCtrl.FighterList[entitiesIndex].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(true);
     }
 
@@ -95,7 +94,7 @@ public class Explo_FightController : MonoBehaviour {
     {
         for (int i = 0; i < fightCtrl.FighterList.Count; i++)
         {
-            fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = false;
+            fightCtrl.FighterList[i].EntitiesIndicator.enabled = false;
             fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(false);
         }
     }
@@ -107,7 +106,7 @@ public class Explo_FightController : MonoBehaviour {
         if (index >= fightCtrl.FighterList.Count) // if we match the count of fighters, we set it back to 0 for looping.
             index = 0;
 
-        fightCtrl.FighterList[index].EntitiesUIOrder.transform.Find("BouleVerte").GetComponent<Image>().enabled = true;
+        fightCtrl.FighterList[index].EntitiesIndicator.enabled = true;
         fightCtrl.FighterList[index].EntitiesUIOrder.transform.Find("Scripts").GetComponent<UIOrderBattle>().Selected(true);
     }
 
@@ -148,6 +147,7 @@ public class Explo_FightController : MonoBehaviour {
     public void SetTarget(int _target)
     {
         this.targetIndex = _target;
+        fighterToAttack = fightCtrl.FighterList[_target];
         AttackEnemy();
     }
 
@@ -282,47 +282,6 @@ public class Explo_FightController : MonoBehaviour {
                 Debug.Log("Ow ow ow MotherFucker !!!");
                 break;
         }
-
-        //status = new Status();
-
-        //status.statusName = effect_Controller.AllStatus[index].statusName;
-        //status.statusDamage = effect_Controller.AllStatus[index].statusDamage;
-        //status.statusTurnLeft = (int)BS.SelectedSpellObject.spellOccurenceType;
-        //status.Icon = effect_Controller.AllStatus[index].Icon;
-
-        //print(status.statusName + " " + status.statusDamage + " " + " " + status.statusTurnLeft);
-
-        ////assign effect type
-
-        //if (index == 0)
-        //{
-        //    status.statusType = Status.StatusType.Healed;
-        //}
-        //else if (index == 1)
-        //{
-        //    status.statusType = Status.StatusType.Poisonned;
-        //}
-        //else if (index == 2)
-        //{
-        //    status.statusType = Status.StatusType.Spike;
-        //}
-        //else if (index == 3)
-        //{
-        //    status.statusType = Status.StatusType.TemporaryLifed;
-        //}
-
-        //if (player)
-        //{
-        //    explo_Data.dungeonData.TempFighterObject[localIndex].playerStatus.Add(status);
-        //}
-        //else
-        //{
-        //    explo_Data.dungeonData.TempFighterObject[localIndex + 4].playerStatus.Add(status);
-        //}
-
-        //BS.FighterList[indexFighterToAttack].GetComponent<ToolTipStatus_Controller>().AddEffectToUI(status);
-
-
     }
 
     public void LifeTextUp(int amount, bool crit)
@@ -485,29 +444,6 @@ public class Explo_FightController : MonoBehaviour {
         }
 
         StartCoroutine(WaitForEffectToBeAppliedAtTurnStart());
-
-        ////define all the amount of effect for the player
-        //int maxEffects;
-        ////check if it's a player
-        //if (fightCtrl.FighterList[entitiesIndex] is Player)
-        //{
-        //    //max
-        //    maxEffects = explo_Data.dungeonData.TempFighterObject[BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().localIndex].playerStatus.Count;
-        //    print(maxEffects);
-        //}
-        //else
-        //{
-        //    maxEffects = explo_Data.dungeonData.TempFighterObject[BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().localIndex + 4].playerStatus.Count;
-        //    print(maxEffects);
-        //}
-        //if (maxEffects > 0)
-        //{
-        //    StartCoroutine(waitForEffectEndedStartOfTurn(maxEffects));
-        //}
-        //else
-        //{
-        //    DisplayUIToolTip();
-        //}
     }
 
     public void ContinueFightAfterEffect()
@@ -647,8 +583,11 @@ public class Explo_FightController : MonoBehaviour {
             }
 
             StatusAssignement();
-            yield return new WaitForSeconds(exploStatus.AnimationDuration);
-            exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
+            if (exploStatus != null)
+            {
+                yield return new WaitForSeconds(exploStatus.AnimationDuration);
+                exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
+            }
         }
         else
         {
@@ -658,6 +597,9 @@ public class Explo_FightController : MonoBehaviour {
 
         HideIndicator();
         attackMode = false;
+        UpdateUIOrder(); // Call the Update of UI to display Damage made to the Enemy.
+
+        LifeTextUp(-selectedSpellObject.spellDamage, false);
         HideShowNext(true);
     }
 
