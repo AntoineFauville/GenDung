@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Discussion_Controller : MonoBehaviour {
 
-	public DiscussionTemplate DT;
+	/*public DiscussionTemplate DT;
 	AnimatedText AT;
 	int TextIndex = 0;
 
@@ -55,5 +55,5 @@ public class Discussion_Controller : MonoBehaviour {
         yield return new WaitForSeconds(2.0f);
         TextIndex = 0;
     }
-
+    */
 }

@@ -1,39 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConversationReader : MonoBehaviour
 {
     public Conversation Conversation;
-    public AnimatedText AnimatedText;
-    Vector3 PositionOfTheText = new Vector3();
+    public SpeakerManager SpeakerManager;
+    private AnimatedText AnimatedText;
+    public Button ButtonToClickNext;
 
     private int AmountOfDiscussion;
     private int AmountOfTextForASpecificParticipant;
     private int TextForASpecificParticipant;
-    private int Participant;
+    private int TalkingParticipant;
 
     void Start()
     {
-        Participant = 0;
-        DefinePosition(Participant);
-        DefineConversation(Participant);
-
+        ButtonToClickNext.interactable = false;
+        TalkingParticipant = 0;
+        DefineConversation(Conversation.CharacterMonologueTemplate[TalkingParticipant]);
+        AmountOfDiscussion = Conversation.CharacterMonologueTemplate.Length;
         //make sure the first text is the 0;
     }
 
-    void DefineConversation(int Participant)
+    void DefineConversation(MonologueTemplate monologueTemplate)
     {
-        AmountOfDiscussion = Conversation.AmountCharacterAndText;
-        AmountOfTextForASpecificParticipant = Conversation.CharacterAndText[Participant].AmountOfMessages;
+        AmountOfTextForASpecificParticipant = monologueTemplate.Messages.Length;
         TextForASpecificParticipant = -1;
     }
 
-    void DefinePosition(int Participant)
+    public void SetAnimatedText(AnimatedText animatedText)
     {
-        PositionOfTheText = Conversation.CharacterAndText[Participant].CharacterPositionPrefab.transform.localPosition;
-        
-        AnimatedText.transform.position = PositionOfTheText;
+        AnimatedText = animatedText;
     }
 
     public void ClickToSeeText()
@@ -44,7 +43,7 @@ public class ConversationReader : MonoBehaviour
 
             if (TextForASpecificParticipant < AmountOfTextForASpecificParticipant)
             {
-                AnimatedText.message = Conversation.CharacterAndText[Participant].Messages[TextForASpecificParticipant];
+                AnimatedText.message = Conversation.CharacterMonologueTemplate[TalkingParticipant].Messages[TextForASpecificParticipant];
                 AnimatedText.ResetText();
             }
             else
@@ -53,22 +52,12 @@ public class ConversationReader : MonoBehaviour
                 AnimatedText.ResetText();
                 ChangeParticipant();
             }
-            //else
-            //{
-            //    //change participant.
-            //    Participant++;
-            //    DefinePosition(Participant);
-            //    //teleport the thing.
-            //    DefineConversation(Participant);
-            //    AnimatedText.ResetText();
-            //}
         }
     }
 
     void ChangeParticipant()
     {
-        Participant++;
-        DefineConversation(Participant);
-        DefinePosition(Participant);
+        TalkingParticipant++;
+        DefineConversation(Conversation.CharacterMonologueTemplate[TalkingParticipant]);
     }
 }

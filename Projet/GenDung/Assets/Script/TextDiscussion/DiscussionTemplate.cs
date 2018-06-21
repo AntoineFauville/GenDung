@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Discussion", menuName = "DiscussionRelated/DiscussionTemplate", order =1)]
-public class DiscussionTemplate : ScriptableObject
+[CreateAssetMenu(fileName = "Discussion", menuName = "DiscussionRelated/MonologueTemplate", order =1)]
+public class MonologueTemplate : ScriptableObject
 {
-    public GameObject CharacterPositionPrefab;
-	public string[] Messages;
-    public int AmountOfMessages;
+    public enum CharacterReference { BarMan, Kesath, Players };
+    public CharacterReference characterReference;
+    public string[] Messages;
 }
