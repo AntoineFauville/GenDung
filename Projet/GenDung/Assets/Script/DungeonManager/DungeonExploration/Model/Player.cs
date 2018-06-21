@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class Player : Entities {
 
-    public Player(float _maxHealth, int _maxActionsPoint, int _initiative, string _name, SpellObject[] _entitiesSpells, GameObject _entitiesGO, Sprite _entitiesSprite)
+    public Player(float _maxHealth, int _maxActionsPoint, int _initiative, string _name,Explo_Data _entitiesData, SpellObject[] _entitiesSpells, GameObject _entitiesGO, Sprite _entitiesSprite)
     {
         base.MaxHealth = _maxHealth;
         base.Health = MaxHealth;
         base.Initiative = _initiative;
         base.Dead = false;
         base.Name = _name;
+        base.EntitiesData = _entitiesData;
         base.EntitiesSpells = _entitiesSpells;
         base.EntitiesGO = _entitiesGO;
         base.EntitiesSprite = _entitiesSprite;
@@ -32,9 +33,10 @@ public class Player : Entities {
 
     public override void DeathOfEntities ()
     {
-        // Indicate to Explo_Data that this player is dead for the actual dungeon.
-        // Change Value of players for next combat.
-        // Check if all players are dead. if yes, Launch method for ending combat.
+        base.Dead = true;
+        EntitiesData.PlayersLeft--;
+        if (EntitiesData.PlayersLeft <= 0)
+            EntitiesGO.transform.parent.parent.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
 
         base.DeathOfEntities(); // Need to check if it's an obligation or if it will work without calling it.
 

@@ -110,11 +110,11 @@ public class BattleSystem : MonoBehaviour {
 			GameObject.Find ("UIBattleOrderDisplay(Clone)").SetActive (false);
 		}
 		//clean enemy and reset them
-		for (int i = 0; i < 4; i++) {
-			GameObject.Find (enemySetup_Controller.enemyString + i).GetComponent<LocalDataHolder> ().dead = false;
-			GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("EnemyBackground").GetComponent<Button> ().enabled = true;
-			GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.white;
-		}
+		//for (int i = 0; i < 4; i++) {
+		//	GameObject.Find (enemySetup_Controller.enemyString + i).GetComponent<LocalDataHolder> ().dead = false;
+		//	GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("Background").GetComponent<Button> ().enabled = true;
+		//	GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("Background").GetComponent<Image> ().color = Color.white;
+		//}
 	}
 
 	//public void resetActionPoint(int index){

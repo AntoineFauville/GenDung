@@ -159,6 +159,8 @@ public class Explo_Room_FightController : MonoBehaviour
 
    public void SetPlayers()
     {
+        UnOrderedFighterList.Clear();
+
         for (int i = 0; i < explo_dungeon.Dungeon.Data.Players.Count; i++) // Using Data from Creation for number of Players.
         {
             UnOrderedFighterList.Add(explo_Dungeon.Dungeon.Data.Players[i], explo_dungeon.Dungeon.Data.Players[i].Initiative);

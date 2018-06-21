@@ -10,6 +10,7 @@ public class Explo_Status {
     private float tickValue;
     private string effectAnim;
     private Entities entity;
+    private bool effectAttack = false;
 
     public Explo_Status()
     {
@@ -19,10 +20,15 @@ public class Explo_Status {
     {
         Debug.Log(entity.Name + " has been affected by " + effectAnim + " for a duration of " + duration + " turns");
 
+        if (effectAttack)
+        {
+
+        }
+
         if (CheckDuration(statusIndex))
         {
             EffectLayerAnimation();
-            entity.ChangeHealth(tickValue,false);
+            entity.ChangeHealth(-tickValue,false);
             duration--;
             Debug.Log("my duration is now " + duration);
         }
@@ -122,6 +128,19 @@ public class Explo_Status {
         set
         {
             entity = value;
+        }
+    }
+
+    public bool EffectAttack
+    {
+        get
+        {
+            return effectAttack;
+        }
+
+        set
+        {
+            effectAttack = value;
         }
     }
 }

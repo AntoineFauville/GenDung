@@ -15,6 +15,7 @@ public class Explo_FightController : MonoBehaviour {
     GameObject next_Button;
     SpellObject selectedSpellObject;
     Explo_DungeonController explo_Dungeon;
+    ProjectileManager projectile_Manager;
     Explo_Room_FightController fightCtrl;
     Explo_Status exploStatus;
 
@@ -22,6 +23,7 @@ public class Explo_FightController : MonoBehaviour {
     {
         next_Button = GameObject.Find("NextPanel");
         explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
+        projectile_Manager = GameObject.Find("ScriptBattle").GetComponent<ProjectileManager>();
     }
 
     public void NextTurn()
@@ -155,7 +157,7 @@ public class Explo_FightController : MonoBehaviour {
     {
         if (attackMode)
         {
-            if (fightCtrl.FighterList[targetIndex] is Foe)
+            if (fightCtrl.FighterList[targetIndex] is Foe && !fightCtrl.FighterList[targetIndex].Dead)
             {
                 //check to know on who I can click.
                 if (selectedSpellObject.spellType == SpellObject.SpellType.Enemy)
@@ -229,9 +231,44 @@ public class Explo_FightController : MonoBehaviour {
         StartCoroutine(WaitForEnemyAttack());
     }
 
+    public void EffectAssignement()
+    {
+        if (selectedSpellObject.spellEffect == SpellObject.SpellEffect.None)
+        {
+            return;
+        }
+
+        switch (selectedSpellObject.spellEffect)
+        {
+            case SpellObject.SpellEffect.None:
+                break;
+
+            case SpellObject.SpellEffect.Effect_Arcane_Projectile:
+                projectile_Manager.LaunchProjectile(fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform, fightCtrl.FighterList[targetIndex].EntitiesGO.transform);
+                break;
+
+            case SpellObject.SpellEffect.Effect_Blood:
+                fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Blood");
+                break;
+
+            case SpellObject.SpellEffect.Effect_Roots:
+                fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Rooted");
+                break;
+
+            case SpellObject.SpellEffect.Effect_Spike:
+                fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Blood");
+                break;
+        }
+    }
+
+    public void StopEffect()
+    {
+        fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_None");
+    }
+
     public void StatusAssignement()
     {
-        if(selectedSpellObject.spellStatus == SpellObject.SpellStatus.None )
+        if (selectedSpellObject.spellStatus == SpellObject.SpellStatus.None )
         {
             return;
         }
@@ -239,41 +276,118 @@ public class Explo_FightController : MonoBehaviour {
         switch(selectedSpellObject.spellStatus)
         {
             case SpellObject.SpellStatus.Poisoned:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_Poisoned)
+                    {
+                        return;
+                    } 
+                }
                 exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                Debug.Log("Added Effect");
                 break;
 
             case SpellObject.SpellStatus.Healed:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_Healed)
+                    {
+                        return;
+                    }
+                }
+
                 exploStatus = new Explo_Status_Healed(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.Sheilded:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_Shielded)
+                    {
+                        return;
+                    }
+                }
+
                 exploStatus = new Explo_Status_Shielded(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.TemporaryLifed:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_TemporaryLife)
+                    {
+                        return;
+                    }
+                }
+
+
                 exploStatus = new Explo_Status_TemporaryLife(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.Cursed:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_Cursed)
+                    {
+                        return;
+                    }
+                }
+
+
                 exploStatus = new Explo_Status_Cursed(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.ResistanceReduced:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_ResistanceReduced)
+                    {
+                        return;
+                    }
+                }
+
+
                 exploStatus = new Explo_Status_ResistanceReduced(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.AvoidanceReduced:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_AvoidanceReduced)
+                    {
+                        return;
+                    }
+                }
+
+
                 exploStatus = new Explo_Status_AvoidanceReduced(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
 
             case SpellObject.SpellStatus.Spike:
+
+                for (int i = 0; i < fightCtrl.FighterList[targetIndex].EntitiesStatus.Count; i++)
+                {
+                    if (fightCtrl.FighterList[targetIndex].EntitiesStatus[i] is Explo_Status_Spike)
+                    {
+                        return;
+                    }
+                }
+
+
                 exploStatus = new Explo_Status_Spike(fightCtrl.FighterList[targetIndex]);
                 fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
                 break;
@@ -362,14 +476,14 @@ public class Explo_FightController : MonoBehaviour {
                     if (!fightCtrl.FighterList[i].Dead)
                     {
                         //you can see where you click on the allies
-                        fightCtrl.FighterList [i].EntitiesGO.transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+                        //fightCtrl.FighterList [i].EntitiesGO.transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
                     }
                 }
             }
             else if (selectedSpellObject.spellType == SpellObject.SpellType.Self)
             {
                 //you can see where you click on yourself
-                fightCtrl.FighterList [entitiesIndex].EntitiesGO.transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
+                //fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform.Find ("Shadow/Pastille2").GetComponent<Image> ().enabled = true;
             }
         }
     }
@@ -403,7 +517,7 @@ public class Explo_FightController : MonoBehaviour {
         {
             if (critHit)
             {
-                fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, true);
+                fightCtrl.FighterList[targetIndex].ChangeHealth(-selectedSpellObject.spellDamage * 1.5f, true);
             }
             else
             {
@@ -534,28 +648,20 @@ public class Explo_FightController : MonoBehaviour {
 
         //play player animation
         fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play(selectedSpellObject.spellAnimator.ToString());
-        //PlayerAnimationPropreties();
+        //PlayerAnimationPropreties()
 
-        //Wait for anim player to finish depending on time of spell anim time
-        //if it contains a reaction or a spell invocation at the enemy's place we need to instantiate or play an effect on the enemy
-        if (selectedSpellObject.EffectAppearingDuringPlayerAnim)
-        {
-            yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
-
-            //CheckDuringCombatEffect(true);
-
-            yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
-
-            //CheckDuringCombatEffect(false);
-        }
-        else
-        {
-            yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime);
-        }
 
         //calculate the chances to hit or crit == Calculate if "missed" or "critical chance" or "regular spell effect"
         CalculChances();
         //depending on the result, throw here an inidactor to know if we continue the attack or not.
+
+
+        //Wait for anim player to finish depending on time of spell anim time
+        //if it contains a reaction or a spell invocation at the enemy's place we need to instantiate or play an effect on the enemy
+        yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
+        EffectAssignement();
+        yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
+        StopEffect();
 
         if (attackContinue)
         {
@@ -588,6 +694,9 @@ public class Explo_FightController : MonoBehaviour {
                 yield return new WaitForSeconds(exploStatus.AnimationDuration);
                 exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
             }
+
+            UpdateUIOrder(); // Call the Update of UI to display Damage made to the Enemy.
+            LifeTextUp(-selectedSpellObject.spellDamage, false);
         }
         else
         {
@@ -597,9 +706,6 @@ public class Explo_FightController : MonoBehaviour {
 
         HideIndicator();
         attackMode = false;
-        UpdateUIOrder(); // Call the Update of UI to display Damage made to the Enemy.
-
-        LifeTextUp(-selectedSpellObject.spellDamage, false);
         HideShowNext(true);
     }
 

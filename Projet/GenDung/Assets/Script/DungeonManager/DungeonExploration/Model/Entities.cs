@@ -15,6 +15,7 @@ public class Entities {
     int actionPoint;
     bool dead;
     string name;
+    Explo_Data entitiesData;
     SpellObject[] entitiesSpells = new SpellObject[3];
     List<Explo_Status> entitiesStatus = new List<Explo_Status>();
     //
@@ -31,13 +32,14 @@ public class Entities {
 
     }
 
-    public Entities(float _maxHealth,int _initiative, string _name, SpellObject[] _entitiesSpells, GameObject _entitiesGO, Sprite _entitiesSprite, GameObject _entitiesUIOrder, RuntimeAnimatorController _entitiesAnimator)
+    public Entities(float _maxHealth,int _initiative, string _name,Explo_Data _entitiesData, SpellObject[] _entitiesSpells, GameObject _entitiesGO, Sprite _entitiesSprite, GameObject _entitiesUIOrder, RuntimeAnimatorController _entitiesAnimator)
     {
         this.maxHealth = _maxHealth;
         health = maxHealth;
         this.initiative = _initiative;
         dead = false;
         this.name = _name;
+        this.entitiesData = _entitiesData;
         this.entitiesSpells = _entitiesSpells;
         this.entitiesGO = _entitiesGO;
         this.entitiesSprite = _entitiesSprite;
@@ -319,6 +321,19 @@ public class Entities {
         set
         {
             entitiesTextLifeDisplayTransform = value;
+        }
+    }
+
+    public Explo_Data EntitiesData
+    {
+        get
+        {
+            return entitiesData;
+        }
+
+        set
+        {
+            entitiesData = value;
         }
     }
 }

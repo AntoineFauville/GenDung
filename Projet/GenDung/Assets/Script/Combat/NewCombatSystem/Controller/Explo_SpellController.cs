@@ -29,12 +29,10 @@ public class Explo_SpellController : MonoBehaviour {
         if (!isUiDisplayed)
         {
             GameObject.Find("ToolTipSpell").GetComponent<CanvasGroup>().alpha = 0;
-            Debug.Log("Spell Ui is set to " + isUiDisplayed + " normally and should'nt appear");
         }
         else
         {
             GameObject.Find("ToolTipSpell").GetComponent<CanvasGroup>().alpha = 1;
-            Debug.Log("Spell Ui is set to " + isUiDisplayed + " normally and should be appearing");
         }
     }
 
