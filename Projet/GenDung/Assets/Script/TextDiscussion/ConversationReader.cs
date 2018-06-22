@@ -5,29 +5,43 @@ using UnityEngine.UI;
 
 public class ConversationReader : MonoBehaviour
 {
-    public Conversation Conversation;
+   
     public SpeakerManager SpeakerManager;
     private AnimatedText AnimatedText;
     public Button ButtonToClickNext;
+    public Image ButtonToClickNextImage;
 
     private int AmountOfDiscussion;
     private int AmountOfTextForASpecificParticipant;
-    private int TextForASpecificParticipant;
-    private int TalkingParticipant;
+   
+    [Header("Stay Empty")]
+    public Conversation Conversation;
+    public int TextForASpecificParticipant;
+    public int TalkingParticipant;
 
     void Start()
     {
-        ButtonToClickNext.interactable = false;
-        TalkingParticipant = 0;
-        DefineConversation(Conversation.CharacterMonologueTemplate[TalkingParticipant]);
-        AmountOfDiscussion = Conversation.CharacterMonologueTemplate.Length;
-        //make sure the first text is the 0;
+        SetButtonToClickNext(false);
     }
 
-    void DefineConversation(MonologueTemplate monologueTemplate)
+    public void SetButtonToClickNext(bool activate)
+    {
+        ButtonToClickNext.interactable = activate;
+        ButtonToClickNextImage.raycastTarget = activate;
+    }
+
+    public void DefineConversataion(Conversation conversation)
+    {
+        Conversation = conversation;
+        AmountOfDiscussion = conversation.CharacterMonologueTemplate.Length;
+        Debug.Log("Nbr Monologue : " + AmountOfDiscussion);
+    }
+
+    public void DefineMonologue(MonologueTemplate monologueTemplate)
     {
         AmountOfTextForASpecificParticipant = monologueTemplate.Messages.Length;
         TextForASpecificParticipant = -1;
+        Debug.Log("Nbr Text : " + AmountOfTextForASpecificParticipant);
     }
 
     public void SetAnimatedText(AnimatedText animatedText)
@@ -44,12 +58,12 @@ public class ConversationReader : MonoBehaviour
             if (TextForASpecificParticipant < AmountOfTextForASpecificParticipant)
             {
                 AnimatedText.message = Conversation.CharacterMonologueTemplate[TalkingParticipant].Messages[TextForASpecificParticipant];
-                AnimatedText.ResetText();
+                AnimatedText.EndOfAnimResetText();
             }
             else
             {
                 AnimatedText.message = "";
-                AnimatedText.ResetText();
+                AnimatedText.EndOfAnimResetText();
                 ChangeParticipant();
             }
         }
@@ -58,6 +72,17 @@ public class ConversationReader : MonoBehaviour
     void ChangeParticipant()
     {
         TalkingParticipant++;
-        DefineConversation(Conversation.CharacterMonologueTemplate[TalkingParticipant]);
+        Debug.Log("Participant suivant");
+        if (TalkingParticipant < AmountOfDiscussion)
+        {
+            SpeakerManager.ChangeParticipant(Conversation.CharacterMonologueTemplate[TalkingParticipant]);
+            DefineMonologue(Conversation.CharacterMonologueTemplate[TalkingParticipant]);
+        }
+        else
+        {
+            SetButtonToClickNext(false);
+            SpeakerManager.ResetAllSpeakerText();
+            SpeakerManager.UiConversation.StartCadre(false);
+        }
     }
 }

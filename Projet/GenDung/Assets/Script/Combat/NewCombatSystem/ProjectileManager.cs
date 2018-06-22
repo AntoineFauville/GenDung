@@ -48,6 +48,8 @@ public class ProjectileManager : MonoBehaviour {
 
 		float perc = curentLerpTime / lerpTime;
 
+	    float distance = Vector3.Distance(initialPosition.position, endPosition.position);
+
 		ProjectileEffect.transform.position = Vector3.Lerp (initialPosition.position, endPosition.position, perc);
 	}
 }

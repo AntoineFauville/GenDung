@@ -17,22 +17,19 @@ public class AnimatedText : MonoBehaviour
 	void Start ()
 	{
 		textComp.text = "";
-
-		//Get text component
-		//textComp = GetComponent<Text> ();
-		//Message will display will be at Text
-		//message = textComp.text;
-		//Set the text to be blank first
-		//ResetText();
-		//Call the function and expect yield to return
-		//StartCoroutine (TypeText ());
 	}
 
-	public void ResetText(){
+    public void ResetText()
+    {
+        textComp.text = null;
+        textComp.text = "";
+    }
+
+    public void EndOfAnimResetText(){
 		if (!AnimDone) {
 			AnimDone = true;
 			textComp.text = null;
-			StartCoroutine (TypeText ());
+			StartCoroutine (TypeText());
 		}	
 	}
 
@@ -43,7 +40,6 @@ public class AnimatedText : MonoBehaviour
 		{
 			//Add 1 letter each
 			textComp.text += letter;
-			yield return 0;
 			yield return new WaitForSeconds(letterPaused);
 		}
 		AnimDone = false;
