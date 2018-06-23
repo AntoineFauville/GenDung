@@ -240,6 +240,6 @@ public class CharacterCreations : MonoBehaviour {
 	    
         SceneManager.LoadScene ("NewTavern");
 
-	    GameObject.Find("DontDestroyOnLoad").GetComponent<TavernController>().SetTavernStatus(1);
+	    GameObject.Find("DontDestroyOnLoad").GetComponent<StoryTavernController>().SetTavernStatus(1);
     }
 }

@@ -5,14 +5,18 @@ using UnityEngine.UI;
 
 public class UIConversation : MonoBehaviour {
 
-	//1. know who need a quest mark
+    //1. know who need a quest mark
     //2. when clicked removed
-
+    [Header("Kesath")]
     public Animator KesathQuestMarkerSupport;
+    public Button KesathStartConversationButton;
+
+    [Header("BarMan")]
     public Animator BarManQuestMarkerSupport;
+    public Button BarManStartConversationButton;
 
+    [Space(20)]
     public Animator CadreConversation;
-
     public ScrollRect ScrollRect;
 
     public Animator Area1Animator;
@@ -21,7 +25,7 @@ public class UIConversation : MonoBehaviour {
 
     private void Awake()
     {
-       // ResetQuestMarker();
+       ResetQuestMarker();
     }
 
     public void ResetQuestMarker()
@@ -103,6 +107,21 @@ public class UIConversation : MonoBehaviour {
                 break;
             case 3:
                 Area3Animator.Play("AnimationDiscoveringArea");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void UnlockButton(int character, bool activate)
+    {
+        switch (character)
+        {
+            case 1:
+                KesathStartConversationButton.enabled = activate;
+                break;
+            case 2:
+                BarManStartConversationButton.enabled = activate;
                 break;
             default:
                 break;

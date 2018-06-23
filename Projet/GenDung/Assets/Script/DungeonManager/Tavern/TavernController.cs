@@ -10,7 +10,7 @@ public class TavernController : MonoBehaviour {
     private DungeonLoader dungeonLoader;
     private bool questStartOn;
 
-    public int StoryCaseTavernController;
+
 
     //all int for upgrade temp
     private int healthTemp,
@@ -97,10 +97,7 @@ public class TavernController : MonoBehaviour {
 		*/
     }
 
-    public void SetTavernStatus(int storyCase)
-    {
-        StoryCaseTavernController = storyCase;
-    }
+   
 
     /* Accessors Method */
     public static TavernController Instance
