@@ -18,8 +18,8 @@ public class SetUpConversation : MonoBehaviour
 
     private void Start()
     {
-        StoryCase = 1;
-        ReadStoryCase();
+       StoryCase = GameObject.Find("DontDestroyOnLoad").GetComponent<TavernController>().StoryCaseTavernController;
+       ReadStoryCase();
     }
 
     private void ReadStoryCase()
@@ -40,7 +40,7 @@ public class SetUpConversation : MonoBehaviour
 
                 break;
             case 2:
-                Debug.Log("Second Time you enter the tavern");
+                Debug.Log("Regular Time you enter the tavern");
 
                 //set the possible conversation buttons.
                 //set according to those button the conversation with it

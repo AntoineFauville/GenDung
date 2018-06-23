@@ -10,6 +10,8 @@ public class TavernController : MonoBehaviour {
     private DungeonLoader dungeonLoader;
     private bool questStartOn;
 
+    public int StoryCaseTavernController;
+
     //all int for upgrade temp
     private int healthTemp,
         actionTemp,
@@ -93,6 +95,11 @@ public class TavernController : MonoBehaviour {
         //Dist
         GameObject.Find("DistText").GetComponent<Text>().text = "Character Distance Attack : " + distTemp.ToString();
 		*/
+    }
+
+    public void SetTavernStatus(int storyCase)
+    {
+        StoryCaseTavernController = storyCase;
     }
 
     /* Accessors Method */
