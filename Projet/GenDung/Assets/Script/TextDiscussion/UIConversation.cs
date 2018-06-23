@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIConversation : MonoBehaviour {
 
@@ -11,6 +12,12 @@ public class UIConversation : MonoBehaviour {
     public Animator BarManQuestMarkerSupport;
 
     public Animator CadreConversation;
+
+    public ScrollRect ScrollRect;
+
+    public Animator Area1Animator;
+    public Animator Area2Animator;
+    public Animator Area3Animator;
 
     private void Awake()
     {
@@ -58,15 +65,47 @@ public class UIConversation : MonoBehaviour {
         if (activate)
         {
             CadreConversation.Play("CadreConversationAppearing");
+            BlockScrollRect(false);
         }
         else
         {
             CadreConversation.Play("CadreConversationDis");
+            BlockScrollRect(true);
         }
     }
 
     public void ResetCadre()
     {
         CadreConversation.Play("CadreConversationDis2");
+    }
+
+    public void BlockScrollRect(bool activate)
+    {
+        if (activate)
+        {
+            ScrollRect.enabled = true;
+        }
+        else
+        {
+            ScrollRect.enabled = false;
+        }
+    }
+
+    public void UnlockAnArea(int areaToUnlock)
+    {
+        switch (areaToUnlock)
+        {
+            case 1:
+                Area1Animator.Play("AnimationDiscoveringArea");
+                break;
+            case 2:
+                Area2Animator.Play("AnimationDiscoveringArea");
+                break;
+            case 3:
+                Area3Animator.Play("AnimationDiscoveringArea");
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -6,4 +6,9 @@ using UnityEngine;
 public class Conversation : ScriptableObject
 {
     public MonologueTemplate[] CharacterMonologueTemplate;
+
+    public bool ConversationUnlockArea;
+    public int AreaToUnlock;
+
+    public string UnnessessaryDescriptionOfTheConversation;
 }

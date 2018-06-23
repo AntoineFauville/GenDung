@@ -83,6 +83,10 @@ public class ConversationReader : MonoBehaviour
             SetButtonToClickNext(false);
             SpeakerManager.ResetAllSpeakerText();
             SpeakerManager.UiConversation.StartCadre(false);
+            if (Conversation.ConversationUnlockArea)
+            {
+                SpeakerManager.UiConversation.UnlockAnArea(Conversation.AreaToUnlock);
+            }
         }
     }
 }
