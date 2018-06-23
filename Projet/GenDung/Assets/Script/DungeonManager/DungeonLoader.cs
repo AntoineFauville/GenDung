@@ -125,9 +125,9 @@ public class DungeonLoader : MonoBehaviour {
             }
 
             //--------Taverne--------//
-            if (activeScene == "Tavern" && GameObject.Find("CanvasTavern(Clone)") == null)
+            if (activeScene == "NewTavern" && GameObject.Find("CanvasTavern(Clone)") == null)
             {
-                Instantiate(Resources.Load("UI_Interface/CanvasTavern")); // Instantiate Canvas when we click on Button.
+                //Instantiate(Resources.Load("UI_Interface/CanvasTavern")); // Instantiate Canvas when we click on Button.
                 sceneLoaded = false;
 
                 tavernController.Tavern();

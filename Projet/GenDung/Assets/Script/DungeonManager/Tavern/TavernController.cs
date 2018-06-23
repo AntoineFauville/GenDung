@@ -37,13 +37,7 @@ public class TavernController : MonoBehaviour {
         dungeonLoader = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>();
 
         //affiche le canvas Quest Start si c'est la premiere fois qu'on vient dans la taverne
-        if (questStartOn)
-        {
-            questStartOn = false;
-
-            Instantiate(Resources.Load("UI_Interface/CanvasQuestStart"));
-
-        }
+       
 
         //montre le nombre de gold que possede le joueur pour l'achat de upgrade
         //GameObject.Find("GoldTotalPlayerUp").GetComponent<Text>().text = "Your Gold : " + GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.PlayerMoney.ToString();

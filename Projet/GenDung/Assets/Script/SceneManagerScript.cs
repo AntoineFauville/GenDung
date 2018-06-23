@@ -35,7 +35,7 @@ public class SceneManagerScript : MonoBehaviour {
 	}
 	public void LoadMarket () {
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
-        SceneManager.LoadScene ("Tavern");
+        SceneManager.LoadScene ("NewTavern");
 	}
 	public void LoadMainMenu () {
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
