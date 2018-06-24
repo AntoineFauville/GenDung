@@ -15,6 +15,18 @@ public class UIConversation : MonoBehaviour {
     public Animator BarManQuestMarkerSupport;
     public Button BarManStartConversationButton;
 
+    [Header("UpgradeCharacter")]
+    public Animator UpgradeCharacterQuestMarkerSupport;
+    public Button UpgradeCharacterStartConversationButton;
+
+    [Header("PNJRandom1")]
+    public Animator PNJRandom1QuestMarkerSupport;
+    public Button PNJRandom1StartConversationButton;
+
+    [Header("PNJRandom2")]
+    public Animator PNJRandom2QuestMarkerSupport;
+    public Button PNJRandom2StartConversationButton;
+
     [Space(20)]
     public Animator CadreConversation;
     public ScrollRect ScrollRect;
@@ -32,8 +44,12 @@ public class UIConversation : MonoBehaviour {
     {
         KesathQuestMarkerSupport.Play("Disabled");
         BarManQuestMarkerSupport.Play("Disabled");
+        UpgradeCharacterQuestMarkerSupport.Play("Disabled");
+        PNJRandom1QuestMarkerSupport.Play("Disabled");
+        PNJRandom2QuestMarkerSupport.Play("Disabled");
     }
 
+    #region QuestMarkers (ADD here for new characters)
     public void PlayQuestMarkerAnim(int character)
     {
         switch (character)
@@ -44,11 +60,20 @@ public class UIConversation : MonoBehaviour {
             case 2:
                 BarManQuestMarkerSupport.Play("Normal");
                 break;
+            case 3:
+                UpgradeCharacterQuestMarkerSupport.Play("Normal");
+                break;
+            case 4:
+                PNJRandom1QuestMarkerSupport.Play("Normal");
+                break;
+            case 5:
+                PNJRandom2QuestMarkerSupport.Play("Normal");
+                break;
             default:
                 break;
         }
     }
-    
+
     public void DisableQuestMarkerAnim(int character)
     {
         switch (character)
@@ -59,11 +84,48 @@ public class UIConversation : MonoBehaviour {
             case 2:
                 BarManQuestMarkerSupport.Play("Disabled");
                 break;
+            case 3:
+                UpgradeCharacterQuestMarkerSupport.Play("Disabled");
+                break;
+            case 4:
+                PNJRandom1QuestMarkerSupport.Play("Disabled");
+                break;
+            case 5:
+                PNJRandom2QuestMarkerSupport.Play("Disabled");
+                break;
             default:
                 break;
         }
     }
+    #endregion
 
+    #region UnlockButtons (ADD here for new characters)
+    public void UnlockButton(int character, bool activate)
+    {
+        switch (character)
+        {
+            case 1:
+                KesathStartConversationButton.enabled = activate;
+                break;
+            case 2:
+                BarManStartConversationButton.enabled = activate;
+                break;
+            case 3:
+                UpgradeCharacterStartConversationButton.enabled = activate;
+                break;
+            case 4:
+                PNJRandom1StartConversationButton.enabled = activate;
+                break;
+            case 5:
+                PNJRandom2StartConversationButton.enabled = activate;
+                break;
+            default:
+                break;
+        }
+    }
+    #endregion
+
+    #region CadreRelated
     public void StartCadre(bool activate)
     {
         if (activate)
@@ -82,18 +144,7 @@ public class UIConversation : MonoBehaviour {
     {
         CadreConversation.Play("CadreConversationDis2");
     }
-
-    public void BlockScrollRect(bool activate)
-    {
-        if (activate)
-        {
-            ScrollRect.enabled = true;
-        }
-        else
-        {
-            ScrollRect.enabled = false;
-        }
-    }
+    #endregion
 
     public void UnlockAnArea(int areaToUnlock)
     {
@@ -113,18 +164,15 @@ public class UIConversation : MonoBehaviour {
         }
     }
 
-    public void UnlockButton(int character, bool activate)
+    public void BlockScrollRect(bool activate)
     {
-        switch (character)
+        if (activate)
         {
-            case 1:
-                KesathStartConversationButton.enabled = activate;
-                break;
-            case 2:
-                BarManStartConversationButton.enabled = activate;
-                break;
-            default:
-                break;
+            ScrollRect.enabled = true;
+        }
+        else
+        {
+            ScrollRect.enabled = false;
         }
     }
 }
