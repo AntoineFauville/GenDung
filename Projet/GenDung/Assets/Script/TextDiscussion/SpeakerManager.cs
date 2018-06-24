@@ -54,11 +54,11 @@ public class SpeakerManager : MonoBehaviour
                 Debug.Log("UpgradeCharacter Talking");
                 break;
             case 4:
-                Define(PNJRandom1AnimatedText, PNJRandom1Conversation, 4, new Vector2(0, 0));
+                Define(PNJRandom1AnimatedText, PNJRandom1Conversation, 4, new Vector2(141, -26));
                 Debug.Log("PNJRandom1 Talking");
                 break;
             case 5:
-                Define(PNJRandom2AnimatedText, PNJRandom2Conversation, 5, new Vector2(0, 0));
+                Define(PNJRandom2AnimatedText, PNJRandom2Conversation, 5, new Vector2(185, -122));
                 Debug.Log("PNJRandom2 Talking");
                 break;
             default:

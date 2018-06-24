@@ -5,7 +5,7 @@ using System.Collections;
 public class AnimatedText : MonoBehaviour
 {
 	//Time taken for each letter to appear (The lower it is, the faster each letter appear)
-	public float letterPaused = 0.01f;
+	public float letterPaused = 0.005f;
 	//Message that will displays till the end that will come out letter by letter
 	public string message;
 	//Text for the message to display
