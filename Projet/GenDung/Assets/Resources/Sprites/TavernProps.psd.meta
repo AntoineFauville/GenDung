@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 74a29dececa42c5419094cc4ca4a25fc
-timeCreated: 1529845536
+timeCreated: 1529961744
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -19,6 +19,10 @@ TextureImporter:
     21300024: TavernProps_12
     21300026: TavernProps_13
     21300028: TavernProps_14
+    21300030: TavernProps_15
+    21300032: TavernProps_16
+    21300034: TavernProps_17
+    21300036: TavernProps_18
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -112,8 +116,8 @@ TextureImporter:
       name: TavernProps_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 438
+        x: 4
+        y: 437
         width: 51
         height: 52
       alignment: 0
@@ -300,6 +304,58 @@ TextureImporter:
         height: 37
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: TavernProps_15
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 355
+        width: 183
+        height: 119
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: TavernProps_16
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 230
+        width: 87
+        height: 112
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: TavernProps_17
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 274
+        width: 40
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: TavernProps_18
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 437
+        width: 51
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
