@@ -18,7 +18,9 @@ public class ScrollRectSnap_CS : MonoBehaviour
 	private int bttnLength;
 	private int initialBtn = 0;
 
-	void Start()
+    [SerializeField] private CharacterCreations CharacterCreations;
+
+    void Start()
 	{
 		bttnLength = bttn.Length;
 		distance = new float[bttnLength];
@@ -28,11 +30,15 @@ public class ScrollRectSnap_CS : MonoBehaviour
 
 		// Get distance between buttons
 		bttnDistance  = (int)Mathf.Abs(bttn[1].GetComponent<RectTransform>().anchoredPosition.x - bttn[0].GetComponent<RectTransform>().anchoredPosition.x);
-	}
+
+	    CharacterCreations.Character = bttn[minButtonNum].GetComponent<CharacterCreationTemplateHolder>().Character;
+    }
 
 	void Update()
 	{
-		updateAnim (bttn [minButtonNum]);
+	    CharacterCreations.Character = bttn[minButtonNum].GetComponent<CharacterCreationTemplateHolder>().Character;
+
+        updateAnim (bttn [minButtonNum]);
 
 		for (int i = 0; i < bttn.Length; i++)
 		{
@@ -57,8 +63,10 @@ public class ScrollRectSnap_CS : MonoBehaviour
 				bttn[i].GetComponent<RectTransform>().anchoredPosition = newAnchoredPos;
 			}
 		}
-	
-		float minDistance = Mathf.Min(distance);	// Get the min distance
+
+	    
+
+        float minDistance = Mathf.Min(distance);	// Get the min distance
 
 		for (int a = 0; a < bttn.Length; a++)
 		{
@@ -93,7 +101,8 @@ public class ScrollRectSnap_CS : MonoBehaviour
 
 	public void EndDrag()
 	{
-		dragging = false;
+	    CharacterCreations.Character = bttn[minButtonNum].GetComponent<CharacterCreationTemplateHolder>().Character;
+        dragging = false;
 	}
 
 	public void updateAnim (Button btn) {
