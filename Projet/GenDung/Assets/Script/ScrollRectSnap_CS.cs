@@ -19,6 +19,8 @@ public class ScrollRectSnap_CS : MonoBehaviour
 	private int initialBtn = 0;
 
     [SerializeField] private CharacterCreations CharacterCreations;
+    [SerializeField] private Animator LeftPanelAnimator;
+    [SerializeField] private Animator RightPanelAnimator;
 
     void Start()
 	{
@@ -97,11 +99,16 @@ public class ScrollRectSnap_CS : MonoBehaviour
 	public void StartDrag()
 	{
 		dragging = true;
-	}
+	    LeftPanelAnimator.Play("Go");
+	    RightPanelAnimator.Play("Go");
+
+    }
 
 	public void EndDrag()
 	{
 	    CharacterCreations.Character = bttn[minButtonNum].GetComponent<CharacterCreationTemplateHolder>().Character;
+	    LeftPanelAnimator.Play("Back");
+	    RightPanelAnimator.Play("Back");
         dragging = false;
 	}
 

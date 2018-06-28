@@ -61,7 +61,7 @@ public class CharacterCreations : MonoBehaviour {
         //rempli la liste temporaire et du fichier de sauvegarde de theo et reinitialise ainsi le jeu 
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList.Length; i++) {
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i] = charac[CharacterTempPlacement];
-            tempCharac[i] = charac[CharacterTempPlacement];
+            //tempCharac[i] = charac[CharacterTempPlacement];
         }
 
         //reset des stats des personnages
@@ -231,29 +231,66 @@ public class CharacterCreations : MonoBehaviour {
 
 	public void SetLeftIndex (int b){
 		if (clicked) {
-			indexMouseOverLeftPanel = b;
+			
 			clicked = false;
 		}
+	    indexMouseOverLeftPanel = b;
 
-		if (tempCharac[0] == charac[indexMouseOverLeftPanel] ||
+        if (tempCharac[0] == charac[indexMouseOverLeftPanel] ||
 			tempCharac[1] == charac[indexMouseOverLeftPanel] ||
 			tempCharac[2] == charac[indexMouseOverLeftPanel] ||
 			tempCharac[3] == charac[indexMouseOverLeftPanel]
 		) {
 			print ("nop");
-		} else {
-			
-			tempCharac [indexMouseOverRightPanel] = charac [indexMouseOverLeftPanel];
+		} else
+        {
 
-			if (charac[indexMouseOverLeftPanel].hasAnimations == true)
-			{
-				RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
-				//didweChooseTheTeam = true;
-			} else {
-				RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Animator> ().runtimeAnimatorController = null;
-				RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Image> ().sprite = tempCharac [indexMouseOverRightPanel].TempSprite;
-			}
-		}
+            DefinePositionOfCharacter();
+
+
+           
+        }
+    }
+
+    private void DefinePositionOfCharacter()
+    {
+        if (tempCharac[0] == null)
+        {
+            PlaceCharacter();
+            // position++;
+            indexMouseOverRightPanel = 1;
+        }
+        else if (tempCharac[1] == null)
+        {
+            PlaceCharacter();
+            indexMouseOverRightPanel = 2;
+        }
+        else if(tempCharac[2] == null)
+        {
+            PlaceCharacter();
+            indexMouseOverRightPanel = 3;
+        }
+        else if(tempCharac[3] == null)
+        {
+            PlaceCharacter();
+            indexMouseOverRightPanel = 4;
+        }
+    }
+
+    private void PlaceCharacter()
+    {
+        tempCharac[indexMouseOverRightPanel] = charac[indexMouseOverLeftPanel];
+
+        if (charac[indexMouseOverLeftPanel].hasAnimations == true)
+        {
+            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
+            //didweChooseTheTeam = true;
+        }
+        else
+        {
+            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = null;
+            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Image>().sprite = tempCharac[indexMouseOverRightPanel].TempSprite;
+        }
     }
 
     public void GetBiggerTeam () {
