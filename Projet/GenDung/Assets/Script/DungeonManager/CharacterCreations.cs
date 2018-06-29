@@ -141,10 +141,10 @@ public class CharacterCreations : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (tempCharac [0] != charac [11] &&
-		    tempCharac [1] != charac [11] &&
-		    tempCharac [2] != charac [11] &&
-			tempCharac [3] != charac [11])
+		if (tempCharac [0] != null &&
+		    tempCharac [1] != null &&
+		    tempCharac [2] != null &&
+			tempCharac [3] != null)
 		{
 			didweChooseTheTeam = true;
 		}
