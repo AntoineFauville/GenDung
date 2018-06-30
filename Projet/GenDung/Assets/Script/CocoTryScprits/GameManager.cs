@@ -5,20 +5,23 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject PrefabCell;
-    public int rows;
-    public int colomns;
+    public int x;
+    public int y;
 
-    public Vector2 offset;
+//    public Vector2 offset;
     public Vector2 PositionInitiale;
 
     void Start()
     {
+        Vector2 offset;
+        offset.x = 0.35f;
+        offset.y = 0.35f;
         Vector2 position;
         position = PositionInitiale;
-
-        for (int y = 0; y < colomns; y++)
+        Renderer rend;  //yo
+        for (int i = 0; i < y; i++)
         {
-            for (int x = 0; x < rows; x++)
+            for (int j = 0; j < x; j++)
             {
                 GameObject CellGameObject;
 
@@ -26,8 +29,9 @@ public class GameManager : MonoBehaviour
 
                 CellGameObject = InstantiatePrefab(position);
 
-                CellGameObject.name = cell.ID + "_" + x + "_" + y;
-
+                CellGameObject.name = cell.ID + "_" + j + "_" + i;
+                rend = CellGameObject.GetComponent<Renderer>();  
+                rend.material.color = Color.red; 
                 position.x += offset.x;
             }
             position.x = PositionInitiale.x;
