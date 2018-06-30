@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class GMain : MonoBehaviour {
 
-    public GameObject PrefabCell;
+    [SerializeField]private GameObject PrefabCell;
+    [SerializeField]private Sprite blankk;
     public int x;
     public int y;
 
@@ -15,11 +17,12 @@ public class GMain : MonoBehaviour {
         //GDung myLevel=GenerateSampleLevel();
         //Display(myLevel);
 
+   
         
         Generator g = new Generator(x,y);
         GDung myLevel = g.DiggingFlowGenerating();
         Display(myLevel);
-      
+        
     }
 
 
@@ -34,6 +37,7 @@ public class GMain : MonoBehaviour {
         Vector2 position;
         position = PositionInitiale;
         Renderer rend;
+        SpriteRenderer rend2;
         for (int i = 0; i < xL; i++)
         {
             for (int j = 0; j < yL; j++)
@@ -46,12 +50,14 @@ public class GMain : MonoBehaviour {
 
                 CellGameObject.name = cell.ID + "_" + i + "_" + j;
                 rend = CellGameObject.GetComponent<Renderer>();
+                rend2 = CellGameObject.GetComponent<SpriteRenderer>();
 
                 switch (level.GetCell(i, j).type)
                 {
                     case "wall": rend.material.color = Color.black;
                         break;
                     case "blank": rend.material.color = Color.white;
+                        //rend2.sprite = blankk;
                         break;
                     case "entry": rend.material.color = new Color(0, 0.55f, 0, 1);
                         break;

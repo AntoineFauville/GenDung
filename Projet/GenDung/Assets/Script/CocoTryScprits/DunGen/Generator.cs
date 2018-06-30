@@ -4,12 +4,26 @@ using System.Linq;
 using UnityEngine;
 
 public class Generator{
-    int x, y;
+
+    public int x, y, maxSteps;
+    public bool loop;
+    public int ramPerc; //% de ramification
+
+
+    private int lastTurn;
+    private int lastDir;
+    private bool exitDone;
 
     public Generator(int x , int y)
     {
         this.x = x;
         this.y = y;
+        loop = true;
+        //autoMaxStep();
+        maxSteps = 15;
+        ramPerc = 15;
+
+        exitDone = false;
     }
 
 
@@ -22,16 +36,17 @@ public class Generator{
         int yC = Random.Range(1, y-1);
         lvl.SetEntry(xC, yC);
         //On a un point de départ, plus qu'à creuser un donjon à partir de ce "Current"
-        lvl = RecursiveDiggingFlow(lvl, xC, yC);
+        lvl = RecursiveDiggingFlow(lvl, xC, yC,0);
         return lvl;
     }
 
     //(xC,yC) étant les coordonnées du point actuel de propagation
-    public GDung RecursiveDiggingFlow(GDung lvl, int xC, int yC)
+    public GDung RecursiveDiggingFlow(GDung lvl, int xC, int yC, int nbSteps)
     {
         //Pour cet algorithme, le bool "visited" de GCell signifie "mur indémurable ou déjà démuré"
         int[] tab;
         int[] deeptab;
+        int xN, yN;
         LinkedList<int> ways;
         int way;
 
@@ -47,18 +62,19 @@ public class Generator{
             }
         }
 
-        //Il existe au moins une étape suivante possible, sinon cas de base de récursivité
-        if (ways.Count != 0)
+        //Il existe au moins une étape suivante possible et on n'a pas dépassé le nombre de pas max, sinon cas de base de récursivité
+        if (ways.Count != 0 && nbSteps< maxSteps)
         {
             way = ways.ElementAt(Random.Range(0, ways.Count));
+            ways.Remove(way);
             tab = Moved(xC, yC, way);
             lvl.SetCell("blank", true, tab[0], tab[1]);
-            xC = tab[0];
-            yC = tab[1];
+            xN = tab[0];
+            yN = tab[1];
             //Voyons voir si on doit bloquer un des mur adjacent a ce nouveau "blank"
             for (int i = 0; i < 4; i++)
             {
-                tab = Moved(xC, yC, i);
+                tab = Moved(xN, yN, i);
                 //Si la case adjacente est donc un mur qui n'est pas de toute façon déjà marqué ('visité')
                 if (!lvl.GetCell(tab[0], tab[1]).visited && lvl.GetCell(tab[0], tab[1]).IsWall())
                 {
@@ -79,16 +95,27 @@ public class Generator{
                 }
             }
             //Et on continue la propagation
-            return RecursiveDiggingFlow(lvl, xC, yC);
+            lvl = RecursiveDiggingFlow(lvl, xN, yN,nbSteps+1);
+
+            //Mais doit-on ramifier?
+            if(ShouldI())
+            {
+                Debug.Log("yomaman");
+                lvl = RecursiveDiggingFlow(lvl, xC, yC, nbSteps);
+            }
+
 
         }
         else
         {
-            lvl.SetExit(xC, yC); //!!!
+            if (!exitDone)
+            {
+                lvl.SetExit(xC, yC);
+                exitDone = true;
+            }
         }
         return lvl;
     }
-
 
     public int[] Moved(int x, int y, int dir)
     {
@@ -107,5 +134,35 @@ public class Generator{
     public int ReverseDir(int dir)
     {
         return (dir + 2) % 4;
+    }
+
+    public bool ShouldI()
+    {
+
+        int rnd = Random.Range(0, 100);
+        if (ramPerc >= rnd)
+        {
+            //Debug.Log("WIN " + rnd + " vs " + ramPerc);
+            return true;
+        }
+        else
+        {
+            //Debug.Log("LOS " + rnd + " vs " + ramPerc);
+            return false;
+        }
+    }
+
+    public void autoMaxStep()
+    {
+        maxSteps = ((x - 1) * (y - 1)) / 2;
+    }
+
+    public static LinkedList<int[]> FindPath(GDung lvl, int xDep, int yDep, int xArv, int yArv)
+    {
+        LinkedList<int[]> path = new LinkedList<int[]>();
+
+
+
+        return path;
     }
 }
