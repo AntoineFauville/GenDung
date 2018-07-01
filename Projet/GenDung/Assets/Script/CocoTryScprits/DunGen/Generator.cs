@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Generator{
 
-    public int x, y, maxSteps;
+    public int x, y, maxSteps, minSteps;
     public bool loop;
     public int ramPerc; //% de ramification
 
@@ -20,15 +20,17 @@ public class Generator{
         this.y = y;
         loop = true;
         //autoMaxStep();
-        maxSteps = 15;
-        ramPerc = 15;
+        maxSteps = 25;
+        minSteps = 10;
+        ramPerc = 35;
 
         exitDone = false;
     }
 
 
-	public GDung DiggingFlowGenerating()
+	public GDung DiggingFlowGeneratingSample()
     {
+        exitDone = false;
         GDung lvl = new GDung(x, y);
         lvl.FillWithWalls();
         lvl.AllUnvisited();
@@ -36,7 +38,34 @@ public class Generator{
         int yC = Random.Range(1, y-1);
         lvl.SetEntry(xC, yC);
         //On a un point de départ, plus qu'à creuser un donjon à partir de ce "Current"
+
         lvl = RecursiveDiggingFlow(lvl, xC, yC,0);
+
+
+        return lvl;
+    }
+
+    public GDung DiggingFlowGenerating()
+    {
+        GDung lvl = DiggingFlowGeneratingSample();
+        LinkedList<int[]> path = FindPath(lvl, lvl.entrCoord[0], lvl.entrCoord[1], lvl.exitCoord[0], lvl.exitCoord[1]);
+        //Debug.Log(path.ElementAt(path.Count - 1)[2]);
+
+        if(path.ElementAt(path.Count - 1)[2] < minSteps)
+        {
+            for(int ow = 0; ow < 25; ow++)
+            {
+                //Debug.Log("Boss too close from the entry, generating another dungeon...");
+                lvl = DiggingFlowGeneratingSample();
+                path = FindPath(lvl, lvl.entrCoord[0], lvl.entrCoord[1], lvl.exitCoord[0], lvl.exitCoord[1]);
+                //Debug.Log(path.ElementAt(path.Count - 1)[2]);
+                if(path.ElementAt(path.Count - 1)[2] >= minSteps)
+                    break;
+                if (ow == 24)
+                    throw new System.Exception("UNEXPECTED EXCEPTION");
+            }
+        }
+
         return lvl;
     }
 
@@ -100,7 +129,7 @@ public class Generator{
             //Mais doit-on ramifier?
             if(ShouldI())
             {
-                Debug.Log("yomaman");
+                //Debug.Log("yo mamen");
                 lvl = RecursiveDiggingFlow(lvl, xC, yC, nbSteps);
             }
 
@@ -117,7 +146,7 @@ public class Generator{
         return lvl;
     }
 
-    public int[] Moved(int x, int y, int dir)
+    public static int[] Moved(int x, int y, int dir)
     {
         int[] tab = { x, y };
         switch (dir)
@@ -157,12 +186,117 @@ public class Generator{
         maxSteps = ((x - 1) * (y - 1)) / 2;
     }
 
-    public static LinkedList<int[]> FindPath(GDung lvl, int xDep, int yDep, int xArv, int yArv)
+    public static LinkedList<int[]> FindPath(GDung lvl, int xDepart, int yDepart, int xFinish, int yFinish)
     {
         LinkedList<int[]> path = new LinkedList<int[]>();
 
+        LinkedList<int[]> coords = new LinkedList<int[]>();
+        int[] newtab;
+        int[] tab = { xFinish, yFinish, 0 };
+        coords.AddLast(tab);
+        bool found = false;
 
+        int i = 0;
+        int length;
+        bool alreadyIn;
+        //Pour chaque noeud de la liste
+        while(i<coords.Count && !found){
+            length = coords.ElementAt(i)[2] + 1;
+            //Regardons les cases autour
+            for(int k = 0; k < 4; k++)
+            {
+                tab = Moved(coords.ElementAt(i)[0], coords.ElementAt(i)[1], k);
+                //Si ce n'est pas un mur
+                if (!lvl.GetCell(tab[0], tab[1]).IsWall())
+                {
+                    alreadyIn = false;
+                    //Est ce que cette coordonnée est déjà dans la liste?
+                    for (int it = 0; it < coords.Count; it++)
+                    {
+                        if (coords.ElementAt(it)[0] == tab[0] && coords.ElementAt(it)[1] == tab[1])
+                        {
+                            if (coords.ElementAt(it)[2] <= length)
+                            {
+                                alreadyIn = true;
+                                break;
+                            }
+                        }
+                    }
+                    //Sinon on l'ajoute
+                    if (!alreadyIn)
+                    {
+                        newtab = new int[3];
+                        newtab[0] = tab[0]; newtab[1] = tab[1]; newtab[2] = length;
+                        coords.AddLast(newtab);
+                        if(newtab[0]==xDepart && newtab[1] == yDepart)
+                        {
+                            found = true;
+                        }
+                    }
+                }
+            }
+            i++;
+        }
 
-        return path;
+        if (found)
+        {
+            int id;
+            tab = coords.ElementAt(coords.Count - 1);
+            int lastX = tab[0]; 
+            int lastY = tab[1];
+            path.AddFirst(tab);
+            coords.Remove(tab);
+
+            while (path.ElementAt(0)[0] != xFinish || path.ElementAt(0)[1] != yFinish)
+            {
+                for(int it = 0; it < coords.Count; it++)
+                {
+                    id = LowestNeighbourId(coords, lastX, lastY);
+                    tab = coords.ElementAt(id);
+                    lastX = tab[0];
+                    lastY = tab[1];
+                    path.AddFirst(tab);
+                    coords.Remove(tab);
+                    if (tab[2] == 0)
+                        break;
+                }
+            }
+            return path;
+        }
+        else
+        {
+            throw new System.Exception("No path between ("+xDepart+","+yDepart+") and ("+xFinish+","+yFinish+")");
+        }
     }
+
+    //coords element format: (x,y,height)
+    public static int LowestNeighbourId(LinkedList<int[]> coords, int xC, int yC)
+    {
+
+        int min = int.MaxValue;
+        int id=-1;
+        int[] tT;
+        LinkedList<int> ids = new LinkedList<int>();
+        //Regardons tout les voisins
+        for (int k = 0; k < 4; k++)
+        {
+            tT=Moved(xC, yC, k);
+            //Regardons tout les éléments de coords pour les comparer à chaque voisin
+            for(int i = 0; i < coords.Count; i++)
+            {
+                //Un élément de coords correspond au (x,y)
+                if(coords.ElementAt(i)[0]==tT[0] && coords.ElementAt(i)[1] == tT[1])
+                {
+                    //Et il est plus bas
+                    if (coords.ElementAt(i)[2] < min)
+                    {
+                        min = coords.ElementAt(i)[2];
+                        id = i;
+                    }
+                }
+            }
+        }
+        return id;
+    }
+
 }

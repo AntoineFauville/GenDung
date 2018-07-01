@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,12 +18,21 @@ public class GMain : MonoBehaviour {
         //GDung myLevel=GenerateSampleLevel();
         //Display(myLevel);
 
-   
+        /*
+        LinkedList<int> put = new LinkedList<int>();
+        put.AddLast(1);
+        put.AddLast(2);
+        put.AddLast(3);
+        put.AddLast(4);
+        Debug.Log(put.ElementAt(put.Count - 1));
+        */
+
         
         Generator g = new Generator(x,y);
         GDung myLevel = g.DiggingFlowGenerating();
         Display(myLevel);
         
+
     }
 
 

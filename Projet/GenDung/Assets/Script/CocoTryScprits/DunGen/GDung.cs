@@ -5,10 +5,13 @@ using UnityEngine;
 
 public class GDung {
     public GCell[,] map;
+    public int[] entrCoord, exitCoord;
 
 
     public GDung(int x, int y)
     {
+        entrCoord = new int[2];
+        exitCoord = new int[2];
         map = new GCell[x,y];
         for (int i = 0; i < x; i++)
         {
@@ -42,9 +45,13 @@ public class GDung {
     public void SetEntry(int x, int y)
     {
         SetCell("entry",true, x, y);
+        entrCoord[0] = x;
+        entrCoord[1] = y;
     }
     public void SetExit(int x, int y)
     {
+        exitCoord[0] = x;
+        exitCoord[1] = y;
         SetCell("exit",true, x, y);
     }
 
@@ -130,5 +137,14 @@ public class GDung {
     public int GetWidth()
     {
         return map.GetLength(0);
+    }
+
+    public int[] GetEntrCoord()
+    {
+        return entrCoord;
+    }
+    public int[] GetExitCoord()
+    {
+        return exitCoord;
     }
 }
