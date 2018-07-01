@@ -116,9 +116,9 @@ public class DungeonLoader : MonoBehaviour {
 			}		
 
 			//-----------Map gestion scene-------------//
-			if (activeScene == "Map" && GameObject.Find("CanvasCarte(Clone)") == null)
+			if (activeScene == "Map" && GameObject.Find("CanvasCarte(Clone)") != null)
             {
-                Instantiate(Resources.Load("UI_Interface/CanvasCarte")); // Instantiate Canvas when we click on Button.
+                //Instantiate(Resources.Load("UI_Interface/CanvasCarte")); // Instantiate Canvas when we click on Button.
                 sceneLoaded = false;
 
                 mapController.Map();
