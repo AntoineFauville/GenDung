@@ -39,6 +39,7 @@ public class GMain : MonoBehaviour {
         g.groupingDeviation = 65;
         g.avgMonsterPerCell = 3;
         g.expThreatLvl = 500;
+        g.avgTreasure = 2;
         //Generator g = new Generator(x, y);
         GDung myLevel = g.Generate();
         
@@ -106,6 +107,7 @@ public class GMain : MonoBehaviour {
                         break;
                     case "treasure":
                         rend2.sprite = treasuretile;
+                        //rend.material.color = Color.cyan;
                         break;
                     default:
                         Debug.Log("Le type de (" + i + "," + j + ") est " + level.GetCell(i, j).type);

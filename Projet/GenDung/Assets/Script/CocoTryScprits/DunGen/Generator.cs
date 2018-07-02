@@ -117,7 +117,7 @@ public class Generator{
 
         //Ajoutons des monstres supplémentaires
         count = 0;
-        while (currentTL < expThreatLvl && count < 5000)
+        while (currentTL < expThreatLvl && count < 2000)
         {
             rnd1 = Random.Range(1, x - 1);
             rnd2 = Random.Range(1, y - 1);
@@ -134,8 +134,101 @@ public class Generator{
 
     public GDung TreasuresGenerating(GDung lvl)
     {
-
+        int nbTreasures = 0;
+        int[] tab;
+        int focusTreasures=avgTreasure;
+        if (ShouldI(30))
+        {
+            //je vais augmenter ce nombre
+            if (ShouldI(50))
+            {
+                //de 15%
+                if (ShouldI(70))
+                    focusTreasures = (int)(avgTreasure * 1.15);
+                //de 25%
+                else
+                    focusTreasures = (int)(avgTreasure * 1.25);
+                //focusTreasures++;
+            }
+            //je vais diminuer ce nombre
+            else
+            {
+                //de 15%
+                if (ShouldI(70))
+                    focusTreasures = (int)(avgTreasure * 0.85);
+                //de 25%
+                else
+                    focusTreasures = (int)(avgTreasure * 0.75);
+                //focusTreasures--;
+            }
+        }
+        while (nbTreasures < focusTreasures)
+        {
+            tab = FindUnvisitedDeadEnd(lvl);
+            if (tab[0] != 0)
+            {
+                lvl.SetTreasure(tab[0], tab[1]);
+            }
+            nbTreasures++;
+        }
         return lvl;
+    }
+
+    public int[] FindUnvisitedDeadEnd(GDung lvl)
+    {
+        int attempt = 0;
+        int tX=0, tY=0;
+        int[] deeptab;
+        int nbWalls;
+        bool found = false;
+        while(!found && attempt < 100)
+        {
+            Debug.Log("Attempt: " + attempt);
+            tX = Random.Range(1, x-1);
+            tY = Random.Range(1, y-1);
+            if (!lvl.GetCell(tX, tY).visited)
+            {
+                nbWalls = 0;
+                for(int k = 0; k < 4; k++)
+                {
+                    deeptab = Moved(tX, tY, k);
+                    if (lvl.GetCell(deeptab[0], deeptab[1]).IsWall())
+                        nbWalls++;
+                }
+                if (nbWalls == 3)
+                {
+                    found = true;
+                    break;
+                }
+               
+            }
+            attempt++;
+        }
+        //Impossible de trouver un coin, tantpis on va juste mettre le trésor sur une case non visitée random
+        
+        attempt = 0;
+        while(!found && attempt < 10)
+        {
+            tX = Random.Range(1, x - 1);
+            tY = Random.Range(1, y - 1);
+            if (!lvl.GetCell(tX, tY).visited)
+            {
+                found = true;
+                break;
+            }
+            attempt++;
+        }
+        
+        if (!found)
+        {
+            int[] result = { 0, 0 };
+            return result;
+        }
+        else
+        {
+            int[] result = { tX, tY };
+            return result;
+        }
     }
 
     public GCell GenerateMonsterCell(bool main)

@@ -60,6 +60,10 @@ public class GDung {
         tmp.AddTheart(monster);
         SetCell(tmp, x, y);
     }
+    public void SetTreasure(int x, int y)
+    {
+        SetCell("treasure", true, x, y);
+    }
 
     public void NullToBlank()
     {
