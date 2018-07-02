@@ -54,6 +54,12 @@ public class GDung {
         exitCoord[1] = y;
         SetCell("exit",true, x, y);
     }
+    public void SetMonster(int x, int y, GMonster monster)
+    {
+        GCell tmp = new GCell("monster");
+        tmp.AddTheart(monster);
+        SetCell(tmp, x, y);
+    }
 
     public void NullToBlank()
     {
@@ -126,6 +132,18 @@ public class GDung {
                     GetCell(i, j).visited = false;
                 }
 
+            }
+        }
+    }
+
+    public void AllBlankUnivisited()
+    {
+        int x = GetWidth(), y = GetHeight();
+        for (int i = 0; i < x; i++)
+        {
+            for (int j = 0; j < y; j++)
+            {
+                GetCell(i, j).visited = !(GetCell(i, j).IsBlank());
             }
         }
     }
