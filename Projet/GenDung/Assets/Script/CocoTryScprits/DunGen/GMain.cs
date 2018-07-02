@@ -9,8 +9,7 @@ public class GMain : MonoBehaviour {
 
     [SerializeField]private GameObject PrefabCell;
     [SerializeField]private Sprite blankk;
-    public int x;
-    public int y;
+    public int x, y, maxSteps, minSteps, ramPerc, loopPerc;
 
     public Vector2 PositionInitiale;
 
@@ -19,19 +18,19 @@ public class GMain : MonoBehaviour {
         //Display(myLevel);
 
         /*
-        LinkedList<int> put = new LinkedList<int>();
-        put.AddLast(1);
-        put.AddLast(2);
-        put.AddLast(3);
-        put.AddLast(4);
-        Debug.Log(put.ElementAt(put.Count - 1));
+        public int x, y;
+       public int maxSteps, minSteps; //Longueur max/min du plus court chemin allant de l'entrée au boss
+      public int ramPerc; //% de ramification
+      public int loopPerc; //% d'acceptation des boucles
         */
 
-        
-        Generator g = new Generator(x,y);
+        Generator g = new Generator(x,y,maxSteps,minSteps,ramPerc,loopPerc);
+        //Generator g = new Generator(x, y);
         GDung myLevel = g.DiggingFlowGenerating();
-        Display(myLevel);
         
+        Display(myLevel);
+        Debug.Log("Min: " + g.minSteps + "   Max: " + g.maxSteps+ "     ram:"+g.ramPerc+ "        loop:"+g.loopPerc);
+        Debug.Log("Actual: "+g.LgSwLength);
 
     }
 

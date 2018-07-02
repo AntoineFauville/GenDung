@@ -5,12 +5,17 @@ using UnityEngine;
 
 public class Generator{
 
-    public int x, y, maxSteps, minSteps;
-    public bool loop;
+    //Paramètres relatifs au layout, à la génération des murs, corridors, salles
+    public int x, y;
+    public int maxSteps, minSteps; //Longueur max/min du plus court chemin allant de l'entrée au boss
     public int ramPerc; //% de ramification
+    public int loopPerc; //% d'acceptation des boucles
+
+    //Paramètres relatifs aux monstres, aux trésors,...
 
 
-    private int lastTurn;
+    public int LgSwLength; //"last generated shortest way length", la longueur du plus court chemin du dernier maze généré avec ce constructeur. uniquement à titre indicatif pour l'utilisateur du générateur
+
     private int lastDir;
     private bool exitDone;
 
@@ -18,17 +23,41 @@ public class Generator{
     {
         this.x = x;
         this.y = y;
-        loop = true;
-        //autoMaxStep();
-        maxSteps = 25;
-        minSteps = 10;
-        ramPerc = 35;
+        AutoMaxSteps();
+        AutoMinSteps();
+        ramPerc = 60;
+        loopPerc = 25;
+        Init();        
+    }
 
+    public Generator(int x, int y, int maxSteps, int minSteps, int ramPerc, int loopPerc) 
+    {
+        this.x = x;
+        this.y = y;
+
+        if (maxSteps == -1)
+            AutoMaxSteps();
+        else
+            this.maxSteps = maxSteps;
+
+        if (minSteps == -1)
+            AutoMinSteps();
+        else
+            this.minSteps = minSteps;
+
+        this.ramPerc = ramPerc;
+        this.loopPerc = loopPerc;
+
+        Init();
+    }
+
+    private void Init()
+    {
+        lastDir = -1;
         exitDone = false;
     }
 
-
-	public GDung DiggingFlowGeneratingSample()
+    public GDung DiggingFlowGeneratingSample()
     {
         exitDone = false;
         GDung lvl = new GDung(x, y);
@@ -49,19 +78,19 @@ public class Generator{
     {
         GDung lvl = DiggingFlowGeneratingSample();
         LinkedList<int[]> path = FindPath(lvl, lvl.entrCoord[0], lvl.entrCoord[1], lvl.exitCoord[0], lvl.exitCoord[1]);
-        //Debug.Log(path.ElementAt(path.Count - 1)[2]);
+        LgSwLength = path.ElementAt(path.Count - 1)[2];
 
-        if(path.ElementAt(path.Count - 1)[2] < minSteps)
+        if (path.ElementAt(path.Count - 1)[2] < minSteps)
         {
-            for(int ow = 0; ow < 25; ow++)
+            for(int ow = 0; ow < 60; ow++)
             {
                 //Debug.Log("Boss too close from the entry, generating another dungeon...");
                 lvl = DiggingFlowGeneratingSample();
                 path = FindPath(lvl, lvl.entrCoord[0], lvl.entrCoord[1], lvl.exitCoord[0], lvl.exitCoord[1]);
-                //Debug.Log(path.ElementAt(path.Count - 1)[2]);
-                if(path.ElementAt(path.Count - 1)[2] >= minSteps)
+                LgSwLength = path.ElementAt(path.Count - 1)[2];
+                if (path.ElementAt(path.Count - 1)[2] >= minSteps)
                     break;
-                if (ow == 24)
+                if (ow == 59)
                     throw new System.Exception("UNEXPECTED EXCEPTION");
             }
         }
@@ -91,8 +120,8 @@ public class Generator{
             }
         }
 
-        //Il existe au moins une étape suivante possible et on n'a pas dépassé le nombre de pas max, sinon cas de base de récursivité
-        if (ways.Count != 0 && nbSteps< maxSteps)
+        //Il existe au moins une étape suivante possible et on n'a pas dépassé le nombre de pas max, sinon cas de base de récursion
+        if (ways.Count != 0 && nbSteps< (maxSteps+1))
         {
             way = ways.ElementAt(Random.Range(0, ways.Count));
             ways.Remove(way);
@@ -100,36 +129,57 @@ public class Generator{
             lvl.SetCell("blank", true, tab[0], tab[1]);
             xN = tab[0];
             yN = tab[1];
-            //Voyons voir si on doit bloquer un des mur adjacent a ce nouveau "blank"
-            for (int i = 0; i < 4; i++)
+
+            if (!ShouldI(loopPerc) || HowTurned(lastDir,way)==-2)
             {
-                tab = Moved(xN, yN, i);
-                //Si la case adjacente est donc un mur qui n'est pas de toute façon déjà marqué ('visité')
-                if (!lvl.GetCell(tab[0], tab[1]).visited && lvl.GetCell(tab[0], tab[1]).IsWall())
+            //CAS OU LES BOUCLES SONT INTERDITES
+                //Voyons voir si on doit bloquer un des mur adjacent a ce nouveau "blank"
+                for (int i = 0; i < 4; i++)
                 {
-                    //Pour tout les voisins de ce mur, càd pour toute direction à partir de ce mur (sauf la case d'où on vient, direction ReverseDir)
-                    for(int k = 0; k < 4; k++)
+                    tab = Moved(xN, yN, i);
+                    //Si la case adjacente est donc un mur qui n'est pas de toute façon déjà marqué ('visité')
+                    if (!lvl.GetCell(tab[0], tab[1]).visited && lvl.GetCell(tab[0], tab[1]).IsWall())
                     {
-                        if(k != ReverseDir(i))
+                        //Pour tout les voisins de ce mur, càd pour toute direction à partir de ce mur (sauf la case d'où on vient, direction ReverseDir)
+                        for (int k = 0; k < 4; k++)
                         {
-                            deeptab = Moved(tab[0], tab[1], k);
-                            //Si c'est un blank, alors le mur actuellement observé ne peut plus être retiré, il est donc marqué
-                            if (lvl.GetCell(deeptab[0], deeptab[1]).IsBlank() || lvl.GetCell(deeptab[0], deeptab[1]).IsType("entry"))
+                            if (k != ReverseDir(i))
                             {
-                                lvl.GetCell(tab[0], tab[1]).visited = true;
-                                break; 
+                                deeptab = Moved(tab[0], tab[1], k);
+                                //Si c'est un blank, alors le mur actuellement observé ne peut plus être retiré, il est donc marqué
+                                if (lvl.GetCell(deeptab[0], deeptab[1]).IsBlank() || lvl.GetCell(deeptab[0], deeptab[1]).IsType("entry"))
+                                {
+                                    lvl.GetCell(tab[0], tab[1]).visited = true;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+            //FIN CAS OU LES BOUCLE SONT INTERDITES
             }
+            else
+            {
+            //CAS OU LES BOUCLES SONT PERMISE
+                //A-t-on tourné?
+                int tur = HowTurned(lastDir, way);
+                if (tur == 1 || tur == -1)
+                {
+                    deeptab = Moved(xC,yC,Turn(way, tur));
+                    //On va bloqué le mur se trouvant dans la même rotation que la rotation que l'on vient de faire
+                    lvl.GetCell(deeptab[0], deeptab[1]).visited = true;
+                }
+            //FIN CAS OU LES BOUCLES SONT PERMISE
+            }
+
             //Et on continue la propagation
+            lastDir = way;
             lvl = RecursiveDiggingFlow(lvl, xN, yN,nbSteps+1);
 
             //Mais doit-on ramifier?
-            if(ShouldI())
+            if(ShouldI(ramPerc))
             {
-                //Debug.Log("yo mamen");
+                lastDir = -1;
                 lvl = RecursiveDiggingFlow(lvl, xC, yC, nbSteps);
             }
 
@@ -145,7 +195,10 @@ public class Generator{
         }
         return lvl;
     }
-
+    
+    //      0
+    //    3 X 1
+    //      2         
     public static int[] Moved(int x, int y, int dir)
     {
         int[] tab = { x, y };
@@ -160,16 +213,46 @@ public class Generator{
         return tab;
     }
 
-    public int ReverseDir(int dir)
+    //           -1 <-- 0 --> 1  (0=not turned)
+    public int HowTurned(int oldDir, int newDir)
+    {
+        if (newDir == (oldDir + 1) % 4)
+            return 1;
+        else if (newDir == oldDir || oldDir == -1)
+            return 0;
+        else if ((oldDir == 0 && newDir == 4) || newDir == oldDir - 1)
+            return -1;
+        else
+                return -2;          
+    }
+
+    public static int Turn(int oldDir, int turningWay)
+    {
+        if (turningWay == 1)
+            return (oldDir + 1) % 4;
+        else if(turningWay == 0)
+            return oldDir;
+        else if(turningWay == -1)
+        {
+            if (oldDir == 0)
+                return 3;
+            else
+                return oldDir - 1;
+        }
+        else
+            throw new System.Exception("Turn only accept 1, 0 and -1 as ValueSystem for turningWay parameter");
+    }
+
+    public static int ReverseDir(int dir)
     {
         return (dir + 2) % 4;
     }
 
-    public bool ShouldI()
+    public static bool ShouldI(int rPerc)
     {
 
         int rnd = Random.Range(0, 100);
-        if (ramPerc >= rnd)
+        if (rPerc >= rnd)
         {
             //Debug.Log("WIN " + rnd + " vs " + ramPerc);
             return true;
@@ -181,9 +264,39 @@ public class Generator{
         }
     }
 
-    public void autoMaxStep()
+    public void AutoMaxSteps()
     {
-        maxSteps = ((x - 1) * (y - 1)) / 2;
+        int mult = ((x - 1) * (y - 1));
+        if (mult < 40)
+            maxSteps = 15;
+        else if (mult < 60)
+            maxSteps = 23;
+        else if (mult < 105)
+            maxSteps = 25;
+        else
+            maxSteps = mult / 4;
+    }
+    public void AutoMinSteps()
+    {
+        int sum = x + y;
+        if (sum < 8)
+            minSteps = 1;
+        else if (sum < 10)
+            minSteps = 2;
+        else if (sum < 11)
+            minSteps = 3;
+        else if (sum < 12)
+            minSteps = 4;
+        else if (sum < 15)
+            minSteps = sum - 6;
+        else if (sum < 35)
+            minSteps = sum - 8;
+        else if (sum < 50)
+            minSteps = sum - 9;
+        else if (sum < 100)
+            minSteps = sum - 19;
+        else
+            minSteps = sum / 2;
     }
 
     public static LinkedList<int[]> FindPath(GDung lvl, int xDepart, int yDepart, int xFinish, int yFinish)
@@ -262,6 +375,7 @@ public class Generator{
                 }
             }
             return path;
+            //La longueur du plus court chemin est donc path.ElementAt(path.Count - 1)[2]
         }
         else
         {
