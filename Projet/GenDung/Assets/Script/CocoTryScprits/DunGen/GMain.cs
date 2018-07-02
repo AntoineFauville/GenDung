@@ -15,7 +15,7 @@ public class GMain : MonoBehaviour {
     [SerializeField] private Sprite e4;
     [SerializeField] private Sprite e5;
     [SerializeField] private Sprite treasuretile;
-    public int x, y, maxSteps, minSteps, ramPerc, loopPerc, threatLvl, avgTreasure;
+    public int x, y, maxSteps, minSteps, ramPerc, loopPerc, threatLvl, avgTreasure, avgMonsterPerCell, minMonsterPerCell, maxMonsterPerCell, groupingDeviation;
 
     public Vector2 PositionInitiale;
 
@@ -34,10 +34,10 @@ public class GMain : MonoBehaviour {
         g.AddMonster("Monster1", 10);
         g.AddMonster("Monster2", 15);
         g.AddMonster("Monster3", 20);
-        g.minMonsterPerCell = 2;
-        g.maxMonsterPerCell = 5;
-        g.groupingDeviation = 65;
-        g.avgMonsterPerCell = 3;
+        g.minMonsterPerCell = minMonsterPerCell;
+        g.maxMonsterPerCell = maxMonsterPerCell;
+        g.groupingDeviation = groupingDeviation;
+        g.avgMonsterPerCell = avgMonsterPerCell;
         g.expThreatLvl = threatLvl;
         g.avgTreasure = avgTreasure;
         //Generator g = new Generator(x, y);

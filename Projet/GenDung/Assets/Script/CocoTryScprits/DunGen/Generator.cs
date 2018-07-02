@@ -183,7 +183,6 @@ public class Generator{
         bool found = false;
         while(!found && attempt < 100)
         {
-            Debug.Log("Attempt: " + attempt);
             tX = Random.Range(1, x-1);
             tY = Random.Range(1, y-1);
             if (!lvl.GetCell(tX, tY).visited)
@@ -480,7 +479,6 @@ public class Generator{
         }
 
         bool resul= ShouldI(perc);
-        Debug.Log("result: "+resul);
         return resul;
     }
 
