@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Foe : Entities {
 
     int roomIndex;
+    Explo_Room_Fight fightFoesList;
+    Explo_EndFightController endFightCtrl;
 
 	public Foe(float _maxHealth, int _initiative, int _attack, string _name, int _roomIndex,Explo_Data _entitiesData, GameObject _gameObject, Sprite _sprite, RuntimeAnimatorController _animator)
     {
@@ -30,8 +32,13 @@ public class Foe : Entities {
         base.DeathOfEntities(); // Need to check if it's an obligation or if it will work without calling it.
         this.EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("Death");
         EntitiesData.Rooms[roomIndex].MonstersAmount--;
+        fightFoesList = EntitiesData.Rooms[roomIndex] as Explo_Room_Fight;
         if (EntitiesData.Rooms[roomIndex].MonstersAmount <= 0)
-            EntitiesGO.transform.parent.parent.parent.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllMonsterDead();
+        {
+            endFightCtrl = EntitiesGO.transform.parent.parent.parent.Find("ScriptBattle").GetComponent<Explo_EndFightController>();
+            endFightCtrl.CleanUIBattleOrder(fightFoesList.FoesList, EntitiesData.Players);
+            endFightCtrl.EndBattleAllMonsterDead();
+        }
     }
 
     public void InitializeVisual()

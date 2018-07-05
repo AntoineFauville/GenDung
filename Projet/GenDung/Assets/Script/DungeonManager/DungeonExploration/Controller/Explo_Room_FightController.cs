@@ -24,6 +24,7 @@ public class Explo_Room_FightController : MonoBehaviour
     private GameObject exploGrid;
 	private GameObject exploUI;
 	private GameObject battleSystemUI;
+    private GameObject PresentationUI;
     // [LogTool]
 	LogGestionTool logT;
 
@@ -91,6 +92,8 @@ public class Explo_Room_FightController : MonoBehaviour
 
 		logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
 
+        PresentationUI = GameObject.Find("FightRoomUI/PanelBackground/PanelBackground2/FightPresentationsUI/PanelEnemies");
+
         /*[Others] */
         saveSystem = GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>();
         explo_Data = GameObject.Find("DontDestroyOnLoad").GetComponent<Explo_DataController>();
@@ -114,7 +117,7 @@ public class Explo_Room_FightController : MonoBehaviour
 			
 			GameObject enemyPanelUI;
 
-			enemyPanelUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI"), GameObject.Find ("FightRoomUI/PanelBackground/PanelBackground2/FightPresentationsUI/PanelEnemies").transform) as GameObject;
+			enemyPanelUI = Instantiate(Resources.Load("UI_Interface/EnemiesPanelUI"), PresentationUI.transform) as GameObject;
 
             enemyPanelUI.transform.Find("IconMask/Icon").GetComponent<Image>().sprite = explo_Room_Fight.FoesList[i].EntitiesSprite;
 
@@ -127,9 +130,10 @@ public class Explo_Room_FightController : MonoBehaviour
     public void SetFightRoom()
     {
 
-		for (int i = 0; i < explo_Room_Fight.FoesList.Count ; i++) {
+		for (int i = 0; i < PresentationUI.transform.childCount ; i++) {
 
-			GameObject.Find ("EnemiesPanelUI(Clone)").SetActive (false);
+            //GameObject.Find ("EnemiesPanelUI(Clone)").SetActive (false);
+            Destroy(PresentationUI.transform.GetChild(0).gameObject);
 		}
 
 		logT.AddLogLine ("Let the fight begin");

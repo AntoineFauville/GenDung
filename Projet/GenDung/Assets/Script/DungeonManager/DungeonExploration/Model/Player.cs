@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Player : Entities {
 
+    Explo_EndFightController endFightCtrl;
+
     public Player(float _maxHealth, int _maxActionsPoint, int _initiative, string _name,Explo_Data _entitiesData, SpellObject[] _entitiesSpells, GameObject _entitiesGO, Sprite _entitiesSprite)
     {
         base.MaxHealth = _maxHealth;
@@ -36,7 +38,10 @@ public class Player : Entities {
         base.Dead = true;
         EntitiesData.PlayersLeft--;
         if (EntitiesData.PlayersLeft <= 0)
-            EntitiesGO.transform.parent.parent.Find("ScriptBattle").GetComponent<BattleSystem>().EndBattleAllPlayerDead();
+        {
+            endFightCtrl = EntitiesGO.transform.parent.parent.Find("ScriptBattle").GetComponent<Explo_EndFightController>();
+            endFightCtrl.EndBattleAllPlayerDead();
+        }
 
         base.DeathOfEntities(); // Need to check if it's an obligation or if it will work without calling it.
 

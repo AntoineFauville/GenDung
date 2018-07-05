@@ -24,6 +24,7 @@ public class Explo_FightController : MonoBehaviour {
         next_Button = GameObject.Find("NextPanel");
         explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
         projectile_Manager = GameObject.Find("ScriptBattle").GetComponent<ProjectileManager>();
+        attackMode = false;
     }
 
     public void NextTurn()
