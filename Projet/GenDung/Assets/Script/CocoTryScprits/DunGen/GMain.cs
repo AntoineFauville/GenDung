@@ -8,9 +8,14 @@ using UnityEngine;
 public class GMain : MonoBehaviour {
 
     [SerializeField]private GameObject PrefabCell;
-    [SerializeField]private Sprite blankk;
-    public int x;
-    public int y;
+    [SerializeField]private Sprite bosstile;
+    [SerializeField] private Sprite e1;
+    [SerializeField] private Sprite e2;
+    [SerializeField] private Sprite e3;
+    [SerializeField] private Sprite e4;
+    [SerializeField] private Sprite e5;
+    [SerializeField] private Sprite treasuretile;
+    public int x, y, maxSteps, minSteps, ramPerc, loopPerc, threatLvl, avgTreasure, avgMonsterPerCell, minMonsterPerCell, maxMonsterPerCell, groupingDeviation;
 
     public Vector2 PositionInitiale;
 
@@ -19,19 +24,29 @@ public class GMain : MonoBehaviour {
         //Display(myLevel);
 
         /*
-        LinkedList<int> put = new LinkedList<int>();
-        put.AddLast(1);
-        put.AddLast(2);
-        put.AddLast(3);
-        put.AddLast(4);
-        Debug.Log(put.ElementAt(put.Count - 1));
+        public int x, y;
+        public int maxSteps, minSteps; //Longueur max/min du plus court chemin allant de l'entrée au boss
+        public int ramPerc; //% de ramification
+        public int loopPerc; //% d'acceptation des boucles
         */
 
+        Generator g = new Generator(x,y,maxSteps,minSteps,ramPerc,loopPerc);
+        g.AddMonster("Monster1", 10);
+        g.AddMonster("Monster2", 15);
+        g.AddMonster("Monster3", 20);
+        g.minMonsterPerCell = minMonsterPerCell;
+        g.maxMonsterPerCell = maxMonsterPerCell;
+        g.groupingDeviation = groupingDeviation;
+        g.avgMonsterPerCell = avgMonsterPerCell;
+        g.expThreatLvl = threatLvl;
+        g.avgTreasure = avgTreasure;
+        //Generator g = new Generator(x, y);
+        GDung myLevel = g.Generate();
         
-        Generator g = new Generator(x,y);
-        GDung myLevel = g.DiggingFlowGenerating();
         Display(myLevel);
-        
+        Debug.Log("Min: " + g.minSteps + "   Max: " + g.maxSteps+ "     ram:"+g.ramPerc+ "        loop:"+g.loopPerc);
+        Debug.Log("Actual: "+g.LgSwLength);
+        g.PrintPath();
 
     }
 
@@ -42,8 +57,8 @@ public class GMain : MonoBehaviour {
         int xL = level.GetWidth();
         int yL = level.GetHeight();
         Vector2 offset;
-        offset.x = 0.35f;
-        offset.y = 0.35f;
+        offset.x = 0.34f;
+        offset.y = 0.34f;
         Vector2 position;
         position = PositionInitiale;
         Renderer rend;
@@ -67,11 +82,32 @@ public class GMain : MonoBehaviour {
                     case "wall": rend.material.color = Color.black;
                         break;
                     case "blank": rend.material.color = Color.white;
-                        //rend2.sprite = blankk;
                         break;
-                    case "entry": rend.material.color = new Color(0, 0.55f, 0, 1);
+                    case "entry": rend.material.color = new Color(0, 0.75f, 0, 1);
                         break;
                     case "exit": rend.material.color = new Color(0, 1, 0, 1);
+                        rend2.sprite = bosstile;
+                        break;
+                    case "monster":
+                        if (level.GetCell(i, j).contained.Count == 1)
+                            rend2.sprite = e1;
+                        else if (level.GetCell(i, j).contained.Count == 2)
+                            rend2.sprite = e2;
+                        else if (level.GetCell(i, j).contained.Count == 3)
+                            rend2.sprite = e3;
+                        else if (level.GetCell(i, j).contained.Count == 4)
+                            rend2.sprite = e4;
+                        else if (level.GetCell(i, j).contained.Count == 5)
+                            rend2.sprite = e5;
+                        else
+                        {
+                            rend2.sprite = e5;
+                            rend.material.color = Color.red;
+                        }
+                        break;
+                    case "treasure":
+                        rend2.sprite = treasuretile;
+                        //rend.material.color = Color.cyan;
                         break;
                     default:
                         Debug.Log("Le type de (" + i + "," + j + ") est " + level.GetCell(i, j).type);
@@ -79,7 +115,7 @@ public class GMain : MonoBehaviour {
                         break;
                 }
 
-        position.y += offset.y;
+            position.y += offset.y;
             }
             position.y = PositionInitiale.y;
             position.x += offset.x;
