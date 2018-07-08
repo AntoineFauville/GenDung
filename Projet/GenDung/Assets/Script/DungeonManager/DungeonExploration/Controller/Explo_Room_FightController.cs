@@ -145,7 +145,7 @@ public class Explo_Room_FightController : MonoBehaviour
 		exploUI.GetComponent<Canvas>().sortingOrder -= 40;
 
         roomRand = Random.Range(0, explo_Room_Fight.Dungeon.Data.Rooms.Count);
-        combatRoom.transform.Find("Canvas/Panel/background of the room").GetComponent<Image>().sprite = explo_Room_Fight.Background;
+        combatRoom.transform.Find("Canvas/Panel/Swamp/background of the room").GetComponent<Image>().sprite = explo_Room_Fight.Background;
 
        // SetPlayers();
        // SetFoes();
