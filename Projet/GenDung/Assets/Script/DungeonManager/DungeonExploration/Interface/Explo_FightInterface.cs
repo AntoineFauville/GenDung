@@ -11,18 +11,9 @@ public class Explo_FightInterface : MonoBehaviour {
     public static GameObject interface_ScriptBattle;
 
 
-    public void Start()
+    public static void Start()
     {
-        CreateInstance();
         interface_ScriptBattle = GameObject.Find("BattleSystem/ScriptBattle");
     }
 
-    void CreateInstance()
-    {
-        if (instance != null)
-        {
-            Debug.Log("There should never have two Explo_Interface controllers.");
-        }
-        instance = this;
-    }
 }

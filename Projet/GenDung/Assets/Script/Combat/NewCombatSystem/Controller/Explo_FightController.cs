@@ -509,20 +509,65 @@ public class Explo_FightController : MonoBehaviour {
         }
     }
 
-    void CalculDamageDone(SpellObject.SpellLogicType spellLogicType)
+    void CalculDamageDone(SpellObject.SpellLogicType spellLogicType, SpellObject.SpellTargetType spellTargetType)
     {
 
         print(spellLogicType);
+        print(spellTargetType);
 
         if (spellLogicType == SpellObject.SpellLogicType.Damage)
         {
             if (critHit)
             {
-                fightCtrl.FighterList[targetIndex].ChangeHealth(-selectedSpellObject.spellDamage * 1.5f, true);
+                if (spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Foe)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(-selectedSpellObject.spellDamage * 1.5f, true);
+                        }
+                    }
+                } else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Player)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(-selectedSpellObject.spellDamage * 1.5f, true);
+                        }
+                    }
+                } else
+                {
+                    fightCtrl.FighterList[targetIndex].ChangeHealth(-selectedSpellObject.spellDamage * 1.5f, true);
+                }
             }
             else
             {
-                fightCtrl.FighterList[targetIndex].ChangeHealth(-selectedSpellObject.spellDamage, false);
+                if (spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Foe)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(-selectedSpellObject.spellDamage * 1.5f, false);
+                        }
+                    }
+                }
+                else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Player)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(-selectedSpellObject.spellDamage * 1.5f, false);
+                        }
+                    }
+                }
+                else
+                {
+                    fightCtrl.FighterList[targetIndex].ChangeHealth(-selectedSpellObject.spellDamage, false);
+                }
             }
         }
 
@@ -530,11 +575,57 @@ public class Explo_FightController : MonoBehaviour {
         {
             if (critHit)
             {
-                fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, true);
+                if (spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Foe)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, true);
+                        }
+                    }
+                }
+                else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Player)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, true);
+                        }
+                    }
+                }
+                else
+                {
+                    fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, true);
+                }
             }
             else
             {
-                fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage, false);
+                if (spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Foe)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, false);
+                        }
+                    }
+                }
+                else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll)
+                {
+                    for (int enemyNumber = 0; enemyNumber < fightCtrl.FighterList.Count; enemyNumber++)
+                    {
+                        if (fightCtrl.FighterList[enemyNumber] is Player)
+                        {
+                            fightCtrl.FighterList[enemyNumber].ChangeHealth(selectedSpellObject.spellDamage * 1.5f, false);
+                        }
+                    }
+                }
+                else
+                {
+                    fightCtrl.FighterList[targetIndex].ChangeHealth(selectedSpellObject.spellDamage, false);
+                }
             }
         }
 
@@ -678,7 +769,7 @@ public class Explo_FightController : MonoBehaviour {
                 AnimFeedbackEnemy(selectedSpellObject.spellTargetType, false);
             }
             //do the damage on the target (healing included)
-            CalculDamageDone(selectedSpellObject.spellLogicType);
+            CalculDamageDone(selectedSpellObject.spellLogicType, selectedSpellObject.spellTargetType);
 
             //check if the extra effect is != none, so then we need to make an animation for that.
             if (selectedSpellObject.spellTargetFeedbackAnimationType != SpellObject.SpellTargetFeedbackAnimationType.None)
