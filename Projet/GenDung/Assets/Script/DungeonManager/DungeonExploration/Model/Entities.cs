@@ -49,6 +49,11 @@ public class Entities {
 
     public void ChangeHealth(float value, bool crit) // Damage will be negative value and heal will be positive value.
     {
+        if (this.Dead)
+        {
+            return;
+        }
+
         int roundedHP;
         roundedHP = Mathf.RoundToInt(value);
 
