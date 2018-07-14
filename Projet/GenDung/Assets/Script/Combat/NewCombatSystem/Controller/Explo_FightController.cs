@@ -788,7 +788,10 @@ public class Explo_FightController : MonoBehaviour {
             }
 
             UpdateUIOrder(); // Call the Update of UI to display Damage made to the Enemy.
-            LifeTextUp(-selectedSpellObject.spellDamage, false);
+            if (selectedSpellObject.spellLogicType == SpellObject.SpellLogicType.Damage)
+                LifeTextUp(-selectedSpellObject.spellDamage, false);
+            else if (selectedSpellObject.spellLogicType == SpellObject.SpellLogicType.Heal)
+                LifeTextUp(selectedSpellObject.spellDamage, false);
         }
         else
         {

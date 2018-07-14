@@ -109,8 +109,6 @@ public class Explo_Room_FightController : MonoBehaviour
 
     public void LinkToRoom()
     {
-		print ("heyheyhey");
-
         combatCanvas.GetComponent<Canvas>().sortingOrder = 79;// Pass the fightCanvas 
 
 		for (int i = 0; i < explo_Room_Fight.FoesList.Count; i++) {
@@ -129,14 +127,12 @@ public class Explo_Room_FightController : MonoBehaviour
 
     public void SetFightRoom()
     {
+        foreach (Transform child in PresentationUI.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
 
-		for (int i = 0; i < PresentationUI.transform.childCount ; i++) {
-
-            //GameObject.Find ("EnemiesPanelUI(Clone)").SetActive (false);
-            Destroy(PresentationUI.transform.GetChild(0).gameObject);
-		}
-
-		logT.AddLogLine ("Let the fight begin");
+        logT.AddLogLine ("Let the fight begin");
 
 		battleSystemUI.GetComponent<Canvas>().sortingOrder += 40;
 

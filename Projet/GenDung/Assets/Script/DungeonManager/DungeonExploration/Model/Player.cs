@@ -30,7 +30,7 @@ public class Player : Entities {
 
     public override void ChangeActionPoints(int _points)
     {
-        base.ActionPoint -= -_points;
+        base.ActionPoint -= _points;
     }
 
     public override void DeathOfEntities ()
