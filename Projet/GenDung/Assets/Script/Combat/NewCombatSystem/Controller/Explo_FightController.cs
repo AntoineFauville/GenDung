@@ -657,7 +657,7 @@ public class Explo_FightController : MonoBehaviour {
 
         if (fightCtrl.FighterList[entitiesIndex] is Foe)
         {
-            EnemyTurn();
+            StartCoroutine(WaitBeforeFoeTurn());
         }
         else
         {
@@ -751,7 +751,7 @@ public class Explo_FightController : MonoBehaviour {
         //Wait for anim player to finish depending on time of spell anim time
         //if it contains a reaction or a spell invocation at the enemy's place we need to instantiate or play an effect on the enemy
         yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
-        EffectAssignement();
+        EffectAssignement(); // Assign Status -- it's part 2. 
         yield return new WaitForSeconds(selectedSpellObject.SpellCastAnimationTime / 2);
         StopEffect();
 
@@ -780,18 +780,19 @@ public class Explo_FightController : MonoBehaviour {
                 //CheckExtraEffect(false);
             }
 
-            StatusAssignement();
-            if (exploStatus != null)
-            {
-                yield return new WaitForSeconds(exploStatus.AnimationDuration);
-                exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
-            }
-
             UpdateUIOrder(); // Call the Update of UI to display Damage made to the Enemy.
             if (selectedSpellObject.spellLogicType == SpellObject.SpellLogicType.Damage)
                 LifeTextUp(-selectedSpellObject.spellDamage, false);
             else if (selectedSpellObject.spellLogicType == SpellObject.SpellLogicType.Heal)
                 LifeTextUp(selectedSpellObject.spellDamage, false);
+
+            StatusAssignement();
+
+            if (exploStatus != null)
+            {
+                yield return new WaitForSeconds(exploStatus.AnimationDuration);
+                exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
+            }
         }
         else
         {
@@ -810,9 +811,31 @@ public class Explo_FightController : MonoBehaviour {
         {
             fightCtrl.FighterList[entitiesIndex].EntitiesStatus[i].DoSomething(i);
             yield return new WaitForSeconds(fightCtrl.FighterList[targetIndex].EntitiesStatus[i].AnimationDuration);
-            fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_None");
+            fightCtrl.FighterList[entitiesIndex].EntitiesEffectAnimator.Play("Effect_None");
+
+            if (fightCtrl.FighterList[entitiesIndex].EntitiesStatus[i] is Explo_Status_Healed )
+                LifeTextUp(Mathf.RoundToInt(fightCtrl.FighterList[entitiesIndex].EntitiesStatus[i].TickValue), false);
+            else
+            {
+                //if it's damage make the fighter react to taking damages
+                AnimFeedbackEnemy(selectedSpellObject.spellTargetType, true);
+
+                // wait for anim enemy reaction to spell. (Constant of 1 sec for exemple) + Launched Hit or Critical animation
+                yield return new WaitForSeconds(1.0f);
+
+                AnimFeedbackEnemy(selectedSpellObject.spellTargetType, false);
+
+                LifeTextUp(-Mathf.RoundToInt(fightCtrl.FighterList[entitiesIndex].EntitiesStatus[i].TickValue), false);
+            }
         }
+
         ContinueFightAfterEffect();
+    }
+
+    public IEnumerator WaitBeforeFoeTurn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        EnemyTurn();
     }
 
     public Explo_Room_FightController FightCtrl
