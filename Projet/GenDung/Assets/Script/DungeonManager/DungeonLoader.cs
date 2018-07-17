@@ -68,9 +68,11 @@ public class DungeonLoader : MonoBehaviour {
     {
         CreateInstance();
 
-        if(activeScene == "MainMenu")
+        /*
+         if(activeScene == "MainMenu")
             Instantiate(Resources.Load("UI_Interface/CanvasMainMenu")); // Instantiate Canvas when we click on Button.
-        
+        */
+
         dungeonController = GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonController>(); // Séparation Gestion Dungeon du DungeonLoader
         mapController = GameObject.Find("DontDestroyOnLoad").GetComponent<MapController>(); // Séparation Gestion Map du DungeonLoader
         tavernController = GameObject.Find("DontDestroyOnLoad").GetComponent<TavernController>(); // Séparation Gestion Taverne du DungeonLoader
@@ -100,11 +102,13 @@ public class DungeonLoader : MonoBehaviour {
             //-----------Main Menu gestion scene-------------//
             if (activeScene == "MainMenu")
             { 
+                /*
                 if (GameObject.Find("CanvasMainMenu(Clone)") == null)
                 {
                     Instantiate(Resources.Load("UI_Interface/CanvasMainMenu")); // Instantiate Canvas when we click on Button.
                     sceneLoaded = false;
                 }
+                */
             }
             //-----------Dungeon gestion scene-------------//
             if (activeScene == "Explo" && GameObject.Find("CanvasUIDungeon(Clone)") == null)
