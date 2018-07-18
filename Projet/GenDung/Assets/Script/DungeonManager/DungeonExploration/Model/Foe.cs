@@ -30,8 +30,12 @@ public class Foe : Entities {
         // Check if all foes are dead. if yes, Launch method for ending combat.
 
         base.DeathOfEntities(); // Need to check if it's an obligation or if it will work without calling it.
-        this.EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("Death");
-        EntitiesData.Rooms[roomIndex].MonstersAmount--;
+        if (!this.Dead)
+        {
+            this.Dead = true; // Setting player as dead.
+            EntitiesData.Rooms[roomIndex].MonstersAmount--;
+            this.EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play("Death");
+        }
         fightFoesList = EntitiesData.Rooms[roomIndex] as Explo_Room_Fight;
         if (EntitiesData.Rooms[roomIndex].MonstersAmount <= 0)
         {

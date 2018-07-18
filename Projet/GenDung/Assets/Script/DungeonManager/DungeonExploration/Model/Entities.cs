@@ -51,6 +51,7 @@ public class Entities {
     {
         if (this.Dead)
         {
+            DeathOfEntities();
             return;
         }
 
@@ -64,7 +65,6 @@ public class Entities {
         if (health <= 0)
         {
             health = 0; // Setting health to Zero to avoid negative value.
-            dead = true; // Setting player as dead.
             DeathOfEntities();
         }
     }

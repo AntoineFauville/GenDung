@@ -151,14 +151,15 @@ public class Explo_FightController : MonoBehaviour {
     {
         this.targetIndex = _target;
         fighterToAttack = fightCtrl.FighterList[_target];
-        AttackEnemy();
+        if (!fighterToAttack.Dead)
+            AttackEnemy();
     }
 
     public void AttackEnemy()
     {
         if (attackMode)
         {
-            if (fightCtrl.FighterList[targetIndex] is Foe && !fightCtrl.FighterList[targetIndex].Dead)
+            if (fightCtrl.FighterList[targetIndex] is Foe && !fightCtrl.FighterList[targetIndex].Dead && fightCtrl.FighterList[targetIndex] != null)
             {
                 //check to know on who I can click.
                 if (selectedSpellObject.spellType == SpellObject.SpellType.Enemy)
@@ -667,16 +668,15 @@ public class Explo_FightController : MonoBehaviour {
 
     void AnimFeedbackEnemy(SpellObject.SpellTargetType spellTarget, bool on)
     {
-
         Animator EnemyAnimator = fightCtrl.FighterList[targetIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
 
         if (spellTarget == SpellObject.SpellTargetType.EnemySingle)
         {
-            if (on)
+            if (on && !fightCtrl.FighterList[targetIndex].Dead)
             {
                 EnemyAnimator.Play("DamageMonster");
             }
-            else
+            else if (!fightCtrl.FighterList[targetIndex].Dead)
             {
                 EnemyAnimator.Play("IdleMonster");
             }
@@ -736,7 +736,7 @@ public class Explo_FightController : MonoBehaviour {
         //DefineTargetIndex(BS.SelectedSpellObject.spellTargetType);
 
         //check the action point of the player
-        fightCtrl.FighterList[entitiesIndex].ChangeActionPoints(selectedSpellObject.spellCost);
+        //fightCtrl.FighterList[entitiesIndex].ChangeActionPoints(selectedSpellObject.spellCost);
 
         //play player animation
         fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>().Play(selectedSpellObject.spellAnimator.ToString());

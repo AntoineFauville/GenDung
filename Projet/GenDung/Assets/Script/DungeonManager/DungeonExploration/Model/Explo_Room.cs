@@ -8,6 +8,7 @@ public class Explo_Room {
     Sprite background;
     Explo_Dungeon dungeon;
     int monstersAmount;
+    
 
     public Explo_Room()
     {
