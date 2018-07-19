@@ -315,21 +315,21 @@ public class Explo_FightController : MonoBehaviour {
 
     public void StopEffect()
     {
-        if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll && fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator != null)
+        if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
         {
             for (int i = 0; i < fightCtrl.FighterList.Count; i++)
             {
-                if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                if (fightCtrl.FighterList[i].EntitiesEffectAnimator != null && fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
                 {
                     fightCtrl.FighterList[i].EntitiesEffectAnimator.Play("Effect_None");
                 }
             }
         }
-        else if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll && fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator != null)
+        else if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
         {
             for (int i = 0; i < fightCtrl.FighterList.Count; i++)
             {
-                if (fightCtrl.FighterList[i] is Player && !fightCtrl.FighterList[i].Dead)
+                if (fightCtrl.FighterList[i].EntitiesEffectAnimator != null && fightCtrl.FighterList[i] is Player && !fightCtrl.FighterList[i].Dead)
                 {
                     fightCtrl.FighterList[i].EntitiesEffectAnimator.Play("Effect_None");
                 }
@@ -1008,9 +1008,9 @@ public class Explo_FightController : MonoBehaviour {
 
             StatusAssignement();
 
-            if (exploStatus != null)
+            if (exploStatusList != null)
             {
-                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll && selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll || selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
                 {
                     for (int i = 0; i < exploStatusList.Count; i++)
                     {
