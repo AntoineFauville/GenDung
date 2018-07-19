@@ -7,6 +7,7 @@ public class Explo_EndFightController : MonoBehaviour {
 
     public void EndBattleAllPlayerDead()
     {
+        StartCoroutine(WaitBeforeEnd());
         SceneManager.LoadScene("Map");
     }
 
@@ -18,6 +19,7 @@ public class Explo_EndFightController : MonoBehaviour {
         }
         else
         {
+            StartCoroutine(WaitBeforeEnd());
             SceneManager.LoadScene("Init");
         }
     }
@@ -33,5 +35,10 @@ public class Explo_EndFightController : MonoBehaviour {
         {
             Destroy(playerList[i].EntitiesUIOrder);
         }
+    }
+
+    public IEnumerator WaitBeforeEnd()
+    {
+        yield return new WaitForSeconds(0.75f);
     }
 }

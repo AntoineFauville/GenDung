@@ -91,10 +91,13 @@ public class Entities {
     public virtual void DeathOfEntities()
     {
         Debug.Log("I'm Actually Dead");
-        //De-activate Button
-        entitiesGO.transform.Find("Background").GetComponent<Button>().enabled = false;
-        //Change color to Color.gray
-        entitiesGO.transform.Find("Background").GetComponent<Image>().color = Color.gray;
+        if (EntitiesGO != null)
+        {
+            //De-activate Button
+            entitiesGO.transform.Find("Background").GetComponent<Button>().enabled = false;
+            //Change color to Color.gray
+            entitiesGO.transform.Find("Background").GetComponent<Image>().color = Color.gray;
+        }
     }
 
     public float MaxHealth

@@ -17,6 +17,7 @@ public class Explo_FightController : MonoBehaviour {
     Explo_DungeonController explo_Dungeon;
     ProjectileManager projectile_Manager;
     Explo_Room_FightController fightCtrl;
+    Animator EnemyAnimator;
     Explo_Status exploStatus;
     List<Explo_Status> exploStatusList = new List<Explo_Status>();
 
@@ -134,17 +135,20 @@ public class Explo_FightController : MonoBehaviour {
     {
         for (int i = 0; i < FightCtrl.FighterList.Count; i++)
         {
-            fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = fightCtrl.FighterList[i].EntitiesSprite;
-            fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = fightCtrl.FighterList[i].Name.ToString();
-            fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "HP = " + fightCtrl.FighterList[i].Health.ToString() + " / " + fightCtrl.FighterList[i].MaxHealth.ToString();
+            if (fightCtrl.FighterList[i].EntitiesUIOrder != null && fightCtrl.FighterList[i].EntitiesGO != null)
+            {
+                fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = fightCtrl.FighterList[i].EntitiesSprite;
+                fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text>().text = fightCtrl.FighterList[i].Name.ToString();
+                fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text>().text = "HP = " + fightCtrl.FighterList[i].Health.ToString() + " / " + fightCtrl.FighterList[i].MaxHealth.ToString();
 
-            if (fightCtrl.FighterList[i] is Player)
-                fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "AP = " + fightCtrl.FighterList[i].ActionPoint.ToString() + " / " + fightCtrl.FighterList[i].MaxActionPoint.ToString();
-            else
-                fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().enabled = false;
+                if (fightCtrl.FighterList[i] is Player)
+                    fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().text = "AP = " + fightCtrl.FighterList[i].ActionPoint.ToString() + " / " + fightCtrl.FighterList[i].MaxActionPoint.ToString();
+                else
+                    fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text>().enabled = false;
 
-            fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = fightCtrl.FighterList[i].Health / fightCtrl.FighterList[i].MaxHealth;
-            fightCtrl.FighterList[i].EntitiesGO.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = fightCtrl.FighterList[i].Health / fightCtrl.FighterList[i].MaxHealth;
+                fightCtrl.FighterList[i].EntitiesUIOrder.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = fightCtrl.FighterList[i].Health / fightCtrl.FighterList[i].MaxHealth;
+                fightCtrl.FighterList[i].EntitiesGO.transform.Find("LifeControl/LifeBar").GetComponent<Image>().fillAmount = fightCtrl.FighterList[i].Health / fightCtrl.FighterList[i].MaxHealth;
+            }
         }
     }
 
@@ -309,7 +313,7 @@ public class Explo_FightController : MonoBehaviour {
 
     public void StopEffect()
     {
-        if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+        if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll && fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator != null)
         {
             for (int i = 0; i < fightCtrl.FighterList.Count; i++)
             {
@@ -319,7 +323,7 @@ public class Explo_FightController : MonoBehaviour {
                 }
             }
         }
-        else
+        else if (fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator != null)
             fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_None");
     }
 
@@ -844,7 +848,8 @@ public class Explo_FightController : MonoBehaviour {
     {
         if (spellTarget == SpellObject.SpellTargetType.EnemySingle)
         {
-            Animator EnemyAnimator = fightCtrl.FighterList[targetIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
+            if(fightCtrl.FighterList[targetIndex].EntitiesGO != null)
+                EnemyAnimator = fightCtrl.FighterList[targetIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
 
             if (on && !fightCtrl.FighterList[targetIndex].Dead)
             {
@@ -859,7 +864,8 @@ public class Explo_FightController : MonoBehaviour {
         {
             for (int i = 0; i < fightCtrl.FighterList.Count; i++)
             {
-                Animator EnemyAnimator = fightCtrl.FighterList[i].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
+                if (fightCtrl.FighterList[targetIndex].EntitiesGO != null)
+                    EnemyAnimator = fightCtrl.FighterList[i].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
 
                 if (on && fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
                 {

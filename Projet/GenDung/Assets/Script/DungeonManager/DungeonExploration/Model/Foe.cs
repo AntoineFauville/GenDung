@@ -39,9 +39,12 @@ public class Foe : Entities {
         fightFoesList = EntitiesData.Rooms[roomIndex] as Explo_Room_Fight;
         if (EntitiesData.Rooms[roomIndex].MonstersAmount <= 0)
         {
-            endFightCtrl = EntitiesGO.transform.parent.parent.parent.Find("ScriptBattle").GetComponent<Explo_EndFightController>();
-            endFightCtrl.CleanUIBattleOrder(fightFoesList.FoesList, EntitiesData.Players);
-            endFightCtrl.EndBattleAllMonsterDead();
+            if (EntitiesGO != null)
+            {
+                endFightCtrl = EntitiesGO.transform.parent.parent.parent.Find("ScriptBattle").GetComponent<Explo_EndFightController>();
+                endFightCtrl.CleanUIBattleOrder(fightFoesList.FoesList, EntitiesData.Players);
+                endFightCtrl.EndBattleAllMonsterDead();
+            }
         }
     }
 
