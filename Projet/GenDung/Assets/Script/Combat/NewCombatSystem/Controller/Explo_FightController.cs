@@ -18,6 +18,7 @@ public class Explo_FightController : MonoBehaviour {
     ProjectileManager projectile_Manager;
     Explo_Room_FightController fightCtrl;
     Explo_Status exploStatus;
+    List<Explo_Status> exploStatusList = new List<Explo_Status>();
 
     public void Start()
     {
@@ -252,7 +253,7 @@ public class Explo_FightController : MonoBehaviour {
                     {
                         if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
                         {
-
+                            projectile_Manager.LaunchProjectile(fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform, fightCtrl.FighterList[i].EntitiesGO.transform);
                         }
                     }
                 }
@@ -308,7 +309,18 @@ public class Explo_FightController : MonoBehaviour {
 
     public void StopEffect()
     {
-        fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_None");
+        if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+        {
+            for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+            {
+                if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                {
+                    fightCtrl.FighterList[i].EntitiesEffectAnimator.Play("Effect_None");
+                }
+            }
+        }
+        else
+            fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_None");
     }
 
     public void StatusAssignement()
@@ -329,8 +341,24 @@ public class Explo_FightController : MonoBehaviour {
                         return;
                     } 
                 }
-                exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_Poisoned(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }
                 Debug.Log("Added Effect");
                 break;
 
@@ -343,9 +371,24 @@ public class Explo_FightController : MonoBehaviour {
                         return;
                     }
                 }
-
-                exploStatus = new Explo_Status_Healed(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_Healed(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_Healed(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }
                 break;
 
             case SpellObject.SpellStatus.Sheilded:
@@ -357,9 +400,24 @@ public class Explo_FightController : MonoBehaviour {
                         return;
                     }
                 }
-
-                exploStatus = new Explo_Status_Shielded(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_Shielded(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_Shielded(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }              
                 break;
 
             case SpellObject.SpellStatus.TemporaryLifed:
@@ -371,10 +429,24 @@ public class Explo_FightController : MonoBehaviour {
                         return;
                     }
                 }
-
-
-                exploStatus = new Explo_Status_TemporaryLife(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_TemporaryLife(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_TemporaryLife(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }
                 break;
 
             case SpellObject.SpellStatus.Cursed:
@@ -386,10 +458,24 @@ public class Explo_FightController : MonoBehaviour {
                         return;
                     }
                 }
-
-
-                exploStatus = new Explo_Status_Cursed(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_Cursed(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_Cursed(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }
                 break;
 
             case SpellObject.SpellStatus.ResistanceReduced:
@@ -402,9 +488,24 @@ public class Explo_FightController : MonoBehaviour {
                     }
                 }
 
-
-                exploStatus = new Explo_Status_ResistanceReduced(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_ResistanceReduced(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_ResistanceReduced(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }
                 break;
 
             case SpellObject.SpellStatus.AvoidanceReduced:
@@ -417,9 +518,24 @@ public class Explo_FightController : MonoBehaviour {
                     }
                 }
 
-
-                exploStatus = new Explo_Status_AvoidanceReduced(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_AvoidanceReduced(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_AvoidanceReduced(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }
                 break;
 
             case SpellObject.SpellStatus.Spike:
@@ -432,9 +548,24 @@ public class Explo_FightController : MonoBehaviour {
                     }
                 }
 
-
-                exploStatus = new Explo_Status_Spike(fightCtrl.FighterList[targetIndex]);
-                fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_Spike(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else
+                {
+                    exploStatus = new Explo_Status_Spike(fightCtrl.FighterList[targetIndex]);
+                    fightCtrl.FighterList[targetIndex].EntitiesStatus.Add(exploStatus);
+                    exploStatusList.Add(exploStatus);
+                }
                 break;
 
             default:
@@ -849,18 +980,19 @@ public class Explo_FightController : MonoBehaviour {
 
             if (exploStatus != null)
             {
-                yield return new WaitForSeconds(exploStatus.AnimationDuration);
                 if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
                 {
-                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    for (int i = 0; i < exploStatusList.Count; i++)
                     {
-                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
-                        {
-                            exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
-                        }
+                        yield return new WaitForSeconds(exploStatusList[i].AnimationDuration);
+                        exploStatusList[i].Entity.EntitiesEffectAnimator.Play("Effect_None");
                     }
-                } else
+                }
+                else
+                {
+                    yield return new WaitForSeconds(exploStatus.AnimationDuration);
                     exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
+                }
             }
         }
         else
