@@ -31,6 +31,8 @@ public class Explo_FightController : MonoBehaviour {
 
     public void NextTurn()
     {
+        Debug.Log("Next Turn launched");
+
         HideShowNext(false);
 
         entitiesIndex++; // getting the next entities to play.
@@ -380,6 +382,18 @@ public class Explo_FightController : MonoBehaviour {
                     for (int i = 0; i < fightCtrl.FighterList.Count; i++)
                     {
                         if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus = new Explo_Status_Healed(fightCtrl.FighterList[i]);
+                            fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);
+                            exploStatusList.Add(exploStatus);
+                        }
+                    }
+                }
+                else if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Player && !fightCtrl.FighterList[i].Dead)
                         {
                             exploStatus = new Explo_Status_Healed(fightCtrl.FighterList[i]);
                             fightCtrl.FighterList[i].EntitiesStatus.Add(exploStatus);

@@ -59,6 +59,8 @@ public class Entities {
         roundedHP = Mathf.RoundToInt(value);
 
         health += roundedHP;
+        if (health >= maxHealth)
+            health = maxHealth;
 
         Debug.Log("I've been hit, I lost " + Mathf.Abs(roundedHP) + " HP");
 
