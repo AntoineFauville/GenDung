@@ -1000,7 +1000,7 @@ public class Explo_FightController : MonoBehaviour {
 
             if (exploStatus != null)
             {
-                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll && selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
                 {
                     for (int i = 0; i < exploStatusList.Count; i++)
                     {
