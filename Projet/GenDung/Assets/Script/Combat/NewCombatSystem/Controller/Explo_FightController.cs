@@ -246,19 +246,62 @@ public class Explo_FightController : MonoBehaviour {
                 break;
 
             case SpellObject.SpellEffect.Effect_Arcane_Projectile:
-                projectile_Manager.LaunchProjectile(fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform, fightCtrl.FighterList[targetIndex].EntitiesGO.transform);
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+
+                        }
+                    }
+                }
+                else
+                    projectile_Manager.LaunchProjectile(fightCtrl.FighterList[entitiesIndex].EntitiesGO.transform, fightCtrl.FighterList[targetIndex].EntitiesGO.transform);
                 break;
 
             case SpellObject.SpellEffect.Effect_Blood:
-                fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Blood");
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            fightCtrl.FighterList[i].EntitiesEffectAnimator.Play("Effect_Blood");
+                        }
+                    }
+                }else 
+                    fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Blood");
                 break;
 
             case SpellObject.SpellEffect.Effect_Roots:
-                fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Rooted");
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            fightCtrl.FighterList[i].EntitiesEffectAnimator.Play("Effect_Rooted");
+                        }
+                    }
+                }
+                else
+                    fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Rooted");
                 break;
 
             case SpellObject.SpellEffect.Effect_Spike:
-                fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Blood");
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            fightCtrl.FighterList[i].EntitiesEffectAnimator.Play("Effect_Blood");
+                        }
+                    }
+                }
+                else
+                    fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_Blood");
                 break;
         }
     }
@@ -668,10 +711,10 @@ public class Explo_FightController : MonoBehaviour {
 
     void AnimFeedbackEnemy(SpellObject.SpellTargetType spellTarget, bool on)
     {
-        Animator EnemyAnimator = fightCtrl.FighterList[targetIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
-
         if (spellTarget == SpellObject.SpellTargetType.EnemySingle)
         {
+            Animator EnemyAnimator = fightCtrl.FighterList[targetIndex].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
+
             if (on && !fightCtrl.FighterList[targetIndex].Dead)
             {
                 EnemyAnimator.Play("DamageMonster");
@@ -679,6 +722,22 @@ public class Explo_FightController : MonoBehaviour {
             else if (!fightCtrl.FighterList[targetIndex].Dead)
             {
                 EnemyAnimator.Play("IdleMonster");
+            }
+        }
+        else if (spellTarget == SpellObject.SpellTargetType.EnemyAll)
+        {
+            for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+            {
+                Animator EnemyAnimator = fightCtrl.FighterList[i].EntitiesGO.transform.Find("Background").GetComponent<Animator>();
+
+                if (on && fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                {
+                    EnemyAnimator.Play("DamageMonster");
+                }
+                else if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                {
+                    EnemyAnimator.Play("IdleMonster");
+                }
             }
         }
     }
@@ -791,7 +850,17 @@ public class Explo_FightController : MonoBehaviour {
             if (exploStatus != null)
             {
                 yield return new WaitForSeconds(exploStatus.AnimationDuration);
-                exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
+                if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+                {
+                    for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                    {
+                        if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                        {
+                            exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
+                        }
+                    }
+                } else
+                    exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
             }
         }
         else
