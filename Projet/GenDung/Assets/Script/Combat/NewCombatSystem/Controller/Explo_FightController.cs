@@ -325,6 +325,16 @@ public class Explo_FightController : MonoBehaviour {
                 }
             }
         }
+        else if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll && fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator != null)
+        {
+            for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+            {
+                if (fightCtrl.FighterList[i] is Player && !fightCtrl.FighterList[i].Dead)
+                {
+                    fightCtrl.FighterList[i].EntitiesEffectAnimator.Play("Effect_None");
+                }
+            }
+        }
         else if (fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator != null)
             fightCtrl.FighterList[targetIndex].EntitiesEffectAnimator.Play("Effect_None");
     }
