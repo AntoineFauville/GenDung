@@ -7,6 +7,8 @@ public class Explo_Room {
     int index;
     Sprite background;
     Explo_Dungeon dungeon;
+    int monstersAmount;
+    
 
     public Explo_Room()
     {
@@ -49,6 +51,19 @@ public class Explo_Room {
         set
         {
             background = value;
+        }
+    }
+
+    public int MonstersAmount
+    {
+        get
+        {
+            return monstersAmount;
+        }
+
+        set
+        {
+            monstersAmount = value;
         }
     }
 }

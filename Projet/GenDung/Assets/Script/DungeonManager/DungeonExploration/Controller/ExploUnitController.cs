@@ -15,6 +15,7 @@ public class ExploUnitController : MonoBehaviour {
     private Explo_Room_FightController fightRoom;
 	private Explo_Room_ExitController exitRoom;
 	private Explo_Room_TreasureController treasorRoom;
+    private bool alreadyClicked = false;
 
 	//private bool updatePosCube;
 
@@ -202,7 +203,13 @@ public class ExploUnitController : MonoBehaviour {
 				if (GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles[this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered == false) 
 				{
 					yield return new WaitForSeconds(0.75f); 
-					fightRoom.LinkToRoom ();
+                    if (!alreadyClicked)
+                        {
+                            alreadyClicked = true;
+					        fightRoom.LinkToRoom ();
+                        }
+                        yield return new WaitForSeconds(1f);
+                        alreadyClicked = false;
 
 					GameObject.Find ("ExploGridCanvas").transform.Find ("PanelGrid/Tile_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].x + "_" + Explo_GridController.Instance.Grid.ExploTiles [this.tileX, this.tileY].y).GetComponent<ExploTileController> ().isAlreadyDiscovered = true;
 				}

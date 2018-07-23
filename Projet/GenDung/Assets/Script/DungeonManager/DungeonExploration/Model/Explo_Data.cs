@@ -19,6 +19,7 @@ public class Explo_Data
     List<Vector2> eeTiles = new List<Vector2>(); // entrance and exit Tiles
     //
     int goldGained;
+    int playersLeft;
     List<Foe> deadFoes = new List<Foe>();
     List<Player> players = new List<Player>();
     List<Explo_Room> rooms = new List<Explo_Room>();
@@ -195,6 +196,19 @@ public class Explo_Data
         set
         {
             goldGained = value;
+        }
+    }
+
+    public int PlayersLeft
+    {
+        get
+        {
+            return playersLeft;
+        }
+
+        set
+        {
+            playersLeft = value;
         }
     }
 }

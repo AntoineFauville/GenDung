@@ -53,7 +53,8 @@ public class PreCombatController : MonoBehaviour {
 //        logT = GameObject.Find ("DontDestroyOnLoad").GetComponent<LogGestionTool> ();
 //    }
 //
-//    // Player
+//    // 
+
 //    public void ConfirmCharaPosition(int x, int y)
 //    {
 //        if (GridController.Instance.Grid.Tiles[x, y].isStarterTile == true)

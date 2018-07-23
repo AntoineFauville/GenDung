@@ -42,6 +42,12 @@ public class SpellObject : ScriptableObject {
     public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike }; 
     public SpellTargetFeedbackAnimationType spellTargetFeedbackAnimationType;
 
+    public enum SpellStatus { None, Poisoned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike }
+    public SpellStatus spellStatus;
+
+    public enum SpellEffect { None, Effect_Spike, Effect_Roots, Effect_Arcane_Projectile, Effect_Blood }
+    public SpellEffect spellEffect;
+
 	public bool EffectAppearingDuringPlayerAnim;
 
 	public enum SpellTargetEffectAppearing { None, Spike, Roots, ProjectileVic, Blood1 }; 

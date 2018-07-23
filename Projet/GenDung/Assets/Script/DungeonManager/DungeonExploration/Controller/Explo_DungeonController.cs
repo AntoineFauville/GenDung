@@ -30,10 +30,20 @@ public class Explo_DungeonController : MonoBehaviour {
     {
         for (int i = 0; i < saveData.SavedSizeOfTheTeam; i++)
         {
-            Player createdPlayer = new Player(saveData.SavedCharacterList[i].Health_PV, saveData.SavedCharacterList[i].ActionPoints_PA, saveData.SavedCharacterList[i].Initiative, saveData.SavedCharacterList[i].Name);
+            GameObject player_GO = GameObject.Find("BattleSystem/BattleSystem/Player " + i);
+
+            Player createdPlayer = new Player(saveData.SavedCharacterList[i].Health_PV, saveData.SavedCharacterList[i].ActionPoints_PA, saveData.SavedCharacterList[i].Initiative, saveData.SavedCharacterList[i].Name, dungeonData, saveData.SavedCharacterList[i].SpellList, player_GO, saveData.SavedCharacterList[i].ICON);
+            createdPlayer.InitializeVisual();
             dungeon.Data.Players.Add(createdPlayer);
             Debug.Log("Created Player : " + Dungeon.Data.Players[i].Name + " with " + Dungeon.Data.Players[i].Health + " HP and " + Dungeon.Data.Players[i].ActionPoint + " PA ");
         }
+
+        for (int i = 0; i < dungeon.Data.Players.Count; i++)
+        {
+            if (!dungeon.Data.Players[i].Dead)
+                Dungeon.Data.PlayersLeft++; // Setting the number of Players left to 4
+        }
+        Debug.Log(Dungeon.Data.PlayersLeft);
     }
 
     public Explo_Dungeon Dungeon

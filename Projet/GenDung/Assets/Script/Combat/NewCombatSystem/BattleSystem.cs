@@ -33,13 +33,8 @@ public class BattleSystem : MonoBehaviour {
 	// first time you launch a battle
 	public void ResetFightStart (int roomImIn) {
 		Links ();
-		nextTurn_Controller.HideShowNext (true);
-		playerSetup_Controller.SetupPlayers ();
-		enemySetup_Controller.SetupEnemies (roomImIn);
-		initiative_Controller.SetFighterIndex ();
-		indicator_Controller.SetArrow ();
-		spell_Controller.SetupFighterPanel ();
-		enemyTurn_Controller.SetupFirstTurnAsEnemy ();
+		//nextTurn_Controller.HideShowNext (true);
+		//enemyTurn_Controller.SetupFirstTurnAsEnemy ();
 	}
 
 	public void Links(){
@@ -55,12 +50,12 @@ public class BattleSystem : MonoBehaviour {
 
 	void Update ()
 	{
-		if (SelectedSpellObject != null)
-		{
-			if (SelectedSpellObject.spellCost > FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer && FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
-				attackMode = false;
-			}
-		}
+		//if (SelectedSpellObject != null)
+		//{
+		//	if (SelectedSpellObject.spellCost > FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().actionPointPlayer && FighterList [actuallyPlaying].GetComponent<LocalDataHolder> ().player) {
+		//		attackMode = false;
+		//	}
+		//}
 	}
 
 	public void ContinueFightAfterEffect(){
@@ -115,15 +110,15 @@ public class BattleSystem : MonoBehaviour {
 			GameObject.Find ("UIBattleOrderDisplay(Clone)").SetActive (false);
 		}
 		//clean enemy and reset them
-		for (int i = 0; i < 4; i++) {
-			GameObject.Find (enemySetup_Controller.enemyString + i).GetComponent<LocalDataHolder> ().dead = false;
-			GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("EnemyBackground").GetComponent<Button> ().enabled = true;
-			GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("EnemyBackground").GetComponent<Image> ().color = Color.white;
-		}
+		//for (int i = 0; i < 4; i++) {
+		//	GameObject.Find (enemySetup_Controller.enemyString + i).GetComponent<LocalDataHolder> ().dead = false;
+		//	GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("Background").GetComponent<Button> ().enabled = true;
+		//	GameObject.Find (enemySetup_Controller.enemyString + i).transform.Find("Background").GetComponent<Image> ().color = Color.white;
+		//}
 	}
 
-	public void resetActionPoint(int index){
-		FighterList [index].GetComponent<LocalDataHolder> ().actionPointPlayer = FighterList [index].GetComponent<LocalDataHolder> ().maxActionPointPlayer;
-	}
+	//public void resetActionPoint(int index){
+	//	FighterList [index].GetComponent<LocalDataHolder> ().actionPointPlayer = FighterList [index].GetComponent<LocalDataHolder> ().maxActionPointPlayer;
+	//}
 }
 

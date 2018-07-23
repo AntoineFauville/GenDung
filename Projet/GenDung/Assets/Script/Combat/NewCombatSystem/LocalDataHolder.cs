@@ -10,8 +10,9 @@ public class LocalDataHolder : MonoBehaviour {
 	public bool dead;
 
 	public EnemyObject enemyObject;
-
+    Foe foe;
 	public Character characterObject;
+    Player playerModel;
 
 	public float maxHealth;
 	public float health;
@@ -41,8 +42,8 @@ public class LocalDataHolder : MonoBehaviour {
 	GameObject dontDestroyOnLoad;
 	Transform Background;
 
-	// Use this for initialization
-	public void Initialize () {
+    // Use this for initialization
+    public void Initialize () {
 
 		scriptBattleHolder = GameObject.Find ("BattleSystem/ScriptBattle");
 		dontDestroyOnLoad = GameObject.Find ("DontDestroyOnLoad");
@@ -61,7 +62,7 @@ public class LocalDataHolder : MonoBehaviour {
 		if (!player) {
 			Background = this.transform.Find ("EnemyBackground");
 		} else {
-			Background = this.transform.Find("PersoBackground");
+			Background = this.transform.Find("Background");
 		}
 
 		//if at the start and the enemyObject and the character Object are empty, it means we are not been selected by the holy church.
@@ -95,7 +96,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 			transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
 
-			SetupUiOrderObject ();
+			//SetupUiOrderObject ();
 		}
 	}
 
@@ -141,42 +142,6 @@ public class LocalDataHolder : MonoBehaviour {
 				if (BS.amountOfEnemiesLeft <= 0)
 					BS.EndBattleAllMonsterDead();
 			}
-		}
-
-		SetupUiOrderObject ();
-
-		tLL_Controller.lifeTextUp (HP, crit);
-	}
-
-	public void SetupUiOrderObject () 
-	{
-		if(player){
-			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = characterObject.ICON;
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = characterObject.Name.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + characterObject.Health_PV.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().text = "AP = " + actionPointPlayer.ToString() + " / " + characterObject.ActionPoints_PA.ToString();
-		} else {
-			UiOrderObject.transform.Find("MASK/PlayerRepresentation").GetComponent<Image>().sprite = enemyObject.enemyIcon;
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayName").GetComponent<Text> ().text = enemyObject.enemyName.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPV").GetComponent<Text> ().text = "HP = " + health.ToString() + " / " + enemyObject.health.ToString();
-			UiOrderObject.transform.Find ("ToolTipAlpha/TooltipPanel/PanelInfo/OrderDisplayPA").GetComponent<Text> ().enabled = false;
-		}
-
-		UpdateLife ();
-	}
-
-	public void UpdateUiOrderOrder (bool trig) {
-		UiOrderObject.transform.Find ("BouleVerte").GetComponent<Image> ().enabled = trig;
-		UiOrderObject.transform.Find ("Scripts").GetComponent<UIOrderBattle> ().Selected (trig);
-	}
-
-	public void UpdateLife()
-	{
-		transform.Find ("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
-		UiOrderObject.transform.Find("LifeControl/LifeBar").GetComponent<Image> ().fillAmount = health / maxHealth;
-
-		if (player) {
-			explo_Data.dungeonData.TempFighterObject [localIndex].tempHealth = health;
 		}
 	}
 
@@ -404,7 +369,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 	void ReduceFromActionPoint(){
 		BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().actionPointPlayer -= BS.SelectedSpellObject.spellCost;
-		BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().SetupUiOrderObject ();
+		//BS.FighterList[BS.actuallyPlaying].GetComponent<LocalDataHolder>().SetupUiOrderObject ();
 	}
 
 	void CalculChances(){
@@ -424,7 +389,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 	void PlayerAnimationPropreties(){
 		//what if we throw a fire ball, we need to say find distance and make the path for the fireball
-		BS.FighterList [BS.actuallyPlaying].transform.Find ("PersoBackground").GetComponent<Animator> ().Play (BS.SelectedSpellObject.spellAnimator.ToString());
+		BS.FighterList [BS.actuallyPlaying].transform.Find ("Background").GetComponent<Animator> ().Play (BS.SelectedSpellObject.spellAnimator.ToString());
 	}
 
 	void AnimFeedbackEnemy(SpellObject.SpellTargetType spellTarget, bool on){
@@ -497,4 +462,30 @@ public class LocalDataHolder : MonoBehaviour {
 			yield return new WaitForSeconds (0.5f);
 		}
 	}
+
+    public Foe Foe
+    {
+        get
+        {
+            return foe;
+        }
+
+        set
+        {
+            foe = value;
+        }
+    }
+
+    public Player PlayerModel
+    {
+        get
+        {
+            return playerModel;
+        }
+
+        set
+        {
+            playerModel = value;
+        }
+    }
 }
