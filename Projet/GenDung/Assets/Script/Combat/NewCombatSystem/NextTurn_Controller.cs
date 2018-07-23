@@ -26,27 +26,27 @@ public class NextTurn_Controller : MonoBehaviour {
 
 	public void NextTurn() // Call by the "Next" (BattleSystem/Panel/NextPanel) Button into the Scene.
 	{
-		HideShowNext(false);
+		//HideShowNext(false);
 
-		BS.actuallyPlaying++;
-		if (BS.actuallyPlaying >= BS.FighterList.Count) {
-			BS.actuallyPlaying = 0;
-		}
+		//BS.actuallyPlaying++;
+		//if (BS.actuallyPlaying >= BS.FighterList.Count) {
+		//	BS.actuallyPlaying = 0;
+		//}
 
 
 
-		if(BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().dead)
-		{
-			NextTurn ();
-		}
-		else
-		{
-			//indicator_Controller.SetArrow();
-			//BS.resetActionPoint(BS.actuallyPlaying);
-			startTurnEffect_Controller.ManageStatusEffects ();
-			//gere les effets et ensuite lance le reste de la fight
-			//spellHolder_Controller.UpdateFighterPanel();
-		}
+		//if(BS.FighterList [BS.actuallyPlaying].GetComponent<LocalDataHolder> ().dead)
+		//{
+		//	NextTurn ();
+		//}
+		//else
+		//{
+		//	//indicator_Controller.SetArrow();
+		//	//BS.resetActionPoint(BS.actuallyPlaying);
+		//	startTurnEffect_Controller.ManageStatusEffects ();
+		//	//gere les effets et ensuite lance le reste de la fight
+		//	//spellHolder_Controller.UpdateFighterPanel();
+		//}
 	}
 
 	public void HideShowNext (bool hide){

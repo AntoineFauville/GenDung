@@ -31,8 +31,6 @@ public class Explo_FightController : MonoBehaviour {
 
     public void NextTurn()
     {
-        Debug.Log("Next Turn launched");
-
         HideShowNext(false);
 
         entitiesIndex++; // getting the next entities to play.
@@ -1012,9 +1010,9 @@ public class Explo_FightController : MonoBehaviour {
             {
                 if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll || selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
                 {
+                    yield return new WaitForSeconds(exploStatusList[0].AnimationDuration);
                     for (int i = 0; i < exploStatusList.Count; i++)
                     {
-                        yield return new WaitForSeconds(exploStatusList[i].AnimationDuration);
                         exploStatusList[i].Entity.EntitiesEffectAnimator.Play("Effect_None");
                     }
                 }
