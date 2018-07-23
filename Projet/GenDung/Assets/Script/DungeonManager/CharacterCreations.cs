@@ -20,13 +20,36 @@ public class CharacterCreations : MonoBehaviour {
     public bool didweChooseTheTeam;
 
 	public Character[] charac;
-
     public Character[] tempCharac;
-
     public GameObject[] RightTeam;
 
-	// Use this for initialization
-	void Start () {
+    [Space(10)] [Header("New Part")]
+   
+    [SerializeField] private GameObject _launchButton;
+
+    [Space(5)]
+    [SerializeField] private Text _health;
+    [SerializeField] private Text _initiative;
+    [SerializeField] private Text _story;
+
+    [SerializeField] private Text _spell1Name;
+    [SerializeField] private Text _spell1Description;
+    [SerializeField] private Image _spell1Icon;
+
+    [SerializeField] private Text _spell2Name;
+    [SerializeField] private Text _spell2Description;
+    [SerializeField] private Image _spell2Icon;
+
+    [SerializeField] private Text _spell3Name;
+    [SerializeField] private Text _spell3Description;
+    [SerializeField] private Image _spell3Icon;
+
+    [Header("Leave Empty")]
+    public Character Character;
+
+
+    // Use this for initialization
+    void Start () {
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim ();
 
         //SetRightIndex(0);
@@ -38,7 +61,7 @@ public class CharacterCreations : MonoBehaviour {
         //rempli la liste temporaire et du fichier de sauvegarde de theo et reinitialise ainsi le jeu 
         for (int i = 0; i < GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList.Length; i++) {
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i] = charac[CharacterTempPlacement];
-            tempCharac[i] = charac[CharacterTempPlacement];
+            //tempCharac[i] = charac[CharacterTempPlacement];
         }
 
         //reset des stats des personnages
@@ -118,10 +141,10 @@ public class CharacterCreations : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (tempCharac [0] != charac [11] &&
-		    tempCharac [1] != charac [11] &&
-		    tempCharac [2] != charac [11] &&
-			tempCharac [3] != charac [11])
+		if (tempCharac [0] != null &&
+		    tempCharac [1] != null &&
+		    tempCharac [2] != null &&
+			tempCharac [3] != null)
 		{
 			didweChooseTheTeam = true;
 		}
@@ -129,12 +152,12 @@ public class CharacterCreations : MonoBehaviour {
 
         if (didweChooseTheTeam)
         {
-            GameObject.Find("LaunchButton").GetComponent<Button>().interactable = true;
-            GameObject.Find("LaunchButton").GetComponent<Image>().color = Color.white;
+            _launchButton.GetComponent<Button>().interactable = true;
+            _launchButton.GetComponent<Image>().color = Color.white;
         }
         else {
-            GameObject.Find("LaunchButton").GetComponent<Button>().interactable = false;
-            GameObject.Find("LaunchButton").GetComponent<Image>().color = Color.grey;
+            _launchButton.GetComponent<Button>().interactable = false;
+            _launchButton.GetComponent<Image>().color = Color.grey;
         }
 
         //pour etre sur qu'on ne dépasse pas
@@ -164,26 +187,38 @@ public class CharacterCreations : MonoBehaviour {
         //renvoie la taille de la liste
 		GameObject.Find ("DontDestroyOnLoad").GetComponent<SavingSystem> ().gameData.SavedSizeOfTheTeam = SizeOfTheTeam;
 
-        //dispatch les infos sur l'écran
-		//GameObject.Find ("InfoCharaDispatch").GetComponent<Image> ().sprite = charac [indexMouseOverLeftPanel].TempSprite;
-        //if (charac[indexMouseOverLeftPanel].hasAnimations == true)
-        //{
-        //    GameObject.Find("InfoCharaDispatch").GetComponent<Animator>().runtimeAnimatorController = charac[indexMouseOverLeftPanel].persoAnimator;
-        //}
-		//GameObject.Find ("PV").GetComponent<Text> ().text = 	"Health :          " + charac [indexMouseOverLeftPanel].Health_PV.ToString();
-		//GameObject.Find ("PA").GetComponent<Text> ().text = 	"Action Points :   " + charac [indexMouseOverLeftPanel].ActionPoints_PA.ToString();
-		//GameObject.Find ("CAC").GetComponent<Text> ().text = 	"Close Attack :    " + charac [indexMouseOverLeftPanel].CloseAttaqueValue.ToString();
-		//GameObject.Find ("DIST").GetComponent<Text> ().text = 	"Distance Attack : " + charac [indexMouseOverLeftPanel].DistanceAttaqueValue.ToString ();
-		//GameObject.Find ("Story").GetComponent<Text> ().text = charac [indexMouseOverLeftPanel].story;
+	    InfoSpells(Character);
+	    InfoStats(Character);
+
 	}
 
-	public void SetUpInfo(int indexOfTeamMember){
-		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/PV").GetComponent<Text> ().text = 	"Health :          " + charac [indexOfTeamMember].Health_PV.ToString();
-		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/PA").GetComponent<Text> ().text = 	"Action Points :   " + charac [indexOfTeamMember].ActionPoints_PA.ToString();
-		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/CAC").GetComponent<Text> ().text = 	"Close Attack :    " + charac [indexOfTeamMember].CloseAttaqueValue.ToString();
-		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StatPanel/DIST").GetComponent<Text> ().text = 	"Distance Attack : " + charac [indexOfTeamMember].DistanceAttaqueValue.ToString ();
-		GameObject.Find ("Panel"+indexOfTeamMember).transform.Find ("StoryPanel/Story").GetComponent<Text> ().text = charac [indexOfTeamMember].story;
-	}
+    private void InfoSpells(Character characterDispatched)
+    {
+        _spell1Name.text = characterDispatched.SpellList[0].spellName;
+        _spell1Description.text = "Damage : " + characterDispatched.SpellList[0].spellDamage.ToString() + " Cost : " + characterDispatched.SpellList[0].spellCost.ToString()
+                                  + '\n' + "This spell does " + characterDispatched.SpellList[0].spellLogicType.ToString() + "." + '\n' + "Target : " + characterDispatched.SpellList[0].spellTargetType.ToString()
+                                  + "."; ;
+        _spell1Icon.sprite = characterDispatched.SpellList[0].spellIcon;
+
+        _spell2Name.text = characterDispatched.SpellList[1].spellName;
+        _spell2Description.text = "Damage : " + characterDispatched.SpellList[1].spellDamage.ToString() + " Cost : " + characterDispatched.SpellList[1].spellCost.ToString()
+                                  + '\n' + "This spell does " + characterDispatched.SpellList[1].spellLogicType.ToString() + "." + '\n' + "Target : " + characterDispatched.SpellList[1].spellTargetType.ToString()
+                                  + "."; ;
+        _spell2Icon.sprite = characterDispatched.SpellList[1].spellIcon;
+
+        _spell3Name.text = characterDispatched.SpellList[2].spellName;
+        _spell3Description.text = "Damage : " + characterDispatched.SpellList[2].spellDamage.ToString() + " Cost : " + characterDispatched.SpellList[2].spellCost.ToString()
+                                  + '\n' + "This spell does " + characterDispatched.SpellList[2].spellLogicType.ToString() + "." + '\n' + "Target : " + characterDispatched.SpellList[2].spellTargetType.ToString()
+                                  + "."; ;
+        _spell3Icon.sprite = characterDispatched.SpellList[2].spellIcon;
+    }
+
+    private void InfoStats(Character characterDispatched)
+    {
+        _health.text = "Health = " + characterDispatched.Health_PV;
+        _initiative.text = "Initiative = " + characterDispatched.Initiative;
+        _story.text = "Character Story = " + characterDispatched.story;
+    }
 
     //index de la liste qui correspond a celle de l'équipe right = équipe left = temporaire
 	public void SetRightIndex (int a) {
@@ -196,29 +231,66 @@ public class CharacterCreations : MonoBehaviour {
 
 	public void SetLeftIndex (int b){
 		if (clicked) {
-			indexMouseOverLeftPanel = b;
+			
 			clicked = false;
 		}
+	    indexMouseOverLeftPanel = b;
 
-		if (tempCharac[0] == charac[indexMouseOverLeftPanel] ||
+        if (tempCharac[0] == charac[indexMouseOverLeftPanel] ||
 			tempCharac[1] == charac[indexMouseOverLeftPanel] ||
 			tempCharac[2] == charac[indexMouseOverLeftPanel] ||
 			tempCharac[3] == charac[indexMouseOverLeftPanel]
 		) {
 			print ("nop");
-		} else {
-			
-			tempCharac [indexMouseOverRightPanel] = charac [indexMouseOverLeftPanel];
+		} else
+        {
 
-			if (charac[indexMouseOverLeftPanel].hasAnimations == true)
-			{
-				RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
-				//didweChooseTheTeam = true;
-			} else {
-				RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Animator> ().runtimeAnimatorController = null;
-				RightTeam [indexMouseOverRightPanel].transform.GetChild (1).GetComponent<Image> ().sprite = tempCharac [indexMouseOverRightPanel].TempSprite;
-			}
-		}
+            DefinePositionOfCharacter();
+
+
+           
+        }
+    }
+
+    private void DefinePositionOfCharacter()
+    {
+        if (tempCharac[0] == null)
+        {
+            PlaceCharacter();
+            // position++;
+            indexMouseOverRightPanel = 1;
+        }
+        else if (tempCharac[1] == null)
+        {
+            PlaceCharacter();
+            indexMouseOverRightPanel = 2;
+        }
+        else if(tempCharac[2] == null)
+        {
+            PlaceCharacter();
+            indexMouseOverRightPanel = 3;
+        }
+        else if(tempCharac[3] == null)
+        {
+            PlaceCharacter();
+            indexMouseOverRightPanel = 4;
+        }
+    }
+
+    private void PlaceCharacter()
+    {
+        tempCharac[indexMouseOverRightPanel] = charac[indexMouseOverLeftPanel];
+
+        if (charac[indexMouseOverLeftPanel].hasAnimations == true)
+        {
+            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = tempCharac[indexMouseOverRightPanel].persoAnimator;
+            //didweChooseTheTeam = true;
+        }
+        else
+        {
+            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Animator>().runtimeAnimatorController = null;
+            RightTeam[indexMouseOverRightPanel].transform.GetChild(1).GetComponent<Image>().sprite = tempCharac[indexMouseOverRightPanel].TempSprite;
+        }
     }
 
     public void GetBiggerTeam () {
@@ -237,6 +309,9 @@ public class CharacterCreations : MonoBehaviour {
             GameObject.Find("DontDestroyOnLoad").GetComponent<SavingSystem>().gameData.SavedCharacterList[i] = tempCharac[i];
         }
         GameObject.Find("DontDestroyOnLoad").GetComponent<DungeonLoader>().FadeInOutAnim();
-        SceneManager.LoadScene ("Tavern");
-	}
+	    
+        SceneManager.LoadScene ("NewTavern");
+
+	    GameObject.Find("DontDestroyOnLoad").GetComponent<StoryTavernController>().SetTavernStatus(1);
+    }
 }

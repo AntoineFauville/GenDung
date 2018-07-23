@@ -22,7 +22,7 @@ public class SavingSystem : MonoBehaviour {
 		if (SceneManager.GetActiveScene ().name == "Map") {
 			gameData.DungeonIndexData = GameObject.Find ("DontDestroyOnLoad").GetComponent<DungeonLoader> ().dungeonUnlockedIndex;
 		}
-	}
+    }
 
 	//------IENUMERATOR------//
 	IEnumerator AutoSaving(){

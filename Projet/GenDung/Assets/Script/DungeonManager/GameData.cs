@@ -16,4 +16,6 @@ public class GameData : ScriptableObject {
 
 	public int totalAmountDungeons = 5;
 	public bool[] dungeonUnlocked;
+
+    public int storyCase;
 }

@@ -19,6 +19,7 @@ public class LocalDataHolder : MonoBehaviour {
 
 	public int fighterIndex;
 	public int localIndex;
+
 	public int indexFighterToAttack;
 
 	public int maxActionPointPlayer;
@@ -205,23 +206,81 @@ public class LocalDataHolder : MonoBehaviour {
 		explo_Data.EnemyCalculEndDungeon (enemy);
 	}
 
-	void CalculDamageDone (SpellObject.SpellLogicType spellLogicType) {
+	void CalculDamageDone (SpellObject.SpellLogicType spellLogicType, SpellObject.SpellTargetType spellTargetType) {
 
 		print (spellLogicType);
+		print (spellTargetType);
 
 		if (spellLogicType == SpellObject.SpellLogicType.Damage) {
 			if (criticalHit) {
-				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage * 1.5f, true);
+
+				if (spellTargetType == SpellObject.SpellTargetType.EnemyAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (!BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage * 1.5f, true);
+						}
+					}
+				} else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage * 1.5f, true);
+						}
+					}
+				} else {
+					BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage * 1.5f, true);
+				}
 			} else {
-				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage, false);
+				if (spellTargetType == SpellObject.SpellTargetType.EnemyAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (!BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage, true);
+						}
+					}
+				} else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage, true);
+						}
+					}
+				} else {
+					BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (-BS.SelectedSpellObject.spellDamage, false);
+				}
 			}
 		}
 
 		else if (spellLogicType == SpellObject.SpellLogicType.Heal) {
 			if (criticalHit) {
-				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage * 1.5f, true);
+				if (spellTargetType == SpellObject.SpellTargetType.EnemyAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (!BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage * 1.5f, true);
+						}
+					}
+				} else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage * 1.5f, true);
+						}
+					}
+				} else {
+					BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage * 1.5f, false);
+				}
 			} else {
-				BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage, false);
+				if (spellTargetType == SpellObject.SpellTargetType.EnemyAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (!BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage, true);
+						}
+					}
+				} else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll) {
+					for (int i = 0; i < BS.FighterList.Count; i++) {
+						if (BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+							BS.FighterList [i].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage, true);
+						}
+					}
+				} else {
+					BS.FighterList [indexFighterToAttack].GetComponent<LocalDataHolder> ().looseLife (BS.SelectedSpellObject.spellDamage, false);
+				}
 			}
 		}
 
@@ -239,6 +298,10 @@ public class LocalDataHolder : MonoBehaviour {
 		if (spellTargetType == SpellObject.SpellTargetType.EnemySingle) {
 			indexFighterToAttack = fighterIndex;
 		} else if (spellTargetType == SpellObject.SpellTargetType.PlayerSingle) {
+			indexFighterToAttack = BS.actuallyPlaying;
+		} else if (spellTargetType == SpellObject.SpellTargetType.EnemyAll) {
+			indexFighterToAttack = fighterIndex;
+		} else if (spellTargetType == SpellObject.SpellTargetType.PlayerAll) {
 			indexFighterToAttack = BS.actuallyPlaying;
 		}
 	}
@@ -279,91 +342,231 @@ public class LocalDataHolder : MonoBehaviour {
 
 	void CheckDuringCombatEffect(bool playEffect){
 
-		Animator anim;
-		anim = BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Animator> ();
+		if (BS.SelectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll) {
+			for (int i = 0; i < BS.FighterList.Count; i++) {
+				if (!BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					Animator anim;
+					anim = BS.FighterList [i].transform.Find ("EffectLayer").GetComponent<Animator> ();
 
-		if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Spike && playEffect) 
-		{
-			anim.Play(effect_Controller.effect_List[3]);
+					if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Spike && playEffect) {
+						anim.Play (effect_Controller.effect_List [3]);
 
-		}
-		else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Roots && playEffect)
+					} else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Roots && playEffect) {
+						anim.Play (effect_Controller.effect_List [4]);
+					} else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.ProjectileVic && playEffect) {
+						projectile_Manager.LaunchProjectile (BS.FighterList [BS.actuallyPlaying].transform, BS.FighterList [indexFighterToAttack].transform);
+					} else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Blood1 && playEffect) {
+						anim.Play (effect_Controller.effect_List [6]);
+					} else if (!playEffect) {
+						anim.Play (effect_Controller.effect_List [0]);
+					}
+				}
+			}
+		} else if (BS.SelectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll) {
+			for (int i = 0; i < BS.FighterList.Count; i++) {
+				if (BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					Animator anim;
+					anim = BS.FighterList [i].transform.Find ("EffectLayer").GetComponent<Animator> ();
+
+					if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Spike && playEffect) {
+						anim.Play (effect_Controller.effect_List [3]);
+
+					} else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Roots && playEffect) {
+						anim.Play (effect_Controller.effect_List [4]);
+					} else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.ProjectileVic && playEffect) {
+						projectile_Manager.LaunchProjectile (BS.FighterList [BS.actuallyPlaying].transform, BS.FighterList [indexFighterToAttack].transform);
+					} else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Blood1 && playEffect) {
+						anim.Play (effect_Controller.effect_List [6]);
+					} else if (!playEffect) {
+						anim.Play (effect_Controller.effect_List [0]);
+					}
+				}
+			}
+		} else 
 		{
-			anim.Play(effect_Controller.effect_List[4]);
-		}
-		else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.ProjectileVic && playEffect)
-		{
-			projectile_Manager.LaunchProjectile (BS.FighterList[BS.actuallyPlaying].transform,BS.FighterList[indexFighterToAttack].transform);
-		}
-		else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Blood1 && playEffect)
-		{
-			anim.Play(effect_Controller.effect_List[6]);
-		}
-		else if (!playEffect) 
-		{
-			anim.Play(effect_Controller.effect_List[0]);
-		}
+			Animator anim;
+			anim = BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Animator> ();
+
+			if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Spike && playEffect) {
+				anim.Play(effect_Controller.effect_List[3]);
+			}else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Roots && playEffect){
+				anim.Play(effect_Controller.effect_List[4]);
+			}else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.ProjectileVic && playEffect){
+				projectile_Manager.LaunchProjectile (BS.FighterList[BS.actuallyPlaying].transform,BS.FighterList[indexFighterToAttack].transform);}
+			else if (BS.SelectedSpellObject.spellTargetEffectAppearing == SpellObject.SpellTargetEffectAppearing.Blood1 && playEffect){
+				anim.Play(effect_Controller.effect_List[6]);
+			}else if (!playEffect) {
+				anim.Play(effect_Controller.effect_List[0]);
+			}
+		}	
+
+
+
 	}
 
 	void CheckExtraEffect(bool playEffect){
 
-		Animator animExtra;
-		animExtra = BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Animator> ();
+		if (BS.SelectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll) {
+			for (int i = 0; i < BS.FighterList.Count; i++) {
+				if (!BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					Animator animExtra;
+					animExtra = BS.FighterList [i].transform.Find ("EffectLayer").GetComponent<Animator> ();
 
-		if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect)
-		{
-			animExtra.Play(effect_Controller.effect_List[1]);
+					if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect) {
 
-			//DOTS
-			if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+						animExtra.Play (effect_Controller.effect_List [1]);
 
-			} else {
-				AssignEffect (0); //0 = healing
+						if (BS.SelectedSpellObject.spellOccurenceType != SpellObject.SpellOccurenceType.NoTurn) {//DOTS
+							AssignEffect (0); //0 = healing
+						}
+					} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect) {
+
+						animExtra.Play (effect_Controller.effect_List [2]);
+						//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+						//DOTS
+						if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+						} else {
+							AssignEffect (1); //1 = poisoning
+						}
+
+					} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect) {
+
+						animExtra.Play (effect_Controller.effect_List [3]);
+						//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+						//DOTS
+						if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+						} else {
+							AssignEffect (2); //1 = poisoning
+						}
+
+					} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.TemporaryLifed && playEffect) {
+
+						//DOTS
+						if (health >= maxHealth) {
+
+						} else {
+							if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+							} else {
+								AssignEffect (3); 
+							}
+						}
+
+					} else if (!playEffect) {
+						animExtra.Play (effect_Controller.effect_List [0]);
+					}
+				}
 			}
+		} else if (BS.SelectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll) {
+			for (int i = 0; i < BS.FighterList.Count; i++) {
+				if (BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					Animator animExtra;
+					animExtra = BS.FighterList [i].transform.Find ("EffectLayer").GetComponent<Animator> ();
 
-		} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect)
-		{
+					if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect) {
 
-			animExtra.Play(effect_Controller.effect_List[2]);
-			//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+						animExtra.Play (effect_Controller.effect_List [1]);
 
-			//DOTS
-			if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+						if (BS.SelectedSpellObject.spellOccurenceType != SpellObject.SpellOccurenceType.NoTurn) {//DOTS
+							AssignEffect (0); //0 = healing
+						}
+					} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect) {
 
-			} else {
-				AssignEffect (1); //1 = poisoning
+						animExtra.Play (effect_Controller.effect_List [2]);
+						//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+						//DOTS
+						if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+						} else {
+							AssignEffect (1); //1 = poisoning
+						}
+
+					} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect) {
+
+						animExtra.Play (effect_Controller.effect_List [3]);
+						//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+						//DOTS
+						if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+						} else {
+							AssignEffect (2); //1 = poisoning
+						}
+
+					} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.TemporaryLifed && playEffect) {
+
+						//DOTS
+						if (health >= maxHealth) {
+
+						} else {
+							if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+							} else {
+								AssignEffect (3); 
+							}
+						}
+
+					} else if (!playEffect) {
+						animExtra.Play (effect_Controller.effect_List [0]);
+					}
+				}
 			}
+		} else {
+			Animator animExtra;
+			animExtra = BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Animator> ();
 
-		} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect)
-		{
+			if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Healed && playEffect) {
 
-			animExtra.Play(effect_Controller.effect_List[3]);
-			//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+				animExtra.Play (effect_Controller.effect_List [1]);
 
-			//DOTS
-			if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+				if (BS.SelectedSpellObject.spellOccurenceType != SpellObject.SpellOccurenceType.NoTurn) {//DOTS
+					AssignEffect (0); //0 = healing
+				}
+			} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Poisonned && playEffect) {
 
-			} else {
-				AssignEffect (2); //1 = poisoning
-			}
+				animExtra.Play (effect_Controller.effect_List [2]);
+				//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
 
-		}else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.TemporaryLifed && playEffect)
-		{
-
-			//DOTS
-			if (health >= maxHealth) {
-
-			}else{
+				//DOTS
 				if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
 
 				} else {
-					AssignEffect (3); 
+					AssignEffect (1); //1 = poisoning
 				}
-			}
 
-		}
-		else if (!playEffect) {
-			animExtra.Play(effect_Controller.effect_List[0]);
+			} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.Spike && playEffect) {
+
+				animExtra.Play (effect_Controller.effect_List [3]);
+				//BS.FighterList [indexFighterToAttack].transform.Find ("EffectLayer").GetComponent<Image> ().color = new Color (255, 255, 255, alpha);
+
+				//DOTS
+				if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+				} else {
+					AssignEffect (2); //1 = poisoning
+				}
+
+			} else if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType == SpellObject.SpellTargetFeedbackAnimationType.TemporaryLifed && playEffect) {
+
+				//DOTS
+				if (health >= maxHealth) {
+
+				} else {
+					if (BS.SelectedSpellObject.spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn) {
+
+					} else {
+						AssignEffect (3); 
+					}
+				}
+
+			} else if (!playEffect) {
+				animExtra.Play (effect_Controller.effect_List [0]);
+			}
 		}
 	}
 
@@ -393,14 +596,47 @@ public class LocalDataHolder : MonoBehaviour {
 	}
 
 	void AnimFeedbackEnemy(SpellObject.SpellTargetType spellTarget, bool on){
+		if (spellTarget == SpellObject.SpellTargetType.EnemyAll) {
+			for (int i = 0; i < BS.FighterList.Count; i++) {
+				if (!BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					if (on) {
+						BS.FighterList [i].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("DamageMonster");
+					} else {
+						BS.FighterList [i].transform.Find ("EnemyBackground").GetComponent<Animator> ().Play ("IdleMonster");
+					}
+				}
+			}
+		} else if (spellTarget == SpellObject.SpellTargetType.PlayerAll) {
+			for (int i = 0; i < BS.FighterList.Count; i++) {
+				if (BS.FighterList [i].GetComponent<LocalDataHolder> ().player) {
+					if (on) {
+						BS.FighterList [i].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Attacked");
+					} else {
+						BS.FighterList [i].transform.Find ("PersoBackground").GetComponent<Animator> ().Play ("Idle");
+					}
+				}
+			}
+		} else {
+			if (player) {
+				Animator EnemyAnimator = Background.GetComponent<Animator> ();
 
-		Animator EnemyAnimator = this.transform.Find ("EnemyBackground").GetComponent<Animator> ();
-
-		if (spellTarget == SpellObject.SpellTargetType.EnemySingle) {
-			if (on) {
-				EnemyAnimator.Play ("DamageMonster");
+				if (spellTarget == SpellObject.SpellTargetType.EnemySingle) {
+					if (on) {
+						EnemyAnimator.Play ("Attacked");
+					} else {
+						EnemyAnimator.Play ("Idle");
+					}
+				}
 			} else {
-				EnemyAnimator.Play ("IdleMonster");
+				Animator EnemyAnimator = Background.GetComponent<Animator> ();
+
+				if (spellTarget == SpellObject.SpellTargetType.EnemySingle) {
+					if (on) {
+						EnemyAnimator.Play ("DamageMonster");
+					} else {
+						EnemyAnimator.Play ("IdleMonster");
+					}
+				}
 			}
 		}
 	}
@@ -448,7 +684,7 @@ public class LocalDataHolder : MonoBehaviour {
 				AnimFeedbackEnemy (BS.SelectedSpellObject.spellTargetType, false);
 			}
 			//do the damage on the target (healing included)
-			CalculDamageDone (BS.SelectedSpellObject.spellLogicType);
+			CalculDamageDone (BS.SelectedSpellObject.spellLogicType, BS.SelectedSpellObject.spellTargetType);
 
 			//check if the extra effect is != none, so then we need to make an animation for that.
 			if (BS.SelectedSpellObject.spellTargetFeedbackAnimationType != SpellObject.SpellTargetFeedbackAnimationType.None) {
