@@ -27,6 +27,7 @@ public class Explo_FightController : MonoBehaviour {
         explo_Dungeon = GameObject.Find("ScriptBattle").GetComponent<Explo_DungeonController>();
         projectile_Manager = GameObject.Find("ScriptBattle").GetComponent<ProjectileManager>();
         attackMode = false;
+        exploStatusList.Clear();
     }
 
     public void NextTurn()
@@ -1016,7 +1017,7 @@ public class Explo_FightController : MonoBehaviour {
                         exploStatusList[i].Entity.EntitiesEffectAnimator.Play("Effect_None");
                     }
                 }
-                else
+                else if (exploStatus != null)
                 {
                     yield return new WaitForSeconds(exploStatus.AnimationDuration);
                     exploStatus.Entity.EntitiesEffectAnimator.Play("Effect_None");
