@@ -62,8 +62,6 @@ public class Entities {
         if (health >= maxHealth)
             health = maxHealth;
 
-        Debug.Log("I've been hit, I lost " + Mathf.Abs(roundedHP) + " HP");
-
         if (health <= 0)
         {
             health = 0; // Setting health to Zero to avoid negative value.

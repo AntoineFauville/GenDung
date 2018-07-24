@@ -281,6 +281,9 @@ public class Explo_FightController : MonoBehaviour {
                 break;
 
             case SpellObject.SpellEffect.Effect_Roots:
+
+                Debug.Log("Effect should normally play");
+
                 if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
                 {
                     for (int i = 0; i < fightCtrl.FighterList.Count; i++)
@@ -603,25 +606,108 @@ public class Explo_FightController : MonoBehaviour {
 
     public void LifeTextUp(int amount, bool crit)
     {
-
-        Transform t;
-        t = fighterToAttack.EntitiesTextLifeDisplayTransform;
-
-        GameObject lifeUp;
-
-        lifeUp = Instantiate(Resources.Load("UI_Interface/LifeShower"), t) as GameObject;
-
-        lifeUp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-
-        lifeUp.GetComponent<LifeShower_Controller>().ExtraScaleForCrit(crit);
-
-        if (amount < 0)
+        if(selectedSpellObject != null)
         {
-            lifeUp.transform.GetChild(0).GetComponent<Text>().text = amount.ToString();
-        }
+            if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll)
+            {
+                for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                {
+                    if (fightCtrl.FighterList[i] is Foe && !fightCtrl.FighterList[i].Dead)
+                    {
+                        Transform t;
+                        t = fightCtrl.FighterList[i].EntitiesTextLifeDisplayTransform;
+
+                        GameObject lifeUp;
+
+                        lifeUp = Instantiate(Resources.Load("UI_Interface/LifeShower"), t) as GameObject;
+
+                        lifeUp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+                        lifeUp.GetComponent<LifeShower_Controller>().ExtraScaleForCrit(crit);
+
+                        if (amount < 0)
+                        {
+                            lifeUp.transform.GetChild(0).GetComponent<Text>().text = amount.ToString();
+                        }
+                        else
+                        {
+                            lifeUp.transform.GetChild(0).GetComponent<Text>().text = "+" + amount.ToString();
+                        }
+                    }
+                }
+            }
+            else if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
+            {
+                for (int i = 0; i < fightCtrl.FighterList.Count; i++)
+                {
+                    if (fightCtrl.FighterList[i] is Player && !fightCtrl.FighterList[i].Dead)
+                    {
+                        Transform t;
+                        t = fightCtrl.FighterList[i].EntitiesTextLifeDisplayTransform;
+
+                        GameObject lifeUp;
+
+                        lifeUp = Instantiate(Resources.Load("UI_Interface/LifeShower"), t) as GameObject;
+
+                        lifeUp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+                        lifeUp.GetComponent<LifeShower_Controller>().ExtraScaleForCrit(crit);
+
+                        if (amount < 0)
+                        {
+                            lifeUp.transform.GetChild(0).GetComponent<Text>().text = amount.ToString();
+                        }
+                        else
+                        {
+                            lifeUp.transform.GetChild(0).GetComponent<Text>().text = "+" + amount.ToString();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Transform t;
+                t = fighterToAttack.EntitiesTextLifeDisplayTransform;
+
+                GameObject lifeUp;
+
+                lifeUp = Instantiate(Resources.Load("UI_Interface/LifeShower"), t) as GameObject;
+
+                lifeUp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+                lifeUp.GetComponent<LifeShower_Controller>().ExtraScaleForCrit(crit);
+
+                if (amount < 0)
+                {
+                    lifeUp.transform.GetChild(0).GetComponent<Text>().text = amount.ToString();
+                }
+                else
+                {
+                    lifeUp.transform.GetChild(0).GetComponent<Text>().text = "+" + amount.ToString();
+                }
+            }
+        } 
         else
         {
-            lifeUp.transform.GetChild(0).GetComponent<Text>().text = "+" + amount.ToString();
+            Transform t;
+            t = fighterToAttack.EntitiesTextLifeDisplayTransform;
+
+            GameObject lifeUp;
+
+            lifeUp = Instantiate(Resources.Load("UI_Interface/LifeShower"), t) as GameObject;
+
+            lifeUp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+            lifeUp.GetComponent<LifeShower_Controller>().ExtraScaleForCrit(crit);
+
+            if (amount < 0)
+            {
+                lifeUp.transform.GetChild(0).GetComponent<Text>().text = amount.ToString();
+            }
+            else
+            {
+                lifeUp.transform.GetChild(0).GetComponent<Text>().text = "+" + amount.ToString();
+            }
         }
     }
 
@@ -1007,7 +1093,7 @@ public class Explo_FightController : MonoBehaviour {
 
             StatusAssignement();
 
-            if (exploStatusList != null)
+            if (exploStatusList.Count != 0)
             {
                 if (selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.EnemyAll || selectedSpellObject.spellTargetType == SpellObject.SpellTargetType.PlayerAll)
                 {
