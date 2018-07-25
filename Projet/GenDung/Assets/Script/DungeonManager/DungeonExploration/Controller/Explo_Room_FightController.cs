@@ -204,13 +204,13 @@ public class Explo_Room_FightController : MonoBehaviour
             UnOrderedFighterList.Add(explo_Room_Fight.FoesList[i], explo_Room_Fight.FoesList[i].Initiative);
 
             // Old Code From Antoine's 'BattleSystem' ==> SetupEnemies
-            GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().localIndex = i;
-            GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().player = false;
-            GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe = explo_Room_Fight.FoesList[i];
-            if (GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator)
-            {
-                GameObject.Find(enemyString + i).transform.Find("Background").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator;
-            }
+            //GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().localIndex = i;
+            //GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().player = false;
+            //GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe = explo_Room_Fight.FoesList[i];
+            //if (GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator)
+            //{
+            //    GameObject.Find(enemyString + i).transform.Find("Background").GetComponent<Animator>().runtimeAnimatorController = GameObject.Find(enemyString + i).GetComponent<LocalDataHolder>().Foe.EntitiesAnimator;
+            //}
 
             explo_Room_Fight.FoesList[i].CreateUI();
 

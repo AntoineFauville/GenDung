@@ -44,7 +44,7 @@ public class Explo_SpellController : MonoBehaviour {
         {
             GameObject.Find("ToolTipSpell").transform.Find("ToolTipSpellText").GetComponent<Text>().text = "<size=15><b>" + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellName.ToString() + "</b></size>";
 
-            if (explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellOccurenceType == SpellObject.SpellOccurenceType.NoTurn)
+            if (explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellOccurenceType[0] == SpellObject.SpellOccurenceType.NoTurn)
             {
                 GameObject.Find("ToolTipSpell").transform.Find("ToolTipSpellDescription").GetComponent<Text>().text = "Damage : " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellDamage.ToString() + " Cost : " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellCost.ToString()
                     + '\n' + "This spell does " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellLogicType.ToString() + "." + '\n' + "Target : " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellTargetType.ToString()
@@ -54,7 +54,7 @@ public class Explo_SpellController : MonoBehaviour {
             {
                 GameObject.Find("ToolTipSpell").transform.Find("ToolTipSpellDescription").GetComponent<Text>().text = "Damage : " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellDamage.ToString() + " Cost : " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellCost.ToString()
                     + '\n' + "This spell does " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellLogicType.ToString() + "." + '\n' + "Target : " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellTargetType.ToString()
-                    + "." + '\n' + "Place " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellTargetFeedbackAnimationType.ToString() + " on target for " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellOccurenceType.ToString();
+                    + "." + '\n' + "Place " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellStatus.ToString() + " on target for " + explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellOccurenceType.ToString();
             }
             GameObject.Find("ToolTipSpell").transform.Find("ToolTipSpellExplanation").GetComponent<Text>().text = explo_Fight.FightCtrl.FighterList[explo_Fight.EntitiesIndex].EntitiesSpells[_index].spellDescription.ToString();
         }
