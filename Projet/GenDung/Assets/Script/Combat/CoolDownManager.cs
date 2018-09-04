@@ -11,7 +11,7 @@ public class CoolDownManager : MonoBehaviour
         CoolDownManagers[coolDownViewToUpdate].UpdateCoolDownView(true, amountOfTotalTurn, amountOfturnLeft);
     }
 
-    public void ResetCoolDownViews(int coolDownViewToUpdate, int turnAmount)
+    public void ResetCoolDownViews(int coolDownViewToUpdate)
     {
         CoolDownManagers[coolDownViewToUpdate].ResetCoolDownView(false);
     }

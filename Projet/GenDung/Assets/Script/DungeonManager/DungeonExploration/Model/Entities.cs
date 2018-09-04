@@ -26,6 +26,11 @@ public class Entities {
     RuntimeAnimatorController entitiesAnimator;
     Animator entitiesEffectAnimator;
     Transform entitiesTextLifeDisplayTransform;
+    
+    //cooldown
+    public CoolDown CoolDownFirstSpell;
+    public CoolDown CoolDownSecondSpell;
+    public CoolDown CoolDownThirdSpell;
 
     public Entities()
     {

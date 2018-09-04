@@ -50,4 +50,8 @@ public class SpellObject : ScriptableObject {
 
 	public int chancesOfMiss = 10;
 	public int chancesOfCrit = 20;
+
+    public int SpellNumberForCoolDown = 1;
+    public int CoolDownTurnAmount = 1;
+
 }

@@ -988,6 +988,91 @@ public class Explo_FightController : MonoBehaviour {
         }
     }
 
+    public void CalculateCooldowns(SpellObject spellObject)
+    {
+        // add a cooldown class on the entity if cooldowns are needed for the spells
+        // seting up
+        if (spellObject.CoolDownTurnAmount != 0)
+        {
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell != null && spellObject.SpellNumberForCoolDown == 1)
+            {
+                CoolDown cooldown = new CoolDown(spellObject.CoolDownTurnAmount, spellObject.CoolDownTurnAmount);
+
+                fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell = cooldown;
+                return;
+            }
+            else if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell != null && spellObject.SpellNumberForCoolDown == 2)
+            {
+                CoolDown cooldown = new CoolDown(spellObject.CoolDownTurnAmount, spellObject.CoolDownTurnAmount);
+
+                fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell = cooldown;
+                return;
+            }
+            else if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell != null && spellObject.SpellNumberForCoolDown == 3)
+            {
+                CoolDown cooldown = new CoolDown(spellObject.CoolDownTurnAmount, spellObject.CoolDownTurnAmount);
+
+                fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell = cooldown;
+                return;
+            }
+        }
+
+        //update 
+        //spell 1 update
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell != null)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell.AmountOfTurnLeft -= 1;
+
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(1);
+            }
+            else
+            {
+                CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(1, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+            }
+        }
+        //spell 2 update
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell != null)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell.AmountOfTurnLeft -= 1;
+
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(2);
+            }
+            else
+            {
+                CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(2, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+            }
+        }
+        //spell 3 update
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell != null)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell.AmountOfTurnLeft -= 1;
+
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(3);
+            }
+            else
+            {
+                CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(3, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+            }
+        }
+    }
+    
+
+
     public IEnumerator SlowEnemyTurn()
     {
         yield return new WaitForSeconds(1.5f);
@@ -1051,6 +1136,9 @@ public class Explo_FightController : MonoBehaviour {
         //calculate the chances to hit or crit == Calculate if "missed" or "critical chance" or "regular spell effect"
         CalculChances();
         //depending on the result, throw here an inidactor to know if we continue the attack or not.
+
+        //regarless of the attack succeeding or not, add the cooldown of the spell on the tooltip
+        CalculateCooldowns(selectedSpellObject);
 
 
         //Wait for anim player to finish depending on time of spell anim time
