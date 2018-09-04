@@ -17,7 +17,7 @@ public class SpellObject : ScriptableObject {
     public SpellRangeObject range;
 
     public int spellCost = 1;
-    public int spellDamage = 1;
+    public int spellDamage;
 
     public enum SpellType { Enemy, Ally, Self }; //to define who you can click on to activate the spell
     public SpellType spellType;
@@ -37,10 +37,6 @@ public class SpellObject : ScriptableObject {
     
     public enum SpellOccurenceType { NoTurn = 0, One_Turn = 1, Two_Turn = 2, Three_Turn = 3 }; // to know the occurence
     public SpellOccurenceType spellOccurenceType;
-    
-    // to what's the extra effect of the spell
-    public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike }; 
-    public SpellTargetFeedbackAnimationType spellTargetFeedbackAnimationType;
 
     public enum SpellStatus { None, Poisoned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike }
     public SpellStatus spellStatus;
@@ -48,11 +44,20 @@ public class SpellObject : ScriptableObject {
     public enum SpellEffect { None, Effect_Spike, Effect_Roots, Effect_Arcane_Projectile, Effect_Blood }
     public SpellEffect spellEffect;
 
-	public bool EffectAppearingDuringPlayerAnim;
+    public enum SpellTargetEffectAppearing { None, Spike, Roots, ProjectileVic, Blood1 };
+    public SpellTargetEffectAppearing spellTargetEffectAppearing;
 
-	public enum SpellTargetEffectAppearing { None, Spike, Roots, ProjectileVic, Blood1 }; 
-	public SpellTargetEffectAppearing spellTargetEffectAppearing;
+    public enum SpellTargetFeedbackAnimationType { None, Poisonned, Healed, Sheilded, TemporaryLifed, Cursed, ResistanceReduced, AvoidanceReduced, Spike };
+    public SpellTargetFeedbackAnimationType spellTargetFeedbackAnimationType;
+
+    public bool EffectAppearingDuringPlayerAnim;
+
+    public bool MultipleEffect = false;
 
 	public int chancesOfMiss = 10;
 	public int chancesOfCrit = 20;
+
+    public int SpellNumberForCoolDown = 1;
+    public int CoolDownTurnAmount = 1;
+
 }

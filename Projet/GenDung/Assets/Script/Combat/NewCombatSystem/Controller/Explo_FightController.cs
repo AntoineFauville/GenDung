@@ -32,6 +32,7 @@ public class Explo_FightController : MonoBehaviour {
 
     public void NextTurn()
     {
+        TakeAwayOneCooldown();
         HideShowNext(false);
 
         entitiesIndex++; // getting the next entities to play.
@@ -52,6 +53,8 @@ public class Explo_FightController : MonoBehaviour {
             ManageStatusEffects();
             UpdateSpellPanel();
         }
+
+        SwitchCooldownVisuals();
     }
 
     public void EnemyTurn()
@@ -988,6 +991,159 @@ public class Explo_FightController : MonoBehaviour {
         }
     }
 
+    public void CalculateCooldowns(SpellObject spellObject)
+    {
+        // add a cooldown class on the entity if cooldowns are needed for the spells
+        // seting up
+        if (spellObject.CoolDownTurnAmount != 0)
+        {
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell == null && spellObject.SpellNumberForCoolDown == 1)
+            {
+                CoolDown cooldown = new CoolDown(spellObject.CoolDownTurnAmount, spellObject.CoolDownTurnAmount);
+
+                fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell = cooldown;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(0, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+                return;
+            }
+            else if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell == null && spellObject.SpellNumberForCoolDown == 2)
+            {
+                CoolDown cooldown = new CoolDown(spellObject.CoolDownTurnAmount, spellObject.CoolDownTurnAmount);
+
+                fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell = cooldown;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(1, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+                return;
+            }
+            else if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell == null && spellObject.SpellNumberForCoolDown == 3)
+            {
+                CoolDown cooldown = new CoolDown(spellObject.CoolDownTurnAmount, spellObject.CoolDownTurnAmount);
+
+                fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell = cooldown;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(2, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+                return;
+            }
+        }
+
+        //update 
+        //spell 1 update
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell != null && spellObject.SpellNumberForCoolDown == 1)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell.AmountOfTurnLeft -= 1;
+
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(0);
+            }
+            else
+            {
+                CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(0, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+            }
+        }
+        //spell 2 update
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell != null && spellObject.SpellNumberForCoolDown == 2)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell.AmountOfTurnLeft -= 1;
+
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(1);
+            }
+            else
+            {
+                CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(1, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+            }
+        }
+        //spell 3 update
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell != null && spellObject.SpellNumberForCoolDown == 3)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell.AmountOfTurnLeft -= 1;
+
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(2);
+            }
+            else
+            {
+                CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell;
+
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(2, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+            }
+        }
+    }
+
+    void TakeAwayOneCooldown()
+    {
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell != null)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell.AmountOfTurnLeft -= 1;
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(0);
+            }
+        }
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell != null)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell.AmountOfTurnLeft -= 1;
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(1);
+            }
+        }
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell != null)
+        {
+            fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell.AmountOfTurnLeft -= 1;
+            if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell.AmountOfTurnLeft == 0)
+            {
+                fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell = null;
+                GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(2);
+            }
+        }
+    }
+
+    void SwitchCooldownVisuals()
+    {
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell != null)
+        {
+            CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownFirstSpell;
+            GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(0, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+        }
+        else
+        {
+            GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(0);
+        }
+
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell != null)
+        {
+            CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownSecondSpell;
+            GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(1, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+        }
+        else
+        {
+            GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(1);
+        }
+
+        if (fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell != null)
+        {
+            CoolDown cooldown = fightCtrl.FighterList[entitiesIndex].CoolDownThirdSpell;
+            GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().UpdateCoolDownViews(2, cooldown.TotalAmountOfTurn, cooldown.AmountOfTurnLeft);
+        }
+        else
+        {
+            GameObject.Find("CoolDownSpell").GetComponent<CoolDownManager>().ResetCoolDownViews(2);
+        }
+    }
+
     public IEnumerator SlowEnemyTurn()
     {
         yield return new WaitForSeconds(1.5f);
@@ -1052,6 +1208,9 @@ public class Explo_FightController : MonoBehaviour {
         CalculChances();
         //depending on the result, throw here an inidactor to know if we continue the attack or not.
 
+        //regarless of the attack succeeding or not, add the cooldown of the spell on the tooltip
+        CalculateCooldowns(selectedSpellObject);
+        
 
         //Wait for anim player to finish depending on time of spell anim time
         //if it contains a reaction or a spell invocation at the enemy's place we need to instantiate or play an effect on the enemy
@@ -1077,7 +1236,7 @@ public class Explo_FightController : MonoBehaviour {
             CalculDamageDone(selectedSpellObject.spellLogicType, selectedSpellObject.spellTargetType);
 
             //check if the extra effect is != none, so then we need to make an animation for that.
-            if (selectedSpellObject.spellTargetFeedbackAnimationType != SpellObject.SpellTargetFeedbackAnimationType.None)
+            if (selectedSpellObject.spellStatus != SpellObject.SpellStatus.None)
             {
                 //wait for anim Feedback Animation on target
                 //CheckExtraEffect(true);

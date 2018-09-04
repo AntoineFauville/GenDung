@@ -28,6 +28,8 @@ F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\Temp\bin\Debug\nuni
 F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\Temp\bin\Debug\UnityEngine.Analytics.xml
 F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\Temp\bin\Debug\UnityEngine.HoloLens.xml
 F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\Temp\bin\Debug\UnityEngine.VR.xml
-F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\obj\Debug\Assembly-CSharp.dll
 F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\obj\Debug\Assembly-CSharp.pdb
+F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+F:\Unity - Dungeon Project RP\Project\GenDung\Projet\GenDung\obj\Debug\Assembly-CSharp.csproj.CopyComplete
