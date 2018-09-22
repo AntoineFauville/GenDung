@@ -31,4 +31,12 @@ public class Character : ScriptableObject {
 	story = "this is a story of a random player, we still need to implement this yes...";
 
     public SpellObject[] SpellList;
+
+    [Space(15)]
+
+    public int StrengthPoint;
+    public int KnowledgePoint;
+    public int DexterityPoint;
+    public int WisdomPoint;
+    public int SurvivabilityPoint;
 }

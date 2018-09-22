@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Stat {
+﻿public class Stat {
     
     //health
     private int _healthModificator;

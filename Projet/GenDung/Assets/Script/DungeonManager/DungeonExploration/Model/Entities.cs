@@ -32,6 +32,13 @@ public class Entities {
     public CoolDown CoolDownSecondSpell;
     public CoolDown CoolDownThirdSpell;
 
+    //stats
+    public int EntityStrengthPoint;
+    public int EntityKnowledgePoint;
+    public int EntityDexterityPoint;
+    public int EntityWisdomPoint;
+    public int EntitySurvivabilityPoint;
+
     public Entities()
     {
 
