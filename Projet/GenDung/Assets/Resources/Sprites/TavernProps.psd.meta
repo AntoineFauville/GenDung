@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 74a29dececa42c5419094cc4ca4a25fc
-timeCreated: 1529961744
+timeCreated: 1537619232
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -23,6 +23,7 @@ TextureImporter:
     21300032: TavernProps_16
     21300034: TavernProps_17
     21300036: TavernProps_18
+    21300038: TavernProps_19
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -354,6 +355,19 @@ TextureImporter:
         y: 437
         width: 51
         height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: TavernProps_19
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 29
+        width: 184
+        height: 144
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
