@@ -215,9 +215,9 @@ public class CharacterCreations : MonoBehaviour {
 
     private void InfoStats(Character characterDispatched)
     {
-        _health.text = "Health = " + characterDispatched.Health_PV;
-        _initiative.text = "Initiative = " + characterDispatched.Initiative;
-        _story.text = "Character Story = " + characterDispatched.story;
+       // _health.text = "Health = " + characterDispatched.Health_PV;
+       // _initiative.text = "Initiative = " + characterDispatched.Initiative;
+        _story.text = "" + characterDispatched.story;
     }
 
     //index de la liste qui correspond a celle de l'équipe right = équipe left = temporaire
